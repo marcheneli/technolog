@@ -51,9 +51,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Technolog\Technolog.csproj">
+    <ProjectReference Include="..\Technolog\Technolog.Web.csproj">
       <Project>{4F4CDAD9-BC4D-4589-B050-C7E55DB7E9CC}</Project>
-      <Name>Technolog</Name>
+      <Name>Technolog.Web</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
