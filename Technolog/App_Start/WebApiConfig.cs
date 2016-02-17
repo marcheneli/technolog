@@ -19,6 +19,10 @@ namespace Technolog
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
+            var formatter = config.Formatters.JsonFormatter;
+            formatter.SerializerSettings.ContractResolver =
+                new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver();
         }
     }
 }

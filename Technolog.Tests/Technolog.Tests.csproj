@@ -51,10 +51,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Technolog\Technolog.Web.csproj">
+    <ProjectReference Include="..\Technolog\Technolog.csproj">
       <Project>{4F4CDAD9-BC4D-4589-B050-C7E55DB7E9CC}</Project>
-      <Name>Technolog.Web</Name>
+      <Name>Technolog</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
