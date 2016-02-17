@@ -5,7 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 
-namespace Technolog.Controllers.Api
+namespace Technolog.Web.Controllers.Api
 {
     public class TestController : ApiController
     {

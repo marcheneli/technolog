@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 
-namespace Technolog
+namespace Technolog.Web
 {
     public class RouteConfig
     {

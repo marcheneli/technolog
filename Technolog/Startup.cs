@@ -4,9 +4,9 @@ using Microsoft.Owin;
 using Owin;
 using System.Web.Http;
 
-[assembly: OwinStartup(typeof(Technolog.Startup))]
+[assembly: OwinStartup(typeof(Technolog.Web.Startup))]
 
-namespace Technolog
+namespace Technolog.Web
 {
     public class Startup
     {
