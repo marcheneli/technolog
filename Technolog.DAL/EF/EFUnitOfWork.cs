@@ -9,17 +9,24 @@ namespace Technolog.DAL.EF
 {
     public class EFUnitOfWork : IUnitOfWork
     {
+        ApplicationDbContext dbContext;
+
+        IToolRepository tools;
+
+        public EFUnitOfWork(string connectionString)
+        {
+            dbContext = new ApplicationDbContext(connectionString);
+        }
+
         public IToolRepository Tools
         {
             get
             {
-                throw new NotImplementedException();
-            }
-        }
+                if (tools == null)
+                    tools = new EFToolRepository(dbContext);
 
-        public void Dispose()
-        {
-            throw new NotImplementedException();
+                return tools;
+            }
         }
 
         public void Save()
@@ -30,6 +37,26 @@ namespace Technolog.DAL.EF
         public Task SaveAsync()
         {
             throw new NotImplementedException();
+        }
+
+        private bool disposed = false;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    dbContext.Dispose();
+                }
+                this.disposed = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }

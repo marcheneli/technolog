@@ -10,6 +10,12 @@ namespace Technolog.DAL.EF
 {
     class EFToolRepository : IToolRepository
     {
+        ApplicationDbContext dbContext;
+
+        public EFToolRepository(ApplicationDbContext dbContext)
+        {
+            this.dbContext = dbContext;
+        }
         public void Add(Tool item)
         {
             throw new NotImplementedException();
@@ -22,7 +28,7 @@ namespace Technolog.DAL.EF
 
         public IEnumerable<Tool> GetAll()
         {
-            throw new NotImplementedException();
+            return dbContext.Tools.ToList();
         }
 
         public Tool GetById(int id)

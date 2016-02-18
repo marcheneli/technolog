@@ -50,6 +50,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EF\ApplicationDbContext.cs" />
+    <Compile Include="EF\DBInitialization\DBInitializer.cs" />
+    <Compile Include="EF\DBInitialization\EntityInitializers\EntitiesInitializer.cs" />
+    <Compile Include="EF\DBInitialization\EntityInitializers\EntityInitializer.cs" />
+    <Compile Include="EF\DBInitialization\EntityInitializers\ToolsInitializer.cs" />
     <Compile Include="EF\EFUnitOfWork.cs" />
     <Compile Include="EF\EntityConfigurations\ToolMapper.cs" />
     <Compile Include="EF\Repositories\EFToolRepository.cs" />
