@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Technolog.Tests", "Technolo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Technolog.Domain", "Technolog.Domain\Technolog.Domain.csproj", "{ED38BA5F-D5F3-4957-BF7A-33797DC25DE4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Technolog.DAL", "Technolog.DAL\Technolog.DAL.csproj", "{C7084343-9E7C-4F7E-81AE-F4FDCD93C961}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{ED38BA5F-D5F3-4957-BF7A-33797DC25DE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ED38BA5F-D5F3-4957-BF7A-33797DC25DE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ED38BA5F-D5F3-4957-BF7A-33797DC25DE4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7084343-9E7C-4F7E-81AE-F4FDCD93C961}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7084343-9E7C-4F7E-81AE-F4FDCD93C961}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7084343-9E7C-4F7E-81AE-F4FDCD93C961}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7084343-9E7C-4F7E-81AE-F4FDCD93C961}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
