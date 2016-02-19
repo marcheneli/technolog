@@ -24,8 +24,8 @@ namespace Technolog.Web
             //	.SetLoadBabel(false)
             //	.AddScriptWithoutTransform("~/Scripts/bundle.server.js")
 
-            ReactSiteConfiguration.Configuration
-                .AddScript("~/Content/js/app/app.jsx");
+            //ReactSiteConfiguration.Configuration
+            //    .AddScript("~/Content/js/app/app.jsx");
         }
 	}
 }

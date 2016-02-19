@@ -16,7 +16,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("Технолог", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
@@ -30,7 +30,6 @@
     </div>
 
     @Scripts.Render("~/bundles/main-scripts")
-    <script type="text/javascript" src="~/Content/js/app/app.jsx"></script>
-    @Html.ReactInitJavaScript()
+    @Scripts.Render("~/bundles/app-scripts")
 </body>
 </html>
