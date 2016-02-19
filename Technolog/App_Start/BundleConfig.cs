@@ -17,12 +17,13 @@ namespace Technolog.Web
             bundles.Add(new ScriptBundle("~/bundles/main-scripts")
             .Include("~/Scripts/bootstrap.js")
             .Include("~/Scripts/jquery-{version}.js")
-            .Include("~/Scripts/modernizr-{version}.js"));
+            .Include("~/Scripts/react.js")
+            .Include("~/Scripts/react-dom.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/modernizr")
             .Include("~/Scripts/modernizr-{version}.js"));
 
-            BundleTable.EnableOptimizations = true;
+            //BundleTable.EnableOptimizations = true;
         }
     }
 }
