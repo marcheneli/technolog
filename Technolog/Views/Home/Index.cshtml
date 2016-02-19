@@ -1,7 +1,9 @@
-﻿
+﻿@using Technolog.Web.Helpers
 @{
     ViewBag.Title = "Index";
 }
 
-<div id="content"></div>
-
+@Html.React("CommentBox", new
+{
+    token = Html.GetAntiForgeryToken(),
+})
