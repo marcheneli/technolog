@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,12 +19,19 @@ namespace Technolog.DAL.EF
         }
         public void Add(Tool item)
         {
-            throw new NotImplementedException();
+            dbContext.Tools.Add(item);
         }
 
         public void Delete(Tool item)
         {
-            throw new NotImplementedException();
+            dbContext.Tools.Remove(item);
+        }
+
+        public void DeleteById(int id)
+        {
+            Tool tool = dbContext.Tools.Find(id);
+
+            if (tool != null) dbContext.Tools.Remove(tool);
         }
 
         public IEnumerable<Tool> GetAll()
@@ -33,12 +41,12 @@ namespace Technolog.DAL.EF
 
         public Tool GetById(int id)
         {
-            throw new NotImplementedException();
+            return dbContext.Tools.Find(id);
         }
 
         public void Update(Tool item)
         {
-            throw new NotImplementedException();
+            dbContext.Entry(item).State = EntityState.Modified;
         }
     }
 }

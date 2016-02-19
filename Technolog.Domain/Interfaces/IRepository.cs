@@ -13,5 +13,6 @@ namespace Technolog.Domain.Interfaces
         void Add(T item);
         void Update(T item);
         void Delete(T item);
+        void DeleteById(int id);
     }
 }

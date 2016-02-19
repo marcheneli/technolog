@@ -31,7 +31,7 @@ namespace Technolog.DAL.EF
 
         public void Save()
         {
-            throw new NotImplementedException();
+            dbContext.SaveChanges();
         }
 
         public Task SaveAsync()
