@@ -11,7 +11,7 @@
     },
     render: function () {
         return(
-            <div className="row">
+            <div className="row full-height">
                 <MainSidebar
 					tabList={this.state.tabList}
 					changeTab={this.changeTab} />

@@ -2,6 +2,14 @@
     padding-top: 50px;
 }
 
+html,body {
+	height:100%;
+}
+
+.full-height {
+	height:100%;
+}
+
 /* Set padding to keep content from hitting the edges */
 .body-content {
     padding-left: 15px;
