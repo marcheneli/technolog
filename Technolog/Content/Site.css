@@ -16,6 +16,10 @@ html,body {
     padding-right: 15px;
 }
 
+.btn-group {
+    margin-bottom: 5px;
+}
+
 /* Override the default bootstrap behavior where horizontal description lists 
    will truncate terms that are too long to fit in the left column 
 */
