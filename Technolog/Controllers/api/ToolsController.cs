@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Mvc;
 using Technolog.DAL.EF;
 using Technolog.Domain.Entities;
 using Technolog.Domain.Interfaces;
@@ -19,6 +20,7 @@ namespace Technolog.Web.Controllers.api
             return Ok(unitOfWork.Tools.GetAll());
         }
 
+        [ValidateAntiForgeryToken]
         public IHttpActionResult Post(Tool tool)
         {
             unitOfWork.Tools.Update(tool);

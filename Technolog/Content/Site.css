@@ -58,3 +58,16 @@ textarea {
   color: #fff;
   background-color: #428bca;
 }
+
+.outer {
+    width: 100%;
+    height:100%;
+    display: flex;
+    overflow-x: auto;
+    overflow-y:hidden;
+}
+.inner {
+    min-width:600px;
+    height:100%;
+    margin-right: 5px;
+}

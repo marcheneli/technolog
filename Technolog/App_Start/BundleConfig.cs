@@ -25,6 +25,9 @@ namespace Technolog.Web
                 .Include("~/Scripts/modernizr-{version}.js"));
 
             bundles.Add(new BabelBundle("~/bundles/app-scripts")
+                .Include("~/Content/js/app/inputError.jsx")
+                .Include("~/Content/js/app/textInput.jsx")
+                .Include("~/Content/js/app/toolEditForm.jsx")
                 .Include("~/Content/js/app/techProcessListSection.jsx")
                 .Include("~/Content/js/app/techOperationListSection.jsx")
                 .Include("~/Content/js/app/partListSection.jsx")

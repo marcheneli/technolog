@@ -5,6 +5,10 @@
 
 <div id="content" class="full-height"></div>
 
+<script>
+    antiForgeryToken = '@Html.GetAntiForgeryToken()'
+</script>
+
 @*@Html.React("CommentBox", new
 {
     token = Html.GetAntiForgeryToken(),

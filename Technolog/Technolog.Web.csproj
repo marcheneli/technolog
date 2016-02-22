@@ -205,6 +205,9 @@
     <None Include="Content\js\app\partListSection.jsx" />
     <None Include="Content\js\app\techOperationListSection.jsx" />
     <None Include="Content\js\app\techProcessListSection.jsx" />
+    <None Include="Content\js\app\textInput.jsx" />
+    <None Include="Content\js\app\inputError.jsx" />
+    <None Include="Content\js\app\toolEditForm.jsx" />
     <Content Include="Content\Site.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
