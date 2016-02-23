@@ -33,7 +33,8 @@
 var ToolList = React.createClass({
     getInitialState: function() {
         return {
-            currentTool: null
+            currentTool: null,
+            isConfirmDeleting: false
         }
     },
     changeCurrent: function(tool) {
@@ -45,6 +46,19 @@ var ToolList = React.createClass({
     newToolBtnClickHandler: function(){
         this.props.createNewTool();
     },
+    handleDeleteSuccess: function(id){
+		this.setState({
+			currentTool: null,
+			isConfirmDeleting: !this.state.isConfirmDeleting
+		});
+        this.props.deleteTool(id);
+	},
+	handleDeleteCancel: function(){
+		this.setState({
+			currentTool: this.state.currentTool,
+			isConfirmDeleting: !this.state.isConfirmDeleting
+		});
+	},
     render: function() {
         return(
             <div className="panel panel-default inner" style={{marginBottom: 0 + 'px'}}>
@@ -52,11 +66,20 @@ var ToolList = React.createClass({
                     <h4>Инструменты</h4>
                 </div>
                 <div className="panel-body">
-                    <div className="btn-group" role="group" aria-label="...">
-                        <button className="btn btn-default" onClick={this.newToolBtnClickHandler}><span className="glyphicon glyphicon-plus"></span></button>
-                        <button className="btn btn-default"><span className="glyphicon glyphicon-trash"></span></button>
-                        <button className="btn btn-default"><span className="glyphicon glyphicon-refresh"></span></button>
-                    </div>
+                    {this.state.isConfirmDeleting ?
+                        <ConfirmDelete 
+                                    url={'api/tools/' + this.state.currentTool.id}
+								    title={"Подтверждение удаления инструмента"}
+								    message={"Вы действительно хотите удалить инструмент " + this.state.currentTool.name}
+								    success={this.handleDeleteSuccess}
+								    cancel={this.handleDeleteCancel}/>
+                    :
+                        <div className="btn-group" role="group" aria-label="...">
+                            <button className="btn btn-default" onClick={this.newToolBtnClickHandler}><span className="glyphicon glyphicon-plus"></span></button>
+                            <button className="btn btn-default" onClick={function() { this.setState({ currentTool: this.state.currentTool, isConfirmDeleting: true }); }.bind(this)}><span className="glyphicon glyphicon-trash"></span></button>
+                            <button className="btn btn-default"><span className="glyphicon glyphicon-refresh"></span></button>
+                        </div>
+                    }
                     <table className="table table-bordered">
                         <thead>
                             <tr>
@@ -102,26 +125,40 @@ var ToolListSection = React.createClass({
     createNewTool: function() {
         this.setState({ tools: this.state.tools, editTool: { id: 0, name: "" } });
     },
+    deleteTool: function (id) {
+        var tools = this.state.tools;
+
+        for(var i = 0; i < tools.length; i++){
+            if(tools[i].id == id){
+                tools.splice(i, 1);
+                break;
+            }
+        }
+
+        this.setState({ tools: tools });
+    },
+    addTool: function (tool) {
+        var tools = this.state.tools;
+
+        tools.push(tool);
+
+        this.setState({ tools: tools, editTool: tool });
+    },
     render: function() {
-        if(this.state.editTool == null){
-            return(
-                <div className="outer">
-                    <ToolList tools={this.state.tools}
-                              openToolEditFormHandler={this.openToolEditForm}
-                              createNewTool={this.createNewTool}/>
-                </div>
-            )
-        } else {
-            return(
-                <div className="outer">
-                    <ToolList tools={this.state.tools}
-                              openToolEditFormHandler={this.openToolEditForm}/>
+        return(
+            <div className="outer">
+                <ToolList tools={this.state.tools}
+                          openToolEditFormHandler={this.openToolEditForm}
+                          createNewTool={this.createNewTool}
+                          deleteTool={this.deleteTool}/>
+                {this.state.editTool != null ?
                     <ToolEditForm tool={this.state.editTool}
                                   url="api/tools"
-                                  closeToolEditFormHandler={this.closeToolEditForm} />
-                </div>
-            )
-        }
+                                  closeToolEditFormHandler={this.closeToolEditForm} 
+                                  addNewTool={this.addTool}/>
+                :null}
+            </div>
+        )
         
     }
 });

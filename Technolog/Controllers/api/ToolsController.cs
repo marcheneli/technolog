@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using Technolog.DAL.EF;
 using Technolog.Domain.Entities;
 using Technolog.Domain.Interfaces;
+using Technolog.Web.Models;
 
 namespace Technolog.Web.Controllers.api
 {
@@ -21,18 +22,44 @@ namespace Technolog.Web.Controllers.api
         }
 
         [ValidateAntiForgeryToken]
-        public IHttpActionResult Post(Tool tool)
+        public IHttpActionResult Post(ToolModel toolModel)
         {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            Tool tool = new Tool() { Id = toolModel.Id, Name = toolModel.Name };
+
             unitOfWork.Tools.Update(tool);
-            unitOfWork.Save();
+
+            try
+            {
+                unitOfWork.Save();
+            }
+            catch (Exception ex)
+            {
+                return NotFound();
+            }
 
             return Ok(tool);
         }
 
-        public IHttpActionResult Put(Tool tool)
+        public IHttpActionResult Put(ToolModel toolModel)
         {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            Tool tool = new Tool() { Id = toolModel.Id, Name = toolModel.Name };
+
             unitOfWork.Tools.Add(tool);
-            unitOfWork.Save();
+
+            try
+            {
+                unitOfWork.Save();
+            }
+            catch (Exception ex)
+            {
+                return NotFound();
+            }
 
             return Ok(tool);
         }
@@ -40,7 +67,15 @@ namespace Technolog.Web.Controllers.api
         public IHttpActionResult Delete(int id)
         {
             unitOfWork.Tools.DeleteById(id);
-            unitOfWork.Save();
+
+            try
+            {
+                unitOfWork.Save();
+            }
+            catch (Exception ex)
+            {
+                return NotFound();
+            }
 
             return Ok(id);
         }

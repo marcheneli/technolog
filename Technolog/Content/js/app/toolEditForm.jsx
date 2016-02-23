@@ -38,6 +38,9 @@
 					name: this.inputs["toolName"].state.value,
 					__RequestVerificationToken: antiForgeryToken },
 			success: function(data) {
+                if(this.state.tool.id == 0){
+                    this.props.addNewTool(data);
+                }
 			}.bind(this),
 			error: function(xhr, status, err) {
 				console.error(this.props.url, status, err.toString());

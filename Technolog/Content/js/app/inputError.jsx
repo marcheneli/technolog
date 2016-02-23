@@ -2,7 +2,7 @@
   render: function(){
     return (
       <div>
-        <span>{this.props.errorMessage}</span>
+        <span style={{ color: 'red' }}>{this.props.errorMessage}</span>
       </div>
     )
   }

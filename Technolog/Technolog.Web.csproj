@@ -208,6 +208,7 @@
     <None Include="Content\js\app\textInput.jsx" />
     <None Include="Content\js\app\inputError.jsx" />
     <None Include="Content\js\app\toolEditForm.jsx" />
+    <None Include="Content\js\app\confirmDelete.jsx" />
     <Content Include="Content\Site.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -238,6 +239,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\AntiForgeryHelper.cs" />
+    <Compile Include="Models\ToolModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -257,7 +259,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Technolog.DAL\Technolog.DAL.csproj">

@@ -46,7 +46,16 @@ namespace Technolog.DAL.EF
 
         public void Update(Tool item)
         {
-            dbContext.Entry(item).State = EntityState.Modified;
+            Tool entity = null;
+
+            if (item.Id != 0)
+                entity = dbContext.Tools.Find(item.Id);
+
+            if(entity != null)
+            {
+                entity.Name = item.Name;
+                dbContext.SaveChanges();
+            }
         }
     }
 }
