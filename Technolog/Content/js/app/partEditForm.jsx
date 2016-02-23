@@ -1,22 +1,22 @@
-﻿var ToolEditForm = React.createClass({
+﻿var PartEditForm = React.createClass({
     getInitialState: function(){
 		return {
-			tool:{
-				id:this.props.tool.id,
-				name:this.props.tool.name
+			part:{
+				id:this.props.part.id,
+				name:this.props.part.name
 			},
 			isValid:true
 		}
 	},
     componentWillReceiveProps: function(nextProps){
         this.setState({
-            tool:{
-				id:nextProps.tool.id,
-				name:nextProps.tool.name
+            part:{
+				id:nextProps.part.id,
+				name:nextProps.part.name
 			},
 			isValid:true
         });
-    },	
+    },
     componentWillMount: function(){
 		this.inputs = {};
 	},
@@ -27,17 +27,17 @@
     handleSubmit: function (e) {
 		e.preventDefault();
 
-        var type = this.state.tool.id == 0 ? 'PUT' : 'POST'
+        var type = this.state.part.id == 0 ? 'PUT' : 'POST'
 
 		$.ajax({
 			url: this.props.url,
 			dataType: 'json',
 			type: type,
-			data: { id: this.state.tool.id,
-					name: this.inputs["toolName"].state.value,
+			data: { id: this.state.part.id,
+					name: this.inputs["partName"].state.value,
 					__RequestVerificationToken: antiForgeryToken },
 			success: function(data) {
-                if(this.state.tool.id == 0){
+                if(this.state.part.id == 0){
                     this.props.addNewTool(data);
                 }
 			}.bind(this),
@@ -54,8 +54,8 @@
 	},
     setToolName: function (event) {
         this.setState({
-            tool:{
-				id:this.props.tool.id,
+            part:{
+				id:this.props.part.id,
 				name: event.target.value
 			},
 			isValid:true
@@ -65,17 +65,29 @@
         return(
             <div className="panel panel-default inner" style={{marginBottom: 0 + 'px'}}>
                 <div className="panel-heading">
-                    <h4>Редактирование инструмента</h4>
+                    <h4>Редактирование детали</h4>
                 </div>
                 <div className="panel-body">
                     <form role="form" onSubmit={this.handleSubmit}>
                         <div className="form-group">
-                            <label className="control-label">Наименование:</label>
-                            <TextInput name="toolName"
+                            <label className="control-label">Идентификатор:</label>
+                            <TextInput name="partNumber"
                                        text=""
-                                       value={this.state.tool.name}
+                                       value={this.state.part.name}
                                        required={true}
-                                       onChange={this.setToolName}
+                                       onChange={this.setPartNumber}
+                                       errorMessage="Данный идентификатор недействительн"
+                                       emptyMessage="Идентификатор обязателен для ввода"
+                                       register={this.registerInput}
+                                       validate={this.numberValidate} />
+                        </div>
+                        <div className="form-group">
+                            <label className="control-label">Наименование:</label>
+                            <TextInput name="partName"
+                                       text=""
+                                       value={this.state.part.name}
+                                       required={true}
+                                       onChange={this.setPartName}
                                        errorMessage="Данное наименование недействительно"
                                        emptyMessage="Наименование обязательно для ввода"
                                        register={this.registerInput}

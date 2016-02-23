@@ -14,6 +14,7 @@ namespace Technolog.DAL.EF.DBInitialization
             EntitiesInitializer initializers = new EntitiesInitializer(context);
 
             initializers.Add(new ToolsInitializer());
+            initializers.Add(new PartsInitializer());
 
             initializers.Initialization();
         }

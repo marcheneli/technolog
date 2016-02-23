@@ -40,7 +40,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\Part.cs" />
     <Compile Include="Entities\Tool.cs" />
+    <Compile Include="Interfaces\IPartRepository.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Interfaces\IToolRepository.cs" />
     <Compile Include="Interfaces\IUnitOfWork.cs" />

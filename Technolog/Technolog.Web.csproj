@@ -209,6 +209,7 @@
     <None Include="Content\js\app\inputError.jsx" />
     <None Include="Content\js\app\toolEditForm.jsx" />
     <None Include="Content\js\app\confirmDelete.jsx" />
+    <None Include="Content\js\app\partEditForm.jsx" />
     <Content Include="Content\Site.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -232,6 +233,7 @@
     <Compile Include="App_Start\ReactConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\api\PartsController.cs" />
     <Compile Include="Controllers\api\TestController.cs" />
     <Compile Include="Controllers\api\ToolsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -239,6 +241,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\AntiForgeryHelper.cs" />
+    <Compile Include="Models\PartModel.cs" />
     <Compile Include="Models\ToolModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />

@@ -3,15 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Technolog.Domain.Entities;
 
 namespace Technolog.Domain.Interfaces
 {
-    public interface IUnitOfWork : IDisposable
+    public interface IPartRepository : IRepository<Part>
     {
-        IToolRepository Tools { get; }
-        IPartRepository Parts { get; }
-
-        Task SaveAsync();
-        void Save();
     }
 }

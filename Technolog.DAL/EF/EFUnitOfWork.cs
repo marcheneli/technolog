@@ -12,6 +12,7 @@ namespace Technolog.DAL.EF
         ApplicationDbContext dbContext;
 
         IToolRepository tools;
+        IPartRepository parts;
 
         public EFUnitOfWork(string connectionString)
         {
@@ -26,6 +27,17 @@ namespace Technolog.DAL.EF
                     tools = new EFToolRepository(dbContext);
 
                 return tools;
+            }
+        }
+
+        public IPartRepository Parts
+        {
+            get
+            {
+                if (parts == null)
+                    parts = new EFPartRepository(dbContext);
+
+                return parts;
             }
         }
 

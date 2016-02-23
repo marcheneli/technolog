@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Technolog.DAL.EF.EntityConfigurations;
 using Technolog.Domain.Entities;
 
 namespace Technolog.DAL.EF
@@ -11,6 +12,7 @@ namespace Technolog.DAL.EF
     class ApplicationDbContext : DbContext
     {
         public DbSet<Tool> Tools { get; set; }
+        public DbSet<Part> Parts { get; set; }
 
         public ApplicationDbContext(string connectionString)
             :base(connectionString)
@@ -23,6 +25,7 @@ namespace Technolog.DAL.EF
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Configurations.Add(new ToolMapper());
+            modelBuilder.Configurations.Add(new PartMapper());
         }
     }
 }
