@@ -211,6 +211,7 @@
     <None Include="Content\js\app\confirmDelete.jsx" />
     <None Include="Content\js\app\partEditForm.jsx" />
     <None Include="Content\js\app\searchInput.jsx" />
+    <None Include="Content\js\app\pagination.jsx" />
     <Content Include="Content\Site.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
