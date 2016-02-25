@@ -55,8 +55,8 @@
     setToolName: function (event) {
         this.setState({
             tool:{
-				id:this.props.tool.id,
-				name: event.target.value
+				id:this.state.tool.id,
+				name:event.target.value
 			},
 			isValid:true
         });

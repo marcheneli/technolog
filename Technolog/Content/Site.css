@@ -16,7 +16,8 @@ html,body {
     padding-right: 15px;
 }
 
-.btn-group {
+.btn-group,
+.input-group {
     margin-bottom: 5px;
 }
 
@@ -25,13 +26,6 @@ html,body {
 */
 .dl-horizontal dt {
     white-space: normal;
-}
-
-/* Set width on the form input elements since they're 100% wide by default */
-input,
-select,
-textarea {
-    max-width: 280px;
 }
 
 .unbulleted {
@@ -64,10 +58,10 @@ textarea {
     height:100%;
     display: flex;
     overflow-x: auto;
-    overflow-y:hidden;
+    overflow-y: hidden;
 }
 .inner {
     min-width:600px;
-    height:100%;
+    width:600px;
     margin-right: 5px;
 }

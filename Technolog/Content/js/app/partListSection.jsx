@@ -63,7 +63,7 @@ var PartList = React.createClass({
         return(
             <div className="panel panel-default inner" style={{marginBottom: 0 + 'px'}}>
                 <div className="panel-heading">
-                    <h4>Инструменты</h4>
+                    <h4>Детали</h4>
                 </div>
                 <div className="panel-body">
                     {this.state.isConfirmDeleting ?
@@ -73,10 +73,13 @@ var PartList = React.createClass({
                                        success={this.handleDeleteSuccess}
                                        cancel={this.handleDeleteCancel} />
                     :
-                        <div className="btn-group" role="group" aria-label="...">
-                            <button className="btn btn-default" onClick={this.newPartBtnClickHandler}><span className="glyphicon glyphicon-plus"></span></button>
-                            <button className="btn btn-default" onClick={function() { this.setState({ currentPart this.state.currentPart, isConfirmDeleting true }); }.bind(this)}><span className="glyphicon glyphicon-trash"></span></button>
-                            <button className="btn btn-default"><span className="glyphicon glyphicon-refresh"></span></button>
+                        <div className="input-group">
+                            <div className="input-group-btn">
+                                <button className="btn btn-default" onClick={this.newPartBtnClickHandler}><span className="glyphicon glyphicon-plus"></span></button>
+                                <button className="btn btn-default" onClick={function() { this.setState({ currentPart: this.state.currentTool, isConfirmDeleting: true }); }.bind(this)}><span className="glyphicon glyphicon-trash"></span></button>
+                                <button className="btn btn-default"><span className="glyphicon glyphicon-refresh"></span></button>
+                            </div>
+                            <SearchInput text="Поиск..." onChange={ function(text) { this.props.updateParts(text) }.bind(this)  } />
                         </div>
                     }
                     <table className="table table-bordered">
@@ -122,7 +125,7 @@ var PartListSection = React.createClass({
         this.setState({ parts: this.state.parts, editPart: null });
     },
     createNewPart: function() {
-        this.setState({ parts: this.state.parts, editPart: { id: 0, name: "" } });
+        this.setState({ parts: this.state.parts, editPart: { id: 0, partNumber: "", name: "" } });
     },
     deletePart: function (id) {
         var parts = this.state.parts;
@@ -142,6 +145,11 @@ var PartListSection = React.createClass({
         parts.push(part);
 
         this.setState({ parts: parts, editPart: part });
+    },    
+    updateParts: function(search) {
+        $.get("api/parts?search=" + search, function(parts){
+            this.setState({ parts: parts, editPart: this.state.editPart})
+        }.bind(this));
     },
     render: function() {
         return(
@@ -149,7 +157,8 @@ var PartListSection = React.createClass({
                 <PartList parts={this.state.parts}
                           openPartEditFormHandler={this.openPartEditForm}
                           createNewPart={this.createNewPart}
-                          deletePart={this.deletePart} />
+                          deletePart={this.deletePart} 
+                          updateParts={this.updateParts}/>
                 {this.state.editPart != null ?
                     <PartEditForm part={this.state.editPart}
                                   url="api/parts"

@@ -1,8 +1,10 @@
 ﻿var PartEditForm = React.createClass({
     getInitialState: function(){
+        console.log(this.props.part);
 		return {
 			part:{
 				id:this.props.part.id,
+                partNumber:this.props.part.partNumber,
 				name:this.props.part.name
 			},
 			isValid:true
@@ -12,6 +14,7 @@
         this.setState({
             part:{
 				id:nextProps.part.id,
+                partNumber:nextProps.part.partNumber,
 				name:nextProps.part.name
 			},
 			isValid:true
@@ -21,6 +24,10 @@
 		this.inputs = {};
 	},
     nameValidate: function () {
+		//you could do something here that does general validation for any form field
+		return true;
+	},
+    numberValidate: function () {
 		//you could do something here that does general validation for any form field
 		return true;
 	},
@@ -34,11 +41,12 @@
 			dataType: 'json',
 			type: type,
 			data: { id: this.state.part.id,
+                    partNumber: this.inputs["partNumber"].state.value,
 					name: this.inputs["partName"].state.value,
 					__RequestVerificationToken: antiForgeryToken },
 			success: function(data) {
                 if(this.state.part.id == 0){
-                    this.props.addNewTool(data);
+                    this.props.addNewPart(data);
                 }
 			}.bind(this),
 			error: function(xhr, status, err) {
@@ -47,15 +55,26 @@
 		});
 	},
     cancelClickHandler: function () {
-        this.props.closeToolEditFormHandler();
+        this.props.closePartEditFormHandler();
     },
 	registerInput: function(input){
 		this.inputs[input.props.name] = input;
 	},
-    setToolName: function (event) {
+    setPartNumber: function (event) {
         this.setState({
             part:{
-				id:this.props.part.id,
+				id:this.state.part.id,
+                partNumber:event.target.value,
+				name:this.state.part.name
+			},
+			isValid:true
+        });
+    },
+    setPartName: function (event) {
+        this.setState({
+            part:{
+				id:this.state.part.id,
+                partNumber:this.state.part.partNumber,
 				name: event.target.value
 			},
 			isValid:true
@@ -73,7 +92,7 @@
                             <label className="control-label">Идентификатор:</label>
                             <TextInput name="partNumber"
                                        text=""
-                                       value={this.state.part.name}
+                                       value={this.state.part.partNumber}
                                        required={true}
                                        onChange={this.setPartNumber}
                                        errorMessage="Данный идентификатор недействительн"

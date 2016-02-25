@@ -16,9 +16,12 @@ namespace Technolog.Web.Controllers.api
     {
         IUnitOfWork unitOfWork = new EFUnitOfWork("TechnologConnection");
 
-        public IHttpActionResult Get()
+        public IHttpActionResult Get(string search = null)
         {
-            return Ok(unitOfWork.Tools.GetAll());
+            if(search == null)
+                return Ok(unitOfWork.Tools.GetAll());
+
+            return Ok(unitOfWork.Tools.GetAll().Where(t => t.Name.Contains(search)).ToList());
         }
 
         [ValidateAntiForgeryToken]

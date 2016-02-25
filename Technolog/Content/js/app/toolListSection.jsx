@@ -24,8 +24,8 @@
                 onMouseLeave={this.onMouseLeaveHandler}
                 onClick={this.onClickHandler}
                 onDoubleClick={this.onDoubleClickHandler}>
-                <td>{this.props.tool.id}</td>
-                <td>{this.props.tool.name}</td>
+                <td  style={{ width: 25 + '%' }}>{this.props.tool.id}</td>
+                <td  style={{ width: 75 + '%' }}>{this.props.tool.name}</td>
             </tr>
         )
     }
@@ -61,11 +61,11 @@ var ToolList = React.createClass({
 	},
     render: function() {
         return(
-            <div className="panel panel-default inner" style={{marginBottom: 0 + 'px'}}>
+            <div className="panel panel-default inner" style={{marginBottom: 0 + 'px', display: 'flex', flexDirection: 'column'}}>
                 <div className="panel-heading">
                     <h4>Инструменты</h4>
                 </div>
-                <div className="panel-body">
+                <div className="panel-body" style={{ display: 'flex', flexDirection: 'column'}}>
                     {this.state.isConfirmDeleting ?
                         <ConfirmDelete 
                                     url={'api/tools/' + this.state.currentTool.id}
@@ -74,31 +74,39 @@ var ToolList = React.createClass({
 								    success={this.handleDeleteSuccess}
 								    cancel={this.handleDeleteCancel}/>
                     :
-                        <div className="btn-group" role="group" aria-label="...">
-                            <button className="btn btn-default" onClick={this.newToolBtnClickHandler}><span className="glyphicon glyphicon-plus"></span></button>
-                            <button className="btn btn-default" onClick={function() { this.setState({ currentTool: this.state.currentTool, isConfirmDeleting: true }); }.bind(this)}><span className="glyphicon glyphicon-trash"></span></button>
-                            <button className="btn btn-default"><span className="glyphicon glyphicon-refresh"></span></button>
+                        <div className="input-group">
+                            <div className="input-group-btn">
+                                <button className="btn btn-default" onClick={this.newToolBtnClickHandler}><span className="glyphicon glyphicon-plus"></span></button>
+                                <button className="btn btn-default" onClick={function() { this.setState({ currentTool: this.state.currentTool, isConfirmDeleting: true }); }.bind(this)}><span className="glyphicon glyphicon-trash"></span></button>
+                                <button className="btn btn-default"><span className="glyphicon glyphicon-refresh"></span></button>
+                            </div>
+                            <SearchInput text="Поиск..." onChange={ function(text) { this.props.updateTools(text) }.bind(this) } />
                         </div>
                     }
-                    <table className="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Наименование</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {this.props.tools.map(function(tool, index) {
-                                return(
-                                                <ToolListRow key={tool.id} 
-                                                             tool={tool} 
-                                                             isCurrent={this.state.currentTool == tool} 
-                                                             changeCurrent={this.changeCurrent}
-                                                             toolRowDoubleClickHandler={this.toolRowDoubleClick}/>
-                                )
-                            }.bind(this))}
-                        </tbody>
-                    </table>
+
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <div style={{overflowY: 'auto'}}>
+                            <table className="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th style={{ width: 25 + '%' }}>ID</th>
+                                        <th style={{ width: 75 + '%'}}>Наименование</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {this.props.tools.map(function(tool, index) {
+                                        return(
+                                            <ToolListRow key={tool.id}
+                                                         tool={tool}
+                                                         isCurrent={this.state.currentTool == tool}
+                                                         changeCurrent={this.changeCurrent}
+                                                         toolRowDoubleClickHandler={this.toolRowDoubleClick} />
+                                        )
+                                    }.bind(this))}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         )
@@ -144,13 +152,19 @@ var ToolListSection = React.createClass({
 
         this.setState({ tools: tools, editTool: tool });
     },
+    updateTools: function(search) {
+        $.get("api/tools?search=" + search, function(tools){
+            this.setState({ tools: tools, editTool: this.state.editTool})
+        }.bind(this));
+    },
     render: function() {
         return(
             <div className="outer">
                 <ToolList tools={this.state.tools}
                           openToolEditFormHandler={this.openToolEditForm}
                           createNewTool={this.createNewTool}
-                          deleteTool={this.deleteTool}/>
+                          deleteTool={this.deleteTool}
+                          updateTools={this.updateTools}/>
                 {this.state.editTool != null ?
                     <ToolEditForm tool={this.state.editTool}
                                   url="api/tools"

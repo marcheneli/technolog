@@ -16,9 +16,12 @@ namespace Technolog.Web.Controllers.api
     {
         IUnitOfWork unitOfWork = new EFUnitOfWork("TechnologConnection");
 
-        public IHttpActionResult Get()
+        public IHttpActionResult Get(string search = null)
         {
-            return Ok(unitOfWork.Parts.GetAll());
+            if (search == null)
+                return Ok(unitOfWork.Parts.GetAll());
+
+            return Ok(unitOfWork.Parts.GetAll().Where(t => t.Name.Contains(search)).ToList());
         }
 
         [ValidateAntiForgeryToken]
@@ -27,7 +30,7 @@ namespace Technolog.Web.Controllers.api
             if (!ModelState.IsValid)
                 return BadRequest();
 
-            Part part = new Part() { Id = partModel.Id, Name = partModel.Name };
+            Part part = new Part() { Id = partModel.Id, PartNumber = partModel.PartNumber, Name = partModel.Name };
 
             unitOfWork.Parts.Update(part);
 
@@ -48,7 +51,7 @@ namespace Technolog.Web.Controllers.api
             if (!ModelState.IsValid)
                 return BadRequest();
 
-            Part part = new Part() { Id = partModel.Id, Name = partModel.Name };
+            Part part = new Part() { Id = partModel.Id, PartNumber = partModel.PartNumber, Name = partModel.Name };
 
             unitOfWork.Parts.Add(part);
 
