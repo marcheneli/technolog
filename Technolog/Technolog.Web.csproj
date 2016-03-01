@@ -217,6 +217,7 @@
     <Content Include="Content\js\app\constants\pageConstants.js" />
     <Content Include="Content\js\app\constants\toolConstants.js" />
     <Content Include="Content\js\app\dispatcher\appDispatcher.js" />
+    <None Include="Content\js\app\main.jsx" />
     <Content Include="Content\js\app\stores\toolStore.js" />
     <Content Include="Content\Site.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -228,7 +229,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="Scripts\event-emitter.min" />
+    <Content Include="Scripts\event-emitter.min.js" />
     <None Include="Scripts\jquery-2.2.0.intellisense.js" />
     <Content Include="Scripts\event-emitter.js" />
     <Content Include="Scripts\flux.js" />
@@ -238,6 +239,8 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\object-assign.js" />
     <Content Include="Scripts\react-dom.js" />
+    <Content Include="Scripts\react-router.js" />
+    <Content Include="Scripts\react-router.min.js" />
     <Content Include="Scripts\react.js" />
     <Content Include="Web.config" />
   </ItemGroup>

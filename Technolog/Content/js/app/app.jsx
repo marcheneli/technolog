@@ -1,11 +1,25 @@
 ﻿var tabList = [
-    { 'id': 1, 'name': 'Технологические процессы'},
-    { 'id': 2, 'name': 'Технологические операции'},
-    { 'id': 3, 'name': 'Инструменты'},
-    { 'id': 4, 'name': 'Детали'}
+    { 'id': 1, 'name': 'Технологические процессы', 'linkName': 'processes'},
+    { 'id': 2, 'name': 'Технологические операции', 'linkName': 'operations'},
+    { 'id': 3, 'name': 'Инструменты', 'linkName': 'tools'},
+    { 'id': 4, 'name': 'Детали', 'linkName': 'parts'}
 ];
 
+var Router = ReactRouter.Router;
+var Route = ReactRouter.Route;
+
+var routers = (
+    <Router history={ReactRouter.browserHistory}>
+        <Route path="/" component={Main}>
+            <Route path="processes" component={TechProcessListSection} />
+            <Route path="operations" component={TechOperationListSection} />
+            <Route path="tools" component={ToolListSection} />
+            <Route path="parts" component={PartListSection} />
+        </Route>
+    </Router>
+);
+
 ReactDOM.render(
-    <Portal tabList={tabList}/>,
+    routers,
     document.getElementById('content')
 );

@@ -20,6 +20,7 @@ namespace Technolog.Web
                 .Include("~/Scripts/bootstrap.js")
                 .Include("~/Scripts/react.js")
                 .Include("~/Scripts/react-dom.js")
+                .Include("~/Scripts/react-router.js")
                 .Include("~/Scripts/flux.js")
                 .Include("~/Scripts/event-emitter.js")
                 .Include("~/Scripts/object-assign.js"));
@@ -47,6 +48,7 @@ namespace Technolog.Web
                 .Include("~/Content/js/app/toolListSection.jsx")
                 .Include("~/Content/js/app/mainContentSection.jsx")
                 .Include("~/Content/js/app/mainSidebar.jsx")
+                .Include("~/Content/js/app/main.jsx")
                 .Include("~/Content/js/app/portal.jsx")
                 .Include("~/Content/js/app/app.jsx"));
 

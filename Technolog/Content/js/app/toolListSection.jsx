@@ -132,9 +132,9 @@ var ToolList = React.createClass({
                             <ItemsPerPageSelector onChange={this.handleToolsPerPageChange}/>
                         </div>
                     }
-                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                    <div style={{ marginBottom: 10 + 'px', display: 'flex', flexDirection: 'column' }}>
                         <div style={{overflowY: 'auto'}}>
-                            <table className="table table-bordered">
+                            <table className="table table-bordered" style={{ marginBottom: 1 + 'px'}}>
                                 <thead>
                                     <tr>
                                         <th style={{ width: 25 + '%' }}>ID</th>
