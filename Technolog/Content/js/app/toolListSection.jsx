@@ -33,33 +33,81 @@
 var ToolList = React.createClass({
     getInitialState: function() {
         return {
+            tools: [],
             currentTool: null,
-            isConfirmDeleting: false
+            isConfirmDeleting: false,
+            toolAmount: 0,
+            toolsPerPage: PageConstants.ITEMS_PER_PAGE_INIT
         }
+    },    
+    componentWillMount: function() {
+        ToolStore.addChangeListener(this.handleToolsChange)
+    },
+    componentWillUnmount: function() {
+        ToolStore.removeChangeListener(this.handleToolsChange)
+    },
+    componentDidMount: function () {
+        ToolActions.init();
+    },
+    handleToolsChange: function() {
+        this.setState({
+            tools: ToolStore.getAll(),
+            currentTool: null,
+            isConfirmDeleting: false,
+            toolAmount: ToolStore.getToolAmount(),
+            toolsPerPage: ToolStore.getToolsPerPage()
+        });;
     },
     changeCurrent: function(tool) {
-        this.setState({ currentTool: tool });
+        this.setState({
+            tools: this.state.tools,
+            currentTool: tool,
+            isConfirmDeleting: this.state.isConfirmDeleting,
+            toolAmount: this.state.toolAmount,
+            toolsPerPage: this.state.toolsPerPage
+        });
     },
     toolRowDoubleClick: function(tool) {
         this.props.openToolEditFormHandler(tool);
     },
     newToolBtnClickHandler: function(){
-        this.props.createNewTool();
+        this.props.openToolEditFormHandler({ id: 0, name: "" });
     },
-    handleDeleteSuccess: function(id){
-		this.setState({
-			currentTool: null,
-			isConfirmDeleting: !this.state.isConfirmDeleting
-		});
-        this.props.deleteTool(id);
+    handleDeleteSuccess: function(){
+        ToolActions.remove(this.state.currentTool.id);
 	},
 	handleDeleteCancel: function(){
 		this.setState({
+            tools: this.state.tools,
 			currentTool: this.state.currentTool,
-			isConfirmDeleting: !this.state.isConfirmDeleting
+			isConfirmDeleting: !this.state.isConfirmDeleting,
+            toolAmount: this.state.toolAmount,
+            toolsPerPage: this.state.toolsPerPage
 		});
 	},
+    handleToolsPerPageChange: function(toolsPerPage) {
+        ToolActions.changeToolsPerPage(toolsPerPage);
+    },
+    handleToolPageChange: function(page) {
+        ToolActions.changeToolPage(page);
+    },
+    handleToolSearchTextChange: function(text) {
+        ToolActions.changeToolSearchText(text);
+    },
     render: function() {
+
+        var toolRows = [];
+
+        for (var key in this.state.tools) {
+            var tool = this.state.tools[key];
+
+            toolRows.push(<ToolListRow key={key}
+                                    tool={tool}
+                                    isCurrent={this.state.currentTool == tool}
+                                    changeCurrent={this.changeCurrent}
+                                    toolRowDoubleClickHandler={this.toolRowDoubleClick} />);
+        }
+
         return(
             <div className="panel panel-default inner" style={{marginBottom: 0 + 'px', display: 'flex', flexDirection: 'column'}}>
                 <div className="panel-heading">
@@ -68,7 +116,7 @@ var ToolList = React.createClass({
                 <div className="panel-body" style={{ display: 'flex', flexDirection: 'column'}}>
                     {this.state.isConfirmDeleting ?
                         <ConfirmDelete 
-                                    url={'api/tools/' + this.state.currentTool.id}
+                                    id={this.state.currentTool.id}
 								    title={"Подтверждение удаления инструмента"}
 								    message={"Вы действительно хотите удалить инструмент " + this.state.currentTool.name}
 								    success={this.handleDeleteSuccess}
@@ -80,10 +128,10 @@ var ToolList = React.createClass({
                                 <button className="btn btn-default" onClick={function() { this.setState({ currentTool: this.state.currentTool, isConfirmDeleting: true }); }.bind(this)}><span className="glyphicon glyphicon-trash"></span></button>
                                 <button className="btn btn-default"><span className="glyphicon glyphicon-refresh"></span></button>
                             </div>
-                            <SearchInput text="Поиск..." onChange={ function(text) { this.props.updateTools(text) }.bind(this) } />
+                            <SearchInput text="Поиск..." onChange={ function(text) { this.handleToolSearchTextChange(text) }.bind(this) } />
+                            <ItemsPerPageSelector onChange={this.handleToolsPerPageChange}/>
                         </div>
                     }
-
                     <div style={{ display: 'flex', flexDirection: 'column' }}>
                         <div style={{overflowY: 'auto'}}>
                             <table className="table table-bordered">
@@ -94,19 +142,19 @@ var ToolList = React.createClass({
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {this.props.tools.map(function(tool, index) {
-                                        return(
-                                            <ToolListRow key={tool.id}
-                                                         tool={tool}
-                                                         isCurrent={this.state.currentTool == tool}
-                                                         changeCurrent={this.changeCurrent}
-                                                         toolRowDoubleClickHandler={this.toolRowDoubleClick} />
-                                        )
-                                    }.bind(this))}
+                                    {toolRows}
                                 </tbody>
                             </table>
                         </div>
                     </div>
+                    <Pagination 
+                        itemAmount={this.state.toolAmount}
+                        itemsPerPage={this.state.toolsPerPage} 
+                        firstSymbol="&laquo;" 
+                        nextSymbol="&rsaquo;" 
+                        prevSymbol="&lsaquo;" 
+                        lastSymbol="&raquo;"
+                        updatePage={this.handleToolPageChange}/>
                 </div>
             </div>
         )
@@ -115,61 +163,26 @@ var ToolList = React.createClass({
 var ToolListSection = React.createClass({
     getInitialState: function() {
         return {
-            tools: [],
             editTool: null
         }
     },
-    componentDidMount: function() {
-        $.get("api/tools", function(tools){
-            this.setState({ tools: tools})
-        }.bind(this));
-    },
     openToolEditForm: function(tool) {
-        this.setState({ tools: this.state.tools, editTool: tool });
+        this.setState({
+            editTool: tool
+        });
     },
     closeToolEditForm: function() {
-        this.setState({ tools: this.state.tools, editTool: null });
-    },
-    createNewTool: function() {
-        this.setState({ tools: this.state.tools, editTool: { id: 0, name: "" } });
-    },
-    deleteTool: function (id) {
-        var tools = this.state.tools;
-
-        for(var i = 0; i < tools.length; i++){
-            if(tools[i].id == id){
-                tools.splice(i, 1);
-                break;
-            }
-        }
-
-        this.setState({ tools: tools });
-    },
-    addTool: function (tool) {
-        var tools = this.state.tools;
-
-        tools.push(tool);
-
-        this.setState({ tools: tools, editTool: tool });
-    },
-    updateTools: function(search) {
-        $.get("api/tools?search=" + search, function(tools){
-            this.setState({ tools: tools, editTool: this.state.editTool})
-        }.bind(this));
+        this.setState({
+            editTool: null
+        });
     },
     render: function() {
         return(
             <div className="outer">
-                <ToolList tools={this.state.tools}
-                          openToolEditFormHandler={this.openToolEditForm}
-                          createNewTool={this.createNewTool}
-                          deleteTool={this.deleteTool}
-                          updateTools={this.updateTools}/>
+                <ToolList openToolEditFormHandler={this.openToolEditForm}/>
                 {this.state.editTool != null ?
                     <ToolEditForm tool={this.state.editTool}
-                                  url="api/tools"
-                                  closeToolEditFormHandler={this.closeToolEditForm} 
-                                  addNewTool={this.addTool}/>
+                                  closeToolEditFormHandler={this.closeToolEditForm}/>
                 :null}
             </div>
         )

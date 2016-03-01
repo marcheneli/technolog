@@ -212,6 +212,12 @@
     <None Include="Content\js\app\partEditForm.jsx" />
     <None Include="Content\js\app\searchInput.jsx" />
     <None Include="Content\js\app\pagination.jsx" />
+    <None Include="Content\js\app\itemsPerPageSelector.jsx" />
+    <Content Include="Content\js\app\actions\toolActions.js" />
+    <Content Include="Content\js\app\constants\pageConstants.js" />
+    <Content Include="Content\js\app\constants\toolConstants.js" />
+    <Content Include="Content\js\app\dispatcher\appDispatcher.js" />
+    <Content Include="Content\js\app\stores\toolStore.js" />
     <Content Include="Content\Site.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -220,12 +226,17 @@
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
-    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="Scripts\jquery-1.10.2.js" />
-    <Content Include="Scripts\jquery-1.10.2.min.js" />
+    <Content Include="Scripts\event-emitter.min" />
+    <None Include="Scripts\jquery-2.2.0.intellisense.js" />
+    <Content Include="Scripts\event-emitter.js" />
+    <Content Include="Scripts\flux.js" />
+    <Content Include="Scripts\flux.min.js" />
+    <Content Include="Scripts\jquery-2.2.0.js" />
+    <Content Include="Scripts\jquery-2.2.0.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\object-assign.js" />
     <Content Include="Scripts\react-dom.js" />
     <Content Include="Scripts\react.js" />
     <Content Include="Web.config" />
@@ -244,6 +255,7 @@
     </Compile>
     <Compile Include="Helpers\AntiForgeryHelper.cs" />
     <Compile Include="Models\PartModel.cs" />
+    <Compile Include="Models\ToolListModel.cs" />
     <Compile Include="Models\ToolModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -254,7 +266,7 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Scripts\jquery-1.10.2.min.map" />
+    <Content Include="Scripts\jquery-2.2.0.min.map" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -264,6 +276,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Content\js\app\components\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Technolog.DAL\Technolog.DAL.csproj">

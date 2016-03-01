@@ -1,5 +1,5 @@
 ﻿var PartEditForm = React.createClass({
-    getInitialState: function(){
+    getInitialState: function() {
         console.log(this.props.part);
 		return {
 			part:{
@@ -10,7 +10,7 @@
 			isValid:true
 		}
 	},
-    componentWillReceiveProps: function(nextProps){
+    componentWillReceiveProps: function(nextProps) {
         this.setState({
             part:{
 				id:nextProps.part.id,
@@ -20,7 +20,7 @@
 			isValid:true
         });
     },
-    componentWillMount: function(){
+    componentWillMount: function() {
 		this.inputs = {};
 	},
     nameValidate: function () {

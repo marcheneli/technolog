@@ -16,15 +16,25 @@ namespace Technolog.Web
                 .Include("~/Content/Site.css"));
 
             bundles.Add(new ScriptBundle("~/bundles/main-scripts")
-                .Include("~/Scripts/bootstrap.js")
                 .Include("~/Scripts/jquery-{version}.js")
+                .Include("~/Scripts/bootstrap.js")
                 .Include("~/Scripts/react.js")
-                .Include("~/Scripts/react-dom.js"));
+                .Include("~/Scripts/react-dom.js")
+                .Include("~/Scripts/flux.js")
+                .Include("~/Scripts/event-emitter.js")
+                .Include("~/Scripts/object-assign.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/modernizr")
                 .Include("~/Scripts/modernizr-{version}.js"));
 
             bundles.Add(new BabelBundle("~/bundles/app-scripts")
+                .Include("~/Content/js/app/constants/pageConstants.js")
+                .Include("~/Content/js/app/constants/toolConstants.js")
+                .Include("~/Content/js/app/dispatcher/appDispatcher.js")
+                .Include("~/Content/js/app/actions/toolActions.js")
+                .Include("~/Content/js/app/stores/toolStore.js")
+                .Include("~/Content/js/app/itemsPerPageSelector.jsx")
+                .Include("~/Content/js/app/pagination.jsx")
                 .Include("~/Content/js/app/confirmDelete.jsx")
                 .Include("~/Content/js/app/inputError.jsx")
                 .Include("~/Content/js/app/textInput.jsx")

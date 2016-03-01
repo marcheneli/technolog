@@ -16,12 +16,20 @@ namespace Technolog.Web.Controllers.api
     {
         IUnitOfWork unitOfWork = new EFUnitOfWork("TechnologConnection");
 
-        public IHttpActionResult Get(string search = null)
+        public IHttpActionResult Get(string search = null, int page = 0, int pageSize = 25)
         {
+            List<Tool> tools = null;
             if(search == null)
-                return Ok(unitOfWork.Tools.GetAll());
+                tools = unitOfWork.Tools.GetAll().Skip(page * pageSize).Take(pageSize).ToList();
+            else
+            {
+                tools = unitOfWork.Tools.GetAll().Where(t => t.Name.Contains(search)).Skip(page * pageSize).Take(pageSize).ToList();
+            }
 
-            return Ok(unitOfWork.Tools.GetAll().Where(t => t.Name.Contains(search)).ToList());
+            ToolListModel toolListModel = new ToolListModel() { ToolAmount = unitOfWork.Tools.GetAll().Where(t => t.Name.Contains(search == null ? "" : search)).Count() };
+            toolListModel.Tools = tools.Select(t => { return new ToolModel() { Id = t.Id, Name = t.Name }; }).ToList();
+
+            return Ok(toolListModel);
         }
 
         [ValidateAntiForgeryToken]

@@ -65,3 +65,7 @@ html,body {
     width:600px;
     margin-right: 5px;
 }
+
+.dropdown-menu {
+  min-width: 0px;
+}

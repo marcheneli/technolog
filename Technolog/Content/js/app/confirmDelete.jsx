@@ -2,18 +2,7 @@
     handleConfirm: function(e) {
 		e.preventDefault();
 
-		$.ajax({
-			url: this.props.url,
-			dataType: 'json',
-			type: 'DELETE',
-			data: { __RequestVerificationToken: antiForgeryToken },
-			success: function(id) {
-                this.props.success(id);
-			}.bind(this),
-			error: function(xhr, status, err) {
-				console.error(this.props.url, status, err.toString());
-			}.bind(this)
-		});
+		this.props.success(this.props.id)
 	},
 	handleCancelClick: function() {
 		this.props.cancel();

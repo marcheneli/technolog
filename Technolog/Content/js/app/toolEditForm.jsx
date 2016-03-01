@@ -1,19 +1,13 @@
 ﻿var ToolEditForm = React.createClass({
     getInitialState: function(){
 		return {
-			tool:{
-				id:this.props.tool.id,
-				name:this.props.tool.name
-			},
-			isValid:true
+			tool: this.props.tool,
+			isValid: true
 		}
 	},
     componentWillReceiveProps: function(nextProps){
         this.setState({
-            tool:{
-				id:nextProps.tool.id,
-				name:nextProps.tool.name
-			},
+            tool:nextProps.tool,
 			isValid:true
         });
     },	
@@ -26,25 +20,12 @@
 	},
     handleSubmit: function (e) {
 		e.preventDefault();
-
-        var type = this.state.tool.id == 0 ? 'PUT' : 'POST'
-
-		$.ajax({
-			url: this.props.url,
-			dataType: 'json',
-			type: type,
-			data: { id: this.state.tool.id,
-					name: this.inputs["toolName"].state.value,
-					__RequestVerificationToken: antiForgeryToken },
-			success: function(data) {
-                if(this.state.tool.id == 0){
-                    this.props.addNewTool(data);
-                }
-			}.bind(this),
-			error: function(xhr, status, err) {
-				console.error(this.props.url, status, err.toString());
-			}.bind(this)
-		});
+        
+        if (this.state.tool.id == 0) {
+            ToolActions.create(this.state.tool);
+        } else {
+		    ToolActions.update(this.state.tool);
+        }
 	},
     cancelClickHandler: function () {
         this.props.closeToolEditFormHandler();
