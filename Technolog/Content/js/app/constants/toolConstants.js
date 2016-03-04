@@ -1,5 +1,6 @@
 ﻿var ToolConstants = {
-    TOOL_INIT:'tool_init',
+    TOOL_INIT: 'tool_init',
+    TOOL_LOAD_EDIT: 'tool_load_edit',
     TOOL_CREATE: 'tool_create',
     TOOL_DELETE: 'tool_delete',
     TOOL_UPDATE: 'tool_update',

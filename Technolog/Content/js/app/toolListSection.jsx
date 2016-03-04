@@ -41,14 +41,17 @@ var ToolList = React.createClass({
         }
     },    
     componentWillMount: function() {
-        ToolStore.addChangeListener(this.handleToolsChange)
+        ToolStore.addChangeToolsListener(this.handleToolsChange)
     },
     componentWillUnmount: function() {
-        ToolStore.removeChangeListener(this.handleToolsChange)
+        ToolStore.removeChangeToolsListener(this.handleToolsChange)
     },
     componentDidMount: function () {
-        ToolActions.init();
+        ToolActions.init(PageParamsManager.getPage(), PageParamsManager.getPageSize(), PageParamsManager.getSearchText());
     },
+	componentWillReceiveProps (nextProps) {
+		console.log(this.state);
+	},
     handleToolsChange: function() {
         this.setState({
             tools: ToolStore.getAll(),
@@ -68,10 +71,10 @@ var ToolList = React.createClass({
         });
     },
     toolRowDoubleClick: function(tool) {
-        this.props.openToolEditFormHandler(tool);
+        NavigationManager.openToolEditor(tool.id);
     },
     newToolBtnClickHandler: function(){
-        this.props.openToolEditFormHandler({ id: 0, name: "" });
+        NavigationManager.openToolEditor(0);
     },
     handleDeleteSuccess: function(){
         ToolActions.remove(this.state.currentTool.id);
@@ -86,12 +89,15 @@ var ToolList = React.createClass({
 		});
 	},
     handleToolsPerPageChange: function(toolsPerPage) {
+		PageParamsManager.changePageSize(toolsPerPage);
         ToolActions.changeToolsPerPage(toolsPerPage);
     },
     handleToolPageChange: function(page) {
+		PageParamsManager.changePage(page);
         ToolActions.changeToolPage(page);
     },
     handleToolSearchTextChange: function(text) {
+		PageParamsManager.changeSearchText(text);
         ToolActions.changeToolSearchText(text);
     },
     render: function() {
@@ -161,29 +167,11 @@ var ToolList = React.createClass({
     }
 });
 var ToolListSection = React.createClass({
-    getInitialState: function() {
-        return {
-            editTool: null
-        }
-    },
-    openToolEditForm: function(tool) {
-        this.setState({
-            editTool: tool
-        });
-    },
-    closeToolEditForm: function() {
-        this.setState({
-            editTool: null
-        });
-    },
     render: function() {
         return(
             <div className="outer">
-                <ToolList openToolEditFormHandler={this.openToolEditForm}/>
-                {this.state.editTool != null ?
-                    <ToolEditForm tool={this.state.editTool}
-                                  closeToolEditFormHandler={this.closeToolEditForm}/>
-                :null}
+                <ToolList />
+                {this.props.children}
             </div>
         )
         

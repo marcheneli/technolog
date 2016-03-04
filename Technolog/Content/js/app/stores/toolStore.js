@@ -1,13 +1,16 @@
-﻿var CHANGE_EVENT = 'change';
+﻿var CHANGE_TOOLS_EVENT = 'change_tools';
+var CHANGE_EDITTOOL_EVENT = 'change_edittool';
 
 var _tools = {};
+var _tool;
 var _toolSearchText = "";
 var _totalToolAmount = 0;
 var _toolsPerPage = PageConstants.ITEMS_PER_PAGE_INIT;
 var _currentToolPage = 0;
 
 var _loadTools = function () {
-    $.get("api/tools?search=" + _toolSearchText + "&page=" + _currentToolPage + "&pageSize=" + _toolsPerPage, function (toolListModel) {
+    $.get(location.origin + "/api/tools?search=" + _toolSearchText + "&page=" + _currentToolPage + "&pageSize=" + _toolsPerPage, function (toolListModel) {
+
         _totalToolAmount = toolListModel.toolAmount;
 
         _tools = {};
@@ -16,13 +19,31 @@ var _loadTools = function () {
             _tools[tool.id] = tool;
         });
 
-        ToolStore.emitChange();
+        ToolStore.emitChangeTools();
     });
+}
+
+var _loadTool = function (id) {
+    if (id == 0) {
+        _tool = { id: 0, name: "" };
+        ToolStore.emitChangeEditTool();
+        return;
+    }
+    if (_tools[id]) {
+        _tool = _tools[id];
+        ToolStore.emitChangeEditTool();
+    } else {
+        $.get(location.origin + "/api/tools/" + id, function (tool) {
+            _tool = tool;
+
+            ToolStore.emitChangeEditTool();
+        });
+    }
 }
 
 var _addTool = function (tool) {
     $.ajax({
-        url: 'api/tools',
+        url: location.origin + '/api/tools',
         dataType: 'json',
         type: 'PUT',
         data: {
@@ -31,11 +52,12 @@ var _addTool = function (tool) {
             __RequestVerificationToken: antiForgeryToken
         },
         success: function (tool) {
-
+            _tool = tool;
+            NavigationManager.openToolEditor(tool.id);
         },
         error: function (xhr, status, err) {
             console.error(this.props.url, status, err.toString());
-        }
+        }.bind(this)
     });
 }
 
@@ -68,7 +90,7 @@ var _updateTool = function (tool) {
             if (_tools[tool.id]) {
                 _tools[tool.id] = assign({}, _tools[tool.id], tool);
 
-                ToolStore.emitChange();
+                ToolStore.emitChangeTools();
             }
         },
         error: function (xhr, status, err) {
@@ -78,11 +100,16 @@ var _updateTool = function (tool) {
 }
 
 var ToolStore = assign({}, EventEmitter.prototype, {
-    init: function () {
-        _toolsPerPage = PageConstants.ITEMS_PER_PAGE_INIT;
-        _currentToolPage = 0;
+    init: function (currentPage, toolsPerPage, searchText) {
+        _toolsPerPage = toolsPerPage;
+        _currentToolPage = currentPage;
+        _toolSearchText = searchText;
 
         _loadTools();
+    },
+
+    loadEditTool: function (id) {
+        _loadTool(id);
     },
 
     getAll: function () {
@@ -97,29 +124,43 @@ var ToolStore = assign({}, EventEmitter.prototype, {
         return _toolsPerPage;
     },
 
-    emitChange: function () {
-        this.emit(CHANGE_EVENT);
+    getEditTool: function () {
+        return _tool;
     },
 
-    /**
-     * @param {function} callback
-     */
-    addChangeListener: function (callback) {
-        this.on(CHANGE_EVENT, callback);
+    emitChangeTools: function () {
+        this.emit(CHANGE_TOOLS_EVENT);
     },
 
-    /**
-     * @param {function} callback
-     */
-    removeChangeListener: function (callback) {
-        this.removeListener(CHANGE_EVENT, callback);
+    emitChangeEditTool: function () {
+        this.emit(CHANGE_EDITTOOL_EVENT);
+    },
+
+    addChangeToolsListener: function (callback) {
+        this.on(CHANGE_TOOLS_EVENT, callback);
+    },
+
+    removeChangeToolsListener: function (callback) {
+        this.removeListener(CHANGE_TOOLS_EVENT, callback);
+    },
+
+    addChangeEditToolListener: function (callback) {
+        this.on(CHANGE_EDITTOOL_EVENT, callback);
+    },
+
+    removeChangeEditToolListener: function (callback) {
+        this.removeListener(CHANGE_EDITTOOL_EVENT, callback);
     }
 });
 
 AppDispatcher.register(function (payload) {
     switch (payload.action.actionType) {
         case ToolConstants.TOOL_INIT: 
-            ToolStore.init();
+            ToolStore.init(payload.action.currentPage, payload.action.pageSize, payload.action.searchText);
+            break;
+
+        case ToolConstants.TOOL_LOAD_EDIT:
+            ToolStore.loadEditTool(payload.action.id);
             break;
 
         case ToolConstants.TOOL_CREATE:

@@ -1,18 +1,28 @@
 ﻿var ToolEditForm = React.createClass({
     getInitialState: function(){
 		return {
-			tool: this.props.tool,
+			tool: null,
 			isValid: true
 		}
-	},
-    componentWillReceiveProps: function(nextProps){
-        this.setState({
-            tool:nextProps.tool,
-			isValid:true
-        });
-    },	
-    componentWillMount: function(){
+	},   
+    componentWillMount: function() {
 		this.inputs = {};
+        ToolStore.addChangeEditToolListener(this.handleEditToolChange);
+    },
+    componentWillUnmount: function() {
+        ToolStore.removeChangeEditToolListener(this.handleEditToolChange);
+    },
+    componentDidMount: function () {
+        ToolActions.loadEditTool(this.props.params.toolId);
+    },
+	componentWillReceiveProps: function (nextProps) {
+		ToolActions.loadEditTool(nextProps.params.toolId);
+	},
+    handleEditToolChange: function(){
+		this.setState({
+			tool: ToolStore.getEditTool(),
+			isValid: true
+		});
 	},
     nameValidate: function () {
 		//you could do something here that does general validation for any form field
@@ -28,7 +38,7 @@
         }
 	},
     cancelClickHandler: function () {
-        this.props.closeToolEditFormHandler();
+        NavigationManager.closeToolEditor();
     },
 	registerInput: function(input){
 		this.inputs[input.props.name] = input;
@@ -49,26 +59,30 @@
                     <h4>Редактирование инструмента</h4>
                 </div>
                 <div className="panel-body">
-                    <form role="form" onSubmit={this.handleSubmit}>
-                        <div className="form-group">
-                            <label className="control-label">Наименование:</label>
-                            <TextInput name="toolName"
-                                       text=""
-                                       value={this.state.tool.name}
-                                       required={true}
-                                       onChange={this.setToolName}
-                                       errorMessage="Данное наименование недействительно"
-                                       emptyMessage="Наименование обязательно для ввода"
-                                       register={this.registerInput}
-                                       validate={this.nameValidate} />
-                        </div>
-                        <div className="form-group">
-                            <div className="btn-toolbar">
-                                <input className="btn btn-primary" type="submit" value="Сохранить" />
-                                <button className="btn btn-default" type="button" onClick={this.cancelClickHandler}>Отмена</button>
-                            </div>
-                        </div>
-                    </form>
+                    { this.state.tool == null ? 
+						<p>Загрузка данных...</p>
+					:
+						<form role="form" onSubmit={this.handleSubmit}>
+							<div className="form-group">
+								<label className="control-label">Наименование:</label>
+								<TextInput name="toolName"
+										   text=""
+										   value={this.state.tool.name}
+										   required={true}
+										   onChange={this.setToolName}
+										   errorMessage="Данное наименование недействительно"
+										   emptyMessage="Наименование обязательно для ввода"
+										   register={this.registerInput}
+										   validate={this.nameValidate} />
+							</div>
+							<div className="form-group">
+								<div className="btn-toolbar">
+									<input className="btn btn-primary" type="submit" value="Сохранить" />
+									<button className="btn btn-default" type="button" onClick={this.cancelClickHandler}>Отмена</button>
+								</div>
+							</div>
+						</form>
+					}
                 </div>
             </div>
         )

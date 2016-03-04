@@ -13,7 +13,9 @@ var routers = (
         <Route path="/" component={Main}>
             <Route path="processes" component={TechProcessListSection} />
             <Route path="operations" component={TechOperationListSection} />
-            <Route path="tools" component={ToolListSection} />
+            <Route path="tools" component={ToolListSection}>
+				<Route path=":toolId" component={ToolEditForm} />
+			</Route>
             <Route path="parts" component={PartListSection} />
         </Route>
     </Router>

@@ -31,6 +31,8 @@ namespace Technolog.Web
             bundles.Add(new BabelBundle("~/bundles/app-scripts")
                 .Include("~/Content/js/app/constants/pageConstants.js")
                 .Include("~/Content/js/app/constants/toolConstants.js")
+                .Include("~/Content/js/app/managers/pageParamsManager.js")
+                .Include("~/Content/js/app/managers/navigationManager.js")
                 .Include("~/Content/js/app/dispatcher/appDispatcher.js")
                 .Include("~/Content/js/app/actions/toolActions.js")
                 .Include("~/Content/js/app/stores/toolStore.js")
@@ -52,7 +54,7 @@ namespace Technolog.Web
                 .Include("~/Content/js/app/portal.jsx")
                 .Include("~/Content/js/app/app.jsx"));
 
-            //BundleTable.EnableOptimizations = true;
+            BundleTable.EnableOptimizations = true;
         }
     }
 }

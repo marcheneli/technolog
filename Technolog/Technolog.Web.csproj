@@ -218,6 +218,8 @@
     <Content Include="Content\js\app\constants\toolConstants.js" />
     <Content Include="Content\js\app\dispatcher\appDispatcher.js" />
     <None Include="Content\js\app\main.jsx" />
+    <Content Include="Content\js\app\managers\navigationManager.js" />
+    <Content Include="Content\js\app\managers\pageParamsManager.js" />
     <Content Include="Content\js\app\stores\toolStore.js" />
     <Content Include="Content\Site.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />

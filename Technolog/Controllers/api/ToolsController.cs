@@ -16,6 +16,15 @@ namespace Technolog.Web.Controllers.api
     {
         IUnitOfWork unitOfWork = new EFUnitOfWork("TechnologConnection");
 
+        public IHttpActionResult Get(int id)
+        {
+            Tool tool = unitOfWork.Tools.GetById(id);
+
+            ToolModel toolModel = new ToolModel() { Id = tool.Id, Name = tool.Name };
+
+            return Ok(toolModel);
+        }
+
         public IHttpActionResult Get(string search = null, int page = 0, int pageSize = 25)
         {
             List<Tool> tools = null;

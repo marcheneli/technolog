@@ -1,7 +1,16 @@
 ﻿var ToolActions = {
-    init: function () {
+    init: function (currentPage, pageSize, searchText) {
         AppDispatcher.handleViewAction({
-            actionType: ToolConstants.TOOL_INIT
+            actionType: ToolConstants.TOOL_INIT,
+            currentPage: currentPage,
+            pageSize: pageSize,
+            searchText: searchText
+        });
+    },
+    loadEditTool: function (id) {
+        AppDispatcher.handleViewAction({
+            actionType: ToolConstants.TOOL_LOAD_EDIT,
+            id: id
         });
     },
     create: function (tool) {
