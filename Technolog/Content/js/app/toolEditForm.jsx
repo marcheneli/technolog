@@ -78,7 +78,7 @@
 							<div className="form-group">
 								<div className="btn-toolbar">
 									<input className="btn btn-primary" type="submit" value="Сохранить" />
-									<button className="btn btn-default" type="button" onClick={this.cancelClickHandler}>Отмена</button>
+									<button className="btn btn-default" type="button" onClick={this.cancelClickHandler}>Закрыть</button>
 								</div>
 							</div>
 						</form>

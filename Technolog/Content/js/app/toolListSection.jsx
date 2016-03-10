@@ -49,9 +49,6 @@ var ToolList = React.createClass({
     componentDidMount: function () {
         ToolActions.init(PageParamsManager.getPage(), PageParamsManager.getPageSize(), PageParamsManager.getSearchText());
     },
-	componentWillReceiveProps (nextProps) {
-		console.log(this.state);
-	},
     handleToolsChange: function() {
         this.setState({
             tools: ToolStore.getAll(),
