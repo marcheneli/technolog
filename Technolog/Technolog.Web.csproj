@@ -49,6 +49,10 @@
       <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="AutoMapper, Version=4.2.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.4.2.1\lib\net45\AutoMapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="ClearScript, Version=5.4.4.0, Culture=neutral, PublicKeyToken=935d0c957da47c73, processorArchitecture=MSIL">
       <HintPath>..\packages\JavaScriptEngineSwitcher.V8.1.4.1\lib\net40\ClearScript.dll</HintPath>
       <Private>True</Private>
@@ -247,6 +251,7 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Start\AutoMapperConfig.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\ReactConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -284,6 +289,10 @@
     <Folder Include="Content\js\app\components\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Technolog.BLL\Technolog.BLL.csproj">
+      <Project>{41c55022-9478-464b-ad67-72626bd0dc72}</Project>
+      <Name>Technolog.BLL</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Technolog.DAL\Technolog.DAL.csproj">
       <Project>{c7084343-9e7c-4f7e-81ae-f4fdcd93c961}</Project>
       <Name>Technolog.DAL</Name>

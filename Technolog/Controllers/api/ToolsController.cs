@@ -1,10 +1,14 @@
-﻿using System;
+﻿using AutoMapper;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Mvc;
+using Technolog.BLL.DTO.Tool;
+using Technolog.BLL.Interfaces;
+using Technolog.BLL.Services;
 using Technolog.DAL.EF;
 using Technolog.Domain.Entities;
 using Technolog.Domain.Interfaces;
@@ -14,29 +18,39 @@ namespace Technolog.Web.Controllers.api
 {
     public class ToolsController : ApiController
     {
-        IUnitOfWork unitOfWork = new EFUnitOfWork("TechnologConnection");
+        IUnitOfWork unitOfWork;
+        IToolService toolService;
+
+        public ToolsController()
+        {
+            unitOfWork = new EFUnitOfWork("TechnologConnection");
+            toolService = new ToolService(unitOfWork);
+        }
 
         public IHttpActionResult Get(int id)
         {
-            Tool tool = unitOfWork.Tools.GetById(id);
+            ToolDTO toolDTO = toolService.Get(id);
 
-            ToolModel toolModel = new ToolModel() { Id = tool.Id, Name = tool.Name };
+            MapperConfiguration mapperConfig = new MapperConfiguration(cfg => cfg.CreateMap<ToolDTO, ToolModel>());
+            IMapper mapper = mapperConfig.CreateMapper();
+
+            ToolModel toolModel = mapper.Map<ToolModel>(toolDTO);
 
             return Ok(toolModel);
         }
 
         public IHttpActionResult Get(string search = null, int page = 0, int pageSize = 25)
         {
-            List<Tool> tools = null;
-            if(search == null)
-                tools = unitOfWork.Tools.GetAll().Skip(page * pageSize).Take(pageSize).ToList();
-            else
-            {
-                tools = unitOfWork.Tools.GetAll().Where(t => t.Name.Contains(search)).Skip(page * pageSize).Take(pageSize).ToList();
-            }
+            ToolListDTO toolListDTO = toolService.Get(page, pageSize, search);
 
-            ToolListModel toolListModel = new ToolListModel() { ToolAmount = unitOfWork.Tools.GetAll().Where(t => t.Name.Contains(search == null ? "" : search)).Count() };
-            toolListModel.Tools = tools.Select(t => { return new ToolModel() { Id = t.Id, Name = t.Name }; }).ToList();
+            MapperConfiguration mapperConfig = new MapperConfiguration(cfg => {
+                    cfg.CreateMap<ToolDTO, ToolModel>();
+                    cfg.CreateMap<ToolListDTO, ToolListModel>();
+                });
+
+            IMapper mapper = mapperConfig.CreateMapper();
+            
+            ToolListModel toolListModel = mapper.Map<ToolListModel>(toolListDTO);
 
             return Ok(toolListModel);
         }
