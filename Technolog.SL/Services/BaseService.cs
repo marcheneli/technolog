@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Technolog.Domain.Interfaces;
 
-namespace Technolog.BLL.Services
+namespace Technolog.SL.Services
 {
     public class BaseService
     {

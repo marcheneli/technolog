@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Technolog.BLL.DTO.Tool;
-using Technolog.BLL.Interfaces;
+using Technolog.SL.DTO.Tool;
+using Technolog.SL.Interfaces;
 using Technolog.Domain.Interfaces;
 using AutoMapper;
 using Technolog.Domain.Entities;
-using Technolog.BLL.Infrastructure;
+using Technolog.SL.Infrastructure;
 
-namespace Technolog.BLL.Services
+namespace Technolog.SL.Services
 {
     public class ToolService : BaseService, IToolService
     {

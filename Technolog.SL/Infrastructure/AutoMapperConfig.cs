@@ -4,11 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Technolog.BLL.DTO.Tool
+namespace Technolog.SL.Infrastructure
 {
-    public class ToolDTO
+    public class AutoMapperConfig
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
     }
 }

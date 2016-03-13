@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Technolog.BLL.Infrastructure
+namespace Technolog.SL.Infrastructure
 {
     public class ValidationException : Exception
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Technolog.BLL.DTO.Tool
+namespace Technolog.SL.DTO.Tool
 {
     public class ToolListDTO
     {

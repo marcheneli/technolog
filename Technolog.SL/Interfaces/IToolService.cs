@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Technolog.BLL.DTO.Tool;
+using Technolog.SL.DTO.Tool;
 
-namespace Technolog.BLL.Interfaces
+namespace Technolog.SL.Interfaces
 {
     public interface IToolService : IService<ToolDTO>
     {

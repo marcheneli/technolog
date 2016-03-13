@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Technolog.BLL.Interfaces
+namespace Technolog.SL.Interfaces
 {
     public interface IService<T> : IDisposable
     {
