@@ -8,6 +8,7 @@ using Technolog.BLL.Interfaces;
 using Technolog.Domain.Interfaces;
 using AutoMapper;
 using Technolog.Domain.Entities;
+using Technolog.BLL.Infrastructure;
 
 namespace Technolog.BLL.Services
 {
@@ -26,18 +27,37 @@ namespace Technolog.BLL.Services
 
             Tool tool = mapper.Map<Tool>(toolDTO);
             database.Tools.Add(tool);
-            database.Save();
+
+            try
+            {
+                database.Save();
+            }
+            catch (Exception ex)
+            {
+                throw new ValidationException("Не удалось добавить новый инструмент.", "");
+            }
         }
 
         public void Delete(int id)
         {
             database.Tools.DeleteById(id);
-            database.Save();
+
+            try
+            {
+                database.Save();
+            }
+            catch (Exception ex)
+            {
+                throw new ValidationException("Не удалось удалить данный инструмент.", "");
+            }
         }
 
         public ToolDTO Get(int id)
         {
             Tool tool = database.Tools.GetById(id);
+
+            if (tool == null)
+                throw new ValidationException("Инструмент не найден", "");
 
             MapperConfiguration mapperConfig = new MapperConfiguration(cfg => cfg.CreateMap<Tool, ToolDTO>());
             IMapper mapper = mapperConfig.CreateMapper();
@@ -77,7 +97,15 @@ namespace Technolog.BLL.Services
 
             Tool tool = mapper.Map<Tool>(toolDTO);
             database.Tools.Update(tool);
-            database.Save();
+
+            try
+            {
+                database.Save();
+            }
+            catch(Exception ex)
+            {
+                throw new ValidationException("Не удалось сохранить изменения.", "");
+            }
         }
     }
 }

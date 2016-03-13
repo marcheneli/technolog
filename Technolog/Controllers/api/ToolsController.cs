@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Mvc;
 using Technolog.BLL.DTO.Tool;
+using Technolog.BLL.Infrastructure;
 using Technolog.BLL.Interfaces;
 using Technolog.BLL.Services;
 using Technolog.DAL.EF;
@@ -18,18 +19,35 @@ namespace Technolog.Web.Controllers.api
 {
     public class ToolsController : ApiController
     {
-        IUnitOfWork unitOfWork;
         IToolService toolService;
 
         public ToolsController()
         {
-            unitOfWork = new EFUnitOfWork("TechnologConnection");
+            IUnitOfWork unitOfWork = new EFUnitOfWork("TechnologConnection");
             toolService = new ToolService(unitOfWork);
         }
 
-        public IHttpActionResult Get(int id)
+        public IHttpActionResult Get(int? id)
         {
-            ToolDTO toolDTO = toolService.Get(id);
+            ToolDTO toolDTO = null;
+
+            if(id == null)
+                return ResponseMessage(
+                    Request.CreateResponse(
+                        HttpStatusCode.BadRequest,
+                        "Не установлен идентификатор инструмента"));
+
+            try
+            {
+                toolDTO = toolService.Get(id ?? 0);
+            }
+            catch (ValidationException ex)
+            {
+                return ResponseMessage(
+                    Request.CreateResponse(
+                        HttpStatusCode.BadRequest,
+                        ex.Message));
+            }
 
             MapperConfiguration mapperConfig = new MapperConfiguration(cfg => cfg.CreateMap<ToolDTO, ToolModel>());
             IMapper mapper = mapperConfig.CreateMapper();
@@ -61,20 +79,24 @@ namespace Technolog.Web.Controllers.api
             if (!ModelState.IsValid)
                 return BadRequest();
 
-            Tool tool = new Tool() { Id = toolModel.Id, Name = toolModel.Name };
+            MapperConfiguration mapperConfig = new MapperConfiguration(cfg => cfg.CreateMap<ToolModel, ToolDTO>());
+            IMapper mapper = mapperConfig.CreateMapper();
 
-            unitOfWork.Tools.Update(tool);
+            ToolDTO toolDTO = mapper.Map<ToolDTO>(toolModel);
 
             try
             {
-                unitOfWork.Save();
+                toolService.Update(toolDTO);
             }
-            catch (Exception ex)
+            catch (ValidationException ex)
             {
-                return NotFound();
+                return ResponseMessage(
+                    Request.CreateResponse(
+                        HttpStatusCode.BadRequest,
+                        ex.Message));
             }
 
-            return Ok(tool);
+            return Ok(toolModel);
         }
 
         public IHttpActionResult Put(ToolModel toolModel)
@@ -82,33 +104,38 @@ namespace Technolog.Web.Controllers.api
             if (!ModelState.IsValid)
                 return BadRequest();
 
-            Tool tool = new Tool() { Id = toolModel.Id, Name = toolModel.Name };
+            MapperConfiguration mapperConfig = new MapperConfiguration(cfg => cfg.CreateMap<ToolModel, ToolDTO>());
+            IMapper mapper = mapperConfig.CreateMapper();
 
-            unitOfWork.Tools.Add(tool);
+            ToolDTO toolDTO = mapper.Map<ToolDTO>(toolModel);
 
             try
             {
-                unitOfWork.Save();
+                toolService.Create(toolDTO);
             }
-            catch (Exception ex)
+            catch (ValidationException ex)
             {
-                return NotFound();
+                return ResponseMessage(
+                    Request.CreateResponse(
+                        HttpStatusCode.BadRequest,
+                        ex.Message));
             }
 
-            return Ok(tool);
+            return Ok(toolModel);
         }
 
         public IHttpActionResult Delete(int id)
         {
-            unitOfWork.Tools.DeleteById(id);
-
             try
             {
-                unitOfWork.Save();
+                toolService.Delete(id);
             }
-            catch (Exception ex)
+            catch (ValidationException ex)
             {
-                return NotFound();
+                return ResponseMessage(
+                    Request.CreateResponse(
+                        HttpStatusCode.BadRequest,
+                        ex.Message));
             }
 
             return Ok(id);
@@ -122,7 +149,7 @@ namespace Technolog.Web.Controllers.api
             {
                 if (disposing)
                 {
-                    unitOfWork.Dispose();
+                    toolService.Dispose();
                     base.Dispose(disposing);
                 }
                 this.disposed = true;
