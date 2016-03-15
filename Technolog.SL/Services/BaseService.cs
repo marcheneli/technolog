@@ -7,7 +7,7 @@ using Technolog.Domain.Interfaces;
 
 namespace Technolog.SL.Services
 {
-    public class BaseService
+    public abstract class BaseService
     {
         protected IUnitOfWork database;
 

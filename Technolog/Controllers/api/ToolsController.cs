@@ -59,7 +59,7 @@ namespace Technolog.Web.Controllers.api
 
         public IHttpActionResult Get(string search = null, int page = 0, int pageSize = 25)
         {
-            ToolListDTO toolListDTO = toolService.Get(page, pageSize, search);
+            ToolListDTO toolListDTO = toolService.GetPage(page, pageSize, search);
 
             MapperConfiguration mapperConfig = new MapperConfiguration(cfg => {
                     cfg.CreateMap<ToolDTO, ToolModel>();
@@ -111,7 +111,7 @@ namespace Technolog.Web.Controllers.api
 
             try
             {
-                toolService.Create(toolDTO);
+                toolService.Insert(toolDTO);
             }
             catch (ValidationException ex)
             {

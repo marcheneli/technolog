@@ -33,10 +33,16 @@ var _loadTool = function (id) {
         _tool = _tools[id];
         ToolStore.emitChangeEditTool();
     } else {
-        $.get(location.origin + "/api/tools/" + id, function (tool) {
-            _tool = tool;
-
-            ToolStore.emitChangeEditTool();
+        $.ajax({
+            url: location.origin + "/api/tools/" + id,
+            type: 'GET',
+            success: function (tool) {
+                _tool = tool;
+                ToolStore.emitChangeEditTool();
+            },
+            error: function (data) {
+                ErrorActions.received(data.responseJSON);
+            }
         });
     }
 }

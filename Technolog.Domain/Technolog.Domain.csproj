@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="Entities\Part.cs" />
     <Compile Include="Entities\Tool.cs" />
+    <Compile Include="Infrastructure\PagedResult.cs" />
     <Compile Include="Interfaces\IPartRepository.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Interfaces\IToolRepository.cs" />

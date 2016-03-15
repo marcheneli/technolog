@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Technolog.Domain.Entities;
+using Technolog.Domain.Infrastructure;
 using Technolog.Domain.Interfaces;
 
 namespace Technolog.DAL.EF
@@ -34,14 +35,57 @@ namespace Technolog.DAL.EF
             if (tool != null) dbContext.Tools.Remove(tool);
         }
 
-        public IEnumerable<Tool> GetAll()
+        public IQueryable<Tool> GetAll()
         {
-            return dbContext.Tools.ToList();
+            return dbContext.Tools;
         }
 
         public Tool GetById(int id)
         {
             return dbContext.Tools.Find(id);
+        }
+
+        public async Task<Tool> GetByIdAsync(int id)
+        {
+            return await dbContext.Tools.FindAsync(id);
+        }
+
+        public PagedResult<Tool> GetPage(string search, int page, int pageSize)
+        {
+            IEnumerable<Tool> tools;
+
+            if (search == null)
+                tools = dbContext.Tools.OrderBy(t => t.Id).Skip(page * pageSize).Take(pageSize).ToList();
+            else
+            {
+                tools = dbContext.Tools.OrderBy(t => t.Id).Where(t => t.Name.Contains(search)).Skip(page * pageSize).Take(pageSize).ToList();
+            }
+
+            PagedResult<Tool> pagedResult = new PagedResult<Tool>();
+
+            pagedResult.Results = tools;
+            pagedResult.RowCount = dbContext.Tools.OrderBy(t => t.Id).Where(t => t.Name.Contains(search == null ? "" : search)).Count();
+
+            return pagedResult;
+        }
+
+        public async Task<PagedResult<Tool>> GetPageAsync(string search, int page, int pageSize)
+        {
+            IEnumerable<Tool> tools;
+
+            if (search == null)
+                tools = dbContext.Tools.Skip(page * pageSize).Take(pageSize).ToList();
+            else
+            {
+                tools = await dbContext.Tools.Where(t => t.Name.Contains(search)).Skip(page * pageSize).Take(pageSize).ToListAsync();
+            }
+
+            PagedResult<Tool> pagedResult = new PagedResult<Tool>();
+
+            pagedResult.Results = tools;
+            pagedResult.RowCount = dbContext.Tools.Where(t => t.Name.Contains(search == null ? "" : search)).Count();
+
+            return pagedResult;
         }
 
         public void Update(Tool item)

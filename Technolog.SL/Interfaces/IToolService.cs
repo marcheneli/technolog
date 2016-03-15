@@ -9,6 +9,7 @@ namespace Technolog.SL.Interfaces
 {
     public interface IToolService : IService<ToolDTO>
     {
-        ToolListDTO Get(int page, int pageSize, string search);
+        ToolListDTO GetPage(int page, int pageSize, string search);
+        Task<ToolListDTO> GetPageAsync(int page, int pageSize, string search);
     }
 }

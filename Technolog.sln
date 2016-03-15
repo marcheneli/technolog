@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Technolog.DAL.Test", "Techn
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Technolog.SL", "Technolog.SL\Technolog.SL.csproj", "{DC47CC8B-A368-4B43-9028-FF1EB98272E5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Technolog.SL.Test", "Technolog.SL.Test\Technolog.SL.Test.csproj", "{FA3A2DB5-0452-4153-B7AD-B4D6B2E8BA17}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +61,10 @@ Global
 		{DC47CC8B-A368-4B43-9028-FF1EB98272E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DC47CC8B-A368-4B43-9028-FF1EB98272E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DC47CC8B-A368-4B43-9028-FF1EB98272E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA3A2DB5-0452-4153-B7AD-B4D6B2E8BA17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA3A2DB5-0452-4153-B7AD-B4D6B2E8BA17}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA3A2DB5-0452-4153-B7AD-B4D6B2E8BA17}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA3A2DB5-0452-4153-B7AD-B4D6B2E8BA17}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -66,5 +72,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{C5881E3B-B7FF-40C9-8102-0CBBBEDCA6BC} = {6462FCB9-BF90-49B3-AB7F-79744D790C31}
 		{9C99F27F-57B5-4E4D-A3A6-C9F007F48207} = {6462FCB9-BF90-49B3-AB7F-79744D790C31}
+		{FA3A2DB5-0452-4153-B7AD-B4D6B2E8BA17} = {6462FCB9-BF90-49B3-AB7F-79744D790C31}
 	EndGlobalSection
 EndGlobal

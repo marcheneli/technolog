@@ -202,6 +202,8 @@
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <None Include="Content\js\app\app.jsx" />
+    <Content Include="Content\js\app\actions\errorActions.js" />
+    <Content Include="Content\js\app\components\errorNotifier.jsx" />
     <None Include="Content\js\app\portal.jsx" />
     <None Include="Content\js\app\mainSidebar.jsx" />
     <None Include="Content\js\app\mainContentSection.jsx" />
@@ -218,12 +220,14 @@
     <None Include="Content\js\app\pagination.jsx" />
     <None Include="Content\js\app\itemsPerPageSelector.jsx" />
     <Content Include="Content\js\app\actions\toolActions.js" />
+    <Content Include="Content\js\app\constants\errorConstants.js" />
     <Content Include="Content\js\app\constants\pageConstants.js" />
     <Content Include="Content\js\app\constants\toolConstants.js" />
     <Content Include="Content\js\app\dispatcher\appDispatcher.js" />
     <None Include="Content\js\app\main.jsx" />
     <Content Include="Content\js\app\managers\navigationManager.js" />
     <Content Include="Content\js\app\managers\pageParamsManager.js" />
+    <Content Include="Content\js\app\stores\errorStore.js" />
     <Content Include="Content\js\app\stores\toolStore.js" />
     <Content Include="Content\Site.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -286,7 +290,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Content\js\app\components\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Technolog.BLL\Technolog.BLL.csproj">

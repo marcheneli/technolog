@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Technolog.Domain.Entities;
+using Technolog.Domain.Infrastructure;
 using Technolog.Domain.Interfaces;
 
 namespace Technolog.DAL.EF
@@ -38,9 +39,29 @@ namespace Technolog.DAL.EF
             return dbContext.Parts.ToList();
         }
 
+        public Task<IEnumerable<Part>> GetAllAsync()
+        {
+            throw new NotImplementedException();
+        }
+
         public Part GetById(int id)
         {
             return dbContext.Parts.Find(id);
+        }
+
+        public Task<Part> GetByIdAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public PagedResult<Part> GetPage(string search, int page, int pageSize)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<PagedResult<Part>> GetPageAsync(string search, int page, int pageSize)
+        {
+            throw new NotImplementedException();
         }
 
         public void Update(Part item)
@@ -56,6 +77,11 @@ namespace Technolog.DAL.EF
                 entity.Name = item.Name;
                 dbContext.SaveChanges();
             }
+        }
+
+        IQueryable<Part> IRepository<Part>.GetAll()
+        {
+            throw new NotImplementedException();
         }
     }
 }
