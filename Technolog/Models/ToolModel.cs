@@ -12,5 +12,7 @@ namespace Technolog.Web.Models
 
         [Required]
         public string Name { get; set; }
+
+        public int Price { get; set; }
     }
 }

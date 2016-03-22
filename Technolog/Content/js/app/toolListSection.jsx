@@ -1,36 +1,4 @@
-﻿var ToolListRow = React.createClass({
-    getInitialState: function() {
-        return {
-            color: this.props.isCurrent ? 'info' : null
-        }
-    },
-    onMouseEnterHandler: function() {
-        if(!this.props.isCurrent) this.setState({ color: "active"});
-    },
-    onMouseLeaveHandler: function() {
-        if(!this.props.isCurrent) this.setState({ color: null});
-    },
-    onClickHandler: function() {
-        if(!this.props.isCurrent) {this.setState({ color: null}); this.props.changeCurrent(this.props.tool); }
-        else {this.setState({ color: "active"}); this.props.changeCurrent(null); }
-    },
-    onDoubleClickHandler: function() {
-        this.props.toolRowDoubleClickHandler(this.props.tool);
-    },
-    render: function() {
-        return(
-            <tr className={this.props.isCurrent ? 'info' : this.state.color}
-                onMouseEnter={this.onMouseEnterHandler}
-                onMouseLeave={this.onMouseLeaveHandler}
-                onClick={this.onClickHandler}
-                onDoubleClick={this.onDoubleClickHandler}>
-                <td  style={{ width: 25 + '%' }}>{this.props.tool.id}</td>
-                <td  style={{ width: 75 + '%' }}>{this.props.tool.name}</td>
-            </tr>
-        )
-    }
-});
-var ToolList = React.createClass({
+﻿var ToolList = React.createClass({
     getInitialState: function() {
         return {
             tools: [],
@@ -97,6 +65,16 @@ var ToolList = React.createClass({
 		PageParamsManager.changeSearchText(text);
         ToolActions.changeToolSearchText(text);
     },
+	refreshBtnClickHandler: function(text) {
+		ToolActions.init(PageParamsManager.getPage(), PageParamsManager.getPageSize(), PageParamsManager.getSearchText());
+		this.setState({
+            tools: [],
+            currentTool: null,
+            isConfirmDeleting: false,
+            toolAmount: 0,
+            toolsPerPage: this.state.toolsPerPage
+        });
+	},
     render: function() {
 
         var toolRows = [];
@@ -104,11 +82,14 @@ var ToolList = React.createClass({
         for (var key in this.state.tools) {
             var tool = this.state.tools[key];
 
-            toolRows.push(<ToolListRow key={key}
-                                    tool={tool}
+            toolRows.push(<TableRow key={key}
+                                    item={tool}
                                     isCurrent={this.state.currentTool == tool}
                                     changeCurrent={this.changeCurrent}
-                                    toolRowDoubleClickHandler={this.toolRowDoubleClick} />);
+                                    toolRowDoubleClickHandler={this.toolRowDoubleClick}>
+							<td  style={{ width: 25 + '%' }}>{tool.id}</td>
+							<td  style={{ width: 75 + '%' }}>{tool.name}</td>
+						  </TableRow>);
         }
 
         return(
@@ -127,9 +108,9 @@ var ToolList = React.createClass({
                     :
                         <div className="input-group">
                             <div className="input-group-btn">
-                                <button className="btn btn-default" onClick={this.newToolBtnClickHandler}><span className="glyphicon glyphicon-plus"></span></button>
-                                <button className="btn btn-default" onClick={function() { this.setState({ currentTool: this.state.currentTool, isConfirmDeleting: true }); }.bind(this)}><span className="glyphicon glyphicon-trash"></span></button>
-                                <button className="btn btn-default"><span className="glyphicon glyphicon-refresh"></span></button>
+                                <button className="btn btn-default" type="button" onClick={this.newToolBtnClickHandler}><span className="glyphicon glyphicon-plus"></span></button>
+                                <button className="btn btn-default" type="button" onClick={function() { this.setState({ currentTool: this.state.currentTool, isConfirmDeleting: true }); }.bind(this)}><span className="glyphicon glyphicon-trash"></span></button>
+                                <button className="btn btn-default" type="button" onClick={this.refreshBtnClickHandler}><span className="glyphicon glyphicon-refresh"></span></button>
                             </div>
                             <SearchInput text="Поиск..." onChange={ function(text) { this.handleToolSearchTextChange(text) }.bind(this) } />
                             <ItemsPerPageSelector onChange={this.handleToolsPerPageChange}/>

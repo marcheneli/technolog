@@ -55,10 +55,16 @@ var _addTool = function (tool) {
         data: {
             id: tool.id,
             name: tool.name,
+            price: tool.price,
             __RequestVerificationToken: antiForgeryToken
         },
         success: function (tool) {
             _tool = tool;
+            if (_tools[tool.id]) {
+                _tools[tool.id] = assign({}, _tools[tool.id], tool);
+
+                ToolStore.emitChangeTools();
+            }
             NavigationManager.openToolEditor(tool.id);
         },
         error: function (xhr, status, err) {
@@ -69,7 +75,7 @@ var _addTool = function (tool) {
 
 var _deleteTool = function (id) {
     $.ajax({
-        url: 'api/tools/' + id,
+        url: location.origin + '/api/tools/' + id,
         dataType: 'json',
         type: 'DELETE',
         data: { __RequestVerificationToken: antiForgeryToken },
@@ -84,12 +90,13 @@ var _deleteTool = function (id) {
 
 var _updateTool = function (tool) {
     $.ajax({
-        url: 'api/tools',
+        url: location.origin + '/api/tools',
         dataType: 'json',
         type: 'POST',
         data: {
             id: tool.id,
             name: tool.name,
+            price: tool.price,
             __RequestVerificationToken: antiForgeryToken
         },
         success: function (tool) {

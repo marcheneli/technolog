@@ -28,6 +28,9 @@ namespace Technolog.Web
             bundles.Add(new ScriptBundle("~/bundles/modernizr")
                 .Include("~/Scripts/modernizr-{version}.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/app-ts-scripts")
+                .Include("~/dist/bundle.js"));
+
             bundles.Add(new BabelBundle("~/bundles/app-scripts")
                 .Include("~/Content/js/app/constants/pageConstants.js")
                 .Include("~/Content/js/app/constants/toolConstants.js")
@@ -44,6 +47,7 @@ namespace Technolog.Web
                 .Include("~/Content/js/app/confirmDelete.jsx")
                 .Include("~/Content/js/app/inputError.jsx")
                 .Include("~/Content/js/app/textInput.jsx")
+                .Include("~/Content/js/app/components/tableRow.jsx")
                 .Include("~/Content/js/app/searchInput.jsx")
                 .Include("~/Content/js/app/toolEditForm.jsx")
                 .Include("~/Content/js/app/partEditForm.jsx")

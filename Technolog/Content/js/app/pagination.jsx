@@ -36,24 +36,26 @@ var Pagination = React.createClass({
         var totalPageAmount = Math.ceil(this.props.itemAmount / this.props.itemsPerPage);
         var pageButtons = [];
 
-        if(totalPageAmount != 1 && this.state.currentPage != 0){
-            pageButtons.push(<PageButton key={0} onClick={this.pageButtonClickHandler} symbol={this.props.firstSymbol} pageNumber={0} />);
-            pageButtons.push(<PageButton key={1} onClick={this.pageButtonClickHandler} symbol={this.props.prevSymbol} pageNumber={-1} />);
-        }
+        if (totalPageAmount > 0) {
+			if(totalPageAmount != 1 && this.state.currentPage != 0){
+				pageButtons.push(<PageButton key={0} onClick={this.pageButtonClickHandler} symbol={this.props.firstSymbol} pageNumber={0} />);
+				pageButtons.push(<PageButton key={1} onClick={this.pageButtonClickHandler} symbol={this.props.prevSymbol} pageNumber={-1} />);
+			}
 
-        for (var i = 0; i < totalPageAmount; i++) {
-            if(this.state.currentPage == i){
-                pageButtons.push(<PageButton key={i + 2} mode='active' onClick={ function () {} } symbol={i + 1} pageNumber={i} />);
-            } else {
-                pageButtons.push(<PageButton key={i + 2} mode='' onClick={this.pageButtonClickHandler} symbol={i + 1} pageNumber={i} />);
-            }
-            
-        }
+			for (var i = 0; i < totalPageAmount; i++) {
+				if(this.state.currentPage == i){
+					pageButtons.push(<PageButton key={i + 2} mode='active' onClick={ function () {} } symbol={i + 1} pageNumber={i} />);
+				} else {
+					pageButtons.push(<PageButton key={i + 2} mode='' onClick={this.pageButtonClickHandler} symbol={i + 1} pageNumber={i} />);
+				}
+				
+			}
 
-        if(totalPageAmount != 1 && this.state.currentPage != totalPageAmount - 1){
-            pageButtons.push(<PageButton key={i + 3} onClick={this.pageButtonClickHandler} symbol={this.props.nextSymbol} pageNumber={-2} />);
-            pageButtons.push(<PageButton key={i + 4} onClick={this.pageButtonClickHandler} symbol={this.props.lastSymbol} pageNumber={totalPageAmount - 1} />);
-        }
+			if(totalPageAmount != 1 && this.state.currentPage != totalPageAmount - 1){
+				pageButtons.push(<PageButton key={i + 3} onClick={this.pageButtonClickHandler} symbol={this.props.nextSymbol} pageNumber={-2} />);
+				pageButtons.push(<PageButton key={i + 4} onClick={this.pageButtonClickHandler} symbol={this.props.lastSymbol} pageNumber={totalPageAmount - 1} />);
+			}
+		}
 
         return(
             <div className="pull-right">

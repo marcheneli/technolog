@@ -57,9 +57,29 @@ namespace Technolog.SL.Test
         }
 
         [Test]
+        public void Update_UpdateInstanceInRepository()
+        {
+            ToolDTO toolDTO = new ToolDTO() { Id = 4, Name = "Отвертка" };
+            Tool tool = null;
+
+            _mockToolRepository.Setup(r => r.Update(It.IsAny<Tool>())).Callback<Tool>(t => tool = t);
+
+            _toolService.Update(toolDTO);
+
+            Assert.That(tool.Id, Is.EqualTo(toolDTO.Id));
+        }
+
+        [Test]
         public void Delete_DeleteTool()
         {
             _toolService.Delete(_tool.Id);
+            _mockToolRepository.Verify(m => m.DeleteById(_tool.Id));
+        }
+
+        [Test]
+        public async Task Delete_DeleteToolAsync()
+        {
+            await _toolService.DeleteAsync(_tool.Id);
             _mockToolRepository.Verify(m => m.DeleteById(_tool.Id));
         }
     }

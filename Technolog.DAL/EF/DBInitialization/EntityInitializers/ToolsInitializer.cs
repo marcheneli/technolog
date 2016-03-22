@@ -11,9 +11,9 @@ namespace Technolog.DAL.EF.DBInitialization
     {
         public override void Initialization(ApplicationDbContext context)
         {
-            context.Tools.Add(new Tool() { Name = "Молоток" });
-            context.Tools.Add(new Tool() { Name = "Отвертка" });
-            context.Tools.Add(new Tool() { Name = "Гайковерт" });
+            context.Tools.Add(new Tool() { Name = "Молоток", Price = 129 });
+            context.Tools.Add(new Tool() { Name = "Отвертка", Price = 379 });
+            context.Tools.Add(new Tool() { Name = "Гайковерт", Price = 1229 });
 
             context.SaveChanges();
         }

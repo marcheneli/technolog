@@ -1,0 +1,22 @@
+﻿{
+  "TestHarnessReferenceMode": "AMD",
+  "TestHarnessLocationMode": "SettingsFileAdjacent",
+  "Compile": {
+    "Mode": "External",
+    "Extensions": [ ".ts" ],
+    "ExtensionsWithNoOutput": [ ".d.ts" ]
+  },
+  "References": [
+    {
+      "Path": "Scripts/require.js",
+      "Includes": [ "*/ts/app/*.ts" ],
+      "Excludes": [ "*/ts/app/*.d.ts" ]
+    }
+  ],
+  "Tests": [
+    {
+      "Includes": [ "*/ts/tests/*.ts" ],
+      "Excludes": [ "*/ts/tests/*.d.ts" ]
+    }
+  ]
+}

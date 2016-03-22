@@ -64,7 +64,14 @@ namespace Technolog.DAL.EF
             PagedResult<Tool> pagedResult = new PagedResult<Tool>();
 
             pagedResult.Results = tools;
-            pagedResult.RowCount = dbContext.Tools.OrderBy(t => t.Id).Where(t => t.Name.Contains(search == null ? "" : search)).Count();
+
+            if (search == null)
+                pagedResult.RowCount = dbContext.Tools.OrderBy(t => t.Id).Count();
+            else
+            {
+                pagedResult.RowCount = dbContext.Tools.OrderBy(t => t.Id).Where(t => t.Name.Contains(search == null ? "" : search)).Count();
+            }
+            
 
             return pagedResult;
         }

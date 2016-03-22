@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
   <Import Project="..\packages\JavaScriptEngineSwitcher.V8.1.4.1\build\JavaScriptEngineSwitcher.V8.props" Condition="Exists('..\packages\JavaScriptEngineSwitcher.V8.1.4.1\build\JavaScriptEngineSwitcher.V8.props')" />
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" />
@@ -26,6 +27,7 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <WebGreaseLibPath>..\packages\WebGrease.1.5.2\lib</WebGreaseLibPath>
+    <TypeScriptToolsVersion>1.8</TypeScriptToolsVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -201,9 +203,13 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="webpack.config.js" />
+    <Content Include="chutzpah.json" />
     <None Include="Content\js\app\app.jsx" />
     <Content Include="Content\js\app\actions\errorActions.js" />
     <Content Include="Content\js\app\components\errorNotifier.jsx" />
+    <Content Include="Content\js\app\components\form.jsx" />
+    <Content Include="Content\js\app\components\tableRow.jsx" />
     <None Include="Content\js\app\portal.jsx" />
     <None Include="Content\js\app\mainSidebar.jsx" />
     <None Include="Content\js\app\mainContentSection.jsx" />
@@ -252,6 +258,7 @@
     <Content Include="Scripts\react-router.js" />
     <Content Include="Scripts\react-router.min.js" />
     <Content Include="Scripts\react.js" />
+    <Content Include="Scripts\require.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -290,6 +297,10 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="ts\app\constants\" />
+    <Folder Include="ts\app\flux\actions\" />
+    <Folder Include="ts\app\flux\dispatcher\" />
+    <Folder Include="ts\app\flux\stores\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Technolog.BLL\Technolog.BLL.csproj">
@@ -309,11 +320,56 @@
       <Name>Technolog.SL</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="ts\app\app.tsx" />
+    <TypeScriptCompile Include="ts\app\components\main.tsx" />
+    <TypeScriptCompile Include="ts\app\components\mainContentSection.tsx" />
+    <TypeScriptCompile Include="ts\app\components\mainSidebar.tsx" />
+    <TypeScriptCompile Include="ts\app\components\partListSection.tsx" />
+    <TypeScriptCompile Include="ts\app\components\tabs.tsx" />
+    <TypeScriptCompile Include="ts\app\components\techOperationListSection.tsx" />
+    <TypeScriptCompile Include="ts\app\components\techProcessListSection.tsx" />
+    <TypeScriptCompile Include="ts\app\components\toolEditForm.tsx" />
+    <TypeScriptCompile Include="ts\app\components\toolListSection.tsx" />
+    <TypeScriptCompile Include="ts\app\person.ts" />
+    <TypeScriptCompile Include="ts\tests\personTest.ts" />
+    <TypeScriptCompile Include="ts\typings\app\app.d.ts" />
+    <TypeScriptCompile Include="ts\typings\eventemitter\eventemitter3.d.ts" />
+    <TypeScriptCompile Include="ts\typings\flux\flux.d.ts" />
+    <TypeScriptCompile Include="ts\typings\jasmine\jasmine.d.ts" />
+    <TypeScriptCompile Include="ts\typings\react-router\history.d.ts" />
+    <TypeScriptCompile Include="ts\typings\react-router\react-router.d.ts" />
+    <TypeScriptCompile Include="ts\typings\react\react-dom.d.ts" />
+    <TypeScriptCompile Include="ts\typings\react\react-global.d.ts" />
+    <TypeScriptCompile Include="ts\typings\react\react.d.ts" />
+    <TypeScriptCompile Include="ts\typings\tsd.d.ts" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <TypeScriptTarget>ES5</TypeScriptTarget>
+    <TypeScriptJSXEmit>React</TypeScriptJSXEmit>
+    <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
+    <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
+    <TypeScriptModuleKind>AMD</TypeScriptModuleKind>
+    <TypeScriptRemoveComments>False</TypeScriptRemoveComments>
+    <TypeScriptOutFile>
+    </TypeScriptOutFile>
+    <TypeScriptOutDir />
+    <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
+    <TypeScriptNoEmitOnError>True</TypeScriptNoEmitOnError>
+    <TypeScriptSourceMap>True</TypeScriptSourceMap>
+    <TypeScriptMapRoot />
+    <TypeScriptSourceRoot />
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
   <ProjectExtensions>
