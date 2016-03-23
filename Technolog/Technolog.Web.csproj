@@ -203,6 +203,11 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="Scripts\react-with-addons.js" />
+    <Content Include="Scripts\require-config.js" />
+    <Content Include="Scripts\tests\toolEditFormTest.js" />
+    <Content Include="Scripts\testUtils.js" />
+    <Content Include="ts\tests\toolEditFormTest.js" />
     <Content Include="webpack.config.js" />
     <Content Include="chutzpah.json" />
     <None Include="Content\js\app\app.jsx" />
@@ -297,6 +302,10 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Scripts\app\constants\" />
+    <Folder Include="Scripts\app\flux\actions\" />
+    <Folder Include="Scripts\app\flux\dispatcher\" />
+    <Folder Include="Scripts\app\flux\stores\" />
     <Folder Include="ts\app\constants\" />
     <Folder Include="ts\app\flux\actions\" />
     <Folder Include="ts\app\flux\dispatcher\" />
@@ -325,6 +334,30 @@
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="Scripts\app\app.tsx" />
+    <TypeScriptCompile Include="Scripts\app\components\main.tsx" />
+    <TypeScriptCompile Include="Scripts\app\components\mainContentSection.tsx" />
+    <TypeScriptCompile Include="Scripts\app\components\mainSidebar.tsx" />
+    <TypeScriptCompile Include="Scripts\app\components\partListSection.tsx" />
+    <TypeScriptCompile Include="Scripts\app\components\tabs.tsx" />
+    <TypeScriptCompile Include="Scripts\app\components\techOperationListSection.tsx" />
+    <TypeScriptCompile Include="Scripts\app\components\techProcessListSection.tsx" />
+    <TypeScriptCompile Include="Scripts\app\components\toolEditForm.tsx" />
+    <TypeScriptCompile Include="Scripts\app\components\toolListSection.tsx" />
+    <TypeScriptCompile Include="Scripts\app\person.ts" />
+    <TypeScriptCompile Include="Scripts\tests\personTest.ts" />
+    <TypeScriptCompile Include="Scripts\tests\toolEditFormTest.tsx" />
+    <TypeScriptCompile Include="Scripts\typings\app\app.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\eventemitter\eventemitter3.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\flux\flux.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\jasmine\jasmine.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\react-router\history.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\react-router\react-router.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\react\react-addons-test-utils.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\react\react-dom.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\react\react-global.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\react\react.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\tsd.d.ts" />
     <TypeScriptCompile Include="ts\app\app.tsx" />
     <TypeScriptCompile Include="ts\app\components\main.tsx" />
     <TypeScriptCompile Include="ts\app\components\mainContentSection.tsx" />
@@ -337,12 +370,14 @@
     <TypeScriptCompile Include="ts\app\components\toolListSection.tsx" />
     <TypeScriptCompile Include="ts\app\person.ts" />
     <TypeScriptCompile Include="ts\tests\personTest.ts" />
+    <TypeScriptCompile Include="ts\tests\toolEditFormTest.tsx" />
     <TypeScriptCompile Include="ts\typings\app\app.d.ts" />
     <TypeScriptCompile Include="ts\typings\eventemitter\eventemitter3.d.ts" />
     <TypeScriptCompile Include="ts\typings\flux\flux.d.ts" />
     <TypeScriptCompile Include="ts\typings\jasmine\jasmine.d.ts" />
     <TypeScriptCompile Include="ts\typings\react-router\history.d.ts" />
     <TypeScriptCompile Include="ts\typings\react-router\react-router.d.ts" />
+    <TypeScriptCompile Include="ts\typings\react\react-addons-test-utils.d.ts" />
     <TypeScriptCompile Include="ts\typings\react\react-dom.d.ts" />
     <TypeScriptCompile Include="ts\typings\react\react-global.d.ts" />
     <TypeScriptCompile Include="ts\typings\react\react.d.ts" />

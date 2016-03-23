@@ -29,7 +29,7 @@ namespace Technolog.Web
                 .Include("~/Scripts/modernizr-{version}.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/app-ts-scripts")
-                .Include("~/dist/bundle.js"));
+                .Include("~/Scripts/dist/bundle.js"));
 
             bundles.Add(new BabelBundle("~/bundles/app-scripts")
                 .Include("~/Content/js/app/constants/pageConstants.js")
