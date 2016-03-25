@@ -21,10 +21,9 @@ namespace Technolog.Web.Controllers.api
     {
         IToolService toolService;
 
-        public ToolsController()
+        public ToolsController(IToolService toolService)
         {
-            IUnitOfWork unitOfWork = new EFUnitOfWork("TechnologConnection");
-            toolService = new ToolService(unitOfWork);
+            this.toolService = toolService;
         }
 
         public IHttpActionResult Get(int? id)

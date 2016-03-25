@@ -104,6 +104,34 @@
       <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Ninject.Extensions.ContextPreservation, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.Extensions.ContextPreservation.3.2.0.0\lib\net45-full\Ninject.Extensions.ContextPreservation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Ninject.Extensions.NamedScope, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.Extensions.NamedScope.3.2.0.0\lib\net45-full\Ninject.Extensions.NamedScope.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Ninject.Web.Common, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.Web.Common.3.2.3.0\lib\net45-full\Ninject.Web.Common.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Ninject.Web.Common.OwinHost, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.Web.Common.OwinHost.3.2.3.0\lib\net45-full\Ninject.Web.Common.OwinHost.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Ninject.Web.WebApi, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.Web.WebApi.3.2.4.0\lib\net45-full\Ninject.Web.WebApi.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Ninject.Web.WebApi.OwinHost, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.Web.WebApi.OwinHost.3.2.4.0\lib\net45-full\Ninject.Web.WebApi.OwinHost.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
       <Private>True</Private>
@@ -207,7 +235,6 @@
     <Content Include="Scripts\require-config.js" />
     <Content Include="Scripts\tests\toolEditFormTest.js" />
     <Content Include="Scripts\testUtils.js" />
-    <Content Include="ts\tests\toolEditFormTest.js" />
     <Content Include="webpack.config.js" />
     <Content Include="chutzpah.json" />
     <None Include="Content\js\app\app.jsx" />
@@ -269,6 +296,7 @@
   <ItemGroup>
     <Compile Include="App_Start\AutoMapperConfig.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\NinjectConfig.cs" />
     <Compile Include="App_Start\ReactConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
@@ -306,10 +334,6 @@
     <Folder Include="Scripts\app\flux\actions\" />
     <Folder Include="Scripts\app\flux\dispatcher\" />
     <Folder Include="Scripts\app\flux\stores\" />
-    <Folder Include="ts\app\constants\" />
-    <Folder Include="ts\app\flux\actions\" />
-    <Folder Include="ts\app\flux\dispatcher\" />
-    <Folder Include="ts\app\flux\stores\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Technolog.BLL\Technolog.BLL.csproj">
@@ -358,30 +382,6 @@
     <TypeScriptCompile Include="Scripts\typings\react\react-global.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\react\react.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\tsd.d.ts" />
-    <TypeScriptCompile Include="ts\app\app.tsx" />
-    <TypeScriptCompile Include="ts\app\components\main.tsx" />
-    <TypeScriptCompile Include="ts\app\components\mainContentSection.tsx" />
-    <TypeScriptCompile Include="ts\app\components\mainSidebar.tsx" />
-    <TypeScriptCompile Include="ts\app\components\partListSection.tsx" />
-    <TypeScriptCompile Include="ts\app\components\tabs.tsx" />
-    <TypeScriptCompile Include="ts\app\components\techOperationListSection.tsx" />
-    <TypeScriptCompile Include="ts\app\components\techProcessListSection.tsx" />
-    <TypeScriptCompile Include="ts\app\components\toolEditForm.tsx" />
-    <TypeScriptCompile Include="ts\app\components\toolListSection.tsx" />
-    <TypeScriptCompile Include="ts\app\person.ts" />
-    <TypeScriptCompile Include="ts\tests\personTest.ts" />
-    <TypeScriptCompile Include="ts\tests\toolEditFormTest.tsx" />
-    <TypeScriptCompile Include="ts\typings\app\app.d.ts" />
-    <TypeScriptCompile Include="ts\typings\eventemitter\eventemitter3.d.ts" />
-    <TypeScriptCompile Include="ts\typings\flux\flux.d.ts" />
-    <TypeScriptCompile Include="ts\typings\jasmine\jasmine.d.ts" />
-    <TypeScriptCompile Include="ts\typings\react-router\history.d.ts" />
-    <TypeScriptCompile Include="ts\typings\react-router\react-router.d.ts" />
-    <TypeScriptCompile Include="ts\typings\react\react-addons-test-utils.d.ts" />
-    <TypeScriptCompile Include="ts\typings\react\react-dom.d.ts" />
-    <TypeScriptCompile Include="ts\typings\react\react-global.d.ts" />
-    <TypeScriptCompile Include="ts\typings\react\react.d.ts" />
-    <TypeScriptCompile Include="ts\typings\tsd.d.ts" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
