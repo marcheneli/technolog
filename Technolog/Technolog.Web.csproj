@@ -51,10 +51,6 @@
       <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="AutoMapper, Version=4.2.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoMapper.4.2.1\lib\net45\AutoMapper.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="ClearScript, Version=5.4.4.0, Culture=neutral, PublicKeyToken=935d0c957da47c73, processorArchitecture=MSIL">
       <HintPath>..\packages\JavaScriptEngineSwitcher.V8.1.4.1\lib\net40\ClearScript.dll</HintPath>
       <Private>True</Private>
@@ -296,7 +292,6 @@
   <ItemGroup>
     <Compile Include="App_Start\AutoMapperConfig.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
-    <Compile Include="App_Start\NinjectConfig.cs" />
     <Compile Include="App_Start\ReactConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
@@ -336,21 +331,17 @@
     <Folder Include="Scripts\app\flux\stores\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Technolog.BLL\Technolog.BLL.csproj">
-      <Project>{41c55022-9478-464b-ad67-72626bd0dc72}</Project>
-      <Name>Technolog.BLL</Name>
+    <ProjectReference Include="..\Technolog.Infrastructure.Interfaces\Technolog.Infrastructure.Interfaces.csproj">
+      <Project>{faee3678-5284-4e61-a636-e2a5004cfa82}</Project>
+      <Name>Technolog.Infrastructure.Interfaces</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Technolog.DAL\Technolog.DAL.csproj">
-      <Project>{c7084343-9e7c-4f7e-81ae-f4fdcd93c961}</Project>
-      <Name>Technolog.DAL</Name>
+    <ProjectReference Include="..\Technolog.NinjectConfig\Technolog.NinjectConfig.csproj">
+      <Project>{fa80916d-e9ee-4974-b9b5-78cab1ae95f6}</Project>
+      <Name>Technolog.NinjectConfig</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Technolog.Domain\Technolog.Domain.csproj">
-      <Project>{ed38ba5f-d5f3-4957-bf7a-33797dc25de4}</Project>
-      <Name>Technolog.Domain</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Technolog.SL\Technolog.SL.csproj">
+    <ProjectReference Include="..\Technolog.SL\Technolog.Services.csproj">
       <Project>{dc47cc8b-a368-4b43-9028-ff1eb98272e5}</Project>
-      <Name>Technolog.SL</Name>
+      <Name>Technolog.Services</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

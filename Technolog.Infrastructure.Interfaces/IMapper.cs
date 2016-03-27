@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Technolog.SL.Infrastructure
+namespace Technolog.Infrastructure.Interfaces
 {
-    public static class AutoMapperConfig
+    public interface IMapper
     {
+        T Map<T>(object source);
     }
 }

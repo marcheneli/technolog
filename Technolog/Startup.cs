@@ -7,6 +7,7 @@ using Ninject;
 using System.Reflection;
 using Ninject.Web.Common.OwinHost;
 using Ninject.Web.WebApi.OwinHost;
+using Technolog.NinjectConfig;
 
 [assembly: OwinStartup(typeof(Technolog.Web.Startup))]
 
@@ -20,7 +21,7 @@ namespace Technolog.Web
 
             WebApiConfig.Register(httpConfiguration);
             //app.UseWebApi(httpConfiguration);
-            app.UseNinjectMiddleware(() => NinjectConfig.CreateKernel.Value).UseNinjectWebApi(httpConfiguration);
+            app.UseNinjectMiddleware(() => NinjectConfigSetup.CreateKernel.Value).UseNinjectWebApi(httpConfiguration);
         }
     }
 }

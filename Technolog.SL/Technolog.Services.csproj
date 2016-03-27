@@ -30,10 +30,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AutoMapper, Version=4.2.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoMapper.4.2.1\lib\net45\AutoMapper.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -59,17 +55,18 @@
       <Project>{41c55022-9478-464b-ad67-72626bd0dc72}</Project>
       <Name>Technolog.BLL</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Technolog.DAL\Technolog.DAL.csproj">
+    <ProjectReference Include="..\Technolog.DAL\Technolog.DAL.EF.csproj">
       <Project>{c7084343-9e7c-4f7e-81ae-f4fdcd93c961}</Project>
-      <Name>Technolog.DAL</Name>
+      <Name>Technolog.DAL.EF</Name>
     </ProjectReference>
     <ProjectReference Include="..\Technolog.Domain\Technolog.Domain.csproj">
       <Project>{ed38ba5f-d5f3-4957-bf7a-33797dc25de4}</Project>
       <Name>Technolog.Domain</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
+    <ProjectReference Include="..\Technolog.Infrastructure.Interfaces\Technolog.Infrastructure.Interfaces.csproj">
+      <Project>{faee3678-5284-4e61-a636-e2a5004cfa82}</Project>
+      <Name>Technolog.Infrastructure.Interfaces</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
