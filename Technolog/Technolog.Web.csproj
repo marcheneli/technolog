@@ -325,10 +325,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Scripts\app\constants\" />
-    <Folder Include="Scripts\app\flux\actions\" />
-    <Folder Include="Scripts\app\flux\dispatcher\" />
-    <Folder Include="Scripts\app\flux\stores\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Technolog.Infrastructure.Interfaces\Technolog.Infrastructure.Interfaces.csproj">
@@ -350,6 +346,13 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\app\app.tsx" />
+    <TypeScriptCompile Include="Scripts\app\components\common\confirmDelete.tsx" />
+    <TypeScriptCompile Include="Scripts\app\components\common\inputError.tsx" />
+    <TypeScriptCompile Include="Scripts\app\components\common\itemsPerPageSelector.tsx" />
+    <TypeScriptCompile Include="Scripts\app\components\common\pagination.tsx" />
+    <TypeScriptCompile Include="Scripts\app\components\common\searchInput.tsx" />
+    <TypeScriptCompile Include="Scripts\app\components\common\tableRow.tsx" />
+    <TypeScriptCompile Include="Scripts\app\components\common\textInput.tsx" />
     <TypeScriptCompile Include="Scripts\app\components\main.tsx" />
     <TypeScriptCompile Include="Scripts\app\components\mainContentSection.tsx" />
     <TypeScriptCompile Include="Scripts\app\components\mainSidebar.tsx" />
@@ -358,7 +361,18 @@
     <TypeScriptCompile Include="Scripts\app\components\techOperationListSection.tsx" />
     <TypeScriptCompile Include="Scripts\app\components\techProcessListSection.tsx" />
     <TypeScriptCompile Include="Scripts\app\components\toolEditForm.tsx" />
+    <TypeScriptCompile Include="Scripts\app\components\toolList.tsx" />
     <TypeScriptCompile Include="Scripts\app\components\toolListSection.tsx" />
+    <TypeScriptCompile Include="Scripts\app\constants\pageConstants.ts" />
+    <TypeScriptCompile Include="Scripts\app\flux\actions\errorActions.ts" />
+    <TypeScriptCompile Include="Scripts\app\flux\actions\errorActionTypes.ts" />
+    <TypeScriptCompile Include="Scripts\app\flux\actions\toolActions.ts" />
+    <TypeScriptCompile Include="Scripts\app\flux\actions\toolActionTypes.ts" />
+    <TypeScriptCompile Include="Scripts\app\flux\dispatcher\appDispatcher.ts" />
+    <TypeScriptCompile Include="Scripts\app\flux\stores\errorStore.ts" />
+    <TypeScriptCompile Include="Scripts\app\flux\stores\toolStore.ts" />
+    <TypeScriptCompile Include="Scripts\app\managers\navigationManager.ts" />
+    <TypeScriptCompile Include="Scripts\app\managers\pageParamsManager.ts" />
     <TypeScriptCompile Include="Scripts\app\person.ts" />
     <TypeScriptCompile Include="Scripts\tests\personTest.ts" />
     <TypeScriptCompile Include="Scripts\tests\toolEditFormTest.tsx" />
@@ -366,6 +380,8 @@
     <TypeScriptCompile Include="Scripts\typings\eventemitter\eventemitter3.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\flux\flux.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\jasmine\jasmine.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\object-assign\object-assign.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\react-router\history.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\react-router\react-router.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\react\react-addons-test-utils.d.ts" />

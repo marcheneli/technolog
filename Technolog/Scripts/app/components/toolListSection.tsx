@@ -1,14 +1,15 @@
-﻿// A '.tsx' file enables JSX support in the TypeScript compiler, 
-// for more information see the following page on the TypeScript wiki:
-// https://github.com/Microsoft/TypeScript/wiki/JSX
-/// <reference path="../../typings/tsd.d.ts" />
+﻿/// <reference path="../../typings/tsd.d.ts" />
 
 import * as React from "react";
+import ToolList from "./toolList";
 
 export default class ToolListSection extends React.Component<{}, {}> {
     render(): React.ReactElement<{}> {
         return (
-                <div>Hi!I'm a tool list section. {this.props.children}</div>
-            )
+            <div className="outer">
+                <ToolList />
+                {this.props.children}
+            </div>
+        )
     }
 }

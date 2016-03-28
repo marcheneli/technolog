@@ -1,5 +1,5 @@
 ﻿var ConfirmDelete = React.createClass({
-    handleConfirm: function(e) {
+    handleConfirmClick: function(e) {
 		e.preventDefault();
 
 		this.props.success(this.props.id)
