@@ -1,7 +1,7 @@
 ﻿/// <reference path="../../../typings/tsd.d.ts" />
 
 import * as React from "react";
-import PageConstants from "../constants/pageConstants"
+import PageConstants from "../../constants/pageConstants"
 
 interface IItemsPerPageProps {
     onChange(itemsPerPage: number): void,

@@ -4,7 +4,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-define(["require", "exports", "eventemitter3", "./dispatcher/appDispatcher", "./actions/errorActionTypes"], function (require, exports, EventEmitter, appDispatcher_1, errorActionTypes_1) {
+define(["require", "exports", "eventemitter3", "../dispatcher/appDispatcher", "../actions/errorActionTypes"], function (require, exports, EventEmitter, appDispatcher_1, errorActionTypes_1) {
     "use strict";
     var CHANGE_ERROR_EVENT = 'change_error_event';
     var _errorMessage = null;

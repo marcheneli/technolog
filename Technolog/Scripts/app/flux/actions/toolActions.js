@@ -1,5 +1,5 @@
 /// <reference path="../../../typings/tsd.d.ts" />
-define(["require", "exports", "./dispatcher/appDispatcher", "./toolActionTypes"], function (require, exports, appDispatcher_1, toolActionTypes_1) {
+define(["require", "exports", "../dispatcher/appDispatcher", "./toolActionTypes"], function (require, exports, appDispatcher_1, toolActionTypes_1) {
     "use strict";
     var ToolActionsStatic = (function () {
         function ToolActionsStatic() {

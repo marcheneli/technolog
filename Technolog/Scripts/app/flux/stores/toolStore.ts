@@ -1,11 +1,11 @@
 ﻿/// <reference path="../../../typings/tsd.d.ts" />
 
 import * as $ from "jquery";
-import AppDispatcher from "./dispatcher/appDispatcher";
-import ToolActionTypes from "./actions/toolActionTypes";
-import ErrorActions from "./actions/errorActions";
-import PageConstants from "../constants/pageConstants";
-import NavigationManager from "../managers/navigationManager";
+import AppDispatcher from "../dispatcher/appDispatcher";
+import ToolActionTypes from "../actions/toolActionTypes";
+import ErrorActions from "../actions/errorActions";
+import PageConstants from "../../constants/pageConstants";
+import NavigationManager from "../../managers/navigationManager";
 import assign = require('object-assign');
 import * as EventEmitter from "eventemitter3";
 

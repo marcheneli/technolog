@@ -1,9 +1,9 @@
 ﻿/// <reference path="../../../typings/tsd.d.ts" />
 
 import * as EventEmitter from "eventemitter3";
-import AppDispatcher from "./dispatcher/appDispatcher";
-import ErrorActionTypes from "./actions/errorActionTypes";
-import ErrorActions from "./actions/errorActions";
+import AppDispatcher from "../dispatcher/appDispatcher";
+import ErrorActionTypes from "../actions/errorActionTypes";
+import ErrorActions from "../actions/errorActions";
 
 let CHANGE_ERROR_EVENT = 'change_error_event';
 

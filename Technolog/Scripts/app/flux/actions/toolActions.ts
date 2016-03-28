@@ -1,6 +1,6 @@
 ﻿/// <reference path="../../../typings/tsd.d.ts" />
 
-import AppDispatcher from "./dispatcher/appDispatcher";
+import AppDispatcher from "../dispatcher/appDispatcher";
 import ToolActionTypes from "./toolActionTypes";
 
 class ToolActionsStatic {

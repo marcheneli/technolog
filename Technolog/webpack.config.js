@@ -8,6 +8,10 @@ module.exports = {
     externals: {
         "react": "React",
         "react-dom": "ReactDOM",
-        "react-router": "ReactRouter"
+        "react-router": "ReactRouter",
+        "flux": "Flux",
+        "jquery": "$",
+        "object-assign": "assign",
+        "eventemitter3": "EventEmitter"
     }
 };

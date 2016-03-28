@@ -1,5 +1,5 @@
 /// <reference path="../../../typings/tsd.d.ts" />
-define(["require", "exports", "./dispatcher/appDispatcher", "./errorActionTypes"], function (require, exports, appDispatcher_1, errorActionTypes_1) {
+define(["require", "exports", "../dispatcher/appDispatcher", "./errorActionTypes"], function (require, exports, appDispatcher_1, errorActionTypes_1) {
     "use strict";
     var ErrorActionsStatic = (function () {
         function ErrorActionsStatic() {
