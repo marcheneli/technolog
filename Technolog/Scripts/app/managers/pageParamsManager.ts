@@ -3,59 +3,65 @@
 import * as ReactRouter from "react-router";
 import PageConstants from "../constants/pageConstants";
 
-let currentPage = 0;
-let itemsPerPage = PageConstants.ITEMS_PER_PAGE_INIT;
-let searchText = '';
-let navigation;
-
 class PageParamsManagerStatic {
 
-    public locationChangeHandler(location) {
+    private currentPage: number;
+    private itemsPerPage: number;
+    private searchText: string;
+    private navigation;
+
+    constructor() {
+        this.currentPage = 0;
+        this.itemsPerPage = PageConstants.ITEMS_PER_PAGE_INIT;
+        this.searchText = '';
+    }
+
+    public locationChangeHandler = (location): void => {
         var query = location.query;
-        navigation = location;
+        this.navigation = location;
 
         if (query.page) {
-            if (query.page != currentPage) currentPage = query.page;
+            if (query.page != this.currentPage) this.currentPage = query.page;
         }
 
         if (query.search) {
-            if (query.search != searchText) searchText = query.search;
+            if (query.search != this.searchText) this.searchText = query.search;
         }
 
         if (query.pageSize) {
-            if (query.pageSize != itemsPerPage) itemsPerPage = query.pageSize;
+            if (query.pageSize != this.itemsPerPage) this.itemsPerPage = query.pageSize;
         }
     }
 
-    public changePage(page) {
-        navigation.query.page = page;
+    public changePage = (page:number): void => {
+        this.navigation.query.page = page;
         this.changeLocation();
     }
 
-    public changeSearchText(text) {
-        navigation.query.search = text;
+    public changeSearchText = (text: string): void => {
+        this.navigation.query.search = text;
         this.changeLocation();
     }
 
-    public changePageSize(pageSize) {
-        navigation.query.pageSize = pageSize;
+    public changePageSize = (pageSize: number): void => {
+        this.navigation.query.pageSize = pageSize;
         this.changeLocation();
     }
 
-    public getPage() {
-        return currentPage;
+    public getPage = (): number => {
+        return this.currentPage;
     }
 
-    public getPageSize() {
-        return itemsPerPage;
+    public getPageSize = (): number => {
+        return this.itemsPerPage;
     }
 
-    public getSearchText() {
-        return searchText;
+    public getSearchText = (): string => {
+        return this.searchText;
     }
 
     private changeLocation() {
-        ReactRouter.browserHistory.push(navigation);
+        ReactRouter.browserHistory.push(this.navigation);
     }
 }
 

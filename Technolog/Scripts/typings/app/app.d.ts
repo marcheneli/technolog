@@ -12,6 +12,7 @@ interface ITool {
 
 interface AppPayload {
     actionType: number;
+    actionSource: number;
     currentPage?: number;
     pageSize?: number;
     searchText?: string,

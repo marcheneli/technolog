@@ -1,59 +1,59 @@
 /// <reference path="../../typings/tsd.d.ts" />
 define(["require", "exports", "react-router"], function (require, exports, ReactRouter) {
     "use strict";
-    var navigation;
     var NavigationManagerStatic = (function () {
         function NavigationManagerStatic() {
+            var _this = this;
+            this.handler = function (args) {
+                _this.navigation = args;
+            };
+            this.openToolEditor = function (id) {
+                _this.navigation.pathname = '/tools/' + id;
+                _this.changeLocation();
+            };
+            this.closeToolEditor = function () {
+                _this.navigation.pathname = '/tools';
+                _this.changeLocation();
+            };
+            this.newTool = function () {
+                if (_this.navigation.query["toolIds"]) {
+                    if (Array.isArray(_this.navigation.query["toolIds"])) {
+                        _this.navigation.query["toolIds"].push(0);
+                    }
+                    else {
+                        var toolId = _this.navigation.query["toolIds"];
+                        _this.navigation.query["toolIds"] = [];
+                        _this.navigation.query["toolIds"].push(toolId);
+                        _this.navigation.query["toolIds"].push(0);
+                    }
+                }
+                else {
+                    _this.navigation.query["toolIds"] = [];
+                    _this.navigation.query["toolIds"].push(0);
+                }
+                ReactRouter.browserHistory.push(_this.navigation);
+            };
+            this.openTool = function (id) {
+                if (_this.navigation.query["toolIds"]) {
+                    if (Array.isArray(_this.navigation.query["toolIds"])) {
+                        _this.navigation.query["toolIds"].push(id);
+                    }
+                    else {
+                        var toolId = _this.navigation.query["toolIds"];
+                        _this.navigation.query["toolIds"] = [];
+                        _this.navigation.query["toolIds"].push(toolId);
+                        _this.navigation.query["toolIds"].push(id);
+                    }
+                }
+                else {
+                    _this.navigation.query["toolIds"] = [];
+                    _this.navigation.query["toolIds"].push(id);
+                }
+                ReactRouter.browserHistory.push(_this.navigation);
+            };
         }
-        NavigationManagerStatic.prototype.handler = function (args) {
-            navigation = args;
-        };
-        NavigationManagerStatic.prototype.openToolEditor = function (id) {
-            navigation.pathname = '/tools/' + id;
-            this.changeLocation();
-        };
-        NavigationManagerStatic.prototype.closeToolEditor = function () {
-            navigation.pathname = '/tools';
-            this.changeLocation();
-        };
-        NavigationManagerStatic.prototype.newTool = function () {
-            if (navigation.query["toolIds"]) {
-                if (Array.isArray(navigation.query["toolIds"])) {
-                    navigation.query["toolIds"].push(0);
-                }
-                else {
-                    var toolId = navigation.query["toolIds"];
-                    navigation.query["toolIds"] = [];
-                    navigation.query["toolIds"].push(toolId);
-                    navigation.query["toolIds"].push(0);
-                }
-            }
-            else {
-                navigation.query["toolIds"] = [];
-                navigation.query["toolIds"].push(0);
-            }
-            ReactRouter.browserHistory.push(navigation);
-        };
-        NavigationManagerStatic.prototype.openTool = function (id) {
-            if (navigation.query["toolIds"]) {
-                if (Array.isArray(navigation.query["toolIds"])) {
-                    navigation.query["toolIds"].push(id);
-                }
-                else {
-                    var toolId = navigation.query["toolIds"];
-                    navigation.query["toolIds"] = [];
-                    navigation.query["toolIds"].push(toolId);
-                    navigation.query["toolIds"].push(id);
-                }
-            }
-            else {
-                navigation.query["toolIds"] = [];
-                navigation.query["toolIds"].push(id);
-            }
-            ReactRouter.browserHistory.push(navigation);
-        };
         NavigationManagerStatic.prototype.changeLocation = function () {
-            ReactRouter.browserHistory.push(navigation);
+            ReactRouter.browserHistory.push(this.navigation);
         };
         return NavigationManagerStatic;
     }());

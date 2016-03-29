@@ -90,7 +90,7 @@ namespace Technolog.SL.Services
             throw new NotImplementedException();
         }
 
-        public void Insert(ToolDTO toolDTO)
+        public int Insert(ToolDTO toolDTO)
         {
             //MapperConfiguration mapperConfig = new MapperConfiguration(cfg => cfg.CreateMap<ToolDTO, Tool>());
             //IMapper mapper = mapperConfig.CreateMapper();
@@ -106,6 +106,8 @@ namespace Technolog.SL.Services
             {
                 throw new ValidationException("Не удалось добавить новый инструмент.", "");
             }
+
+            return tool.Id;
         }
 
         public async Task InsertAsync(ToolDTO toolDTO)

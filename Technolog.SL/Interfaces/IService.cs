@@ -9,7 +9,7 @@ namespace Technolog.SL.Interfaces
     public interface IService<T> : IDisposable where T : class
     {
         T Get(int id);
-        void Insert(T toolDTO);
+        int Insert(T toolDTO);
         void Update(T toolDTO);
         void Delete(int id);
 

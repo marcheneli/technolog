@@ -9,11 +9,12 @@ define(["require", "exports", "react"], function (require, exports, React) {
     var PageButton = (function (_super) {
         __extends(PageButton, _super);
         function PageButton() {
+            var _this = this;
             _super.apply(this, arguments);
+            this.handleClick = function () {
+                _this.props.onClick(_this.props.pageNumber);
+            };
         }
-        PageButton.prototype.handleClick = function () {
-            this.props.onClick(this.props.pageNumber);
-        };
         PageButton.prototype.render = function () {
             return (React.createElement("li", {className: this.props.mode}, React.createElement("a", {href: "#", onClick: this.handleClick}, this.props.symbol)));
         };

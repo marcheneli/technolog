@@ -49,6 +49,7 @@ export default class ToolList extends React.Component<IToolListProps, IToolListS
     }
 
     componentDidMount() {
+        console.log("mount");
         ToolActions.init(PageParamsManager.getPage(), PageParamsManager.getPageSize(), PageParamsManager.getSearchText());
     }
 
@@ -180,10 +181,10 @@ export default class ToolList extends React.Component<IToolListProps, IToolListS
                     <Pagination
                         itemAmount={this.state.toolAmount}
                         itemsPerPage={this.state.toolsPerPage}
-                        firstSymbol="&laquo;"
-                        nextSymbol="&rsaquo;"
-                        prevSymbol="&lsaquo;"
-                        lastSymbol="&raquo;"
+                        firstSymbol='«'
+                        nextSymbol='›'
+                        prevSymbol='‹'
+                        lastSymbol='»'
                         updatePage={this.handleToolPageChange}/>
                 </div>
             </div>

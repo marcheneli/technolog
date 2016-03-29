@@ -2,6 +2,7 @@
 
 import * as EventEmitter from "eventemitter3";
 import AppDispatcher from "../dispatcher/appDispatcher";
+import ActionSourceTypes from "../actions/actionSourceTypes";
 import ErrorActionTypes from "../actions/errorActionTypes";
 import ErrorActions from "../actions/errorActions";
 
@@ -40,6 +41,8 @@ class ErrorStoreStatic extends EventEmitter {
 let ErrorStore: ErrorStoreStatic = new ErrorStoreStatic();
 
 AppDispatcher.register(function (payload: AppPayload) {
+
+    if (payload.actionSource != ActionSourceTypes.ERROR) return;
 
     switch (payload.actionType) {
         case ErrorActionTypes.RECEIVE_ERROR_MESSAGE:

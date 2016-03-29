@@ -4,7 +4,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-define(["require", "exports", "jquery", "../dispatcher/appDispatcher", "../actions/toolActionTypes", "../actions/errorActions", "../../constants/pageConstants", "../../managers/navigationManager", 'object-assign', "eventemitter3"], function (require, exports, $, appDispatcher_1, toolActionTypes_1, errorActions_1, pageConstants_1, navigationManager_1, assign, EventEmitter) {
+define(["require", "exports", "jquery", "../dispatcher/appDispatcher", "../actions/actionSourceTypes", "../actions/toolActionTypes", "../actions/errorActions", "../../constants/pageConstants", "../../managers/navigationManager", 'object-assign', "eventemitter3"], function (require, exports, $, appDispatcher_1, actionSourceTypes_1, toolActionTypes_1, errorActions_1, pageConstants_1, navigationManager_1, assign, EventEmitter) {
     "use strict";
     var CHANGE_TOOLS_EVENT = 'change_tools';
     var CHANGE_EDITTOOL_EVENT = 'change_edittool';
@@ -165,6 +165,8 @@ define(["require", "exports", "jquery", "../dispatcher/appDispatcher", "../actio
     }(EventEmitter));
     var ToolStore = new ToolStoreStatic();
     appDispatcher_1.default.register(function (payload) {
+        if (payload.actionSource != actionSourceTypes_1.default.TOOL)
+            return;
         switch (payload.actionType) {
             case toolActionTypes_1.default.TOOL_INIT:
                 _init(payload.currentPage, payload.pageSize, payload.searchText);

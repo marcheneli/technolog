@@ -4,7 +4,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-define(["require", "exports", "eventemitter3", "../dispatcher/appDispatcher", "../actions/errorActionTypes"], function (require, exports, EventEmitter, appDispatcher_1, errorActionTypes_1) {
+define(["require", "exports", "eventemitter3", "../dispatcher/appDispatcher", "../actions/actionSourceTypes", "../actions/errorActionTypes"], function (require, exports, EventEmitter, appDispatcher_1, actionSourceTypes_1, errorActionTypes_1) {
     "use strict";
     var CHANGE_ERROR_EVENT = 'change_error_event';
     var _errorMessage = null;
@@ -38,6 +38,8 @@ define(["require", "exports", "eventemitter3", "../dispatcher/appDispatcher", ".
     }(EventEmitter));
     var ErrorStore = new ErrorStoreStatic();
     appDispatcher_1.default.register(function (payload) {
+        if (payload.actionSource != actionSourceTypes_1.default.ERROR)
+            return;
         switch (payload.actionType) {
             case errorActionTypes_1.default.RECEIVE_ERROR_MESSAGE:
                 _changeErrorMessage(payload.errorMessage);

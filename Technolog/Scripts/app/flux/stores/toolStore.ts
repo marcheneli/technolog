@@ -2,6 +2,7 @@
 
 import * as $ from "jquery";
 import AppDispatcher from "../dispatcher/appDispatcher";
+import ActionSourceTypes from "../actions/actionSourceTypes";
 import ToolActionTypes from "../actions/toolActionTypes";
 import ErrorActions from "../actions/errorActions";
 import PageConstants from "../../constants/pageConstants";
@@ -189,6 +190,9 @@ class ToolStoreStatic extends EventEmitter {
 let ToolStore: ToolStoreStatic = new ToolStoreStatic();
 
 AppDispatcher.register(function (payload: AppPayload) {
+
+    if (payload.actionSource != ActionSourceTypes.TOOL) return;
+
     switch (payload.actionType) {
         case ToolActionTypes.TOOL_INIT:
             _init(payload.currentPage, payload.pageSize, payload.searchText);

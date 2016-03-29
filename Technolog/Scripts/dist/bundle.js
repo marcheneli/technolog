@@ -51,7 +51,7 @@
 	// for more information see the following page on the TypeScript wiki:
 	// https://github.com/Microsoft/TypeScript/wiki/JSX
 	/// <reference path="../typings/tsd.d.ts" />
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react-dom */ 3), __webpack_require__(/*! react-router */ 4), __webpack_require__(/*! ./components/main */ 5), __webpack_require__(/*! ./components/techProcessListSection */ 1), __webpack_require__(/*! ./components/techOperationListSection */ 9), __webpack_require__(/*! ./components/toolListSection */ 10), __webpack_require__(/*! ./components/partListSection */ 30), __webpack_require__(/*! ./components/toolEditForm */ 31)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, ReactDOM, ReactRouter, main_1, techProcessListSection_1, techOperationListSection_1, toolListSection_1, partListSection_1, toolEditForm_1) {
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react-dom */ 3), __webpack_require__(/*! react-router */ 4), __webpack_require__(/*! ./components/main */ 5), __webpack_require__(/*! ./components/techProcessListSection */ 1), __webpack_require__(/*! ./components/techOperationListSection */ 9), __webpack_require__(/*! ./components/toolListSection */ 10), __webpack_require__(/*! ./components/partListSection */ 31), __webpack_require__(/*! ./components/toolEditForm */ 32)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, ReactDOM, ReactRouter, main_1, techProcessListSection_1, techOperationListSection_1, toolListSection_1, partListSection_1, toolEditForm_1) {
 	    "use strict";
 	    var routers = (React.createElement(ReactRouter.Router, {history: ReactRouter.browserHistory}, React.createElement(ReactRouter.Route, {path: "/", component: main_1.default}, React.createElement(ReactRouter.Route, {path: "processes", component: techProcessListSection_1.default}), React.createElement(ReactRouter.Route, {path: "operations", component: techOperationListSection_1.default}), React.createElement(ReactRouter.Route, {path: "tools", component: toolListSection_1.default}, React.createElement(ReactRouter.Route, {path: ":toolId", component: toolEditForm_1.default})), React.createElement(ReactRouter.Route, {path: "parts", component: partListSection_1.default}))));
 	    ReactDOM.render(routers, document.getElementById('content'));
@@ -331,7 +331,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ../flux/stores/toolStore */ 13), __webpack_require__(/*! ../constants/pageConstants */ 20), __webpack_require__(/*! ../flux/actions/toolActions */ 23), __webpack_require__(/*! ../managers/pageParamsManager */ 24), __webpack_require__(/*! ../managers/navigationManager */ 12), __webpack_require__(/*! ./common/tableRow */ 25), __webpack_require__(/*! ./common/confirmDelete */ 26), __webpack_require__(/*! ./common/pagination */ 27), __webpack_require__(/*! ./common/searchInput */ 28), __webpack_require__(/*! ./common/itemsPerPageSelector */ 29)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, toolStore_1, pageConstants_1, toolActions_1, pageParamsManager_1, navigationManager_1, tableRow_1, confirmDelete_1, pagination_1, searchInput_1, itemsPerPageSelector_1) {
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ../flux/stores/toolStore */ 13), __webpack_require__(/*! ../constants/pageConstants */ 21), __webpack_require__(/*! ../flux/actions/toolActions */ 24), __webpack_require__(/*! ../managers/pageParamsManager */ 25), __webpack_require__(/*! ../managers/navigationManager */ 12), __webpack_require__(/*! ./common/tableRow */ 26), __webpack_require__(/*! ./common/confirmDelete */ 27), __webpack_require__(/*! ./common/pagination */ 28), __webpack_require__(/*! ./common/searchInput */ 29), __webpack_require__(/*! ./common/itemsPerPageSelector */ 30)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, toolStore_1, pageConstants_1, toolActions_1, pageParamsManager_1, navigationManager_1, tableRow_1, confirmDelete_1, pagination_1, searchInput_1, itemsPerPageSelector_1) {
 	    "use strict";
 	    var ToolList = (function (_super) {
 	        __extends(ToolList, _super);
@@ -413,6 +413,7 @@
 	            toolStore_1.default.removeChangeToolsListener(this.handleToolsChange);
 	        };
 	        ToolList.prototype.componentDidMount = function () {
+	            console.log("mount");
 	            toolActions_1.default.init(pageParamsManager_1.default.getPage(), pageParamsManager_1.default.getPageSize(), pageParamsManager_1.default.getSearchText());
 	        };
 	        ToolList.prototype.render = function () {
@@ -424,7 +425,7 @@
 	            return (React.createElement("div", {className: "panel panel-default inner", style: { marginBottom: 0 + 'px', display: 'flex', flexDirection: 'column' }}, React.createElement("div", {className: "panel-heading"}, React.createElement("h4", null, "Инструменты")), React.createElement("div", {className: "panel-body", style: { display: 'flex', flexDirection: 'column' }}, this.state.isConfirmDeleting ?
 	                React.createElement(confirmDelete_1.default, {id: this.state.currentTool.id, title: "Подтверждение удаления инструмента", message: "Вы действительно хотите удалить инструмент " + this.state.currentTool.name, success: this.handleDeleteSuccess, cancel: this.handleDeleteCancel})
 	                :
-	                    React.createElement("div", {className: "input-group"}, React.createElement("div", {className: "input-group-btn"}, React.createElement("button", {className: "btn btn-default", type: "button", onClick: this.newToolBtnClickHandler}, React.createElement("span", {className: "glyphicon glyphicon-plus"})), React.createElement("button", {className: "btn btn-default", type: "button", onClick: function () { this.setState({ currentTool: this.state.currentTool, isConfirmDeleting: true }); }.bind(this)}, React.createElement("span", {className: "glyphicon glyphicon-trash"})), React.createElement("button", {className: "btn btn-default", type: "button", onClick: this.refreshBtnClickHandler}, React.createElement("span", {className: "glyphicon glyphicon-refresh"}))), React.createElement(searchInput_1.default, {text: "Поиск...", onChange: function (text) { this.handleToolSearchTextChange(text); }.bind(this)}), React.createElement(itemsPerPageSelector_1.default, {onChange: this.handleToolsPerPageChange})), React.createElement("div", {style: { marginBottom: 10 + 'px', display: 'flex', flexDirection: 'column' }}, React.createElement("div", {style: { overflowY: 'auto' }}, React.createElement("table", {className: "table table-bordered", style: { marginBottom: 1 + 'px' }}, React.createElement("thead", null, React.createElement("tr", null, React.createElement("th", {style: { width: 25 + '%' }}, "ID"), React.createElement("th", {style: { width: 75 + '%' }}, "Наименование"))), React.createElement("tbody", null, toolRows)))), React.createElement(pagination_1.default, {itemAmount: this.state.toolAmount, itemsPerPage: this.state.toolsPerPage, firstSymbol: "&laquo;", nextSymbol: "&rsaquo;", prevSymbol: "&lsaquo;", lastSymbol: "&raquo;", updatePage: this.handleToolPageChange}))));
+	                    React.createElement("div", {className: "input-group"}, React.createElement("div", {className: "input-group-btn"}, React.createElement("button", {className: "btn btn-default", type: "button", onClick: this.newToolBtnClickHandler}, React.createElement("span", {className: "glyphicon glyphicon-plus"})), React.createElement("button", {className: "btn btn-default", type: "button", onClick: function () { this.setState({ currentTool: this.state.currentTool, isConfirmDeleting: true }); }.bind(this)}, React.createElement("span", {className: "glyphicon glyphicon-trash"})), React.createElement("button", {className: "btn btn-default", type: "button", onClick: this.refreshBtnClickHandler}, React.createElement("span", {className: "glyphicon glyphicon-refresh"}))), React.createElement(searchInput_1.default, {text: "Поиск...", onChange: function (text) { this.handleToolSearchTextChange(text); }.bind(this)}), React.createElement(itemsPerPageSelector_1.default, {onChange: this.handleToolsPerPageChange})), React.createElement("div", {style: { marginBottom: 10 + 'px', display: 'flex', flexDirection: 'column' }}, React.createElement("div", {style: { overflowY: 'auto' }}, React.createElement("table", {className: "table table-bordered", style: { marginBottom: 1 + 'px' }}, React.createElement("thead", null, React.createElement("tr", null, React.createElement("th", {style: { width: 25 + '%' }}, "ID"), React.createElement("th", {style: { width: 75 + '%' }}, "Наименование"))), React.createElement("tbody", null, toolRows)))), React.createElement(pagination_1.default, {itemAmount: this.state.toolAmount, itemsPerPage: this.state.toolsPerPage, firstSymbol: '«', nextSymbol: '›', prevSymbol: '‹', lastSymbol: '»', updatePage: this.handleToolPageChange}))));
 	        };
 	        return ToolList;
 	    }(React.Component));
@@ -443,59 +444,59 @@
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/// <reference path="../../typings/tsd.d.ts" />
 	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react-router */ 4)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, ReactRouter) {
 	    "use strict";
-	    var navigation;
 	    var NavigationManagerStatic = (function () {
 	        function NavigationManagerStatic() {
+	            var _this = this;
+	            this.handler = function (args) {
+	                _this.navigation = args;
+	            };
+	            this.openToolEditor = function (id) {
+	                _this.navigation.pathname = '/tools/' + id;
+	                _this.changeLocation();
+	            };
+	            this.closeToolEditor = function () {
+	                _this.navigation.pathname = '/tools';
+	                _this.changeLocation();
+	            };
+	            this.newTool = function () {
+	                if (_this.navigation.query["toolIds"]) {
+	                    if (Array.isArray(_this.navigation.query["toolIds"])) {
+	                        _this.navigation.query["toolIds"].push(0);
+	                    }
+	                    else {
+	                        var toolId = _this.navigation.query["toolIds"];
+	                        _this.navigation.query["toolIds"] = [];
+	                        _this.navigation.query["toolIds"].push(toolId);
+	                        _this.navigation.query["toolIds"].push(0);
+	                    }
+	                }
+	                else {
+	                    _this.navigation.query["toolIds"] = [];
+	                    _this.navigation.query["toolIds"].push(0);
+	                }
+	                ReactRouter.browserHistory.push(_this.navigation);
+	            };
+	            this.openTool = function (id) {
+	                if (_this.navigation.query["toolIds"]) {
+	                    if (Array.isArray(_this.navigation.query["toolIds"])) {
+	                        _this.navigation.query["toolIds"].push(id);
+	                    }
+	                    else {
+	                        var toolId = _this.navigation.query["toolIds"];
+	                        _this.navigation.query["toolIds"] = [];
+	                        _this.navigation.query["toolIds"].push(toolId);
+	                        _this.navigation.query["toolIds"].push(id);
+	                    }
+	                }
+	                else {
+	                    _this.navigation.query["toolIds"] = [];
+	                    _this.navigation.query["toolIds"].push(id);
+	                }
+	                ReactRouter.browserHistory.push(_this.navigation);
+	            };
 	        }
-	        NavigationManagerStatic.prototype.handler = function (args) {
-	            navigation = args;
-	        };
-	        NavigationManagerStatic.prototype.openToolEditor = function (id) {
-	            navigation.pathname = '/tools/' + id;
-	            this.changeLocation();
-	        };
-	        NavigationManagerStatic.prototype.closeToolEditor = function () {
-	            navigation.pathname = '/tools';
-	            this.changeLocation();
-	        };
-	        NavigationManagerStatic.prototype.newTool = function () {
-	            if (navigation.query["toolIds"]) {
-	                if (Array.isArray(navigation.query["toolIds"])) {
-	                    navigation.query["toolIds"].push(0);
-	                }
-	                else {
-	                    var toolId = navigation.query["toolIds"];
-	                    navigation.query["toolIds"] = [];
-	                    navigation.query["toolIds"].push(toolId);
-	                    navigation.query["toolIds"].push(0);
-	                }
-	            }
-	            else {
-	                navigation.query["toolIds"] = [];
-	                navigation.query["toolIds"].push(0);
-	            }
-	            ReactRouter.browserHistory.push(navigation);
-	        };
-	        NavigationManagerStatic.prototype.openTool = function (id) {
-	            if (navigation.query["toolIds"]) {
-	                if (Array.isArray(navigation.query["toolIds"])) {
-	                    navigation.query["toolIds"].push(id);
-	                }
-	                else {
-	                    var toolId = navigation.query["toolIds"];
-	                    navigation.query["toolIds"] = [];
-	                    navigation.query["toolIds"].push(toolId);
-	                    navigation.query["toolIds"].push(id);
-	                }
-	            }
-	            else {
-	                navigation.query["toolIds"] = [];
-	                navigation.query["toolIds"].push(id);
-	            }
-	            ReactRouter.browserHistory.push(navigation);
-	        };
 	        NavigationManagerStatic.prototype.changeLocation = function () {
-	            ReactRouter.browserHistory.push(navigation);
+	            ReactRouter.browserHistory.push(this.navigation);
 	        };
 	        return NavigationManagerStatic;
 	    }());
@@ -519,7 +520,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! jquery */ 18), __webpack_require__(/*! ../dispatcher/appDispatcher */ 15), __webpack_require__(/*! ../actions/toolActionTypes */ 19), __webpack_require__(/*! ../actions/errorActions */ 14), __webpack_require__(/*! ../../constants/pageConstants */ 20), __webpack_require__(/*! ../../managers/navigationManager */ 12), __webpack_require__(/*! object-assign */ 21), __webpack_require__(/*! eventemitter3 */ 22)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, $, appDispatcher_1, toolActionTypes_1, errorActions_1, pageConstants_1, navigationManager_1, assign, EventEmitter) {
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! jquery */ 19), __webpack_require__(/*! ../dispatcher/appDispatcher */ 15), __webpack_require__(/*! ../actions/actionSourceTypes */ 17), __webpack_require__(/*! ../actions/toolActionTypes */ 20), __webpack_require__(/*! ../actions/errorActions */ 14), __webpack_require__(/*! ../../constants/pageConstants */ 21), __webpack_require__(/*! ../../managers/navigationManager */ 12), __webpack_require__(/*! object-assign */ 22), __webpack_require__(/*! eventemitter3 */ 23)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, $, appDispatcher_1, actionSourceTypes_1, toolActionTypes_1, errorActions_1, pageConstants_1, navigationManager_1, assign, EventEmitter) {
 	    "use strict";
 	    var CHANGE_TOOLS_EVENT = 'change_tools';
 	    var CHANGE_EDITTOOL_EVENT = 'change_edittool';
@@ -680,6 +681,8 @@
 	    }(EventEmitter));
 	    var ToolStore = new ToolStoreStatic();
 	    appDispatcher_1.default.register(function (payload) {
+	        if (payload.actionSource != actionSourceTypes_1.default.TOOL)
+	            return;
 	        switch (payload.actionType) {
 	            case toolActionTypes_1.default.TOOL_INIT:
 	                _init(payload.currentPage, payload.pageSize, payload.searchText);
@@ -724,7 +727,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/// <reference path="../../../typings/tsd.d.ts" />
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! ../dispatcher/appDispatcher */ 15), __webpack_require__(/*! ./errorActionTypes */ 17)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, appDispatcher_1, errorActionTypes_1) {
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! ../dispatcher/appDispatcher */ 15), __webpack_require__(/*! ./actionSourceTypes */ 17), __webpack_require__(/*! ./errorActionTypes */ 18)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, appDispatcher_1, actionSourceTypes_1, errorActionTypes_1) {
 	    "use strict";
 	    var ErrorActionsStatic = (function () {
 	        function ErrorActionsStatic() {
@@ -732,6 +735,7 @@
 	        ErrorActionsStatic.prototype.received = function (message) {
 	            appDispatcher_1.default.dispatch({
 	                actionType: errorActionTypes_1.default.RECEIVE_ERROR_MESSAGE,
+	                actionSource: actionSourceTypes_1.default.ERROR,
 	                errorMessage: message
 	            });
 	        };
@@ -770,6 +774,25 @@
 
 /***/ },
 /* 17 */
+/*!*******************************************************!*\
+  !*** ./Scripts/app/flux/actions/actionSourceTypes.js ***!
+  \*******************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports) {
+	    "use strict";
+	    var ActionSourceTypes;
+	    (function (ActionSourceTypes) {
+	        ActionSourceTypes[ActionSourceTypes["ERROR"] = 0] = "ERROR";
+	        ActionSourceTypes[ActionSourceTypes["TOOL"] = 1] = "TOOL";
+	    })(ActionSourceTypes || (ActionSourceTypes = {}));
+	    Object.defineProperty(exports, "__esModule", { value: true });
+	    exports.default = ActionSourceTypes;
+	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	//# sourceMappingURL=actionSourceTypes.js.map
+
+/***/ },
+/* 18 */
 /*!******************************************************!*\
   !*** ./Scripts/app/flux/actions/errorActionTypes.js ***!
   \******************************************************/
@@ -787,7 +810,7 @@
 	//# sourceMappingURL=errorActionTypes.js.map
 
 /***/ },
-/* 18 */
+/* 19 */
 /*!********************!*\
   !*** external "$" ***!
   \********************/
@@ -796,7 +819,7 @@
 	module.exports = $;
 
 /***/ },
-/* 19 */
+/* 20 */
 /*!*****************************************************!*\
   !*** ./Scripts/app/flux/actions/toolActionTypes.js ***!
   \*****************************************************/
@@ -821,7 +844,7 @@
 	//# sourceMappingURL=toolActionTypes.js.map
 
 /***/ },
-/* 20 */
+/* 21 */
 /*!************************************************!*\
   !*** ./Scripts/app/constants/pageConstants.js ***!
   \************************************************/
@@ -841,7 +864,7 @@
 	//# sourceMappingURL=pageConstants.js.map
 
 /***/ },
-/* 21 */
+/* 22 */
 /*!*************************!*\
   !*** external "assign" ***!
   \*************************/
@@ -850,7 +873,7 @@
 	module.exports = assign;
 
 /***/ },
-/* 22 */
+/* 23 */
 /*!*******************************!*\
   !*** external "EventEmitter" ***!
   \*******************************/
@@ -859,14 +882,14 @@
 	module.exports = EventEmitter;
 
 /***/ },
-/* 23 */
+/* 24 */
 /*!*************************************************!*\
   !*** ./Scripts/app/flux/actions/toolActions.js ***!
   \*************************************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/// <reference path="../../../typings/tsd.d.ts" />
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! ../dispatcher/appDispatcher */ 15), __webpack_require__(/*! ./toolActionTypes */ 19)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, appDispatcher_1, toolActionTypes_1) {
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! ../dispatcher/appDispatcher */ 15), __webpack_require__(/*! ./actionSourceTypes */ 17), __webpack_require__(/*! ./toolActionTypes */ 20)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, appDispatcher_1, actionSourceTypes_1, toolActionTypes_1) {
 	    "use strict";
 	    var ToolActionsStatic = (function () {
 	        function ToolActionsStatic() {
@@ -874,6 +897,7 @@
 	        ToolActionsStatic.prototype.init = function (currentPage, pageSize, searchText) {
 	            appDispatcher_1.default.dispatch({
 	                actionType: toolActionTypes_1.default.TOOL_INIT,
+	                actionSource: actionSourceTypes_1.default.TOOL,
 	                currentPage: currentPage,
 	                pageSize: pageSize,
 	                searchText: searchText
@@ -882,41 +906,49 @@
 	        ToolActionsStatic.prototype.loadEditTool = function (id) {
 	            appDispatcher_1.default.dispatch({
 	                actionType: toolActionTypes_1.default.TOOL_LOAD_EDIT,
+	                actionSource: actionSourceTypes_1.default.TOOL,
 	                id: id
 	            });
 	        };
 	        ToolActionsStatic.prototype.create = function (tool) {
 	            appDispatcher_1.default.dispatch({
 	                actionType: toolActionTypes_1.default.TOOL_CREATE,
+	                actionSource: actionSourceTypes_1.default.TOOL,
 	                tool: tool
 	            });
 	        };
 	        ToolActionsStatic.prototype.update = function (tool) {
 	            appDispatcher_1.default.dispatch({
 	                actionType: toolActionTypes_1.default.TOOL_UPDATE,
+	                actionSource: actionSourceTypes_1.default.TOOL,
 	                tool: tool
 	            });
 	        };
 	        ToolActionsStatic.prototype.remove = function (id) {
 	            appDispatcher_1.default.dispatch({
-	                actionType: toolActionTypes_1.default.TOOL_DELETE
+	                actionType: toolActionTypes_1.default.TOOL_DELETE,
+	                actionSource: actionSourceTypes_1.default.TOOL,
+	                id: id
 	            });
 	        };
 	        ToolActionsStatic.prototype.changeToolPage = function (page) {
 	            appDispatcher_1.default.dispatch({
 	                actionType: toolActionTypes_1.default.TOOL_PAGE_CHANGE,
+	                actionSource: actionSourceTypes_1.default.TOOL,
 	                currentPage: page
 	            });
 	        };
 	        ToolActionsStatic.prototype.changeToolsPerPage = function (toolsPerPage) {
 	            appDispatcher_1.default.dispatch({
 	                actionType: toolActionTypes_1.default.TOOLS_PER_PAGE_CHANGE,
+	                actionSource: actionSourceTypes_1.default.TOOL,
 	                pageSize: toolsPerPage
 	            });
 	        };
 	        ToolActionsStatic.prototype.changeToolSearchText = function (text) {
 	            appDispatcher_1.default.dispatch({
 	                actionType: toolActionTypes_1.default.TOOL_SEARCH_TEXT_CHANGE,
+	                actionSource: actionSourceTypes_1.default.TOOL,
 	                searchText: text
 	            });
 	        };
@@ -929,61 +961,61 @@
 	//# sourceMappingURL=toolActions.js.map
 
 /***/ },
-/* 24 */
+/* 25 */
 /*!***************************************************!*\
   !*** ./Scripts/app/managers/pageParamsManager.js ***!
   \***************************************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/// <reference path="../../typings/tsd.d.ts" />
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react-router */ 4), __webpack_require__(/*! ../constants/pageConstants */ 20)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, ReactRouter, pageConstants_1) {
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react-router */ 4), __webpack_require__(/*! ../constants/pageConstants */ 21)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, ReactRouter, pageConstants_1) {
 	    "use strict";
-	    var currentPage = 0;
-	    var itemsPerPage = pageConstants_1.default.ITEMS_PER_PAGE_INIT;
-	    var searchText = '';
-	    var navigation;
 	    var PageParamsManagerStatic = (function () {
 	        function PageParamsManagerStatic() {
+	            var _this = this;
+	            this.locationChangeHandler = function (location) {
+	                var query = location.query;
+	                _this.navigation = location;
+	                if (query.page) {
+	                    if (query.page != _this.currentPage)
+	                        _this.currentPage = query.page;
+	                }
+	                if (query.search) {
+	                    if (query.search != _this.searchText)
+	                        _this.searchText = query.search;
+	                }
+	                if (query.pageSize) {
+	                    if (query.pageSize != _this.itemsPerPage)
+	                        _this.itemsPerPage = query.pageSize;
+	                }
+	            };
+	            this.changePage = function (page) {
+	                _this.navigation.query.page = page;
+	                _this.changeLocation();
+	            };
+	            this.changeSearchText = function (text) {
+	                _this.navigation.query.search = text;
+	                _this.changeLocation();
+	            };
+	            this.changePageSize = function (pageSize) {
+	                _this.navigation.query.pageSize = pageSize;
+	                _this.changeLocation();
+	            };
+	            this.getPage = function () {
+	                return _this.currentPage;
+	            };
+	            this.getPageSize = function () {
+	                return _this.itemsPerPage;
+	            };
+	            this.getSearchText = function () {
+	                return _this.searchText;
+	            };
+	            this.currentPage = 0;
+	            this.itemsPerPage = pageConstants_1.default.ITEMS_PER_PAGE_INIT;
+	            this.searchText = '';
 	        }
-	        PageParamsManagerStatic.prototype.locationChangeHandler = function (location) {
-	            var query = location.query;
-	            navigation = location;
-	            if (query.page) {
-	                if (query.page != currentPage)
-	                    currentPage = query.page;
-	            }
-	            if (query.search) {
-	                if (query.search != searchText)
-	                    searchText = query.search;
-	            }
-	            if (query.pageSize) {
-	                if (query.pageSize != itemsPerPage)
-	                    itemsPerPage = query.pageSize;
-	            }
-	        };
-	        PageParamsManagerStatic.prototype.changePage = function (page) {
-	            navigation.query.page = page;
-	            this.changeLocation();
-	        };
-	        PageParamsManagerStatic.prototype.changeSearchText = function (text) {
-	            navigation.query.search = text;
-	            this.changeLocation();
-	        };
-	        PageParamsManagerStatic.prototype.changePageSize = function (pageSize) {
-	            navigation.query.pageSize = pageSize;
-	            this.changeLocation();
-	        };
-	        PageParamsManagerStatic.prototype.getPage = function () {
-	            return currentPage;
-	        };
-	        PageParamsManagerStatic.prototype.getPageSize = function () {
-	            return itemsPerPage;
-	        };
-	        PageParamsManagerStatic.prototype.getSearchText = function () {
-	            return searchText;
-	        };
 	        PageParamsManagerStatic.prototype.changeLocation = function () {
-	            ReactRouter.browserHistory.push(navigation);
+	            ReactRouter.browserHistory.push(this.navigation);
 	        };
 	        return PageParamsManagerStatic;
 	    }());
@@ -995,7 +1027,7 @@
 	//# sourceMappingURL=pageParamsManager.js.map
 
 /***/ },
-/* 25 */
+/* 26 */
 /*!***************************************************!*\
   !*** ./Scripts/app/components/common/tableRow.js ***!
   \***************************************************/
@@ -1052,7 +1084,7 @@
 	//# sourceMappingURL=tableRow.js.map
 
 /***/ },
-/* 26 */
+/* 27 */
 /*!********************************************************!*\
   !*** ./Scripts/app/components/common/confirmDelete.js ***!
   \********************************************************/
@@ -1090,7 +1122,7 @@
 	//# sourceMappingURL=confirmDelete.js.map
 
 /***/ },
-/* 27 */
+/* 28 */
 /*!*****************************************************!*\
   !*** ./Scripts/app/components/common/pagination.js ***!
   \*****************************************************/
@@ -1107,11 +1139,12 @@
 	    var PageButton = (function (_super) {
 	        __extends(PageButton, _super);
 	        function PageButton() {
+	            var _this = this;
 	            _super.apply(this, arguments);
+	            this.handleClick = function () {
+	                _this.props.onClick(_this.props.pageNumber);
+	            };
 	        }
-	        PageButton.prototype.handleClick = function () {
-	            this.props.onClick(this.props.pageNumber);
-	        };
 	        PageButton.prototype.render = function () {
 	            return (React.createElement("li", {className: this.props.mode}, React.createElement("a", {href: "#", onClick: this.handleClick}, this.props.symbol)));
 	        };
@@ -1174,7 +1207,7 @@
 	//# sourceMappingURL=pagination.js.map
 
 /***/ },
-/* 28 */
+/* 29 */
 /*!******************************************************!*\
   !*** ./Scripts/app/components/common/searchInput.js ***!
   \******************************************************/
@@ -1208,7 +1241,7 @@
 	//# sourceMappingURL=searchInput.js.map
 
 /***/ },
-/* 29 */
+/* 30 */
 /*!***************************************************************!*\
   !*** ./Scripts/app/components/common/itemsPerPageSelector.js ***!
   \***************************************************************/
@@ -1220,7 +1253,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ../../constants/pageConstants */ 20)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, pageConstants_1) {
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ../../constants/pageConstants */ 21)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, pageConstants_1) {
 	    "use strict";
 	    var ItemsPerPageSelector = (function (_super) {
 	        __extends(ItemsPerPageSelector, _super);
@@ -1277,7 +1310,7 @@
 	//# sourceMappingURL=itemsPerPageSelector.js.map
 
 /***/ },
-/* 30 */
+/* 31 */
 /*!***************************************************!*\
   !*** ./Scripts/app/components/partListSection.js ***!
   \***************************************************/
@@ -1310,7 +1343,7 @@
 	//# sourceMappingURL=partListSection.js.map
 
 /***/ },
-/* 31 */
+/* 32 */
 /*!************************************************!*\
   !*** ./Scripts/app/components/toolEditForm.js ***!
   \************************************************/
@@ -1322,7 +1355,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ../flux/stores/toolStore */ 13), __webpack_require__(/*! ../flux/stores/errorStore */ 32), __webpack_require__(/*! ../flux/actions/toolActions */ 23), __webpack_require__(/*! ../managers/navigationManager */ 12), __webpack_require__(/*! ./common/textInput */ 33)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, toolStore_1, errorStore_1, toolActions_1, navigationManager_1, textInput_1) {
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ../flux/stores/toolStore */ 13), __webpack_require__(/*! ../flux/stores/errorStore */ 33), __webpack_require__(/*! ../flux/actions/toolActions */ 24), __webpack_require__(/*! ../managers/navigationManager */ 12), __webpack_require__(/*! ./common/textInput */ 34)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, toolStore_1, errorStore_1, toolActions_1, navigationManager_1, textInput_1) {
 	    "use strict";
 	    var ToolEditForm = (function (_super) {
 	        __extends(ToolEditForm, _super);
@@ -1425,7 +1458,7 @@
 	//# sourceMappingURL=toolEditForm.js.map
 
 /***/ },
-/* 32 */
+/* 33 */
 /*!***********************************************!*\
   !*** ./Scripts/app/flux/stores/errorStore.js ***!
   \***********************************************/
@@ -1437,7 +1470,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! eventemitter3 */ 22), __webpack_require__(/*! ../dispatcher/appDispatcher */ 15), __webpack_require__(/*! ../actions/errorActionTypes */ 17)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, EventEmitter, appDispatcher_1, errorActionTypes_1) {
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! eventemitter3 */ 23), __webpack_require__(/*! ../dispatcher/appDispatcher */ 15), __webpack_require__(/*! ../actions/actionSourceTypes */ 17), __webpack_require__(/*! ../actions/errorActionTypes */ 18)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, EventEmitter, appDispatcher_1, actionSourceTypes_1, errorActionTypes_1) {
 	    "use strict";
 	    var CHANGE_ERROR_EVENT = 'change_error_event';
 	    var _errorMessage = null;
@@ -1471,6 +1504,8 @@
 	    }(EventEmitter));
 	    var ErrorStore = new ErrorStoreStatic();
 	    appDispatcher_1.default.register(function (payload) {
+	        if (payload.actionSource != actionSourceTypes_1.default.ERROR)
+	            return;
 	        switch (payload.actionType) {
 	            case errorActionTypes_1.default.RECEIVE_ERROR_MESSAGE:
 	                _changeErrorMessage(payload.errorMessage);
@@ -1485,7 +1520,7 @@
 	//# sourceMappingURL=errorStore.js.map
 
 /***/ },
-/* 33 */
+/* 34 */
 /*!****************************************************!*\
   !*** ./Scripts/app/components/common/textInput.js ***!
   \****************************************************/
@@ -1497,7 +1532,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ./inputError */ 34)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, inputError_1) {
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ./inputError */ 35)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, inputError_1) {
 	    "use strict";
 	    var TextInput = (function (_super) {
 	        __extends(TextInput, _super);
@@ -1594,7 +1629,7 @@
 	//# sourceMappingURL=textInput.js.map
 
 /***/ },
-/* 34 */
+/* 35 */
 /*!*****************************************************!*\
   !*** ./Scripts/app/components/common/inputError.js ***!
   \*****************************************************/

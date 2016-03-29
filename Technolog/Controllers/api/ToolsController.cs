@@ -112,7 +112,7 @@ namespace Technolog.Web.Controllers.api
 
             try
             {
-                toolService.Insert(toolDTO);
+                toolModel.Id = toolService.Insert(toolDTO);
             }
             catch (ValidationException ex)
             {

@@ -2,66 +2,65 @@
 
 import * as ReactRouter from "react-router";
 
-let navigation;
-
 class NavigationManagerStatic {
+    private navigation;
 
-    public handler(args) {
-        navigation = args;
+    public handler = (args): void => {
+        this.navigation = args;
     }
 
-    public openToolEditor(id: number) {
-        navigation.pathname = '/tools/' + id;
+    public openToolEditor = (id: number): void => {
+        this.navigation.pathname = '/tools/' + id;
         this.changeLocation();
     }
 
-    public closeToolEditor() {
-        navigation.pathname = '/tools';
+    public closeToolEditor = (): void => {
+        this.navigation.pathname = '/tools';
         this.changeLocation();
     }
 
-    public newTool() {
-        if (navigation.query["toolIds"]) {
-            if (Array.isArray(navigation.query["toolIds"])) {
-                navigation.query["toolIds"].push(0);
+    public newTool = (): void => {
+        if (this.navigation.query["toolIds"]) {
+            if (Array.isArray(this.navigation.query["toolIds"])) {
+                this.navigation.query["toolIds"].push(0);
             } else {
-                var toolId = navigation.query["toolIds"];
+                var toolId = this.navigation.query["toolIds"];
 
-                navigation.query["toolIds"] = [];
-                navigation.query["toolIds"].push(toolId);
-                navigation.query["toolIds"].push(0);
+                this.navigation.query["toolIds"] = [];
+                this.navigation.query["toolIds"].push(toolId);
+                this.navigation.query["toolIds"].push(0);
             }
         }
         else {
-            navigation.query["toolIds"] = [];
-            navigation.query["toolIds"].push(0);
+            this.navigation.query["toolIds"] = [];
+            this.navigation.query["toolIds"].push(0);
         }
 
-        ReactRouter.browserHistory.push(navigation);
+        ReactRouter.browserHistory.push(this.navigation);
     }
 
-    public openTool(id) {
-        if (navigation.query["toolIds"]) {
-            if (Array.isArray(navigation.query["toolIds"])) {
-                navigation.query["toolIds"].push(id);
+    public openTool = (id: number) => {
+        if (this.navigation.query["toolIds"]) {
+            if (Array.isArray(this.navigation.query["toolIds"])) {
+                this.navigation.query["toolIds"].push(id);
             } else {
-                var toolId = navigation.query["toolIds"];
+                var toolId = this.navigation.query["toolIds"];
 
-                navigation.query["toolIds"] = [];
-                navigation.query["toolIds"].push(toolId);
-                navigation.query["toolIds"].push(id);
+                this.navigation.query["toolIds"] = [];
+                this.navigation.query["toolIds"].push(toolId);
+                this.navigation.query["toolIds"].push(id);
             }
         }
         else {
-            navigation.query["toolIds"] = [];
-            navigation.query["toolIds"].push(id);
+            this.navigation.query["toolIds"] = [];
+            this.navigation.query["toolIds"].push(id);
         }
 
-        ReactRouter.browserHistory.push(navigation);
+        ReactRouter.browserHistory.push(this.navigation);
     }
 
     private changeLocation() {
-        ReactRouter.browserHistory.push(navigation);
+        ReactRouter.browserHistory.push(this.navigation);
     }
 }
 

@@ -1,5 +1,5 @@
 /// <reference path="../../../typings/tsd.d.ts" />
-define(["require", "exports", "../dispatcher/appDispatcher", "./errorActionTypes"], function (require, exports, appDispatcher_1, errorActionTypes_1) {
+define(["require", "exports", "../dispatcher/appDispatcher", "./actionSourceTypes", "./errorActionTypes"], function (require, exports, appDispatcher_1, actionSourceTypes_1, errorActionTypes_1) {
     "use strict";
     var ErrorActionsStatic = (function () {
         function ErrorActionsStatic() {
@@ -7,6 +7,7 @@ define(["require", "exports", "../dispatcher/appDispatcher", "./errorActionTypes
         ErrorActionsStatic.prototype.received = function (message) {
             appDispatcher_1.default.dispatch({
                 actionType: errorActionTypes_1.default.RECEIVE_ERROR_MESSAGE,
+                actionSource: actionSourceTypes_1.default.ERROR,
                 errorMessage: message
             });
         };

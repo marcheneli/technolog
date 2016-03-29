@@ -10,7 +10,7 @@ interface IPageButtonProps {
 }
 
 class PageButton extends React.Component<IPageButtonProps, {}> {
-    private handleClick(): void {
+    private handleClick = (): void => {
         this.props.onClick(this.props.pageNumber);
     }
 
