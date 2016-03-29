@@ -9,11 +9,12 @@ define(["require", "exports", "react"], function (require, exports, React) {
     var SearchInput = (function (_super) {
         __extends(SearchInput, _super);
         function SearchInput() {
+            var _this = this;
             _super.apply(this, arguments);
+            this.handleChange = function (e) {
+                _this.props.onChange(e.target.value);
+            };
         }
-        SearchInput.prototype.handleChange = function (e) {
-            this.props.onChange(e.target.value);
-        };
         SearchInput.prototype.render = function () {
             return (React.createElement("input", {className: 'form-control', placeholder: this.props.text, onChange: this.handleChange}));
         };

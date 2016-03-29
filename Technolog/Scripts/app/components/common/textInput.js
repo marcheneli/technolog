@@ -8,19 +8,35 @@ define(["require", "exports", "react", "./inputError"], function (require, expor
     "use strict";
     var TextInput = (function (_super) {
         __extends(TextInput, _super);
-        function TextInput() {
-            _super.apply(this, arguments);
-        }
-        TextInput.prototype.getInitialState = function () {
-            //most of these variables have to do with handling errors
-            return {
+        function TextInput(props, context) {
+            var _this = this;
+            _super.call(this, props, context);
+            this.handleChange = function (event) {
+                //validate the field locally
+                _this.validation(event.target.value);
+                //Call onChange method on the parent component for updating it's state
+                //If saving this field for final form submission, it gets passed
+                // up to the top component for sending to the server
+                if (_this.props.onChange) {
+                    _this.props.onChange(event);
+                }
+            };
+            this.handleBlur = function (event) {
+                //Complete final validation from parent element when complete
+                var valid = _this.props.validate(event.target.value);
+                //pass the result to the local validation element for displaying the error
+                _this.validation(event.target.value, valid);
+            };
+            this.props = props;
+            this.context = context;
+            this.state = {
                 isEmpty: true,
                 value: this.props.value,
                 valid: false,
                 errorMessage: "Input is invalid",
                 errorVisible: false
             };
-        };
+        }
         TextInput.prototype.componentWillReceiveProps = function (nextProps) {
             this.setState({
                 isEmpty: true,
@@ -29,16 +45,6 @@ define(["require", "exports", "react", "./inputError"], function (require, expor
                 errorMessage: "Input is invalid",
                 errorVisible: false
             });
-        };
-        TextInput.prototype.handleChange = function (event) {
-            //validate the field locally
-            this.validation(event.target.value);
-            //Call onChange method on the parent component for updating it's state
-            //If saving this field for final form submission, it gets passed
-            // up to the top component for sending to the server
-            if (this.props.onChange) {
-                this.props.onChange(event);
-            }
         };
         TextInput.prototype.componentDidMount = function () {
             this.props.register(this);
@@ -82,12 +88,6 @@ define(["require", "exports", "react", "./inputError"], function (require, expor
                 errorMessage: message,
                 errorVisible: errorVisible
             });
-        };
-        TextInput.prototype.handleBlur = function (event) {
-            //Complete final validation from parent element when complete
-            var valid = this.props.validate(event.target.value);
-            //pass the result to the local validation element for displaying the error
-            this.validation(event.target.value, valid);
         };
         TextInput.prototype.render = function () {
             return (React.createElement("div", {className: this.props.uniqueName}, React.createElement("input", {className: 'form-control', placeholder: this.props.text, onChange: this.handleChange, onBlur: this.handleBlur, value: this.props.value}), this.state.errorVisible ?

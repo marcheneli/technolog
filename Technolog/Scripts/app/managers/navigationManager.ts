@@ -2,65 +2,66 @@
 
 import * as ReactRouter from "react-router";
 
+let navigation;
+
 class NavigationManagerStatic {
-    private navigation;
 
     public handler(args) {
-        this.navigation = args;
+        navigation = args;
     }
 
     public openToolEditor(id: number) {
-        this.navigation.pathname = '/tools/' + id;
+        navigation.pathname = '/tools/' + id;
         this.changeLocation();
     }
 
     public closeToolEditor() {
-        this.navigation.pathname = '/tools';
+        navigation.pathname = '/tools';
         this.changeLocation();
     }
 
     public newTool() {
-        if (this.navigation.query["toolIds"]) {
-            if (Array.isArray(this.navigation.query["toolIds"])) {
-                this.navigation.query["toolIds"].push(0);
+        if (navigation.query["toolIds"]) {
+            if (Array.isArray(navigation.query["toolIds"])) {
+                navigation.query["toolIds"].push(0);
             } else {
-                var toolId = this.navigation.query["toolIds"];
+                var toolId = navigation.query["toolIds"];
 
-                this.navigation.query["toolIds"] = [];
-                this.navigation.query["toolIds"].push(toolId);
-                this.navigation.query["toolIds"].push(0);
+                navigation.query["toolIds"] = [];
+                navigation.query["toolIds"].push(toolId);
+                navigation.query["toolIds"].push(0);
             }
         }
         else {
-            this.navigation.query["toolIds"] = [];
-            this.navigation.query["toolIds"].push(0);
+            navigation.query["toolIds"] = [];
+            navigation.query["toolIds"].push(0);
         }
 
-        ReactRouter.browserHistory.push(this.navigation);
+        ReactRouter.browserHistory.push(navigation);
     }
 
     public openTool(id) {
-        if (this.navigation.query["toolIds"]) {
-            if (Array.isArray(this.navigation.query["toolIds"])) {
-                this.navigation.query["toolIds"].push(id);
+        if (navigation.query["toolIds"]) {
+            if (Array.isArray(navigation.query["toolIds"])) {
+                navigation.query["toolIds"].push(id);
             } else {
-                var toolId = this.navigation.query["toolIds"];
+                var toolId = navigation.query["toolIds"];
 
-                this.navigation.query["toolIds"] = [];
-                this.navigation.query["toolIds"].push(toolId);
-                this.navigation.query["toolIds"].push(id);
+                navigation.query["toolIds"] = [];
+                navigation.query["toolIds"].push(toolId);
+                navigation.query["toolIds"].push(id);
             }
         }
         else {
-            this.navigation.query["toolIds"] = [];
-            this.navigation.query["toolIds"].push(id);
+            navigation.query["toolIds"] = [];
+            navigation.query["toolIds"].push(id);
         }
 
-        ReactRouter.browserHistory.push(this.navigation);
+        ReactRouter.browserHistory.push(navigation);
     }
 
     private changeLocation() {
-        ReactRouter.browserHistory.push(this.navigation);
+        ReactRouter.browserHistory.push(navigation);
     }
 }
 

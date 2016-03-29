@@ -8,35 +8,36 @@ define(["require", "exports", "react"], function (require, exports, React) {
     "use strict";
     var TableRow = (function (_super) {
         __extends(TableRow, _super);
-        function TableRow() {
-            _super.apply(this, arguments);
-        }
-        TableRow.prototype.getInitialState = function () {
-            return {
+        function TableRow(props, context) {
+            var _this = this;
+            _super.call(this, props, context);
+            this.onMouseEnterHandler = function () {
+                if (!_this.props.isCurrent)
+                    _this.setState({ color: "active" });
+            };
+            this.onMouseLeaveHandler = function () {
+                if (!_this.props.isCurrent)
+                    _this.setState({ color: null });
+            };
+            this.onClickHandler = function () {
+                if (!_this.props.isCurrent) {
+                    _this.setState({ color: null });
+                    _this.props.changeCurrent(_this.props.item);
+                }
+                else {
+                    _this.setState({ color: "active" });
+                    _this.props.changeCurrent(null);
+                }
+            };
+            this.onDoubleClickHandler = function () {
+                _this.props.rowDoubleClickHandler(_this.props.item);
+            };
+            this.props = props;
+            this.context = context;
+            this.state = {
                 color: this.props.isCurrent ? 'info' : null
             };
-        };
-        TableRow.prototype.onMouseEnterHandler = function () {
-            if (!this.props.isCurrent)
-                this.setState({ color: "active" });
-        };
-        TableRow.prototype.onMouseLeaveHandler = function () {
-            if (!this.props.isCurrent)
-                this.setState({ color: null });
-        };
-        TableRow.prototype.onClickHandler = function () {
-            if (!this.props.isCurrent) {
-                this.setState({ color: null });
-                this.props.changeCurrent(this.props.item);
-            }
-            else {
-                this.setState({ color: "active" });
-                this.props.changeCurrent(null);
-            }
-        };
-        TableRow.prototype.onDoubleClickHandler = function () {
-            this.props.rowDoubleClickHandler(this.props.item);
-        };
+        }
         TableRow.prototype.render = function () {
             return (React.createElement("tr", {className: this.props.isCurrent ? 'info' : this.state.color, onMouseEnter: this.onMouseEnterHandler, onMouseLeave: this.onMouseLeaveHandler, onClick: this.onClickHandler, onDoubleClick: this.onDoubleClickHandler}, this.props.children));
         };

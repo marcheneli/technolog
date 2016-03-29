@@ -14,26 +14,31 @@ interface ITableRowState {
 }
 
 export default class TableRow extends React.Component<ITableRowProps, ITableRowState> {
-    getInitialState() {
-        return {
+
+    constructor(props: ITableRowProps, context: any) {
+        super(props, context);
+
+        this.props = props;
+        this.context = context;
+        this.state = {
             color: this.props.isCurrent ? 'info' : null
-        }
+        };
     }
 
-    private onMouseEnterHandler() {
+    private onMouseEnterHandler = () => {
         if (!this.props.isCurrent) this.setState({ color: "active" });
     }
 
-    private onMouseLeaveHandler() {
+    private onMouseLeaveHandler = () => {
         if (!this.props.isCurrent) this.setState({ color: null });
     }
 
-    private onClickHandler() {
+    private onClickHandler = () => {
         if (!this.props.isCurrent) { this.setState({ color: null }); this.props.changeCurrent(this.props.item); }
         else { this.setState({ color: "active" }); this.props.changeCurrent(null); }
     }
 
-    private onDoubleClickHandler() {
+    private onDoubleClickHandler = () => {
         this.props.rowDoubleClickHandler(this.props.item);
     }
 

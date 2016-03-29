@@ -9,15 +9,16 @@ define(["require", "exports", "react"], function (require, exports, React) {
     var ConfirmDelete = (function (_super) {
         __extends(ConfirmDelete, _super);
         function ConfirmDelete() {
+            var _this = this;
             _super.apply(this, arguments);
+            this.handleConfirm = function (e) {
+                e.preventDefault();
+                _this.props.success(_this.props.id);
+            };
+            this.handleCancelClick = function () {
+                _this.props.cancel();
+            };
         }
-        ConfirmDelete.prototype.handleConfirm = function (e) {
-            e.preventDefault();
-            this.props.success(this.props.id);
-        };
-        ConfirmDelete.prototype.handleCancelClick = function () {
-            this.props.cancel();
-        };
         ConfirmDelete.prototype.render = function () {
             return (React.createElement("div", {className: "form-group"}, React.createElement("h3", null, this.props.title), React.createElement("hr", null), React.createElement("form", {onSubmit: this.handleConfirm}, React.createElement("h4", null, this.props.message), React.createElement("div", {className: "btn-toolbar pull-right", style: { marginBottom: 5 + 'px' }}, React.createElement("button", {type: "submit", className: "btn btn-danger"}, "Да"), React.createElement("button", {type: "button", className: "btn btn-default", onClick: this.handleCancelClick}, "Нет")))));
         };

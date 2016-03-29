@@ -66,6 +66,10 @@
       <Project>{ed38ba5f-d5f3-4957-bf7a-33797dc25de4}</Project>
       <Name>Technolog.Domain</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Technolog.Infrastructure.Interfaces\Technolog.Infrastructure.Interfaces.csproj">
+      <Project>{faee3678-5284-4e61-a636-e2a5004cfa82}</Project>
+      <Name>Technolog.Infrastructure.Interfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Technolog.SL\Technolog.Services.csproj">
       <Project>{dc47cc8b-a368-4b43-9028-ff1eb98272e5}</Project>
       <Name>Technolog.Services</Name>

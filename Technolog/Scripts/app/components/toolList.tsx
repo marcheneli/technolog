@@ -25,14 +25,19 @@ interface IToolListState {
 }
 
 export default class ToolList extends React.Component<IToolListProps, IToolListState> {
-    getInitialState() {
-        return {
+
+    constructor(props: IToolListProps, context: any) {
+        super(props, context);
+
+        this.props = props;
+        this.context = context;
+        this.state = {
             tools: [],
             currentTool: null,
             isConfirmDeleting: false,
             toolAmount: 0,
             toolsPerPage: PageConstants.ITEMS_PER_PAGE_INIT
-        }
+        };
     }
 
     componentWillMount() {
@@ -47,7 +52,8 @@ export default class ToolList extends React.Component<IToolListProps, IToolListS
         ToolActions.init(PageParamsManager.getPage(), PageParamsManager.getPageSize(), PageParamsManager.getSearchText());
     }
 
-    private handleToolsChange() {
+    private handleToolsChange = () => {
+
         this.setState({
             tools: ToolStore.getAll(),
             currentTool: null,
@@ -57,7 +63,7 @@ export default class ToolList extends React.Component<IToolListProps, IToolListS
         });
     }
 
-    private changeCurrent(tool) {
+    private changeCurrent = (tool: ITool) => {
         this.setState({
             tools: this.state.tools,
             currentTool: tool,
@@ -67,19 +73,19 @@ export default class ToolList extends React.Component<IToolListProps, IToolListS
         });
     }
 
-    private toolRowDoubleClick(tool: ITool) {
+    private toolRowDoubleClick = (tool: ITool) => {
         NavigationManager.openToolEditor(tool.id);
     }
 
-    private newToolBtnClickHandler() {
+    private newToolBtnClickHandler = () => {
         NavigationManager.openToolEditor(0);
     }
 
-    private handleDeleteSuccess() {
+    private handleDeleteSuccess = () => {
         ToolActions.remove(this.state.currentTool.id);
     }
 
-    private handleDeleteCancel() {
+    private handleDeleteCancel = () => {
         this.setState({
             tools: this.state.tools,
             currentTool: this.state.currentTool,
@@ -89,22 +95,22 @@ export default class ToolList extends React.Component<IToolListProps, IToolListS
         });
     }
 
-    private handleToolsPerPageChange(toolsPerPage: number) {
+    private handleToolsPerPageChange = (toolsPerPage: number) => {
         PageParamsManager.changePageSize(toolsPerPage);
         ToolActions.changeToolsPerPage(toolsPerPage);
     }
 
-    private handleToolPageChange(page: number) {
+    private handleToolPageChange = (page: number) => {
         PageParamsManager.changePage(page);
         ToolActions.changeToolPage(page);
     }
 
-    private handleToolSearchTextChange(text: string) {
+    private handleToolSearchTextChange = (text: string) => {
         PageParamsManager.changeSearchText(text);
         ToolActions.changeToolSearchText(text);
     }
 
-    private refreshBtnClickHandler(text: string) {
+    private refreshBtnClickHandler = (text: string) => {
         ToolActions.init(PageParamsManager.getPage(), PageParamsManager.getPageSize(), PageParamsManager.getSearchText());
         this.setState({
             tools: [],

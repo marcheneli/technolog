@@ -21,24 +21,30 @@ define(["require", "exports", "react"], function (require, exports, React) {
     }(React.Component));
     var Pagination = (function (_super) {
         __extends(Pagination, _super);
-        function Pagination() {
-            _super.apply(this, arguments);
+        function Pagination(props, context) {
+            var _this = this;
+            _super.call(this, props, context);
+            this.pageButtonClickHandler = function (pageNumber) {
+                var totalPageAmount = Math.ceil(_this.props.itemAmount / _this.props.itemsPerPage);
+                if (pageNumber == -1 && _this.state.currentPage != 0) {
+                    _this.setState({ currentPage: _this.state.currentPage - 1 });
+                    _this.props.updatePage(_this.state.currentPage - 1);
+                }
+                if (pageNumber == -2 && _this.state.currentPage != totalPageAmount - 1) {
+                    _this.setState({ currentPage: _this.state.currentPage + 1 });
+                    _this.props.updatePage(_this.state.currentPage + 1);
+                }
+                if (pageNumber >= 0 && pageNumber != _this.state.currentPage) {
+                    _this.setState({ currentPage: pageNumber });
+                    _this.props.updatePage(pageNumber);
+                }
+            };
+            this.props = props;
+            this.context = context;
+            this.state = {
+                currentPage: 0
+            };
         }
-        Pagination.prototype.pageButtonClickHandler = function (pageNumber) {
-            var totalPageAmount = Math.ceil(this.props.itemAmount / this.props.itemsPerPage);
-            if (pageNumber == -1 && this.state.currentPage != 0) {
-                this.setState({ currentPage: this.state.currentPage - 1 });
-                this.props.updatePage(this.state.currentPage - 1);
-            }
-            if (pageNumber == -2 && this.state.currentPage != totalPageAmount - 1) {
-                this.setState({ currentPage: this.state.currentPage + 1 });
-                this.props.updatePage(this.state.currentPage + 1);
-            }
-            if (pageNumber >= 0 && pageNumber != this.state.currentPage) {
-                this.setState({ currentPage: pageNumber });
-                this.props.updatePage(pageNumber);
-            }
-        };
         Pagination.prototype.render = function () {
             var totalPageAmount = Math.ceil(this.props.itemAmount / this.props.itemsPerPage);
             var pageButtons = [];

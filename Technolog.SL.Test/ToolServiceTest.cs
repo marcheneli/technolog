@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Technolog.Domain.Entities;
 using Technolog.Domain.Interfaces;
+using Technolog.Infrastructure.Interfaces;
 using Technolog.SL.DTO.Tool;
 using Technolog.SL.Interfaces;
 using Technolog.SL.Services;
@@ -27,10 +28,11 @@ namespace Technolog.SL.Test
 
             var mockUnitOfWork = new Mock<IUnitOfWork>();
             var mockToolRepository = new Mock<IToolRepository>();
+            var mockMapper = new Mock<IMapper>();
             mockToolRepository.Setup(r => r.GetById(10)).Returns(_tool);
             mockUnitOfWork.Setup(u => u.Tools).Returns(mockToolRepository.Object);
 
-            _toolService = new ToolService(mockUnitOfWork.Object);
+            _toolService = new ToolService(mockUnitOfWork.Object, mockMapper.Object);
             _mockToolRepository = mockToolRepository;
 
         }

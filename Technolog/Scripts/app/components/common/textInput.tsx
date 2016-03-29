@@ -26,9 +26,13 @@ interface ITextInputState {
 }
 
 export default class TextInput extends React.Component<ITextInputProps, ITextInputState> {
-    getInitialState() {
-        //most of these variables have to do with handling errors
-        return {
+
+    constructor(props: ITextInputProps, context: any) {
+        super(props, context);
+
+        this.props = props;
+        this.context = context;
+        this.state = {
             isEmpty: true,
             value: this.props.value,
             valid: false,
@@ -47,7 +51,7 @@ export default class TextInput extends React.Component<ITextInputProps, ITextInp
         });
     }
 
-    private handleChange(event) {
+    private handleChange = (event) => {
         //validate the field locally
         this.validation(event.target.value);
 
@@ -108,7 +112,7 @@ export default class TextInput extends React.Component<ITextInputProps, ITextInp
 
     }
 
-    handleBlur(event) {
+    handleBlur = (event) => {
         //Complete final validation from parent element when complete
         var valid = this.props.validate(event.target.value);
         //pass the result to the local validation element for displaying the error

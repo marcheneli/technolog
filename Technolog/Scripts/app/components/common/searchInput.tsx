@@ -8,7 +8,7 @@ interface ISearchInputProps {
 }
 
 export default class SearchInput extends React.Component<ISearchInputProps, {}> {
-    handleChange(e) {
+    handleChange = (e) => {
         this.props.onChange(e.target.value);
     }
     render(): React.ReactElement<ISearchInputProps> {

@@ -4,11 +4,13 @@ define(["require", "exports", "react-router", "../constants/pageConstants"], fun
     var currentPage = 0;
     var itemsPerPage = pageConstants_1.default.ITEMS_PER_PAGE_INIT;
     var searchText = '';
+    var navigation;
     var PageParamsManagerStatic = (function () {
         function PageParamsManagerStatic() {
         }
         PageParamsManagerStatic.prototype.locationChangeHandler = function (location) {
             var query = location.query;
+            navigation = location;
             if (query.page) {
                 if (query.page != currentPage)
                     currentPage = query.page;
@@ -23,15 +25,15 @@ define(["require", "exports", "react-router", "../constants/pageConstants"], fun
             }
         };
         PageParamsManagerStatic.prototype.changePage = function (page) {
-            this.navigation.query.page = page;
+            navigation.query.page = page;
             this.changeLocation();
         };
         PageParamsManagerStatic.prototype.changeSearchText = function (text) {
-            this.navigation.query.search = text;
+            navigation.query.search = text;
             this.changeLocation();
         };
         PageParamsManagerStatic.prototype.changePageSize = function (pageSize) {
-            this.navigation.query.pageSize = pageSize;
+            navigation.query.pageSize = pageSize;
             this.changeLocation();
         };
         PageParamsManagerStatic.prototype.getPage = function () {
@@ -44,7 +46,7 @@ define(["require", "exports", "react-router", "../constants/pageConstants"], fun
             return searchText;
         };
         PageParamsManagerStatic.prototype.changeLocation = function () {
-            ReactRouter.browserHistory.push(this.navigation);
+            ReactRouter.browserHistory.push(navigation);
         };
         return PageParamsManagerStatic;
     }());

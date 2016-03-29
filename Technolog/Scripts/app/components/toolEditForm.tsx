@@ -20,12 +20,16 @@ interface IToolEditFormState {
 export default class ToolEditForm extends React.Component<IToolEditFormProps, IToolEditFormState> {
     private inputs;
 
-    getInitialState() {
-        return {
+    constructor(props: IToolEditFormProps, context: any) {
+        super(props, context);
+
+        this.props = props;
+        this.context = context;
+        this.state = {
             tool: null,
             errorMessage: null,
             isValid: true
-        }
+        };
     }
 
     componentWillMount() {
@@ -47,7 +51,7 @@ export default class ToolEditForm extends React.Component<IToolEditFormProps, IT
         ToolActions.loadEditTool(nextProps.params.toolId);
     }
 
-    private handleEditToolChange() {
+    private handleEditToolChange = () => {
         this.setState({
             tool: ToolStore.getEditTool(),
             errorMessage: null,
@@ -55,7 +59,7 @@ export default class ToolEditForm extends React.Component<IToolEditFormProps, IT
         });
     }
 
-    private handleNewError() {
+    private handleNewError = () => {
         this.setState({
             tool: null,
             errorMessage: ErrorStore.getError(),
@@ -68,7 +72,7 @@ export default class ToolEditForm extends React.Component<IToolEditFormProps, IT
         return true;
     }
 
-    private handleSubmit(e) {
+    private handleSubmit = (e) => {
         e.preventDefault();
 
         if (this.state.tool.id == 0) {
@@ -78,14 +82,14 @@ export default class ToolEditForm extends React.Component<IToolEditFormProps, IT
         }
     }
 
-    private cancelClickHandler() {
+    private cancelClickHandler = () => {
         NavigationManager.closeToolEditor();
     }
 
-    private registerInput(input) {
+    private registerInput = (input) => {
         this.inputs[input.props.name] = input;
     }
-    private setToolName(event) {
+    private setToolName = (event) => {
         this.setState({
             tool: {
                 id: this.state.tool.id,
@@ -97,7 +101,7 @@ export default class ToolEditForm extends React.Component<IToolEditFormProps, IT
         });
     }
 
-    private setToolPrice(event) {
+    private setToolPrice = (event) => {
         this.setState({
             tool: {
                 id: this.state.tool.id,

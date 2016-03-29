@@ -8,16 +8,68 @@ define(["require", "exports", "react", "../flux/stores/toolStore", "../flux/stor
     "use strict";
     var ToolEditForm = (function (_super) {
         __extends(ToolEditForm, _super);
-        function ToolEditForm() {
-            _super.apply(this, arguments);
-        }
-        ToolEditForm.prototype.getInitialState = function () {
-            return {
+        function ToolEditForm(props, context) {
+            var _this = this;
+            _super.call(this, props, context);
+            this.handleEditToolChange = function () {
+                _this.setState({
+                    tool: toolStore_1.default.getEditTool(),
+                    errorMessage: null,
+                    isValid: true
+                });
+            };
+            this.handleNewError = function () {
+                _this.setState({
+                    tool: null,
+                    errorMessage: errorStore_1.default.getError(),
+                    isValid: true
+                });
+            };
+            this.handleSubmit = function (e) {
+                e.preventDefault();
+                if (_this.state.tool.id == 0) {
+                    toolActions_1.default.create(_this.state.tool);
+                }
+                else {
+                    toolActions_1.default.update(_this.state.tool);
+                }
+            };
+            this.cancelClickHandler = function () {
+                navigationManager_1.default.closeToolEditor();
+            };
+            this.registerInput = function (input) {
+                _this.inputs[input.props.name] = input;
+            };
+            this.setToolName = function (event) {
+                _this.setState({
+                    tool: {
+                        id: _this.state.tool.id,
+                        name: event.target.value,
+                        price: _this.state.tool.price,
+                    },
+                    errorMessage: null,
+                    isValid: true
+                });
+            };
+            this.setToolPrice = function (event) {
+                _this.setState({
+                    tool: {
+                        id: _this.state.tool.id,
+                        name: _this.state.tool.name,
+                        price: event.target.value
+                    },
+                    errorMessage: null,
+                    isValid: true
+                });
+            };
+            this.props = props;
+            this.context = context;
+            this.state = {
                 tool: null,
                 errorMessage: null,
                 isValid: true
             };
-        };
+        }
         ToolEditForm.prototype.componentWillMount = function () {
             this.inputs = {};
             toolStore_1.default.addChangeEditToolListener(this.handleEditToolChange);
@@ -33,60 +85,9 @@ define(["require", "exports", "react", "../flux/stores/toolStore", "../flux/stor
         ToolEditForm.prototype.componentWillReceiveProps = function (nextProps) {
             toolActions_1.default.loadEditTool(nextProps.params.toolId);
         };
-        ToolEditForm.prototype.handleEditToolChange = function () {
-            this.setState({
-                tool: toolStore_1.default.getEditTool(),
-                errorMessage: null,
-                isValid: true
-            });
-        };
-        ToolEditForm.prototype.handleNewError = function () {
-            this.setState({
-                tool: null,
-                errorMessage: errorStore_1.default.getError(),
-                isValid: true
-            });
-        };
         ToolEditForm.prototype.nameValidate = function () {
             //you could do something here that does general validation for any form field
             return true;
-        };
-        ToolEditForm.prototype.handleSubmit = function (e) {
-            e.preventDefault();
-            if (this.state.tool.id == 0) {
-                toolActions_1.default.create(this.state.tool);
-            }
-            else {
-                toolActions_1.default.update(this.state.tool);
-            }
-        };
-        ToolEditForm.prototype.cancelClickHandler = function () {
-            navigationManager_1.default.closeToolEditor();
-        };
-        ToolEditForm.prototype.registerInput = function (input) {
-            this.inputs[input.props.name] = input;
-        };
-        ToolEditForm.prototype.setToolName = function (event) {
-            this.setState({
-                tool: {
-                    id: this.state.tool.id,
-                    name: event.target.value,
-                    price: this.state.tool.price,
-                },
-                errorMessage: null,
-                isValid: true
-            });
-        };
-        ToolEditForm.prototype.setToolPrice = function (event) {
-            this.setState({
-                tool: {
-                    id: this.state.tool.id,
-                    name: this.state.tool.name,
-                    price: event.target.value
-                },
-                errorMessage: null,
-                isValid: true
-            });
         };
         ToolEditForm.prototype.render = function () {
             return (React.createElement("div", {className: "panel panel-default inner", style: { marginBottom: 0 + 'px' }}, React.createElement("div", {className: "panel-heading"}, React.createElement("h4", null, "Редактирование инструмента")), React.createElement("div", {className: "panel-body"}, this.state.errorMessage != null ?

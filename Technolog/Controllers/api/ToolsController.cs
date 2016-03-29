@@ -1,11 +1,11 @@
-﻿using System;
+﻿using AutoMapper;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Mvc;
-using Technolog.Infrastructure.Interfaces;
 using Technolog.SL.DTO.Tool;
 using Technolog.SL.Infrastructure;
 using Technolog.SL.Interfaces;
@@ -16,16 +16,16 @@ namespace Technolog.Web.Controllers.api
     public class ToolsController : ApiController
     {
         readonly IToolService toolService;
-        readonly IMapper mapper;
+        //readonly IMapper mapper;
 
-        public ToolsController(IToolService toolService, IMapper mapper)
+        public ToolsController(IToolService toolService)//, IMapper mapper)
         {
             if (toolService == null) throw new ArgumentNullException("toolService");
 
-            if (mapper == null) throw new ArgumentNullException("mapper");
+            //if (mapper == null) throw new ArgumentNullException("mapper");
 
             this.toolService = toolService;
-            this.mapper = mapper;
+            //this.mapper = mapper;
         }
 
         public IHttpActionResult Get(int? id)
@@ -50,8 +50,8 @@ namespace Technolog.Web.Controllers.api
                         ex.Message));
             }
 
-            //MapperConfiguration mapperConfig = new MapperConfiguration(cfg => cfg.CreateMap<ToolDTO, ToolModel>());
-            //IMapper mapper = mapperConfig.CreateMapper();
+            MapperConfiguration mapperConfig = new MapperConfiguration(cfg => cfg.CreateMap<ToolDTO, ToolModel>());
+            IMapper mapper = mapperConfig.CreateMapper();
 
             ToolModel toolModel = mapper.Map<ToolModel>(toolDTO);
 
@@ -62,12 +62,12 @@ namespace Technolog.Web.Controllers.api
         {
             ToolListDTO toolListDTO = toolService.GetPage(page, pageSize, search);
 
-            //MapperConfiguration mapperConfig = new MapperConfiguration(cfg => {
-            //        cfg.CreateMap<ToolDTO, ToolModel>();
-            //        cfg.CreateMap<ToolListDTO, ToolListModel>();
-            //    });
+            MapperConfiguration mapperConfig = new MapperConfiguration(cfg => {
+                    cfg.CreateMap<ToolDTO, ToolModel>();
+                    cfg.CreateMap<ToolListDTO, ToolListModel>();
+                });
 
-            //IMapper mapper = mapperConfig.CreateMapper();
+            IMapper mapper = mapperConfig.CreateMapper();
             
             ToolListModel toolListModel = mapper.Map<ToolListModel>(toolListDTO);
 
@@ -80,8 +80,8 @@ namespace Technolog.Web.Controllers.api
             if (!ModelState.IsValid)
                 return BadRequest();
 
-            //MapperConfiguration mapperConfig = new MapperConfiguration(cfg => cfg.CreateMap<ToolModel, ToolDTO>());
-            //IMapper mapper = mapperConfig.CreateMapper();
+            MapperConfiguration mapperConfig = new MapperConfiguration(cfg => cfg.CreateMap<ToolModel, ToolDTO>());
+            IMapper mapper = mapperConfig.CreateMapper();
 
             ToolDTO toolDTO = mapper.Map<ToolDTO>(toolModel);
 
@@ -105,8 +105,8 @@ namespace Technolog.Web.Controllers.api
             if (!ModelState.IsValid)
                 return BadRequest();
 
-            //MapperConfiguration mapperConfig = new MapperConfiguration(cfg => cfg.CreateMap<ToolModel, ToolDTO>());
-            //IMapper mapper = mapperConfig.CreateMapper();
+            MapperConfiguration mapperConfig = new MapperConfiguration(cfg => cfg.CreateMap<ToolModel, ToolDTO>());
+            IMapper mapper = mapperConfig.CreateMapper();
 
             ToolDTO toolDTO = mapper.Map<ToolDTO>(toolModel);
 

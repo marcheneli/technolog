@@ -30,7 +30,9 @@ namespace Technolog.NinjectConfig
 
         private static void RegisterServices(KernelBase kernel)
         {
-            MapperConfiguration mapperConfig = new MapperConfiguration(cfg => cfg.CreateMap<ToolDTO, Tool>());
+            MapperConfiguration mapperConfig = new MapperConfiguration(cfg => {
+                cfg.AddProfile<ToolProfile>();
+            });
             IMapper mapper = mapperConfig.CreateMapper();
 
             kernel.Bind<Technolog.Infrastructure.Interfaces.IMapper>()

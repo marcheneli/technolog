@@ -6,12 +6,13 @@ import PageConstants from "../constants/pageConstants";
 let currentPage = 0;
 let itemsPerPage = PageConstants.ITEMS_PER_PAGE_INIT;
 let searchText = '';
+let navigation;
 
 class PageParamsManagerStatic {
-    private navigation;
 
     public locationChangeHandler(location) {
         var query = location.query;
+        navigation = location;
 
         if (query.page) {
             if (query.page != currentPage) currentPage = query.page;
@@ -27,17 +28,17 @@ class PageParamsManagerStatic {
     }
 
     public changePage(page) {
-        this.navigation.query.page = page;
+        navigation.query.page = page;
         this.changeLocation();
     }
 
     public changeSearchText(text) {
-        this.navigation.query.search = text;
+        navigation.query.search = text;
         this.changeLocation();
     }
 
     public changePageSize(pageSize) {
-        this.navigation.query.pageSize = pageSize;
+        navigation.query.pageSize = pageSize;
         this.changeLocation();
     }
 
@@ -54,7 +55,7 @@ class PageParamsManagerStatic {
     }
 
     private changeLocation() {
-        ReactRouter.browserHistory.push(this.navigation);
+        ReactRouter.browserHistory.push(navigation);
     }
 }
 

@@ -15,13 +15,13 @@ interface IConfirmDeleteState {
 }
 
 export default class ConfirmDelete extends React.Component<IConfirmDeleteProps, IConfirmDeleteState> {
-    private handleConfirm(e) {
+    private handleConfirm = (e) => {
         e.preventDefault();
 
         this.props.success(this.props.id)
     }
 
-    private handleCancelClick() {
+    private handleCancelClick = () => {
         this.props.cancel();
     }
 

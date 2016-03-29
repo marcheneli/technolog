@@ -36,7 +36,18 @@ interface IPaginationState {
 }
 
 export default class Pagination extends React.Component<IPaginationProps, IPaginationState> {
-    private pageButtonClickHandler(pageNumber: number): void {
+
+    constructor(props: IPaginationProps, context: any) {
+        super(props, context);
+
+        this.props = props;
+        this.context = context;
+        this.state = {
+            currentPage: 0
+        };
+    }
+
+    private pageButtonClickHandler = (pageNumber: number): void => {
         var totalPageAmount = Math.ceil(this.props.itemAmount / this.props.itemsPerPage);
 
         if (pageNumber == -1 && this.state.currentPage != 0) {

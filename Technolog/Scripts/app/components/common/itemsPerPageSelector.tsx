@@ -14,13 +14,19 @@ interface IItemsPerPageState {
 }
 
 export default class ItemsPerPageSelector extends React.Component<IItemsPerPageProps, IItemsPerPageState> {
-    getInitialState() {
-        return {
+
+    constructor(props: IItemsPerPageProps, context: any) {
+        super(props, context);
+
+        this.props = props;
+        this.context = context;
+        this.state = {
             itemsPerPage: PageConstants.ITEMS_PER_PAGE_INIT,
             dropdowndisplay: 'none',
             isButtonClicked: false
-        }
+        };
     }
+
     componentWillMount() {
         document.addEventListener('click', this.pageClick, false);
     }
@@ -28,7 +34,7 @@ export default class ItemsPerPageSelector extends React.Component<IItemsPerPageP
     componentWillUnmount() {
         document.removeEventListener('click', this.pageClick, false);
     }
-    private pageClick(e) {
+    private pageClick = (e) => {
         if (this.state.dropdowndisplay == 'none') return;
 
         if (this.state.isButtonClicked) {
@@ -43,14 +49,14 @@ export default class ItemsPerPageSelector extends React.Component<IItemsPerPageP
             itemsPerPage: this.state.itemsPerPage, dropdowndisplay: 'none', isButtonClicked: false
         });
     }
-    private toggleDropDown(e) {
+    private toggleDropDown = (e) => {
         if (this.state.dropdowndisplay == 'none')
             this.setState({ itemsPerPage: this.state.itemsPerPage, dropdowndisplay: 'block', isButtonClicked: true });
 
         if (this.state.dropdowndisplay == 'block')
             this.setState({ itemsPerPage: this.state.itemsPerPage, dropdowndisplay: 'none', isButtonClicked: false });
     }
-    updateItemsPerPage(itemsPerPage) {
+    updateItemsPerPage = (itemsPerPage) => {
         this.setState({
             itemsPerPage: itemsPerPage, dropdowndisplay: 'none', isButtonClicked: this.state.isButtonClicked
         });

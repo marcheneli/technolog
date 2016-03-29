@@ -8,18 +8,77 @@ define(["require", "exports", "react", "../flux/stores/toolStore", "../constants
     "use strict";
     var ToolList = (function (_super) {
         __extends(ToolList, _super);
-        function ToolList() {
-            _super.apply(this, arguments);
-        }
-        ToolList.prototype.getInitialState = function () {
-            return {
+        function ToolList(props, context) {
+            var _this = this;
+            _super.call(this, props, context);
+            this.handleToolsChange = function () {
+                _this.setState({
+                    tools: toolStore_1.default.getAll(),
+                    currentTool: null,
+                    isConfirmDeleting: false,
+                    toolAmount: toolStore_1.default.getToolAmount(),
+                    toolsPerPage: toolStore_1.default.getToolsPerPage()
+                });
+            };
+            this.changeCurrent = function (tool) {
+                _this.setState({
+                    tools: _this.state.tools,
+                    currentTool: tool,
+                    isConfirmDeleting: _this.state.isConfirmDeleting,
+                    toolAmount: _this.state.toolAmount,
+                    toolsPerPage: _this.state.toolsPerPage
+                });
+            };
+            this.toolRowDoubleClick = function (tool) {
+                navigationManager_1.default.openToolEditor(tool.id);
+            };
+            this.newToolBtnClickHandler = function () {
+                navigationManager_1.default.openToolEditor(0);
+            };
+            this.handleDeleteSuccess = function () {
+                toolActions_1.default.remove(_this.state.currentTool.id);
+            };
+            this.handleDeleteCancel = function () {
+                _this.setState({
+                    tools: _this.state.tools,
+                    currentTool: _this.state.currentTool,
+                    isConfirmDeleting: !_this.state.isConfirmDeleting,
+                    toolAmount: _this.state.toolAmount,
+                    toolsPerPage: _this.state.toolsPerPage
+                });
+            };
+            this.handleToolsPerPageChange = function (toolsPerPage) {
+                pageParamsManager_1.default.changePageSize(toolsPerPage);
+                toolActions_1.default.changeToolsPerPage(toolsPerPage);
+            };
+            this.handleToolPageChange = function (page) {
+                pageParamsManager_1.default.changePage(page);
+                toolActions_1.default.changeToolPage(page);
+            };
+            this.handleToolSearchTextChange = function (text) {
+                pageParamsManager_1.default.changeSearchText(text);
+                toolActions_1.default.changeToolSearchText(text);
+            };
+            this.refreshBtnClickHandler = function (text) {
+                toolActions_1.default.init(pageParamsManager_1.default.getPage(), pageParamsManager_1.default.getPageSize(), pageParamsManager_1.default.getSearchText());
+                _this.setState({
+                    tools: [],
+                    currentTool: null,
+                    isConfirmDeleting: false,
+                    toolAmount: 0,
+                    toolsPerPage: _this.state.toolsPerPage
+                });
+            };
+            this.props = props;
+            this.context = context;
+            this.state = {
                 tools: [],
                 currentTool: null,
                 isConfirmDeleting: false,
                 toolAmount: 0,
                 toolsPerPage: pageConstants_1.default.ITEMS_PER_PAGE_INIT
             };
-        };
+        }
         ToolList.prototype.componentWillMount = function () {
             toolStore_1.default.addChangeToolsListener(this.handleToolsChange);
         };
@@ -28,64 +87,6 @@ define(["require", "exports", "react", "../flux/stores/toolStore", "../constants
         };
         ToolList.prototype.componentDidMount = function () {
             toolActions_1.default.init(pageParamsManager_1.default.getPage(), pageParamsManager_1.default.getPageSize(), pageParamsManager_1.default.getSearchText());
-        };
-        ToolList.prototype.handleToolsChange = function () {
-            this.setState({
-                tools: toolStore_1.default.getAll(),
-                currentTool: null,
-                isConfirmDeleting: false,
-                toolAmount: toolStore_1.default.getToolAmount(),
-                toolsPerPage: toolStore_1.default.getToolsPerPage()
-            });
-        };
-        ToolList.prototype.changeCurrent = function (tool) {
-            this.setState({
-                tools: this.state.tools,
-                currentTool: tool,
-                isConfirmDeleting: this.state.isConfirmDeleting,
-                toolAmount: this.state.toolAmount,
-                toolsPerPage: this.state.toolsPerPage
-            });
-        };
-        ToolList.prototype.toolRowDoubleClick = function (tool) {
-            navigationManager_1.default.openToolEditor(tool.id);
-        };
-        ToolList.prototype.newToolBtnClickHandler = function () {
-            navigationManager_1.default.openToolEditor(0);
-        };
-        ToolList.prototype.handleDeleteSuccess = function () {
-            toolActions_1.default.remove(this.state.currentTool.id);
-        };
-        ToolList.prototype.handleDeleteCancel = function () {
-            this.setState({
-                tools: this.state.tools,
-                currentTool: this.state.currentTool,
-                isConfirmDeleting: !this.state.isConfirmDeleting,
-                toolAmount: this.state.toolAmount,
-                toolsPerPage: this.state.toolsPerPage
-            });
-        };
-        ToolList.prototype.handleToolsPerPageChange = function (toolsPerPage) {
-            pageParamsManager_1.default.changePageSize(toolsPerPage);
-            toolActions_1.default.changeToolsPerPage(toolsPerPage);
-        };
-        ToolList.prototype.handleToolPageChange = function (page) {
-            pageParamsManager_1.default.changePage(page);
-            toolActions_1.default.changeToolPage(page);
-        };
-        ToolList.prototype.handleToolSearchTextChange = function (text) {
-            pageParamsManager_1.default.changeSearchText(text);
-            toolActions_1.default.changeToolSearchText(text);
-        };
-        ToolList.prototype.refreshBtnClickHandler = function (text) {
-            toolActions_1.default.init(pageParamsManager_1.default.getPage(), pageParamsManager_1.default.getPageSize(), pageParamsManager_1.default.getSearchText());
-            this.setState({
-                tools: [],
-                currentTool: null,
-                isConfirmDeleting: false,
-                toolAmount: 0,
-                toolsPerPage: this.state.toolsPerPage
-            });
         };
         ToolList.prototype.render = function () {
             var toolRows = [];

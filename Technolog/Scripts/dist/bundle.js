@@ -335,18 +335,77 @@
 	    "use strict";
 	    var ToolList = (function (_super) {
 	        __extends(ToolList, _super);
-	        function ToolList() {
-	            _super.apply(this, arguments);
-	        }
-	        ToolList.prototype.getInitialState = function () {
-	            return {
+	        function ToolList(props, context) {
+	            var _this = this;
+	            _super.call(this, props, context);
+	            this.handleToolsChange = function () {
+	                _this.setState({
+	                    tools: toolStore_1.default.getAll(),
+	                    currentTool: null,
+	                    isConfirmDeleting: false,
+	                    toolAmount: toolStore_1.default.getToolAmount(),
+	                    toolsPerPage: toolStore_1.default.getToolsPerPage()
+	                });
+	            };
+	            this.changeCurrent = function (tool) {
+	                _this.setState({
+	                    tools: _this.state.tools,
+	                    currentTool: tool,
+	                    isConfirmDeleting: _this.state.isConfirmDeleting,
+	                    toolAmount: _this.state.toolAmount,
+	                    toolsPerPage: _this.state.toolsPerPage
+	                });
+	            };
+	            this.toolRowDoubleClick = function (tool) {
+	                navigationManager_1.default.openToolEditor(tool.id);
+	            };
+	            this.newToolBtnClickHandler = function () {
+	                navigationManager_1.default.openToolEditor(0);
+	            };
+	            this.handleDeleteSuccess = function () {
+	                toolActions_1.default.remove(_this.state.currentTool.id);
+	            };
+	            this.handleDeleteCancel = function () {
+	                _this.setState({
+	                    tools: _this.state.tools,
+	                    currentTool: _this.state.currentTool,
+	                    isConfirmDeleting: !_this.state.isConfirmDeleting,
+	                    toolAmount: _this.state.toolAmount,
+	                    toolsPerPage: _this.state.toolsPerPage
+	                });
+	            };
+	            this.handleToolsPerPageChange = function (toolsPerPage) {
+	                pageParamsManager_1.default.changePageSize(toolsPerPage);
+	                toolActions_1.default.changeToolsPerPage(toolsPerPage);
+	            };
+	            this.handleToolPageChange = function (page) {
+	                pageParamsManager_1.default.changePage(page);
+	                toolActions_1.default.changeToolPage(page);
+	            };
+	            this.handleToolSearchTextChange = function (text) {
+	                pageParamsManager_1.default.changeSearchText(text);
+	                toolActions_1.default.changeToolSearchText(text);
+	            };
+	            this.refreshBtnClickHandler = function (text) {
+	                toolActions_1.default.init(pageParamsManager_1.default.getPage(), pageParamsManager_1.default.getPageSize(), pageParamsManager_1.default.getSearchText());
+	                _this.setState({
+	                    tools: [],
+	                    currentTool: null,
+	                    isConfirmDeleting: false,
+	                    toolAmount: 0,
+	                    toolsPerPage: _this.state.toolsPerPage
+	                });
+	            };
+	            this.props = props;
+	            this.context = context;
+	            this.state = {
 	                tools: [],
 	                currentTool: null,
 	                isConfirmDeleting: false,
 	                toolAmount: 0,
 	                toolsPerPage: pageConstants_1.default.ITEMS_PER_PAGE_INIT
 	            };
-	        };
+	        }
 	        ToolList.prototype.componentWillMount = function () {
 	            toolStore_1.default.addChangeToolsListener(this.handleToolsChange);
 	        };
@@ -355,64 +414,6 @@
 	        };
 	        ToolList.prototype.componentDidMount = function () {
 	            toolActions_1.default.init(pageParamsManager_1.default.getPage(), pageParamsManager_1.default.getPageSize(), pageParamsManager_1.default.getSearchText());
-	        };
-	        ToolList.prototype.handleToolsChange = function () {
-	            this.setState({
-	                tools: toolStore_1.default.getAll(),
-	                currentTool: null,
-	                isConfirmDeleting: false,
-	                toolAmount: toolStore_1.default.getToolAmount(),
-	                toolsPerPage: toolStore_1.default.getToolsPerPage()
-	            });
-	        };
-	        ToolList.prototype.changeCurrent = function (tool) {
-	            this.setState({
-	                tools: this.state.tools,
-	                currentTool: tool,
-	                isConfirmDeleting: this.state.isConfirmDeleting,
-	                toolAmount: this.state.toolAmount,
-	                toolsPerPage: this.state.toolsPerPage
-	            });
-	        };
-	        ToolList.prototype.toolRowDoubleClick = function (tool) {
-	            navigationManager_1.default.openToolEditor(tool.id);
-	        };
-	        ToolList.prototype.newToolBtnClickHandler = function () {
-	            navigationManager_1.default.openToolEditor(0);
-	        };
-	        ToolList.prototype.handleDeleteSuccess = function () {
-	            toolActions_1.default.remove(this.state.currentTool.id);
-	        };
-	        ToolList.prototype.handleDeleteCancel = function () {
-	            this.setState({
-	                tools: this.state.tools,
-	                currentTool: this.state.currentTool,
-	                isConfirmDeleting: !this.state.isConfirmDeleting,
-	                toolAmount: this.state.toolAmount,
-	                toolsPerPage: this.state.toolsPerPage
-	            });
-	        };
-	        ToolList.prototype.handleToolsPerPageChange = function (toolsPerPage) {
-	            pageParamsManager_1.default.changePageSize(toolsPerPage);
-	            toolActions_1.default.changeToolsPerPage(toolsPerPage);
-	        };
-	        ToolList.prototype.handleToolPageChange = function (page) {
-	            pageParamsManager_1.default.changePage(page);
-	            toolActions_1.default.changeToolPage(page);
-	        };
-	        ToolList.prototype.handleToolSearchTextChange = function (text) {
-	            pageParamsManager_1.default.changeSearchText(text);
-	            toolActions_1.default.changeToolSearchText(text);
-	        };
-	        ToolList.prototype.refreshBtnClickHandler = function (text) {
-	            toolActions_1.default.init(pageParamsManager_1.default.getPage(), pageParamsManager_1.default.getPageSize(), pageParamsManager_1.default.getSearchText());
-	            this.setState({
-	                tools: [],
-	                currentTool: null,
-	                isConfirmDeleting: false,
-	                toolAmount: 0,
-	                toolsPerPage: this.state.toolsPerPage
-	            });
 	        };
 	        ToolList.prototype.render = function () {
 	            var toolRows = [];
@@ -442,58 +443,59 @@
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/// <reference path="../../typings/tsd.d.ts" />
 	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react-router */ 4)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, ReactRouter) {
 	    "use strict";
+	    var navigation;
 	    var NavigationManagerStatic = (function () {
 	        function NavigationManagerStatic() {
 	        }
 	        NavigationManagerStatic.prototype.handler = function (args) {
-	            this.navigation = args;
+	            navigation = args;
 	        };
 	        NavigationManagerStatic.prototype.openToolEditor = function (id) {
-	            this.navigation.pathname = '/tools/' + id;
+	            navigation.pathname = '/tools/' + id;
 	            this.changeLocation();
 	        };
 	        NavigationManagerStatic.prototype.closeToolEditor = function () {
-	            this.navigation.pathname = '/tools';
+	            navigation.pathname = '/tools';
 	            this.changeLocation();
 	        };
 	        NavigationManagerStatic.prototype.newTool = function () {
-	            if (this.navigation.query["toolIds"]) {
-	                if (Array.isArray(this.navigation.query["toolIds"])) {
-	                    this.navigation.query["toolIds"].push(0);
+	            if (navigation.query["toolIds"]) {
+	                if (Array.isArray(navigation.query["toolIds"])) {
+	                    navigation.query["toolIds"].push(0);
 	                }
 	                else {
-	                    var toolId = this.navigation.query["toolIds"];
-	                    this.navigation.query["toolIds"] = [];
-	                    this.navigation.query["toolIds"].push(toolId);
-	                    this.navigation.query["toolIds"].push(0);
+	                    var toolId = navigation.query["toolIds"];
+	                    navigation.query["toolIds"] = [];
+	                    navigation.query["toolIds"].push(toolId);
+	                    navigation.query["toolIds"].push(0);
 	                }
 	            }
 	            else {
-	                this.navigation.query["toolIds"] = [];
-	                this.navigation.query["toolIds"].push(0);
+	                navigation.query["toolIds"] = [];
+	                navigation.query["toolIds"].push(0);
 	            }
-	            ReactRouter.browserHistory.push(this.navigation);
+	            ReactRouter.browserHistory.push(navigation);
 	        };
 	        NavigationManagerStatic.prototype.openTool = function (id) {
-	            if (this.navigation.query["toolIds"]) {
-	                if (Array.isArray(this.navigation.query["toolIds"])) {
-	                    this.navigation.query["toolIds"].push(id);
+	            if (navigation.query["toolIds"]) {
+	                if (Array.isArray(navigation.query["toolIds"])) {
+	                    navigation.query["toolIds"].push(id);
 	                }
 	                else {
-	                    var toolId = this.navigation.query["toolIds"];
-	                    this.navigation.query["toolIds"] = [];
-	                    this.navigation.query["toolIds"].push(toolId);
-	                    this.navigation.query["toolIds"].push(id);
+	                    var toolId = navigation.query["toolIds"];
+	                    navigation.query["toolIds"] = [];
+	                    navigation.query["toolIds"].push(toolId);
+	                    navigation.query["toolIds"].push(id);
 	                }
 	            }
 	            else {
-	                this.navigation.query["toolIds"] = [];
-	                this.navigation.query["toolIds"].push(id);
+	                navigation.query["toolIds"] = [];
+	                navigation.query["toolIds"].push(id);
 	            }
-	            ReactRouter.browserHistory.push(this.navigation);
+	            ReactRouter.browserHistory.push(navigation);
 	        };
 	        NavigationManagerStatic.prototype.changeLocation = function () {
-	            ReactRouter.browserHistory.push(this.navigation);
+	            ReactRouter.browserHistory.push(navigation);
 	        };
 	        return NavigationManagerStatic;
 	    }());
@@ -939,11 +941,13 @@
 	    var currentPage = 0;
 	    var itemsPerPage = pageConstants_1.default.ITEMS_PER_PAGE_INIT;
 	    var searchText = '';
+	    var navigation;
 	    var PageParamsManagerStatic = (function () {
 	        function PageParamsManagerStatic() {
 	        }
 	        PageParamsManagerStatic.prototype.locationChangeHandler = function (location) {
 	            var query = location.query;
+	            navigation = location;
 	            if (query.page) {
 	                if (query.page != currentPage)
 	                    currentPage = query.page;
@@ -958,15 +962,15 @@
 	            }
 	        };
 	        PageParamsManagerStatic.prototype.changePage = function (page) {
-	            this.navigation.query.page = page;
+	            navigation.query.page = page;
 	            this.changeLocation();
 	        };
 	        PageParamsManagerStatic.prototype.changeSearchText = function (text) {
-	            this.navigation.query.search = text;
+	            navigation.query.search = text;
 	            this.changeLocation();
 	        };
 	        PageParamsManagerStatic.prototype.changePageSize = function (pageSize) {
-	            this.navigation.query.pageSize = pageSize;
+	            navigation.query.pageSize = pageSize;
 	            this.changeLocation();
 	        };
 	        PageParamsManagerStatic.prototype.getPage = function () {
@@ -979,7 +983,7 @@
 	            return searchText;
 	        };
 	        PageParamsManagerStatic.prototype.changeLocation = function () {
-	            ReactRouter.browserHistory.push(this.navigation);
+	            ReactRouter.browserHistory.push(navigation);
 	        };
 	        return PageParamsManagerStatic;
 	    }());
@@ -1007,35 +1011,36 @@
 	    "use strict";
 	    var TableRow = (function (_super) {
 	        __extends(TableRow, _super);
-	        function TableRow() {
-	            _super.apply(this, arguments);
-	        }
-	        TableRow.prototype.getInitialState = function () {
-	            return {
+	        function TableRow(props, context) {
+	            var _this = this;
+	            _super.call(this, props, context);
+	            this.onMouseEnterHandler = function () {
+	                if (!_this.props.isCurrent)
+	                    _this.setState({ color: "active" });
+	            };
+	            this.onMouseLeaveHandler = function () {
+	                if (!_this.props.isCurrent)
+	                    _this.setState({ color: null });
+	            };
+	            this.onClickHandler = function () {
+	                if (!_this.props.isCurrent) {
+	                    _this.setState({ color: null });
+	                    _this.props.changeCurrent(_this.props.item);
+	                }
+	                else {
+	                    _this.setState({ color: "active" });
+	                    _this.props.changeCurrent(null);
+	                }
+	            };
+	            this.onDoubleClickHandler = function () {
+	                _this.props.rowDoubleClickHandler(_this.props.item);
+	            };
+	            this.props = props;
+	            this.context = context;
+	            this.state = {
 	                color: this.props.isCurrent ? 'info' : null
 	            };
-	        };
-	        TableRow.prototype.onMouseEnterHandler = function () {
-	            if (!this.props.isCurrent)
-	                this.setState({ color: "active" });
-	        };
-	        TableRow.prototype.onMouseLeaveHandler = function () {
-	            if (!this.props.isCurrent)
-	                this.setState({ color: null });
-	        };
-	        TableRow.prototype.onClickHandler = function () {
-	            if (!this.props.isCurrent) {
-	                this.setState({ color: null });
-	                this.props.changeCurrent(this.props.item);
-	            }
-	            else {
-	                this.setState({ color: "active" });
-	                this.props.changeCurrent(null);
-	            }
-	        };
-	        TableRow.prototype.onDoubleClickHandler = function () {
-	            this.props.rowDoubleClickHandler(this.props.item);
-	        };
+	        }
 	        TableRow.prototype.render = function () {
 	            return (React.createElement("tr", {className: this.props.isCurrent ? 'info' : this.state.color, onMouseEnter: this.onMouseEnterHandler, onMouseLeave: this.onMouseLeaveHandler, onClick: this.onClickHandler, onDoubleClick: this.onDoubleClickHandler}, this.props.children));
 	        };
@@ -1064,15 +1069,16 @@
 	    var ConfirmDelete = (function (_super) {
 	        __extends(ConfirmDelete, _super);
 	        function ConfirmDelete() {
+	            var _this = this;
 	            _super.apply(this, arguments);
+	            this.handleConfirm = function (e) {
+	                e.preventDefault();
+	                _this.props.success(_this.props.id);
+	            };
+	            this.handleCancelClick = function () {
+	                _this.props.cancel();
+	            };
 	        }
-	        ConfirmDelete.prototype.handleConfirm = function (e) {
-	            e.preventDefault();
-	            this.props.success(this.props.id);
-	        };
-	        ConfirmDelete.prototype.handleCancelClick = function () {
-	            this.props.cancel();
-	        };
 	        ConfirmDelete.prototype.render = function () {
 	            return (React.createElement("div", {className: "form-group"}, React.createElement("h3", null, this.props.title), React.createElement("hr", null), React.createElement("form", {onSubmit: this.handleConfirm}, React.createElement("h4", null, this.props.message), React.createElement("div", {className: "btn-toolbar pull-right", style: { marginBottom: 5 + 'px' }}, React.createElement("button", {type: "submit", className: "btn btn-danger"}, "Да"), React.createElement("button", {type: "button", className: "btn btn-default", onClick: this.handleCancelClick}, "Нет")))));
 	        };
@@ -1113,24 +1119,30 @@
 	    }(React.Component));
 	    var Pagination = (function (_super) {
 	        __extends(Pagination, _super);
-	        function Pagination() {
-	            _super.apply(this, arguments);
+	        function Pagination(props, context) {
+	            var _this = this;
+	            _super.call(this, props, context);
+	            this.pageButtonClickHandler = function (pageNumber) {
+	                var totalPageAmount = Math.ceil(_this.props.itemAmount / _this.props.itemsPerPage);
+	                if (pageNumber == -1 && _this.state.currentPage != 0) {
+	                    _this.setState({ currentPage: _this.state.currentPage - 1 });
+	                    _this.props.updatePage(_this.state.currentPage - 1);
+	                }
+	                if (pageNumber == -2 && _this.state.currentPage != totalPageAmount - 1) {
+	                    _this.setState({ currentPage: _this.state.currentPage + 1 });
+	                    _this.props.updatePage(_this.state.currentPage + 1);
+	                }
+	                if (pageNumber >= 0 && pageNumber != _this.state.currentPage) {
+	                    _this.setState({ currentPage: pageNumber });
+	                    _this.props.updatePage(pageNumber);
+	                }
+	            };
+	            this.props = props;
+	            this.context = context;
+	            this.state = {
+	                currentPage: 0
+	            };
 	        }
-	        Pagination.prototype.pageButtonClickHandler = function (pageNumber) {
-	            var totalPageAmount = Math.ceil(this.props.itemAmount / this.props.itemsPerPage);
-	            if (pageNumber == -1 && this.state.currentPage != 0) {
-	                this.setState({ currentPage: this.state.currentPage - 1 });
-	                this.props.updatePage(this.state.currentPage - 1);
-	            }
-	            if (pageNumber == -2 && this.state.currentPage != totalPageAmount - 1) {
-	                this.setState({ currentPage: this.state.currentPage + 1 });
-	                this.props.updatePage(this.state.currentPage + 1);
-	            }
-	            if (pageNumber >= 0 && pageNumber != this.state.currentPage) {
-	                this.setState({ currentPage: pageNumber });
-	                this.props.updatePage(pageNumber);
-	            }
-	        };
 	        Pagination.prototype.render = function () {
 	            var totalPageAmount = Math.ceil(this.props.itemAmount / this.props.itemsPerPage);
 	            var pageButtons = [];
@@ -1179,11 +1191,12 @@
 	    var SearchInput = (function (_super) {
 	        __extends(SearchInput, _super);
 	        function SearchInput() {
+	            var _this = this;
 	            _super.apply(this, arguments);
+	            this.handleChange = function (e) {
+	                _this.props.onChange(e.target.value);
+	            };
 	        }
-	        SearchInput.prototype.handleChange = function (e) {
-	            this.props.onChange(e.target.value);
-	        };
 	        SearchInput.prototype.render = function () {
 	            return (React.createElement("input", {className: 'form-control', placeholder: this.props.text, onChange: this.handleChange}));
 	        };
@@ -1211,46 +1224,47 @@
 	    "use strict";
 	    var ItemsPerPageSelector = (function (_super) {
 	        __extends(ItemsPerPageSelector, _super);
-	        function ItemsPerPageSelector() {
-	            _super.apply(this, arguments);
-	        }
-	        ItemsPerPageSelector.prototype.getInitialState = function () {
-	            return {
+	        function ItemsPerPageSelector(props, context) {
+	            var _this = this;
+	            _super.call(this, props, context);
+	            this.pageClick = function (e) {
+	                if (_this.state.dropdowndisplay == 'none')
+	                    return;
+	                if (_this.state.isButtonClicked) {
+	                    _this.setState({
+	                        itemsPerPage: _this.state.itemsPerPage, dropdowndisplay: 'block', isButtonClicked: false
+	                    });
+	                    return;
+	                }
+	                _this.setState({
+	                    itemsPerPage: _this.state.itemsPerPage, dropdowndisplay: 'none', isButtonClicked: false
+	                });
+	            };
+	            this.toggleDropDown = function (e) {
+	                if (_this.state.dropdowndisplay == 'none')
+	                    _this.setState({ itemsPerPage: _this.state.itemsPerPage, dropdowndisplay: 'block', isButtonClicked: true });
+	                if (_this.state.dropdowndisplay == 'block')
+	                    _this.setState({ itemsPerPage: _this.state.itemsPerPage, dropdowndisplay: 'none', isButtonClicked: false });
+	            };
+	            this.updateItemsPerPage = function (itemsPerPage) {
+	                _this.setState({
+	                    itemsPerPage: itemsPerPage, dropdowndisplay: 'none', isButtonClicked: _this.state.isButtonClicked
+	                });
+	                _this.props.onChange(itemsPerPage);
+	            };
+	            this.props = props;
+	            this.context = context;
+	            this.state = {
 	                itemsPerPage: pageConstants_1.default.ITEMS_PER_PAGE_INIT,
 	                dropdowndisplay: 'none',
 	                isButtonClicked: false
 	            };
-	        };
+	        }
 	        ItemsPerPageSelector.prototype.componentWillMount = function () {
 	            document.addEventListener('click', this.pageClick, false);
 	        };
 	        ItemsPerPageSelector.prototype.componentWillUnmount = function () {
 	            document.removeEventListener('click', this.pageClick, false);
-	        };
-	        ItemsPerPageSelector.prototype.pageClick = function (e) {
-	            if (this.state.dropdowndisplay == 'none')
-	                return;
-	            if (this.state.isButtonClicked) {
-	                this.setState({
-	                    itemsPerPage: this.state.itemsPerPage, dropdowndisplay: 'block', isButtonClicked: false
-	                });
-	                return;
-	            }
-	            this.setState({
-	                itemsPerPage: this.state.itemsPerPage, dropdowndisplay: 'none', isButtonClicked: false
-	            });
-	        };
-	        ItemsPerPageSelector.prototype.toggleDropDown = function (e) {
-	            if (this.state.dropdowndisplay == 'none')
-	                this.setState({ itemsPerPage: this.state.itemsPerPage, dropdowndisplay: 'block', isButtonClicked: true });
-	            if (this.state.dropdowndisplay == 'block')
-	                this.setState({ itemsPerPage: this.state.itemsPerPage, dropdowndisplay: 'none', isButtonClicked: false });
-	        };
-	        ItemsPerPageSelector.prototype.updateItemsPerPage = function (itemsPerPage) {
-	            this.setState({
-	                itemsPerPage: itemsPerPage, dropdowndisplay: 'none', isButtonClicked: this.state.isButtonClicked
-	            });
-	            this.props.onChange(itemsPerPage);
 	        };
 	        ItemsPerPageSelector.prototype.render = function () {
 	            return (React.createElement("div", {className: "input-group-btn"}, React.createElement("button", {type: "button", className: "btn btn-default"}, this.state.itemsPerPage), React.createElement("button", {type: "button", className: "btn btn-default dropdown-toggle", dataToggle: "dropdown", onClick: this.toggleDropDown}, React.createElement("span", {className: "caret"}), React.createElement("span", {className: "sr-only"}, "Split button!")), React.createElement("ul", {className: "dropdown-menu", role: "menu", style: { display: this.state.dropdowndisplay }}, React.createElement("li", null, React.createElement("a", {href: "#", style: { cursor: 'pointer', paddingRight: 12 + 'px', paddingLeft: 12 + 'px' }, onClick: function () { this.updateItemsPerPage(10); }.bind(this)}, "10")), React.createElement("li", null, React.createElement("a", {href: "#", style: { cursor: 'pointer', paddingRight: 12 + 'px', paddingLeft: 12 + 'px' }, onClick: function () { this.updateItemsPerPage(20); }.bind(this)}, "20")), React.createElement("li", null, React.createElement("a", {href: "#", style: { cursor: 'pointer', paddingRight: 12 + 'px', paddingLeft: 12 + 'px' }, onClick: function () { this.updateItemsPerPage(30); }.bind(this)}, "30")), React.createElement("li", null, React.createElement("a", {href: "#", style: { cursor: 'pointer', paddingRight: 12 + 'px', paddingLeft: 12 + 'px' }, onClick: function () { this.updateItemsPerPage(40); }.bind(this)}, "40")), React.createElement("li", null, React.createElement("a", {href: "#", style: { cursor: 'pointer', paddingRight: 12 + 'px', paddingLeft: 12 + 'px' }, onClick: function () { this.updateItemsPerPage(50); }.bind(this)}, "50")))));
@@ -1312,16 +1326,68 @@
 	    "use strict";
 	    var ToolEditForm = (function (_super) {
 	        __extends(ToolEditForm, _super);
-	        function ToolEditForm() {
-	            _super.apply(this, arguments);
-	        }
-	        ToolEditForm.prototype.getInitialState = function () {
-	            return {
+	        function ToolEditForm(props, context) {
+	            var _this = this;
+	            _super.call(this, props, context);
+	            this.handleEditToolChange = function () {
+	                _this.setState({
+	                    tool: toolStore_1.default.getEditTool(),
+	                    errorMessage: null,
+	                    isValid: true
+	                });
+	            };
+	            this.handleNewError = function () {
+	                _this.setState({
+	                    tool: null,
+	                    errorMessage: errorStore_1.default.getError(),
+	                    isValid: true
+	                });
+	            };
+	            this.handleSubmit = function (e) {
+	                e.preventDefault();
+	                if (_this.state.tool.id == 0) {
+	                    toolActions_1.default.create(_this.state.tool);
+	                }
+	                else {
+	                    toolActions_1.default.update(_this.state.tool);
+	                }
+	            };
+	            this.cancelClickHandler = function () {
+	                navigationManager_1.default.closeToolEditor();
+	            };
+	            this.registerInput = function (input) {
+	                _this.inputs[input.props.name] = input;
+	            };
+	            this.setToolName = function (event) {
+	                _this.setState({
+	                    tool: {
+	                        id: _this.state.tool.id,
+	                        name: event.target.value,
+	                        price: _this.state.tool.price,
+	                    },
+	                    errorMessage: null,
+	                    isValid: true
+	                });
+	            };
+	            this.setToolPrice = function (event) {
+	                _this.setState({
+	                    tool: {
+	                        id: _this.state.tool.id,
+	                        name: _this.state.tool.name,
+	                        price: event.target.value
+	                    },
+	                    errorMessage: null,
+	                    isValid: true
+	                });
+	            };
+	            this.props = props;
+	            this.context = context;
+	            this.state = {
 	                tool: null,
 	                errorMessage: null,
 	                isValid: true
 	            };
-	        };
+	        }
 	        ToolEditForm.prototype.componentWillMount = function () {
 	            this.inputs = {};
 	            toolStore_1.default.addChangeEditToolListener(this.handleEditToolChange);
@@ -1337,60 +1403,9 @@
 	        ToolEditForm.prototype.componentWillReceiveProps = function (nextProps) {
 	            toolActions_1.default.loadEditTool(nextProps.params.toolId);
 	        };
-	        ToolEditForm.prototype.handleEditToolChange = function () {
-	            this.setState({
-	                tool: toolStore_1.default.getEditTool(),
-	                errorMessage: null,
-	                isValid: true
-	            });
-	        };
-	        ToolEditForm.prototype.handleNewError = function () {
-	            this.setState({
-	                tool: null,
-	                errorMessage: errorStore_1.default.getError(),
-	                isValid: true
-	            });
-	        };
 	        ToolEditForm.prototype.nameValidate = function () {
 	            //you could do something here that does general validation for any form field
 	            return true;
-	        };
-	        ToolEditForm.prototype.handleSubmit = function (e) {
-	            e.preventDefault();
-	            if (this.state.tool.id == 0) {
-	                toolActions_1.default.create(this.state.tool);
-	            }
-	            else {
-	                toolActions_1.default.update(this.state.tool);
-	            }
-	        };
-	        ToolEditForm.prototype.cancelClickHandler = function () {
-	            navigationManager_1.default.closeToolEditor();
-	        };
-	        ToolEditForm.prototype.registerInput = function (input) {
-	            this.inputs[input.props.name] = input;
-	        };
-	        ToolEditForm.prototype.setToolName = function (event) {
-	            this.setState({
-	                tool: {
-	                    id: this.state.tool.id,
-	                    name: event.target.value,
-	                    price: this.state.tool.price,
-	                },
-	                errorMessage: null,
-	                isValid: true
-	            });
-	        };
-	        ToolEditForm.prototype.setToolPrice = function (event) {
-	            this.setState({
-	                tool: {
-	                    id: this.state.tool.id,
-	                    name: this.state.tool.name,
-	                    price: event.target.value
-	                },
-	                errorMessage: null,
-	                isValid: true
-	            });
 	        };
 	        ToolEditForm.prototype.render = function () {
 	            return (React.createElement("div", {className: "panel panel-default inner", style: { marginBottom: 0 + 'px' }}, React.createElement("div", {className: "panel-heading"}, React.createElement("h4", null, "Редактирование инструмента")), React.createElement("div", {className: "panel-body"}, this.state.errorMessage != null ?
@@ -1486,19 +1501,35 @@
 	    "use strict";
 	    var TextInput = (function (_super) {
 	        __extends(TextInput, _super);
-	        function TextInput() {
-	            _super.apply(this, arguments);
-	        }
-	        TextInput.prototype.getInitialState = function () {
-	            //most of these variables have to do with handling errors
-	            return {
+	        function TextInput(props, context) {
+	            var _this = this;
+	            _super.call(this, props, context);
+	            this.handleChange = function (event) {
+	                //validate the field locally
+	                _this.validation(event.target.value);
+	                //Call onChange method on the parent component for updating it's state
+	                //If saving this field for final form submission, it gets passed
+	                // up to the top component for sending to the server
+	                if (_this.props.onChange) {
+	                    _this.props.onChange(event);
+	                }
+	            };
+	            this.handleBlur = function (event) {
+	                //Complete final validation from parent element when complete
+	                var valid = _this.props.validate(event.target.value);
+	                //pass the result to the local validation element for displaying the error
+	                _this.validation(event.target.value, valid);
+	            };
+	            this.props = props;
+	            this.context = context;
+	            this.state = {
 	                isEmpty: true,
 	                value: this.props.value,
 	                valid: false,
 	                errorMessage: "Input is invalid",
 	                errorVisible: false
 	            };
-	        };
+	        }
 	        TextInput.prototype.componentWillReceiveProps = function (nextProps) {
 	            this.setState({
 	                isEmpty: true,
@@ -1507,16 +1538,6 @@
 	                errorMessage: "Input is invalid",
 	                errorVisible: false
 	            });
-	        };
-	        TextInput.prototype.handleChange = function (event) {
-	            //validate the field locally
-	            this.validation(event.target.value);
-	            //Call onChange method on the parent component for updating it's state
-	            //If saving this field for final form submission, it gets passed
-	            // up to the top component for sending to the server
-	            if (this.props.onChange) {
-	                this.props.onChange(event);
-	            }
 	        };
 	        TextInput.prototype.componentDidMount = function () {
 	            this.props.register(this);
@@ -1560,12 +1581,6 @@
 	                errorMessage: message,
 	                errorVisible: errorVisible
 	            });
-	        };
-	        TextInput.prototype.handleBlur = function (event) {
-	            //Complete final validation from parent element when complete
-	            var valid = this.props.validate(event.target.value);
-	            //pass the result to the local validation element for displaying the error
-	            this.validation(event.target.value, valid);
 	        };
 	        TextInput.prototype.render = function () {
 	            return (React.createElement("div", {className: this.props.uniqueName}, React.createElement("input", {className: 'form-control', placeholder: this.props.text, onChange: this.handleChange, onBlur: this.handleBlur, value: this.props.value}), this.state.errorVisible ?
