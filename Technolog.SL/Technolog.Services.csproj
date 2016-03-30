@@ -40,20 +40,36 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DTO\PartDTO.cs" />
+    <Compile Include="DTO\TechOperationDTO.cs" />
+    <Compile Include="DTO\TechProcessDTO.cs" />
+    <Compile Include="DTO\TechStepDTO.cs" />
     <Compile Include="DTO\ToolDTO.cs" />
     <Compile Include="DTO\ToolListDTO.cs" />
     <Compile Include="Infrastructure\AutoMapperConfig.cs" />
     <Compile Include="Infrastructure\ValidationException.cs" />
+    <Compile Include="Interfaces\IPartService.cs" />
     <Compile Include="Interfaces\IService.cs" />
+    <Compile Include="Interfaces\ITechOperationService.cs" />
+    <Compile Include="Interfaces\ITechProcessService.cs" />
+    <Compile Include="Interfaces\ITechStepService.cs" />
     <Compile Include="Interfaces\IToolService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\BaseService.cs" />
+    <Compile Include="Services\PartService.cs" />
+    <Compile Include="Services\TechOperationService.cs" />
+    <Compile Include="Services\TechProcessService.cs" />
+    <Compile Include="Services\TechStepService.cs" />
     <Compile Include="Services\ToolService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Technolog.BLL\Technolog.BLL.csproj">
       <Project>{41c55022-9478-464b-ad67-72626bd0dc72}</Project>
       <Name>Technolog.BLL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Technolog.DAL.Interfaces\Technolog.DAL.Interfaces.csproj">
+      <Project>{42d362a0-0236-4482-b774-e937df355f1e}</Project>
+      <Name>Technolog.DAL.Interfaces</Name>
     </ProjectReference>
     <ProjectReference Include="..\Technolog.DAL\Technolog.DAL.EF.csproj">
       <Project>{c7084343-9e7c-4f7e-81ae-f4fdcd93c961}</Project>

@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Technolog.DAL.EF;
 using Technolog.Domain.Entities;
-using Technolog.Domain.Interfaces;
+using Technolog.DAL.Interfaces;
 using Technolog.Infrastructure.Mapper.AM;
 using Technolog.SL.DTO.Tool;
 using Technolog.SL.Interfaces;

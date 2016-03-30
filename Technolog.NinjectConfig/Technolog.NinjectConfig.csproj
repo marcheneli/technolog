@@ -80,6 +80,10 @@
       <Project>{dc47cc8b-a368-4b43-9028-ff1eb98272e5}</Project>
       <Name>Technolog.Services</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Technolog.Web.Models\Technolog.Web.Models.csproj">
+      <Project>{3d7447ed-3798-43b4-a762-b28c723d7915}</Project>
+      <Name>Technolog.Web.Models</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

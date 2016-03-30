@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Technolog.Domain.Interfaces;
+using Technolog.DAL.Interfaces;
 using Technolog.Infrastructure.Interfaces;
 
 namespace Technolog.SL.Services

@@ -58,6 +58,10 @@
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Technolog.DAL.Interfaces\Technolog.DAL.Interfaces.csproj">
+      <Project>{42d362a0-0236-4482-b774-e937df355f1e}</Project>
+      <Name>Technolog.DAL.Interfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Technolog.DAL\Technolog.DAL.EF.csproj">
       <Project>{c7084343-9e7c-4f7e-81ae-f4fdcd93c961}</Project>
       <Name>Technolog.DAL.EF</Name>

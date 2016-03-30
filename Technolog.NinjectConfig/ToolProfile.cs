@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Technolog.Domain.Entities;
 using Technolog.SL.DTO.Tool;
+using Technolog.Web.Models;
 
 namespace Technolog.NinjectConfig
 {
@@ -15,6 +16,9 @@ namespace Technolog.NinjectConfig
         {
             CreateMap<ToolDTO, Tool>();
             CreateMap<Tool, ToolDTO>();
+            CreateMap<ToolModel, ToolDTO>();
+            CreateMap<ToolDTO, ToolModel>();
+            CreateMap<ToolListDTO, ToolListModel>();
         }
     }
 }

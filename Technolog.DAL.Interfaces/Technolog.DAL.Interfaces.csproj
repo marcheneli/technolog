@@ -40,11 +40,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interfaces\IPartRepository.cs" />
+    <Compile Include="Interfaces\IRepository.cs" />
+    <Compile Include="Interfaces\ITechOperationRepository.cs" />
+    <Compile Include="Interfaces\ITechProcessRepository.cs" />
+    <Compile Include="Interfaces\ITechStepRepository.cs" />
+    <Compile Include="Interfaces\IToolRepository.cs" />
+    <Compile Include="Interfaces\IUnitOfWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Exceptions\" />
-    <Folder Include="Interfaces\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Technolog.Domain\Technolog.Domain.csproj">
+      <Project>{ed38ba5f-d5f3-4957-bf7a-33797dc25de4}</Project>
+      <Name>Technolog.Domain</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

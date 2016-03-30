@@ -59,10 +59,17 @@
     <Compile Include="EF\EntityConfigurations\PartMapper.cs" />
     <Compile Include="EF\EntityConfigurations\ToolMapper.cs" />
     <Compile Include="EF\Repositories\EFPartRepository.cs" />
+    <Compile Include="EF\Repositories\EFTechOperationRepository.cs" />
+    <Compile Include="EF\Repositories\EFTechProcessRepository.cs" />
+    <Compile Include="EF\Repositories\EFTechStepRepository.cs" />
     <Compile Include="EF\Repositories\EFToolRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Technolog.DAL.Interfaces\Technolog.DAL.Interfaces.csproj">
+      <Project>{42d362a0-0236-4482-b774-e937df355f1e}</Project>
+      <Name>Technolog.DAL.Interfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Technolog.Domain\Technolog.Domain.csproj">
       <Project>{ed38ba5f-d5f3-4957-bf7a-33797dc25de4}</Project>
       <Name>Technolog.Domain</Name>

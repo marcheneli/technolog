@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Technolog.Domain.Entities;
+using Technolog.SL.DTO;
 
-namespace Technolog.Domain.Interfaces
+namespace Technolog.SL.Interfaces
 {
-    public interface IPartRepository : IRepository<Part>
+    public interface ITechOperationService : IService<TechOperationDTO>
     {
     }
 }

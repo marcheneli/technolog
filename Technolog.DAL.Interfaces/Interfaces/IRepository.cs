@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Technolog.Domain.Infrastructure;
 
-namespace Technolog.Domain.Interfaces
+namespace Technolog.DAL.Interfaces
 {
     public interface IRepository<T> where T : class
     {

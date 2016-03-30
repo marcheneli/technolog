@@ -5,10 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Technolog.Domain.Entities;
 
-namespace Technolog.Domain.Interfaces
+namespace Technolog.DAL.Interfaces
 {
-    public interface IToolRepository : IRepository<Tool>
+    public interface ITechProcessRepository : IRepository<TechProcess>
     {
-
     }
 }

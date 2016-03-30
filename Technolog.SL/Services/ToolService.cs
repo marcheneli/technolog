@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Technolog.SL.DTO.Tool;
 using Technolog.SL.Interfaces;
-using Technolog.Domain.Interfaces;
+using Technolog.DAL.Interfaces;
 using Technolog.Domain.Entities;
 using Technolog.SL.Infrastructure;
 using Technolog.Domain.Infrastructure;

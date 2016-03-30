@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Technolog.Domain.Entities;
 using Technolog.Domain.Infrastructure;
-using Technolog.Domain.Interfaces;
+using Technolog.DAL.Interfaces;
 
 namespace Technolog.DAL.EF
 {

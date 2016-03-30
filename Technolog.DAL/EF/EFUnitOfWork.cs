@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Technolog.Domain.Interfaces;
+using Technolog.DAL.Interfaces;
 
 namespace Technolog.DAL.EF
 {
@@ -13,6 +13,9 @@ namespace Technolog.DAL.EF
 
         IToolRepository tools;
         IPartRepository parts;
+        ITechStepRepository techSteps;
+        ITechOperationRepository techOperation;
+        ITechProcessRepository techProcesses;
 
         public EFUnitOfWork(string connectionString)
         {
@@ -38,6 +41,30 @@ namespace Technolog.DAL.EF
                     parts = new EFPartRepository(dbContext);
 
                 return parts;
+            }
+        }
+
+        public ITechStepRepository TechSteps
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public ITechOperationRepository TechOperations
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public ITechProcessRepository TechProcesses
+        {
+            get
+            {
+                throw new NotImplementedException();
             }
         }
 
