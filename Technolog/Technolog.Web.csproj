@@ -296,6 +296,9 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\api\PartsController.cs" />
+    <Compile Include="Controllers\api\TechOperationsController.cs" />
+    <Compile Include="Controllers\api\TechProcessesController.cs" />
+    <Compile Include="Controllers\api\TechStepsController.cs" />
     <Compile Include="Controllers\api\TestController.cs" />
     <Compile Include="Controllers\api\ToolsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />

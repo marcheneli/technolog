@@ -49,7 +49,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="NinjectConfigSetup.cs" />
+    <Compile Include="PartProfile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TechOperationProfile.cs" />
+    <Compile Include="TechProcessProfile.cs" />
+    <Compile Include="TechStepProfile.cs" />
     <Compile Include="ToolProfile.cs" />
   </ItemGroup>
   <ItemGroup>

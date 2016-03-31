@@ -8,5 +8,12 @@ namespace Technolog.Domain.Entities
 {
     public class TechStep
     {
+        public int TechStepId { get; set; }
+
+        public string Description { get; set; }
+
+        public virtual ICollection<ToolTechStep> ToolUsages { get; set; }
+
+        public virtual ICollection<PartTechStep> PartUsages { get; set; }
     }
 }

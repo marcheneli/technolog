@@ -10,7 +10,7 @@ using Technolog.Web.Models;
 
 namespace Technolog.NinjectConfig
 {
-    public class ToolProfile : Profile
+    class ToolProfile : Profile
     {
         protected override void Configure()
         {

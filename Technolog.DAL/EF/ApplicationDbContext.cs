@@ -13,6 +13,7 @@ namespace Technolog.DAL.EF
     {
         public DbSet<Tool> Tools { get; set; }
         public DbSet<Part> Parts { get; set; }
+        public DbSet<TechStep> TechSteps { get; set; }
 
         public ApplicationDbContext(string connectionString)
             :base(connectionString)
@@ -26,6 +27,9 @@ namespace Technolog.DAL.EF
 
             modelBuilder.Configurations.Add(new ToolMapper());
             modelBuilder.Configurations.Add(new PartMapper());
+            modelBuilder.Configurations.Add(new TechStepMapper());
+            modelBuilder.Configurations.Add(new ToolTechStepMapper());
+            modelBuilder.Configurations.Add(new PartTechStepMapper());
         }
     }
 }

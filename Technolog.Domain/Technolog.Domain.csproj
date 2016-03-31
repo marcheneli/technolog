@@ -41,10 +41,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\Part.cs" />
+    <Compile Include="Entities\PartTechStep.cs" />
     <Compile Include="Entities\TechOperation.cs" />
     <Compile Include="Entities\TechProcess.cs" />
     <Compile Include="Entities\TechStep.cs" />
     <Compile Include="Entities\Tool.cs" />
+    <Compile Include="Entities\ToolTechStep.cs" />
     <Compile Include="Infrastructure\PagedResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

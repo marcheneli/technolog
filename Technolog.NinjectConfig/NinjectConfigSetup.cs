@@ -32,6 +32,10 @@ namespace Technolog.NinjectConfig
         {
             MapperConfiguration mapperConfig = new MapperConfiguration(cfg => {
                 cfg.AddProfile<ToolProfile>();
+                cfg.AddProfile<PartProfile>();
+                cfg.AddProfile<TechStepProfile>();
+                cfg.AddProfile<TechOperationProfile>();
+                cfg.AddProfile<TechProcessProfile>();
             });
             IMapper mapper = mapperConfig.CreateMapper();
 
