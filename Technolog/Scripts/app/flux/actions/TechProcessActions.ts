@@ -55,7 +55,7 @@ class TechProcessActionsStatic {
         });
     }
 
-    public changeTechProcesssPerPage(techProcesssPerPage: number) {
+    public changeTechProcessesPerPage(techProcesssPerPage: number) {
         AppDispatcher.dispatch({
             actionType: TechProcessActionTypes.TECHPROCESSES_PER_PAGE_CHANGE,
             actionSource: ActionSourceTypes.TECHPROCESS,

@@ -18,6 +18,7 @@ interface IPart {
 
 interface ITechStep {
     id: number;
+    description: string;
 }
 
 interface ITechOperation {

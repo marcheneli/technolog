@@ -48,7 +48,7 @@ define(["require", "exports", "../dispatcher/appDispatcher", "./actionSourceType
                 currentPage: page
             });
         };
-        TechProcessActionsStatic.prototype.changeTechProcesssPerPage = function (techProcesssPerPage) {
+        TechProcessActionsStatic.prototype.changeTechProcessesPerPage = function (techProcesssPerPage) {
             appDispatcher_1.default.dispatch({
                 actionType: techProcessActionTypes_1.default.TECHPROCESSES_PER_PAGE_CHANGE,
                 actionSource: actionSourceTypes_1.default.TECHPROCESS,
