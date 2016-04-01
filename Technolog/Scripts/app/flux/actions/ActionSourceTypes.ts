@@ -1,6 +1,10 @@
 ﻿enum ActionSourceTypes {
     ERROR,
-    TOOL
+    TOOL,
+    PART,
+    TECHSTEP,
+    TECHOPERATION,
+    TECHPROCESS
 }
 
 export default ActionSourceTypes

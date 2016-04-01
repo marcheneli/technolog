@@ -19,6 +19,46 @@ class NavigationManagerStatic {
         this.changeLocation();
     }
 
+    public openPartEditor = (id: number): void => {
+        this.navigation.pathname = '/parts/' + id;
+        this.changeLocation();
+    }
+
+    public closePartEditor = (): void => {
+        this.navigation.pathname = '/parts';
+        this.changeLocation();
+    }
+
+    public openTechStepEditor = (id: number): void => {
+        this.navigation.pathname = '/techsteps/' + id;
+        this.changeLocation();
+    }
+
+    public closeTechStepEditor = (): void => {
+        this.navigation.pathname = '/techsteps';
+        this.changeLocation();
+    }
+
+    public openTechOperationEditor = (id: number): void => {
+        this.navigation.pathname = '/techoperations/' + id;
+        this.changeLocation();
+    }
+
+    public closeTechOperationEditor = (): void => {
+        this.navigation.pathname = '/techoperations';
+        this.changeLocation();
+    }
+
+    public openTechProcessEditor = (id: number): void => {
+        this.navigation.pathname = '/techprocesses/' + id;
+        this.changeLocation();
+    }
+
+    public closeTechProcessEditor = (): void => {
+        this.navigation.pathname = '/techprocesses';
+        this.changeLocation();
+    }
+
     public newTool = (): void => {
         if (this.navigation.query["toolIds"]) {
             if (Array.isArray(this.navigation.query["toolIds"])) {

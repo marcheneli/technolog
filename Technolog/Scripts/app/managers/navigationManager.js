@@ -15,6 +15,38 @@ define(["require", "exports", "react-router"], function (require, exports, React
                 _this.navigation.pathname = '/tools';
                 _this.changeLocation();
             };
+            this.openPartEditor = function (id) {
+                _this.navigation.pathname = '/parts/' + id;
+                _this.changeLocation();
+            };
+            this.closePartEditor = function () {
+                _this.navigation.pathname = '/parts';
+                _this.changeLocation();
+            };
+            this.openTechStepEditor = function (id) {
+                _this.navigation.pathname = '/techsteps/' + id;
+                _this.changeLocation();
+            };
+            this.closeTechStepEditor = function () {
+                _this.navigation.pathname = '/techsteps';
+                _this.changeLocation();
+            };
+            this.openTechOperationEditor = function (id) {
+                _this.navigation.pathname = '/techoperations/' + id;
+                _this.changeLocation();
+            };
+            this.closeTechOperationEditor = function () {
+                _this.navigation.pathname = '/techoperations';
+                _this.changeLocation();
+            };
+            this.openTechProcessEditor = function (id) {
+                _this.navigation.pathname = '/techprocesses/' + id;
+                _this.changeLocation();
+            };
+            this.closeTechProcessEditor = function () {
+                _this.navigation.pathname = '/techprocesses';
+                _this.changeLocation();
+            };
             this.newTool = function () {
                 if (_this.navigation.query["toolIds"]) {
                     if (Array.isArray(_this.navigation.query["toolIds"])) {

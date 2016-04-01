@@ -1,13 +1,33 @@
 ﻿interface ITabElement {
-    id: number,
-    name: string,
-    linkName: string
+    id: number;
+    name: string;
+    linkName: string;
 }
 
 interface ITool {
-    id: number,
-    name: string,
-    price: number
+    id: number;
+    name: string;
+    price: number;
+}
+
+interface IPart {
+    id: number;
+    name: string;
+    price: number;
+}
+
+interface ITechStep {
+    id: number;
+}
+
+interface ITechOperation {
+    id: number;
+    name: string;
+}
+
+interface ITechProcess {
+    id: number;
+    name: string;
 }
 
 interface AppPayload {
@@ -15,10 +35,14 @@ interface AppPayload {
     actionSource: number;
     currentPage?: number;
     pageSize?: number;
-    searchText?: string,
-    id?: number,
-    tool?: ITool,
-    errorMessage?: string
+    searchText?: string;
+    id?: number;
+    tool?: ITool;
+    part?: IPart;
+    techStep?: ITechStep;
+    techOperation?: ITechOperation;
+    techProcess?: ITechProcess;
+    errorMessage?: string;
 }
 
 declare class Tool implements ITool {
