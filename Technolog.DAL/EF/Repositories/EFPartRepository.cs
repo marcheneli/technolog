@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Technolog.Domain.Entities;
 using Technolog.Domain.Infrastructure;
 using Technolog.DAL.Interfaces;
+using System.Data.Entity;
 
 namespace Technolog.DAL.EF
 {
@@ -34,14 +35,9 @@ namespace Technolog.DAL.EF
             if (part != null) dbContext.Parts.Remove(part);
         }
 
-        public IEnumerable<Part> GetAll()
+        public IQueryable<Part> GetAll()
         {
-            return dbContext.Parts.ToList();
-        }
-
-        public Task<IEnumerable<Part>> GetAllAsync()
-        {
-            throw new NotImplementedException();
+            return dbContext.Parts;
         }
 
         public Part GetById(int id)
@@ -49,19 +45,54 @@ namespace Technolog.DAL.EF
             return dbContext.Parts.Find(id);
         }
 
-        public Task<Part> GetByIdAsync(int id)
+        public async Task<Part> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await dbContext.Parts.FindAsync(id);
         }
 
         public PagedResult<Part> GetPage(string search, int page, int pageSize)
         {
-            throw new NotImplementedException();
+            IEnumerable<Part> parts;
+
+            if (search == null)
+                parts = dbContext.Parts.OrderBy(t => t.Id).Skip(page * pageSize).Take(pageSize).ToList();
+            else
+            {
+                parts = dbContext.Parts.OrderBy(t => t.Id).Where(t => t.Name.Contains(search)).Skip(page * pageSize).Take(pageSize).ToList();
+            }
+
+            PagedResult<Part> pagedResult = new PagedResult<Part>();
+
+            pagedResult.Results = parts;
+
+            if (search == null)
+                pagedResult.RowCount = dbContext.Parts.OrderBy(t => t.Id).Count();
+            else
+            {
+                pagedResult.RowCount = dbContext.Parts.OrderBy(t => t.Id).Where(t => t.Name.Contains(search == null ? "" : search)).Count();
+            }
+
+
+            return pagedResult;
         }
 
-        public Task<PagedResult<Part>> GetPageAsync(string search, int page, int pageSize)
+        public async Task<PagedResult<Part>> GetPageAsync(string search, int page, int pageSize)
         {
-            throw new NotImplementedException();
+            IEnumerable<Part> parts;
+
+            if (search == null)
+                parts = dbContext.Parts.Skip(page * pageSize).Take(pageSize).ToList();
+            else
+            {
+                parts = await dbContext.Parts.Where(t => t.Name.Contains(search)).Skip(page * pageSize).Take(pageSize).ToListAsync();
+            }
+
+            PagedResult<Part> pagedResult = new PagedResult<Part>();
+
+            pagedResult.Results = parts;
+            pagedResult.RowCount = dbContext.Parts.Where(t => t.Name.Contains(search == null ? "" : search)).Count();
+
+            return pagedResult;
         }
 
         public void Update(Part item)
@@ -75,13 +106,7 @@ namespace Technolog.DAL.EF
             {
                 entity.PartNumber = item.PartNumber;
                 entity.Name = item.Name;
-                dbContext.SaveChanges();
             }
-        }
-
-        IQueryable<Part> IRepository<Part>.GetAll()
-        {
-            throw new NotImplementedException();
         }
     }
 }

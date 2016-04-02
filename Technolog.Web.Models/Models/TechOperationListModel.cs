@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Technolog.SL.DTO
+namespace Technolog.Web.Models.Models
 {
-    public class TechOperationDTO
+    public class TechOperationListModel
     {
-        public IEnumerable<TechOperationDTO> TechOperations { get; set; }
         public int TechOperationAmount { get; set; }
+        public IEnumerable<TechOperationModel> TechOperations { get; set; }
     }
 }

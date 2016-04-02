@@ -55,10 +55,7 @@ namespace Technolog.SL.Services
 
             if (tool == null)
                 throw new ValidationException("Инструмент не найден", "");
-
-            //MapperConfiguration mapperConfig = new MapperConfiguration(cfg => cfg.CreateMap<Tool, ToolDTO>());
-            //IMapper mapper = mapperConfig.CreateMapper();
-
+            
             ToolDTO toolDTO = mapper.Map<ToolDTO>(tool);
 
             return toolDTO;
@@ -67,10 +64,7 @@ namespace Technolog.SL.Services
         public ToolListDTO GetPage(int page, int pageSize, string search)
         {
             PagedResult<Tool> pagedTools = database.Tools.GetPage(search, page, pageSize);
-
-            //MapperConfiguration mapperConfig = new MapperConfiguration(cfg => cfg.CreateMap<Tool, ToolDTO>());
-            //IMapper mapper = mapperConfig.CreateMapper();
-
+            
             ToolListDTO toolListDTO = new ToolListDTO();
 
             toolListDTO.ToolAmount = pagedTools.RowCount;
@@ -92,9 +86,6 @@ namespace Technolog.SL.Services
 
         public int Insert(ToolDTO toolDTO)
         {
-            //MapperConfiguration mapperConfig = new MapperConfiguration(cfg => cfg.CreateMap<ToolDTO, Tool>());
-            //IMapper mapper = mapperConfig.CreateMapper();
-
             Tool tool = mapper.Map<Tool>(toolDTO);
             database.Tools.Add(tool);
 
@@ -112,10 +103,6 @@ namespace Technolog.SL.Services
 
         public async Task InsertAsync(ToolDTO toolDTO)
         {
-
-            //MapperConfiguration mapperConfig = new MapperConfiguration(cfg => cfg.CreateMap<ToolDTO, Tool>());
-            //IMapper mapper = mapperConfig.CreateMapper();
-
             Tool tool = mapper.Map<Tool>(toolDTO);
             database.Tools.Add(tool);
 
@@ -131,9 +118,6 @@ namespace Technolog.SL.Services
 
         public void Update(ToolDTO toolDTO)
         {
-            //MapperConfiguration mapperConfig = new MapperConfiguration(cfg => cfg.CreateMap<ToolDTO, Tool>());
-            //IMapper mapper = mapperConfig.CreateMapper();
-
             Tool tool = mapper.Map<Tool>(toolDTO);
             database.Tools.Update(tool);
 
@@ -149,9 +133,6 @@ namespace Technolog.SL.Services
 
         public async Task UpdateAsync(ToolDTO toolDTO)
         {
-            //MapperConfiguration mapperConfig = new MapperConfiguration(cfg => cfg.CreateMap<ToolDTO, Tool>());
-            //IMapper mapper = mapperConfig.CreateMapper();
-
             Tool tool = mapper.Map<Tool>(toolDTO);
             database.Tools.Update(tool);
 

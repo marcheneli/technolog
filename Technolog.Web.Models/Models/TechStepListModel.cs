@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Technolog.SL.DTO
+namespace Technolog.Web.Models.Models
 {
-    public class TechStepDTO
+    public class TechStepListModel
     {
-        public IEnumerable<TechStepDTO> TechSteps { get; set; }
         public int TechStepAmount { get; set; }
+        public IEnumerable<TechStepModel> TechSteps { get; set; }
     }
 }

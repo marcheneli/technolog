@@ -9,5 +9,7 @@ namespace Technolog.SL.Interfaces
 {
     public interface IPartService : IService<PartDTO>
     {
+        PartListDTO GetPage(int page, int pageSize, string search);
+        Task<PartListDTO> GetPageAsync(int page, int pageSize, string search);
     }
 }

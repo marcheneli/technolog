@@ -41,7 +41,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\PartListModel.cs" />
     <Compile Include="Models\PartModel.cs" />
+    <Compile Include="Models\TechOperationListModel.cs" />
+    <Compile Include="Models\TechProcessListModel.cs" />
+    <Compile Include="Models\TechProcessModel.cs" />
+    <Compile Include="Models\TechStepListModel.cs" />
+    <Compile Include="Models\TechStepModel.cs" />
+    <Compile Include="Models\TechOperationModel.cs" />
     <Compile Include="Models\ToolListModel.cs" />
     <Compile Include="Models\ToolModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

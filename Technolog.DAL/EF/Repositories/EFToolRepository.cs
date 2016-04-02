@@ -105,7 +105,6 @@ namespace Technolog.DAL.EF
             if(entity != null)
             {
                 entity.Name = item.Name;
-                dbContext.SaveChanges();
             }
         }
     }

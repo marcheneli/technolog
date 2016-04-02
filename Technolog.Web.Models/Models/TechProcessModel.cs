@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Technolog.Domain.Entities
+namespace Technolog.Web.Models.Models
 {
-    public class TechOperation
+    public class TechProcessModel
     {
-        public int TechOperationId { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
     }
 }

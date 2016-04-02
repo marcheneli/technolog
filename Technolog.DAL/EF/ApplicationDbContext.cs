@@ -14,6 +14,8 @@ namespace Technolog.DAL.EF
         public DbSet<Tool> Tools { get; set; }
         public DbSet<Part> Parts { get; set; }
         public DbSet<TechStep> TechSteps { get; set; }
+        public DbSet<TechOperation> TechOperations { get; set; }
+        public DbSet<TechProcess> TechProcesses { get; set; }
 
         public ApplicationDbContext(string connectionString)
             :base(connectionString)

@@ -9,5 +9,7 @@ namespace Technolog.SL.Interfaces
 {
     public interface ITechProcessService : IService<TechProcessDTO>
     {
+        TechProcessListDTO GetPage(int page, int pageSize, string search);
+        Task<TechProcessListDTO> GetPageAsync(int page, int pageSize, string search);
     }
 }

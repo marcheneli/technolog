@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Technolog.SL.DTO
 {
-    public class TechOperationDTO
+    public class TechOperationListDTO
     {
         public IEnumerable<TechOperationDTO> TechOperations { get; set; }
         public int TechOperationAmount { get; set; }
