@@ -14,7 +14,7 @@ namespace Technolog.DAL.EF
         IToolRepository tools;
         IPartRepository parts;
         ITechStepRepository techSteps;
-        ITechOperationRepository techOperation;
+        ITechOperationRepository techOperations;
         ITechProcessRepository techProcesses;
 
         public EFUnitOfWork(string connectionString)
@@ -48,7 +48,10 @@ namespace Technolog.DAL.EF
         {
             get
             {
-                throw new NotImplementedException();
+                if (techSteps == null)
+                    techSteps = new EFTechStepRepository(dbContext);
+
+                return techSteps;
             }
         }
 
@@ -56,7 +59,10 @@ namespace Technolog.DAL.EF
         {
             get
             {
-                throw new NotImplementedException();
+                if (techOperations == null)
+                    techOperations = new EFTechOperationRepository(dbContext);
+
+                return techOperations;
             }
         }
 
@@ -64,7 +70,10 @@ namespace Technolog.DAL.EF
         {
             get
             {
-                throw new NotImplementedException();
+                if (techProcesses == null)
+                    techProcesses = new EFTechProcessRepository(dbContext);
+
+                return techProcesses;
             }
         }
 

@@ -117,7 +117,7 @@ export default class PartEditForm extends React.Component<IPartEditFormProps, IP
         return (
             <div className="panel panel-default inner" style={{ marginBottom: 0 + 'px' }}>
                 <div className="panel-heading">
-                    <h4>Редактирование инструмента</h4>
+                    <h4>Редактирование детали</h4>
                 </div>
                 <div className="panel-body">
                     { this.state.errorMessage != null ?
@@ -167,7 +167,7 @@ export default class PartEditForm extends React.Component<IPartEditFormProps, IP
                                     uniqueName=''/>
                             </div>
                             <div className="form-group">
-                                <div className="btn-partbar">
+                                <div className="btn-toolbar">
                                     <input className="btn btn-primary" type="submit" value="Сохранить" />
                                     <button className="btn btn-default" type="button" onClick={this.cancelClickHandler}>Закрыть</button>
                                 </div>

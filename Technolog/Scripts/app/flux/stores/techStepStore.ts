@@ -37,7 +37,7 @@ function _loadTechSteps(): void {
 
 function _loadTechStep(id: number): void {
     if (id == 0) {
-        _techStep = { id: 0 };
+        _techStep = { id: 0, description: "" };
         TechStepStore.emitChangeEditTechStep();
         return;
     }

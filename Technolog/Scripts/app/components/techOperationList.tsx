@@ -49,7 +49,6 @@ export default class TechOperationList extends React.Component<ITechOperationLis
     }
 
     componentDidMount() {
-        console.log("mount");
         TechOperationActions.init(PageParamsManager.getPage(), PageParamsManager.getPageSize(), PageParamsManager.getSearchText());
     }
 
@@ -142,14 +141,14 @@ export default class TechOperationList extends React.Component<ITechOperationLis
         return (
             <div className="panel panel-default inner" style={{ marginBottom: 0 + 'px', display: 'flex', flexDirection: 'column' }}>
                 <div className="panel-heading">
-                    <h4>Инструменты</h4>
+                    <h4>Технологические операции</h4>
                 </div>
                 <div className="panel-body" style={{ display: 'flex', flexDirection: 'column' }}>
                     {this.state.isConfirmDeleting ?
                         <ConfirmDelete
                             id={this.state.currentTechOperation.id}
-                            title={"Подтверждение удаления инструмента"}
-                            message={"Вы действительно хотите удалить инструмент " + this.state.currentTechOperation.name}
+                            title={"Подтверждение удаления технологической операции"}
+                            message={"Вы действительно хотите удалить технологическую операцию " + this.state.currentTechOperation.name}
                             success={this.handleDeleteSuccess}
                             cancel={this.handleDeleteCancel}/>
                         :

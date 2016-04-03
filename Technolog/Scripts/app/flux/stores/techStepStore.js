@@ -26,7 +26,7 @@ define(["require", "exports", "jquery", "../dispatcher/appDispatcher", "../actio
     }
     function _loadTechStep(id) {
         if (id == 0) {
-            _techStep = { id: 0 };
+            _techStep = { id: 0, description: "" };
             TechStepStore.emitChangeEditTechStep();
             return;
         }

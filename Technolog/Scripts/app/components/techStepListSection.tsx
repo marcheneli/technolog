@@ -1,13 +1,13 @@
 ﻿/// <reference path="../../typings/tsd.d.ts" />
 
 import * as React from "react";
-import TechProcessList from "./techProcessList";
+import TechStepList from "./techStepList";
 
-export default class ToolProcessListSection extends React.Component<{}, {}> {
+export default class ToolListSection extends React.Component<{}, {}> {
     render(): React.ReactElement<{}> {
         return (
             <div className="outer">
-                <TechProcessList />
+                <TechStepList />
                 {this.props.children}
             </div>
         )

@@ -24,27 +24,27 @@ define(["require", "exports", "react-router"], function (require, exports, React
                 _this.changeLocation();
             };
             this.openTechStepEditor = function (id) {
-                _this.navigation.pathname = '/techsteps/' + id;
+                _this.navigation.pathname = '/steps/' + id;
                 _this.changeLocation();
             };
             this.closeTechStepEditor = function () {
-                _this.navigation.pathname = '/techsteps';
+                _this.navigation.pathname = '/steps';
                 _this.changeLocation();
             };
             this.openTechOperationEditor = function (id) {
-                _this.navigation.pathname = '/techoperations/' + id;
+                _this.navigation.pathname = '/operations/' + id;
                 _this.changeLocation();
             };
             this.closeTechOperationEditor = function () {
-                _this.navigation.pathname = '/techoperations';
+                _this.navigation.pathname = '/operations';
                 _this.changeLocation();
             };
             this.openTechProcessEditor = function (id) {
-                _this.navigation.pathname = '/techprocesses/' + id;
+                _this.navigation.pathname = '/processes/' + id;
                 _this.changeLocation();
             };
             this.closeTechProcessEditor = function () {
-                _this.navigation.pathname = '/techprocesses';
+                _this.navigation.pathname = '/processes';
                 _this.changeLocation();
             };
             this.newTool = function () {

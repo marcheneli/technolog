@@ -54,10 +54,15 @@
     <Compile Include="EF\DBInitialization\EntityInitializers\EntitiesInitializer.cs" />
     <Compile Include="EF\DBInitialization\EntityInitializers\EntityInitializer.cs" />
     <Compile Include="EF\DBInitialization\EntityInitializers\PartsInitializer.cs" />
+    <Compile Include="EF\DBInitialization\EntityInitializers\TechOperationsInitializer.cs" />
+    <Compile Include="EF\DBInitialization\EntityInitializers\TechProcessesInitializer.cs" />
+    <Compile Include="EF\DBInitialization\EntityInitializers\TechStepsInitializer.cs" />
     <Compile Include="EF\DBInitialization\EntityInitializers\ToolsInitializer.cs" />
     <Compile Include="EF\EFUnitOfWork.cs" />
     <Compile Include="EF\EntityConfigurations\PartMapper.cs" />
     <Compile Include="EF\EntityConfigurations\PartTechStepMapper.cs" />
+    <Compile Include="EF\EntityConfigurations\TechOperationMapper.cs" />
+    <Compile Include="EF\EntityConfigurations\TechProcessMapper.cs" />
     <Compile Include="EF\EntityConfigurations\TechStepMapper.cs" />
     <Compile Include="EF\EntityConfigurations\ToolMapper.cs" />
     <Compile Include="EF\EntityConfigurations\ToolTechStepMapper.cs" />

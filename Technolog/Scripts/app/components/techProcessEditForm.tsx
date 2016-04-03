@@ -104,7 +104,7 @@ export default class TechProcessEditForm extends React.Component<ITechProcessEdi
         return (
             <div className="panel panel-default inner" style={{ marginBottom: 0 + 'px' }}>
                 <div className="panel-heading">
-                    <h4>Редактирование инструмента</h4>
+                    <h4>Редактирование технологического процесса</h4>
                 </div>
                 <div className="panel-body">
                     { this.state.errorMessage != null ?
@@ -140,7 +140,7 @@ export default class TechProcessEditForm extends React.Component<ITechProcessEdi
                                     uniqueName=''/>
                             </div>
                             <div className="form-group">
-                                <div className="btn-techProcessbar">
+                                <div className="btn-toolbar">
                                     <input className="btn btn-primary" type="submit" value="Сохранить" />
                                     <button className="btn btn-default" type="button" onClick={this.cancelClickHandler}>Закрыть</button>
                                 </div>

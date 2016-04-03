@@ -4,11 +4,15 @@
 /// <reference path="../../typings/tsd.d.ts" />
 
 import * as React from "react";
+import PartList from "./partList";
 
 export default class PartListSection extends React.Component<{}, {}> {
     render(): React.ReactElement<{}> {
         return (
-                <div>Hi! I'm a part list section.</div>
-            )
+            <div className="outer">
+                <PartList />
+                {this.props.children}
+            </div>
+        )
     }
 }

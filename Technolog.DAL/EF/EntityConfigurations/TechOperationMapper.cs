@@ -9,9 +9,9 @@ using Technolog.Domain.Entities;
 
 namespace Technolog.DAL.EF.EntityConfigurations
 {
-    class ToolMapper : EntityTypeConfiguration<Tool>
+    class TechOperationMapper : EntityTypeConfiguration<TechOperation>
     {
-        public ToolMapper()
+        public TechOperationMapper()
         {
             this.Property(c => c.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
             this.Property(c => c.Id).IsRequired();

@@ -49,7 +49,6 @@ export default class TechStepList extends React.Component<ITechStepListProps, IT
     }
 
     componentDidMount() {
-        console.log("mount");
         TechStepActions.init(PageParamsManager.getPage(), PageParamsManager.getPageSize(), PageParamsManager.getSearchText());
     }
 
@@ -142,14 +141,14 @@ export default class TechStepList extends React.Component<ITechStepListProps, IT
         return (
             <div className="panel panel-default inner" style={{ marginBottom: 0 + 'px', display: 'flex', flexDirection: 'column' }}>
                 <div className="panel-heading">
-                    <h4>Инструменты</h4>
+                    <h4>Технологические шаги</h4>
                 </div>
                 <div className="panel-body" style={{ display: 'flex', flexDirection: 'column' }}>
                     {this.state.isConfirmDeleting ?
                         <ConfirmDelete
                             id={this.state.currentTechStep.id}
-                            title={"Подтверждение удаления инструмента"}
-                            message={"Вы действительно хотите удалить инструмент " + this.state.currentTechStep.description}
+                            title={"Подтверждение удаления технологического шага"}
+                            message={"Вы действительно хотите удалить технологический шаг " + this.state.currentTechStep.description}
                             success={this.handleDeleteSuccess}
                             cancel={this.handleDeleteCancel}/>
                         :

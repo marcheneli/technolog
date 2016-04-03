@@ -98,7 +98,7 @@ namespace Technolog.SL.Services
                 throw new ValidationException("Не удалось добавить новый инструмент.", "");
             }
 
-            return techProcess.TechProcessId;
+            return techProcess.Id;
         }
 
         public async Task InsertAsync(TechProcessDTO techProcessDTO)

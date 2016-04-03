@@ -49,7 +49,6 @@ export default class PartList extends React.Component<IPartListProps, IPartListS
     }
 
     componentDidMount() {
-        console.log("mount");
         PartActions.init(PageParamsManager.getPage(), PageParamsManager.getPageSize(), PageParamsManager.getSearchText());
     }
 
@@ -142,14 +141,14 @@ export default class PartList extends React.Component<IPartListProps, IPartListS
         return (
             <div className="panel panel-default inner" style={{ marginBottom: 0 + 'px', display: 'flex', flexDirection: 'column' }}>
                 <div className="panel-heading">
-                    <h4>Инструменты</h4>
+                    <h4>Детали</h4>
                 </div>
                 <div className="panel-body" style={{ display: 'flex', flexDirection: 'column' }}>
                     {this.state.isConfirmDeleting ?
                         <ConfirmDelete
                             id={this.state.currentPart.id}
-                            title={"Подтверждение удаления инструмента"}
-                            message={"Вы действительно хотите удалить инструмент " + this.state.currentPart.name}
+                            title={"Подтверждение удаления детали"}
+                            message={"Вы действительно хотите удалить деталь " + this.state.currentPart.name}
                             success={this.handleDeleteSuccess}
                             cancel={this.handleDeleteCancel}/>
                         :

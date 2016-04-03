@@ -32,6 +32,8 @@ namespace Technolog.DAL.EF
             modelBuilder.Configurations.Add(new TechStepMapper());
             modelBuilder.Configurations.Add(new ToolTechStepMapper());
             modelBuilder.Configurations.Add(new PartTechStepMapper());
+            modelBuilder.Configurations.Add(new TechOperationMapper());
+            modelBuilder.Configurations.Add(new TechProcessMapper());
         }
     }
 }

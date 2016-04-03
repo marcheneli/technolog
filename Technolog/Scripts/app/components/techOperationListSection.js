@@ -7,7 +7,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-define(["require", "exports", "react"], function (require, exports, React) {
+define(["require", "exports", "react", "./techOperationList"], function (require, exports, React, techOperationList_1) {
     "use strict";
     var ToolListOperationSection = (function (_super) {
         __extends(ToolListOperationSection, _super);
@@ -15,7 +15,7 @@ define(["require", "exports", "react"], function (require, exports, React) {
             _super.apply(this, arguments);
         }
         ToolListOperationSection.prototype.render = function () {
-            return (React.createElement("div", null, "Hi! I'm a tech operation section."));
+            return (React.createElement("div", {className: "outer"}, React.createElement(techOperationList_1.default, null), this.props.children));
         };
         return ToolListOperationSection;
     }(React.Component));

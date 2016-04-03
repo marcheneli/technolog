@@ -4,11 +4,15 @@
 /// <reference path="../../typings/tsd.d.ts" />
 
 import * as React from "react";
+import TechOperationList from "./techOperationList"
 
 export default class ToolListOperationSection extends React.Component<{}, {}> {
     render(): React.ReactElement<{}> {
         return (
-                <div>Hi! I'm a tech operation section.</div>
-            )
+            <div className="outer">
+                <TechOperationList />
+                {this.props.children}
+            </div>
+        )
     }
 }

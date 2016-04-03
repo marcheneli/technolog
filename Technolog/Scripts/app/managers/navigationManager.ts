@@ -30,32 +30,32 @@ class NavigationManagerStatic {
     }
 
     public openTechStepEditor = (id: number): void => {
-        this.navigation.pathname = '/techsteps/' + id;
+        this.navigation.pathname = '/steps/' + id;
         this.changeLocation();
     }
 
     public closeTechStepEditor = (): void => {
-        this.navigation.pathname = '/techsteps';
+        this.navigation.pathname = '/steps';
         this.changeLocation();
     }
 
     public openTechOperationEditor = (id: number): void => {
-        this.navigation.pathname = '/techoperations/' + id;
+        this.navigation.pathname = '/operations/' + id;
         this.changeLocation();
     }
 
     public closeTechOperationEditor = (): void => {
-        this.navigation.pathname = '/techoperations';
+        this.navigation.pathname = '/operations';
         this.changeLocation();
     }
 
     public openTechProcessEditor = (id: number): void => {
-        this.navigation.pathname = '/techprocesses/' + id;
+        this.navigation.pathname = '/processes/' + id;
         this.changeLocation();
     }
 
     public closeTechProcessEditor = (): void => {
-        this.navigation.pathname = '/techprocesses';
+        this.navigation.pathname = '/processes';
         this.changeLocation();
     }
 

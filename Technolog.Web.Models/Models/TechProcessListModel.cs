@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Technolog.Web.Models.Models
+namespace Technolog.Web.Models
 {
     public class TechProcessListModel
     {
         public int TechProcessAmount { get; set; }
-        public IEnumerable<TechProcessModel> TechOProcesses { get; set; }
+        public IEnumerable<TechProcessModel> TechProcesses { get; set; }
     }
 }

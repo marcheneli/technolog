@@ -49,7 +49,6 @@ export default class TechProcessList extends React.Component<ITechProcessListPro
     }
 
     componentDidMount() {
-        console.log("mount");
         TechProcessActions.init(PageParamsManager.getPage(), PageParamsManager.getPageSize(), PageParamsManager.getSearchText());
     }
 
@@ -142,14 +141,14 @@ export default class TechProcessList extends React.Component<ITechProcessListPro
         return (
             <div className="panel panel-default inner" style={{ marginBottom: 0 + 'px', display: 'flex', flexDirection: 'column' }}>
                 <div className="panel-heading">
-                    <h4>Инструменты</h4>
+                    <h4>Технологические процессы</h4>
                 </div>
                 <div className="panel-body" style={{ display: 'flex', flexDirection: 'column' }}>
                     {this.state.isConfirmDeleting ?
                         <ConfirmDelete
                             id={this.state.currentTechProcess.id}
-                            title={"Подтверждение удаления инструмента"}
-                            message={"Вы действительно хотите удалить инструмент " + this.state.currentTechProcess.name}
+                            title={"Подтверждение удаления технологического процесса"}
+                            message={"Вы действительно хотите удалить технологический процесс " + this.state.currentTechProcess.name}
                             success={this.handleDeleteSuccess}
                             cancel={this.handleDeleteCancel}/>
                         :

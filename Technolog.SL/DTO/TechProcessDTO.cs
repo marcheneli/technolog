@@ -8,5 +8,7 @@ namespace Technolog.SL.DTO
 {
     public class TechProcessDTO
     {
+        public int Id { get; set; }
+        public string Name { get; set; }
     }
 }

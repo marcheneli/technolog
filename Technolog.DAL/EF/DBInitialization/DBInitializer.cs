@@ -15,6 +15,9 @@ namespace Technolog.DAL.EF.DBInitialization
 
             initializers.Add(new ToolsInitializer());
             initializers.Add(new PartsInitializer());
+            initializers.Add(new TechStepsInitializer());
+            initializers.Add(new TechOperationsInitializer());
+            initializers.Add(new TechProcessesInitializer());
 
             initializers.Initialization();
         }

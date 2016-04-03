@@ -86,7 +86,6 @@ define(["require", "exports", "react", "../flux/stores/toolStore", "../constants
             toolStore_1.default.removeChangeToolsListener(this.handleToolsChange);
         };
         ToolList.prototype.componentDidMount = function () {
-            console.log("mount");
             toolActions_1.default.init(pageParamsManager_1.default.getPage(), pageParamsManager_1.default.getPageSize(), pageParamsManager_1.default.getSearchText());
         };
         ToolList.prototype.render = function () {

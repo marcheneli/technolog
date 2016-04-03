@@ -8,7 +8,7 @@ namespace Technolog.SL.DTO
 {
     public class TechOperationDTO
     {
-        public IEnumerable<TechOperationDTO> TechOperations { get; set; }
-        public int TechOperationAmount { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
     }
 }

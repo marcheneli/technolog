@@ -56,10 +56,10 @@ namespace Technolog.DAL.EF
             IEnumerable<TechStep> techSteps;
 
             if (search == null)
-                techSteps = dbContext.TechSteps.OrderBy(t => t.TechStepId).Skip(page * pageSize).Take(pageSize).ToList();
+                techSteps = dbContext.TechSteps.OrderBy(t => t.Id).Skip(page * pageSize).Take(pageSize).ToList();
             else
             {
-                techSteps = dbContext.TechSteps.OrderBy(t => t.TechStepId).Where(t => t.Description.Contains(search)).Skip(page * pageSize).Take(pageSize).ToList();
+                techSteps = dbContext.TechSteps.OrderBy(t => t.Id).Where(t => t.Description.Contains(search)).Skip(page * pageSize).Take(pageSize).ToList();
             }
 
             PagedResult<TechStep> pagedResult = new PagedResult<TechStep>();
@@ -67,10 +67,10 @@ namespace Technolog.DAL.EF
             pagedResult.Results = techSteps;
 
             if (search == null)
-                pagedResult.RowCount = dbContext.TechSteps.OrderBy(t => t.TechStepId).Count();
+                pagedResult.RowCount = dbContext.TechSteps.OrderBy(t => t.Id).Count();
             else
             {
-                pagedResult.RowCount = dbContext.TechSteps.OrderBy(t => t.TechStepId).Where(t => t.Description.Contains(search == null ? "" : search)).Count();
+                pagedResult.RowCount = dbContext.TechSteps.OrderBy(t => t.Id).Where(t => t.Description.Contains(search == null ? "" : search)).Count();
             }
 
 
@@ -100,8 +100,8 @@ namespace Technolog.DAL.EF
         {
             TechStep entity = null;
 
-            if (item.TechStepId != 0)
-                entity = dbContext.TechSteps.Find(item.TechStepId);
+            if (item.Id != 0)
+                entity = dbContext.TechSteps.Find(item.Id);
 
             if (entity != null)
             {

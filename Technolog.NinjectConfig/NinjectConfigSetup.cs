@@ -47,6 +47,18 @@ namespace Technolog.NinjectConfig
 
             kernel.Bind<IToolService>()
              .To<ToolService>();
+
+            kernel.Bind<IPartService>()
+             .To<PartService>();
+
+            kernel.Bind<ITechStepService>()
+             .To<TechStepService>();
+
+            kernel.Bind<ITechOperationService>()
+             .To<TechOperationService>();
+
+            kernel.Bind<ITechProcessService>()
+             .To<TechProcessService>();
         }
     }
 }

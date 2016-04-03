@@ -56,10 +56,10 @@ namespace Technolog.DAL.EF
             IEnumerable<TechProcess> techProcesses;
 
             if (search == null)
-                techProcesses = dbContext.TechProcesses.OrderBy(t => t.TechProcessId).Skip(page * pageSize).Take(pageSize).ToList();
+                techProcesses = dbContext.TechProcesses.OrderBy(t => t.Id).Skip(page * pageSize).Take(pageSize).ToList();
             else
             {
-                techProcesses = dbContext.TechProcesses.OrderBy(t => t.TechProcessId).Where(t => t.Name.Contains(search)).Skip(page * pageSize).Take(pageSize).ToList();
+                techProcesses = dbContext.TechProcesses.OrderBy(t => t.Id).Where(t => t.Name.Contains(search)).Skip(page * pageSize).Take(pageSize).ToList();
             }
 
             PagedResult<TechProcess> pagedResult = new PagedResult<TechProcess>();
@@ -67,10 +67,10 @@ namespace Technolog.DAL.EF
             pagedResult.Results = techProcesses;
 
             if (search == null)
-                pagedResult.RowCount = dbContext.TechProcesses.OrderBy(t => t.TechProcessId).Count();
+                pagedResult.RowCount = dbContext.TechProcesses.OrderBy(t => t.Id).Count();
             else
             {
-                pagedResult.RowCount = dbContext.TechProcesses.OrderBy(t => t.TechProcessId).Where(t => t.Name.Contains(search == null ? "" : search)).Count();
+                pagedResult.RowCount = dbContext.TechProcesses.OrderBy(t => t.Id).Where(t => t.Name.Contains(search == null ? "" : search)).Count();
             }
 
 
@@ -100,8 +100,8 @@ namespace Technolog.DAL.EF
         {
             TechProcess entity = null;
 
-            if (item.TechProcessId != 0)
-                entity = dbContext.TechProcesses.Find(item.TechProcessId);
+            if (item.Id != 0)
+                entity = dbContext.TechProcesses.Find(item.Id);
 
             if (entity != null)
             {

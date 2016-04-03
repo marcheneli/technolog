@@ -1,6 +1,3 @@
-// A '.tsx' file enables JSX support in the TypeScript compiler, 
-// for more information see the following page on the TypeScript wiki:
-// https://github.com/Microsoft/TypeScript/wiki/JSX
 /// <reference path="../../typings/tsd.d.ts" />
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -12,8 +9,9 @@ define(["require", "exports", "react", "./mainSidebar", "./mainContentSection"],
     var tabList = [
         { id: 1, name: 'Технологические процессы', linkName: 'processes' },
         { id: 2, name: 'Технологические операции', linkName: 'operations' },
-        { id: 3, name: 'Инструменты', linkName: 'tools' },
-        { id: 4, name: 'Детали', linkName: 'parts' }
+        { id: 3, name: 'Технологические шаги', linkName: 'steps' },
+        { id: 4, name: 'Инструменты', linkName: 'tools' },
+        { id: 5, name: 'Детали', linkName: 'parts' }
     ];
     var Main = (function (_super) {
         __extends(Main, _super);

@@ -290,7 +290,6 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_Start\AutoMapperConfig.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\ReactConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -307,9 +306,6 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\AntiForgeryHelper.cs" />
-    <Compile Include="Models\PartModel.cs" />
-    <Compile Include="Models\ToolListModel.cs" />
-    <Compile Include="Models\ToolModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -329,6 +325,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Technolog.Infrastructure.Interfaces\Technolog.Infrastructure.Interfaces.csproj">
@@ -376,6 +373,7 @@
     <TypeScriptCompile Include="Scripts\app\components\techProcessListSection.tsx" />
     <TypeScriptCompile Include="Scripts\app\components\techStepEditForm.tsx" />
     <TypeScriptCompile Include="Scripts\app\components\techStepList.tsx" />
+    <TypeScriptCompile Include="Scripts\app\components\techStepListSection.tsx" />
     <TypeScriptCompile Include="Scripts\app\components\toolEditForm.tsx" />
     <TypeScriptCompile Include="Scripts\app\components\toolList.tsx" />
     <TypeScriptCompile Include="Scripts\app\components\toolListSection.tsx" />

@@ -9,7 +9,7 @@ using System.Web.Mvc;
 using Technolog.Infrastructure.Interfaces;
 using Technolog.SL.DTO;
 using Technolog.SL.Interfaces;
-using Technolog.Web.Models.Models;
+using Technolog.Web.Models;
 
 namespace Technolog.Web.Controllers.api
 {

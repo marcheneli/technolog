@@ -10,7 +10,6 @@ using Technolog.Infrastructure.Interfaces;
 using Technolog.SL.DTO;
 using Technolog.SL.Interfaces;
 using Technolog.Web.Models;
-using Technolog.Web.Models.Models;
 
 namespace Technolog.Web.Controllers.api
 {
