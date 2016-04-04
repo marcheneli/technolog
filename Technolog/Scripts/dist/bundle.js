@@ -48,7 +48,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/// <reference path="../typings/tsd.d.ts" />
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react-dom */ 24), __webpack_require__(/*! react-router */ 5), __webpack_require__(/*! ./components/main */ 25), __webpack_require__(/*! ./components/techProcessListSection */ 29), __webpack_require__(/*! ./components/techOperationListSection */ 34), __webpack_require__(/*! ./components/techStepListSection */ 39), __webpack_require__(/*! ./components/toolListSection */ 1), __webpack_require__(/*! ./components/partListSection */ 44), __webpack_require__(/*! ./components/toolEditForm */ 49), __webpack_require__(/*! ./components/partEditForm */ 53), __webpack_require__(/*! ./components/techStepEditForm */ 54), __webpack_require__(/*! ./components/techOperationEditForm */ 55), __webpack_require__(/*! ./components/techProcessEditForm */ 56)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, ReactDOM, ReactRouter, main_1, techProcessListSection_1, techOperationListSection_1, techStepListSection_1, toolListSection_1, partListSection_1, toolEditForm_1, partEditForm_1, techStepEditForm_1, techOperationEditForm_1, techProcessEditForm_1) {
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react-dom */ 24), __webpack_require__(/*! react-router */ 5), __webpack_require__(/*! ./components/main */ 25), __webpack_require__(/*! ./components/techProcessListSection */ 29), __webpack_require__(/*! ./components/techOperationListSection */ 34), __webpack_require__(/*! ./components/techStepListSection */ 39), __webpack_require__(/*! ./components/toolListSection */ 1), __webpack_require__(/*! ./components/partListSection */ 44), __webpack_require__(/*! ./components/toolEditForm */ 49), __webpack_require__(/*! ./components/partEditForm */ 53), __webpack_require__(/*! ./components/techStepEditForm */ 54), __webpack_require__(/*! ./components/techOperationEditForm */ 56), __webpack_require__(/*! ./components/techProcessEditForm */ 57)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, ReactDOM, ReactRouter, main_1, techProcessListSection_1, techOperationListSection_1, techStepListSection_1, toolListSection_1, partListSection_1, toolEditForm_1, partEditForm_1, techStepEditForm_1, techOperationEditForm_1, techProcessEditForm_1) {
 	    "use strict";
 	    var routers = (React.createElement(ReactRouter.Router, {history: ReactRouter.browserHistory}, React.createElement(ReactRouter.Route, {path: "/", component: main_1.default}, React.createElement(ReactRouter.Route, {path: "processes", component: techProcessListSection_1.default}, React.createElement(ReactRouter.Route, {path: ":techProcessId", component: techProcessEditForm_1.default})), React.createElement(ReactRouter.Route, {path: "operations", component: techOperationListSection_1.default}, React.createElement(ReactRouter.Route, {path: ":techOperationId", component: techOperationEditForm_1.default})), React.createElement(ReactRouter.Route, {path: "steps", component: techStepListSection_1.default}, React.createElement(ReactRouter.Route, {path: ":techStepId", component: techStepEditForm_1.default})), React.createElement(ReactRouter.Route, {path: "tools", component: toolListSection_1.default}, React.createElement(ReactRouter.Route, {path: ":toolId", component: toolEditForm_1.default})), React.createElement(ReactRouter.Route, {path: "parts", component: partListSection_1.default}, React.createElement(ReactRouter.Route, {path: ":partId", component: partEditForm_1.default})))));
 	    ReactDOM.render(routers, document.getElementById('content'));
@@ -3555,7 +3555,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ../flux/stores/techStepStore */ 41), __webpack_require__(/*! ../flux/stores/errorStore */ 50), __webpack_require__(/*! ../flux/actions/techStepActions */ 43), __webpack_require__(/*! ../managers/navigationManager */ 4), __webpack_require__(/*! ./common/textInput */ 51)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, techStepStore_1, errorStore_1, techStepActions_1, navigationManager_1, textInput_1) {
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ../flux/stores/techStepStore */ 41), __webpack_require__(/*! ../flux/stores/errorStore */ 50), __webpack_require__(/*! ../flux/actions/techStepActions */ 43), __webpack_require__(/*! ../managers/navigationManager */ 4), __webpack_require__(/*! ./common/textAreaInput */ 55)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, techStepStore_1, errorStore_1, techStepActions_1, navigationManager_1, textAreaInput_1) {
 	    "use strict";
 	    var TechStepEditForm = (function (_super) {
 	        __extends(TechStepEditForm, _super);
@@ -3629,14 +3629,14 @@
 	            return true;
 	        };
 	        TechStepEditForm.prototype.render = function () {
-	            return (React.createElement("div", {className: "panel panel-default inner", style: { marginBottom: 0 + 'px' }}, React.createElement("div", {className: "panel-heading"}, React.createElement("h4", null, "Редактирование технологического шага")), React.createElement("div", {className: "panel-body"}, this.state.errorMessage != null ?
+	            return (React.createElement("div", {className: "panel panel-default wide-inner", style: { marginBottom: 0 + 'px' }}, React.createElement("div", {className: "panel-heading"}, React.createElement("h4", null, "Редактирование технологического шага")), React.createElement("div", {className: "panel-body"}, this.state.errorMessage != null ?
 	                React.createElement("div", null, React.createElement("div", {className: "form-group"}, React.createElement("span", null, this.state.errorMessage)), React.createElement("div", {className: "form-group"}, React.createElement("div", {className: "btn-techStepbar"}, React.createElement("button", {className: "btn btn-default", type: "button", onClick: this.cancelClickHandler}, "Закрыть"))))
 	                : null, this.state.techStep == null ?
 	                this.state.errorMessage == null ?
 	                    React.createElement("p", null, "Загрузка данных...")
 	                    : null
 	                :
-	                    React.createElement("form", {role: "form", onSubmit: this.handleSubmit}, React.createElement("div", {className: "form-group"}, React.createElement("label", {className: "control-label"}, "Наименование: "), React.createElement(textInput_1.default, {name: "techStepName", text: "", value: this.state.techStep.description, required: true, onChange: this.setTechStepDescription, errorMessage: "Данное наименование недействительно", emptyMessage: "Наименование обязательно для ввода", register: this.registerInput, validate: this.nameValidate, minCharacters: '', uniqueName: ''})), React.createElement("div", {className: "form-group"}, React.createElement("div", {className: "btn-toolbar"}, React.createElement("input", {className: "btn btn-primary", type: "submit", value: "Сохранить"}), React.createElement("button", {className: "btn btn-default", type: "button", onClick: this.cancelClickHandler}, "Закрыть")))))));
+	                    React.createElement("form", {role: "form", onSubmit: this.handleSubmit}, React.createElement("div", {className: "row"}, React.createElement("div", {className: "col-lg-6"}, React.createElement("fieldset", null, React.createElement("legend", null, "Описание"), React.createElement("div", {className: "form-group"}, React.createElement(textAreaInput_1.default, {text: this.state.techStep.description}))), React.createElement("fieldset", null, React.createElement("legend", null, "Инструменты")), React.createElement("fieldset", null, React.createElement("legend", null, "Комплектующие"))), React.createElement("div", {className: "col-lg-6"}, React.createElement("fieldset", null, React.createElement("legend", null, "Визуализация")))), React.createElement("div", {className: "form-group"}, React.createElement("div", {className: "btn-toolbar"}, React.createElement("input", {className: "btn btn-primary", type: "submit", value: "Сохранить"}), React.createElement("button", {className: "btn btn-default", type: "button", onClick: this.cancelClickHandler}, "Закрыть")))))));
 	        };
 	        return TechStepEditForm;
 	    }(React.Component));
@@ -3647,6 +3647,36 @@
 
 /***/ },
 /* 55 */
+/*!********************************************************!*\
+  !*** ./Scripts/app/components/common/textAreaInput.js ***!
+  \********************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/// <reference path="../../../typings/tsd.d.ts" />
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React) {
+	    "use strict";
+	    var TextAreaInput = (function (_super) {
+	        __extends(TextAreaInput, _super);
+	        function TextAreaInput() {
+	            _super.apply(this, arguments);
+	        }
+	        TextAreaInput.prototype.render = function () {
+	            return (React.createElement("textarea", {className: "form-control", rows: "5", cols: "50"}, this.props.text));
+	        };
+	        return TextAreaInput;
+	    }(React.Component));
+	    Object.defineProperty(exports, "__esModule", { value: true });
+	    exports.default = TextAreaInput;
+	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	//# sourceMappingURL=textAreaInput.js.map
+
+/***/ },
+/* 56 */
 /*!*********************************************************!*\
   !*** ./Scripts/app/components/techOperationEditForm.js ***!
   \*********************************************************/
@@ -3749,7 +3779,7 @@
 	//# sourceMappingURL=techOperationEditForm.js.map
 
 /***/ },
-/* 56 */
+/* 57 */
 /*!*******************************************************!*\
   !*** ./Scripts/app/components/techProcessEditForm.js ***!
   \*******************************************************/

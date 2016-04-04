@@ -66,6 +66,12 @@ html,body {
     margin-right: 5px;
 }
 
+.wide-inner {
+    min-width:1200px;
+    width:1200px;
+    margin-right: 5px;
+}
+
 .dropdown-menu {
   min-width: 0px;
 }

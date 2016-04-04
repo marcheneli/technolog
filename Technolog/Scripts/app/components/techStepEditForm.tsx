@@ -6,6 +6,8 @@ import ErrorStore from "../flux/stores/errorStore";
 import TechStepActions from "../flux/actions/techStepActions";
 import NavigationManager from "../managers/navigationManager";
 import TextInput from "./common/textInput";
+import TextAreaInput from "./common/textAreaInput";
+import ToolList from "./toolList";
 
 interface ITechStepEditFormProps {
     params: any,
@@ -14,7 +16,9 @@ interface ITechStepEditFormProps {
 interface ITechStepEditFormState {
     techStep: ITechStep,
     errorMessage: string,
-    isValid: boolean
+    isValid: boolean,
+    isToolListOpen: boolean,
+    isPartListOpen: boolean
 }
 
 export default class TechStepEditForm extends React.Component<ITechStepEditFormProps, ITechStepEditFormState> {
@@ -28,7 +32,9 @@ export default class TechStepEditForm extends React.Component<ITechStepEditFormP
         this.state = {
             techStep: null,
             errorMessage: null,
-            isValid: true
+            isValid: true,
+            isPartListOpen: false,
+            isToolListOpen: false
         };
     }
 
@@ -55,7 +61,9 @@ export default class TechStepEditForm extends React.Component<ITechStepEditFormP
         this.setState({
             techStep: TechStepStore.getEditTechStep(),
             errorMessage: null,
-            isValid: true
+            isValid: true,
+            isPartListOpen: this.state.isPartListOpen,
+            isToolListOpen: this.state.isToolListOpen
         });
     }
 
@@ -63,7 +71,9 @@ export default class TechStepEditForm extends React.Component<ITechStepEditFormP
         this.setState({
             techStep: null,
             errorMessage: ErrorStore.getError(),
-            isValid: true
+            isValid: true,
+            isPartListOpen: this.state.isPartListOpen,
+            isToolListOpen: this.state.isToolListOpen
         });
     }
 
@@ -96,13 +106,15 @@ export default class TechStepEditForm extends React.Component<ITechStepEditFormP
                 description: event.target.value
             },
             errorMessage: null,
-            isValid: true
+            isValid: true,
+            isPartListOpen: this.state.isPartListOpen,
+            isToolListOpen: this.state.isToolListOpen
         });
     }
 
     render(): React.ReactElement<ITechStepEditFormProps> {
         return (
-            <div className="panel panel-default inner" style={{ marginBottom: 0 + 'px' }}>
+            <div className="panel panel-default wide-inner" style={{ marginBottom: 0 + 'px' }}>
                 <div className="panel-heading">
                     <h4>Редактирование технологического шага</h4>
                 </div>
@@ -125,19 +137,51 @@ export default class TechStepEditForm extends React.Component<ITechStepEditFormP
                             : null
                         :
                         <form role="form" onSubmit={this.handleSubmit}>
-                            <div className="form-group">
-                                <label className="control-label">Наименование: </label>
-                                <TextInput name="techStepName"
-                                    text=""
-                                    value={this.state.techStep.description}
-                                    required={true}
-                                    onChange={this.setTechStepDescription}
-                                    errorMessage="Данное наименование недействительно"
-                                    emptyMessage="Наименование обязательно для ввода"
-                                    register={this.registerInput}
-                                    validate={this.nameValidate}
-                                    minCharacters=''
-                                    uniqueName=''/>
+                            <div className="row">
+                                <div className="col-lg-6">
+                                    <fieldset>
+                                        <legend>Описание</legend>
+                                        <div className="form-group">
+                                            <TextAreaInput text={this.state.techStep.description}/>
+                                        </div>
+                                    </fieldset>
+                                    <fieldset>
+                                        <legend>Инструменты</legend>
+                                        { this.state.isToolListOpen ?
+                                            <div>
+                                                <ToolList
+                                                    tools={this.state.tools}
+                                                    onNewToolClick={this.newToolBtnClickHandler}
+                                                    onToolDelete={this.handleToolDelete}
+                                                    onToolDoubleClick={this.toolEditFormOpen}
+                                                    onToolPageChange={this.handleToolPageChange}
+                                                    onToolSearchTextChange={this.handleToolSearchTextChange}
+                                                    onToolsPerPageChange={this.handleToolsPerPageChange}
+                                                    onToolsRefresh={this.toolRefresh}
+                                                    />
+                                                <div class="form-group">
+                                                    <button onClick={this.closeToolList} className="btn btn-default">
+                                                        <span className="glyphicon glyphicon-minus"></span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            :
+                                            <div class="form-group">
+                                                <button onClick={this.openToolList} className="btn btn-default">
+                                                    <span className="glyphicon glyphicon-plus"></span>
+                                                </button>
+                                            </div>
+                                        }
+                                    </fieldset>
+                                    <fieldset>
+                                        <legend>Комплектующие</legend>
+                                    </fieldset>
+                                </div>
+                                <div className="col-lg-6">
+                                    <fieldset>
+                                        <legend>Визуализация</legend>
+                                    </fieldset>
+                                </div>
                             </div>
                             <div className="form-group">
                                 <div className="btn-toolbar">

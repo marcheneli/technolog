@@ -1,11 +1,7 @@
 ﻿/// <reference path="../../typings/tsd.d.ts" />
 
 import * as React from "react";
-import ToolStore from "../flux/stores/toolStore";
 import PageConstants from "../constants/pageConstants";
-import ToolActions from "../flux/actions/toolActions";
-import PageParamsManager from "../managers/pageParamsManager";
-import NavigationManager from "../managers/navigationManager";
 import TableRow from "./common/tableRow";
 import ConfirmDelete from "./common/confirmDelete";
 import Pagination from "./common/pagination";
@@ -13,15 +9,21 @@ import SearchInput from "./common/searchInput";
 import ItemsPerPageSelector from "./common/itemsPerPageSelector";
 
 interface IToolListProps {
-
+    onToolSearchTextChange(text: string): void;
+    onToolsPerPageChange(toolAmout: number): void;
+    onToolPageChange(toolPage: number): void;
+    onToolsRefresh(): void;
+    onNewToolClick(): void;
+    onToolDoubleClick(id: number): void;
+    onToolDelete(id: number): void;
+    tools: Array<ITool>;
 }
 
 interface IToolListState {
-    tools: Array<ITool>,
     currentTool: ITool,
     isConfirmDeleting: boolean,
     toolAmount: number,
-    toolsPerPage: number
+    toolsPerPage: number,
 }
 
 export default class ToolList extends React.Component<IToolListProps, IToolListState> {
@@ -32,40 +34,14 @@ export default class ToolList extends React.Component<IToolListProps, IToolListS
         this.props = props;
         this.context = context;
         this.state = {
-            tools: [],
             currentTool: null,
             isConfirmDeleting: false,
             toolAmount: 0,
             toolsPerPage: PageConstants.ITEMS_PER_PAGE_INIT
         };
     }
-
-    componentWillMount() {
-        ToolStore.addChangeToolsListener(this.handleToolsChange)
-    }
-
-    componentWillUnmount() {
-        ToolStore.removeChangeToolsListener(this.handleToolsChange)
-    }
-
-    componentDidMount() {
-        ToolActions.init(PageParamsManager.getPage(), PageParamsManager.getPageSize(), PageParamsManager.getSearchText());
-    }
-
-    private handleToolsChange = () => {
-
-        this.setState({
-            tools: ToolStore.getAll(),
-            currentTool: null,
-            isConfirmDeleting: false,
-            toolAmount: ToolStore.getToolAmount(),
-            toolsPerPage: ToolStore.getToolsPerPage()
-        });
-    }
-
     private changeCurrent = (tool: ITool) => {
         this.setState({
-            tools: this.state.tools,
             currentTool: tool,
             isConfirmDeleting: this.state.isConfirmDeleting,
             toolAmount: this.state.toolAmount,
@@ -74,20 +50,19 @@ export default class ToolList extends React.Component<IToolListProps, IToolListS
     }
 
     private toolRowDoubleClick = (tool: ITool) => {
-        NavigationManager.openToolEditor(tool.id);
+        this.props.onToolDoubleClick(tool.id);
     }
 
     private newToolBtnClickHandler = () => {
-        NavigationManager.openToolEditor(0);
+        this.props.onNewToolClick();
     }
 
     private handleDeleteSuccess = () => {
-        ToolActions.remove(this.state.currentTool.id);
+        this.props.onToolDelete(this.state.currentTool.id);
     }
 
     private handleDeleteCancel = () => {
         this.setState({
-            tools: this.state.tools,
             currentTool: this.state.currentTool,
             isConfirmDeleting: !this.state.isConfirmDeleting,
             toolAmount: this.state.toolAmount,
@@ -96,37 +71,27 @@ export default class ToolList extends React.Component<IToolListProps, IToolListS
     }
 
     private handleToolsPerPageChange = (toolsPerPage: number) => {
-        PageParamsManager.changePageSize(toolsPerPage);
-        ToolActions.changeToolsPerPage(toolsPerPage);
+        this.props.onToolsPerPageChange(toolsPerPage);
     }
 
     private handleToolPageChange = (page: number) => {
-        PageParamsManager.changePage(page);
-        ToolActions.changeToolPage(page);
+        this.props.onToolPageChange(page);
     }
 
     private handleToolSearchTextChange = (text: string) => {
-        PageParamsManager.changeSearchText(text);
-        ToolActions.changeToolSearchText(text);
+        this.props.onToolSearchTextChange(text);
     }
 
-    private refreshBtnClickHandler = (text: string) => {
-        ToolActions.init(PageParamsManager.getPage(), PageParamsManager.getPageSize(), PageParamsManager.getSearchText());
-        this.setState({
-            tools: [],
-            currentTool: null,
-            isConfirmDeleting: false,
-            toolAmount: 0,
-            toolsPerPage: this.state.toolsPerPage
-        });
+    private refreshBtnClickHandler = () => {
+        this.props.onToolsRefresh();
     }
 
     render(): React.ReactElement<{}> {
 
         var toolRows = [];
 
-        for (var key in this.state.tools) {
-            var tool = this.state.tools[key];
+        for (var key in this.props.tools) {
+            var tool = this.props.tools[key];
 
             toolRows.push(<TableRow key={key}
                 item={tool}
