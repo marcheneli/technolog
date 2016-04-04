@@ -212,7 +212,7 @@ _Pvt_Extensions/
 ModelManifest.xml
 
 # JS generated files from typescript
-**/Script/app/**/*.js
-**/Script/app/**/*.js.map
-**/Script/tests/**/*.js
-**/Script/tests/**/*.js.map
+**/Scripts/app/**/*.js
+**/Scripts/app/**/*.js.map
+**/Scripts/tests/**/*.js
+**/Scripts/tests/**/*.js.map
