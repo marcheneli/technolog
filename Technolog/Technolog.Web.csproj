@@ -364,6 +364,7 @@
     <TypeScriptCompile Include="Scripts\app\components\mainSidebar.tsx" />
     <TypeScriptCompile Include="Scripts\app\components\partEditForm.tsx" />
     <TypeScriptCompile Include="Scripts\app\components\partList.tsx" />
+    <TypeScriptCompile Include="Scripts\app\components\partListPanel.tsx" />
     <TypeScriptCompile Include="Scripts\app\components\partListSection.tsx" />
     <TypeScriptCompile Include="Scripts\app\components\tabs.tsx" />
     <TypeScriptCompile Include="Scripts\app\components\techOperationEditForm.tsx" />
@@ -377,6 +378,7 @@
     <TypeScriptCompile Include="Scripts\app\components\techStepListSection.tsx" />
     <TypeScriptCompile Include="Scripts\app\components\toolEditForm.tsx" />
     <TypeScriptCompile Include="Scripts\app\components\toolList.tsx" />
+    <TypeScriptCompile Include="Scripts\app\components\toolListPanel.tsx" />
     <TypeScriptCompile Include="Scripts\app\components\toolListSection.tsx" />
     <TypeScriptCompile Include="Scripts\app\constants\pageConstants.ts" />
     <TypeScriptCompile Include="Scripts\app\flux\actions\actionSourceTypes.ts" />
