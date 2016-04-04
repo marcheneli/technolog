@@ -4,16 +4,20 @@ import * as React from "react";
 import TechStepStore from "../flux/stores/techStepStore";
 import ErrorStore from "../flux/stores/errorStore";
 import TechStepActions from "../flux/actions/techStepActions";
+import PageParamsManager from "../managers/pageParamsManager";
 import NavigationManager from "../managers/navigationManager";
 import TextInput from "./common/textInput";
 import TextAreaInput from "./common/textAreaInput";
 import ToolList from "./toolList";
+import ToolActions from "../flux/actions/toolActions";
+import ToolStore from "../flux/stores/toolStore";
 
 interface ITechStepEditFormProps {
     params: any,
 }
 
 interface ITechStepEditFormState {
+    tools: Array<ITool>,
     techStep: ITechStep,
     errorMessage: string,
     isValid: boolean,
@@ -30,6 +34,7 @@ export default class TechStepEditForm extends React.Component<ITechStepEditFormP
         this.props = props;
         this.context = context;
         this.state = {
+            tools: [],
             techStep: null,
             errorMessage: null,
             isValid: true,
@@ -59,6 +64,7 @@ export default class TechStepEditForm extends React.Component<ITechStepEditFormP
 
     private handleEditTechStepChange = () => {
         this.setState({
+            tools: this.state.tools,
             techStep: TechStepStore.getEditTechStep(),
             errorMessage: null,
             isValid: true,
@@ -67,8 +73,21 @@ export default class TechStepEditForm extends React.Component<ITechStepEditFormP
         });
     }
 
+    private handleToolsChange = () => {
+
+        this.setState({
+            tools: ToolStore.getAll(),
+            techStep: this.state.techStep,
+            errorMessage: this.state.errorMessage,
+            isValid: this.state.isValid,
+            isPartListOpen: this.state.isPartListOpen,
+            isToolListOpen: this.state.isToolListOpen
+        });
+    }
+
     private handleNewError = () => {
         this.setState({
+            tools: this.state.tools,
             techStep: null,
             errorMessage: ErrorStore.getError(),
             isValid: true,
@@ -101,10 +120,61 @@ export default class TechStepEditForm extends React.Component<ITechStepEditFormP
     }
     private setTechStepDescription = (event) => {
         this.setState({
+            tools: this.state.tools,
             techStep: {
                 id: this.state.techStep.id,
                 description: event.target.value
             },
+            errorMessage: null,
+            isValid: true,
+            isPartListOpen: this.state.isPartListOpen,
+            isToolListOpen: this.state.isToolListOpen
+        });
+    }
+
+    private openCloseToolList = () => {
+        this.setState({
+            tools: this.state.tools,
+            techStep: this.state.techStep,
+            errorMessage: this.state.errorMessage,
+            isValid: this.state.isValid,
+            isPartListOpen: this.state.isPartListOpen,
+            isToolListOpen: !this.state.isToolListOpen
+        });
+    }
+
+    private toolEditFormOpen = (toolId: number) => {
+        NavigationManager.openToolEditor(toolId);
+    }
+
+    private newToolBtnClickHandler = () => {
+        NavigationManager.openToolEditor(0);
+    }
+
+    private handleToolDelete = (toolId: number) => {
+        ToolActions.remove(toolId);
+    }
+
+    private handleToolsPerPageChange = (toolsPerPage: number) => {
+        PageParamsManager.changePageSize(toolsPerPage);
+        ToolActions.changeToolsPerPage(toolsPerPage);
+    }
+
+    private handleToolPageChange = (page: number) => {
+        PageParamsManager.changePage(page);
+        ToolActions.changeToolPage(page);
+    }
+
+    private handleToolSearchTextChange = (text: string) => {
+        PageParamsManager.changeSearchText(text);
+        ToolActions.changeToolSearchText(text);
+    }
+
+    private toolRefresh = () => {
+        ToolActions.init(PageParamsManager.getPage(), PageParamsManager.getPageSize(), PageParamsManager.getSearchText());
+        this.setState({
+            tools: [],
+            techStep: this.state.techStep,
             errorMessage: null,
             isValid: true,
             isPartListOpen: this.state.isPartListOpen,
@@ -160,14 +230,14 @@ export default class TechStepEditForm extends React.Component<ITechStepEditFormP
                                                     onToolsRefresh={this.toolRefresh}
                                                     />
                                                 <div class="form-group">
-                                                    <button onClick={this.closeToolList} className="btn btn-default">
+                                                    <button onClick={this.openCloseToolList} className="btn btn-default">
                                                         <span className="glyphicon glyphicon-minus"></span>
                                                     </button>
                                                 </div>
                                             </div>
                                             :
                                             <div class="form-group">
-                                                <button onClick={this.openToolList} className="btn btn-default">
+                                                <button onClick={this.openCloseToolList} className="btn btn-default">
                                                     <span className="glyphicon glyphicon-plus"></span>
                                                 </button>
                                             </div>
