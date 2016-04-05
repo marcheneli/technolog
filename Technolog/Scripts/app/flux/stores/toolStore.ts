@@ -146,6 +146,14 @@ class ToolStoreStatic extends EventEmitter {
         return _toolsPerPage;
     }
 
+    public getCurrentToolPage(): number {
+        return _currentToolPage;
+    }
+
+    public getSearchText(): string {
+        return _toolSearchText;
+    }
+
     public getEditTool(): ITool {
         return _tool;
     }

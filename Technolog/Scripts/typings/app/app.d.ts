@@ -16,9 +16,16 @@ interface IPart {
     price: number;
 }
 
+interface IToolUsage {
+    toolId: number;
+    tool: ITool;
+    quantity: number;
+}
+
 interface ITechStep {
     id: number;
     description: string;
+    toolUsages: Array<IToolUsage>;
 }
 
 interface ITechOperation {

@@ -10,5 +10,7 @@ namespace Technolog.Web.Models
     {
         public int Id { get; set; }
         public string Description { get; set; }
+
+        public IEnumerable<ToolUsageModel> ToolUsages { get; set; }
     }
 }

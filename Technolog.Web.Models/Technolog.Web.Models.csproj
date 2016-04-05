@@ -51,6 +51,7 @@
     <Compile Include="Models\TechOperationModel.cs" />
     <Compile Include="Models\ToolListModel.cs" />
     <Compile Include="Models\ToolModel.cs" />
+    <Compile Include="Models\ToolUsageModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

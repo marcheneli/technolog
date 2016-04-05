@@ -4,8 +4,9 @@ import * as React from "react";
 import TechStepStore from "../flux/stores/techStepStore";
 import ErrorStore from "../flux/stores/errorStore";
 import TechStepActions from "../flux/actions/techStepActions";
-import PageParamsManager from "../managers/pageParamsManager";
 import NavigationManager from "../managers/navigationManager";
+import ContentEditable from "./common/contentEditable";
+import TableRow from "./common/tableRow";
 import TextInput from "./common/textInput";
 import TextAreaInput from "./common/textAreaInput";
 import ToolList from "./toolList";
@@ -17,12 +18,12 @@ interface ITechStepEditFormProps {
 }
 
 interface ITechStepEditFormState {
-    tools: Array<ITool>,
     techStep: ITechStep,
     errorMessage: string,
     isValid: boolean,
     isToolListOpen: boolean,
-    isPartListOpen: boolean
+    isPartListOpen: boolean,
+    currentToolUsage: IToolUsage;
 }
 
 export default class TechStepEditForm extends React.Component<ITechStepEditFormProps, ITechStepEditFormState> {
@@ -34,28 +35,29 @@ export default class TechStepEditForm extends React.Component<ITechStepEditFormP
         this.props = props;
         this.context = context;
         this.state = {
-            tools: [],
             techStep: null,
             errorMessage: null,
             isValid: true,
             isPartListOpen: false,
-            isToolListOpen: false
+            isToolListOpen: false,
+            currentToolUsage: null
         };
     }
 
     componentWillMount() {
         this.inputs = {};
         TechStepStore.addChangeEditTechStepListener(this.handleEditTechStepChange);
-        ErrorStore.addChangeErrorListener(this.handleNewError)
+        ErrorStore.addChangeErrorListener(this.handleNewError);
     }
 
     componentWillUnmount() {
         TechStepStore.removeChangeEditTechStepListener(this.handleEditTechStepChange);
-        ErrorStore.removeChangeErrorListener(this.handleNewError)
+        ErrorStore.removeChangeErrorListener(this.handleNewError);
     }
 
     componentDidMount() {
         TechStepActions.loadEditTechStep(this.props.params.techStepId);
+        ToolActions.init(ToolStore.getCurrentToolPage(), ToolStore.getToolsPerPage(), ToolStore.getSearchText());
     }
 
     componentWillReceiveProps(nextProps) {
@@ -64,35 +66,23 @@ export default class TechStepEditForm extends React.Component<ITechStepEditFormP
 
     private handleEditTechStepChange = () => {
         this.setState({
-            tools: this.state.tools,
             techStep: TechStepStore.getEditTechStep(),
             errorMessage: null,
             isValid: true,
             isPartListOpen: this.state.isPartListOpen,
-            isToolListOpen: this.state.isToolListOpen
-        });
-    }
-
-    private handleToolsChange = () => {
-
-        this.setState({
-            tools: ToolStore.getAll(),
-            techStep: this.state.techStep,
-            errorMessage: this.state.errorMessage,
-            isValid: this.state.isValid,
-            isPartListOpen: this.state.isPartListOpen,
-            isToolListOpen: this.state.isToolListOpen
+            isToolListOpen: this.state.isToolListOpen,
+            currentToolUsage: this.state.currentToolUsage
         });
     }
 
     private handleNewError = () => {
         this.setState({
-            tools: this.state.tools,
             techStep: null,
             errorMessage: ErrorStore.getError(),
             isValid: true,
             isPartListOpen: this.state.isPartListOpen,
-            isToolListOpen: this.state.isToolListOpen
+            isToolListOpen: this.state.isToolListOpen,
+            currentToolUsage: this.state.currentToolUsage
         });
     }
 
@@ -120,35 +110,36 @@ export default class TechStepEditForm extends React.Component<ITechStepEditFormP
     }
     private setTechStepDescription = (event) => {
         this.setState({
-            tools: this.state.tools,
             techStep: {
                 id: this.state.techStep.id,
-                description: event.target.value
+                description: event.target.value,
+                toolUsages: this.state.techStep.toolUsages
             },
             errorMessage: null,
             isValid: true,
             isPartListOpen: this.state.isPartListOpen,
-            isToolListOpen: this.state.isToolListOpen
+            isToolListOpen: this.state.isToolListOpen,
+            currentToolUsage: this.state.currentToolUsage
         });
     }
 
     private openCloseToolList = () => {
         this.setState({
-            tools: this.state.tools,
             techStep: this.state.techStep,
             errorMessage: this.state.errorMessage,
             isValid: this.state.isValid,
             isPartListOpen: this.state.isPartListOpen,
-            isToolListOpen: !this.state.isToolListOpen
+            isToolListOpen: !this.state.isToolListOpen,
+            currentToolUsage: this.state.currentToolUsage
         });
     }
 
     private toolEditFormOpen = (toolId: number) => {
-        NavigationManager.openToolEditor(toolId);
+
     }
 
     private newToolBtnClickHandler = () => {
-        NavigationManager.openToolEditor(0);
+
     }
 
     private handleToolDelete = (toolId: number) => {
@@ -156,33 +147,53 @@ export default class TechStepEditForm extends React.Component<ITechStepEditFormP
     }
 
     private handleToolsPerPageChange = (toolsPerPage: number) => {
-        PageParamsManager.changePageSize(toolsPerPage);
         ToolActions.changeToolsPerPage(toolsPerPage);
     }
 
     private handleToolPageChange = (page: number) => {
-        PageParamsManager.changePage(page);
         ToolActions.changeToolPage(page);
     }
 
     private handleToolSearchTextChange = (text: string) => {
-        PageParamsManager.changeSearchText(text);
         ToolActions.changeToolSearchText(text);
     }
 
-    private toolRefresh = () => {
-        ToolActions.init(PageParamsManager.getPage(), PageParamsManager.getPageSize(), PageParamsManager.getSearchText());
-        this.setState({
-            tools: [],
-            techStep: this.state.techStep,
-            errorMessage: null,
-            isValid: true,
-            isPartListOpen: this.state.isPartListOpen,
-            isToolListOpen: this.state.isToolListOpen
-        });
+    private changeCurrentToolUsage = (toolUsage: IToolUsage) => {
+
+    }
+
+    private toolUsageRowDoubleClick = (toolUsage: IToolUsage) => {
+
+    }
+
+    private toolUsageChanged = (text: string) => {
+        console.log(text);
     }
 
     render(): React.ReactElement<ITechStepEditFormProps> {
+
+        var toolUsageRows = [];
+
+        if (this.state.techStep != null) {
+            for (var key in this.state.techStep.toolUsages) {
+                var toolUsage = this.state.techStep.toolUsages[key];
+
+                toolUsageRows.push(<TableRow key={key}
+                    item={toolUsage}
+                    isCurrent={this.state.currentToolUsage == toolUsage}
+                    changeCurrent={this.changeCurrentToolUsage}
+                    rowDoubleClickHandler={this.toolUsageRowDoubleClick}>
+                    <td  style={{ width: 25 + '%' }}>{toolUsage.tool.id}</td>
+                    <td  style={{ width: 50 + '%' }}>{toolUsage.tool.name}</td>
+                    <td  style={{ width: 25 + '%', position: "relative", padding: 0 + 'px', verticalAlign: 'middle' }}>
+                        <ContentEditable
+                            html={String(toolUsage.quantity)}
+                            onChange={this.toolUsageChanged}/>
+                    </td>
+                </TableRow>);
+            }
+        }
+
         return (
             <div className="panel panel-default wide-inner" style={{ marginBottom: 0 + 'px' }}>
                 <div className="panel-heading">
@@ -217,26 +228,44 @@ export default class TechStepEditForm extends React.Component<ITechStepEditFormP
                                     </fieldset>
                                     <fieldset>
                                         <legend>Инструменты</legend>
+                                        { this.state.techStep != null ?
+                                            <div>
+                                                <div style={{ marginBottom: 10 + 'px', display: 'flex', flexDirection: 'column' }}>
+                                                    <div style={{ overflowY: 'auto' }}>
+                                                        <table className="table table-bordered" style={{ marginBottom: 1 + 'px' }}>
+                                                            <thead>
+                                                                <tr>
+                                                                    <th style={{ width: 25 + '%' }}>ID</th>
+                                                                    <th style={{ width: 50 + '%' }}>Наименование</th>
+                                                                    <th style={{ width: 25 + '%' }}>Применяемость</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                {toolUsageRows}
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            : null
+                                        }
                                         { this.state.isToolListOpen ?
                                             <div>
                                                 <ToolList
-                                                    tools={this.state.tools}
                                                     onNewToolClick={this.newToolBtnClickHandler}
-                                                    onToolDelete={this.handleToolDelete}
                                                     onToolDoubleClick={this.toolEditFormOpen}
                                                     onToolPageChange={this.handleToolPageChange}
                                                     onToolSearchTextChange={this.handleToolSearchTextChange}
                                                     onToolsPerPageChange={this.handleToolsPerPageChange}
-                                                    onToolsRefresh={this.toolRefresh}
                                                     />
-                                                <div class="form-group">
+                                                <div className="form-group">
                                                     <button onClick={this.openCloseToolList} className="btn btn-default">
                                                         <span className="glyphicon glyphicon-minus"></span>
                                                     </button>
                                                 </div>
                                             </div>
                                             :
-                                            <div class="form-group">
+                                            <div className="form-group">
                                                 <button onClick={this.openCloseToolList} className="btn btn-default">
                                                     <span className="glyphicon glyphicon-plus"></span>
                                                 </button>
