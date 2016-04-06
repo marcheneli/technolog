@@ -354,6 +354,7 @@
     <TypeScriptCompile Include="Scripts\app\components\common\confirmDelete.tsx" />
     <TypeScriptCompile Include="Scripts\app\components\common\contentEditable.tsx" />
     <TypeScriptCompile Include="Scripts\app\components\common\inputError.tsx" />
+    <TypeScriptCompile Include="Scripts\app\components\common\itemListControlPanel.tsx" />
     <TypeScriptCompile Include="Scripts\app\components\common\itemsPerPageSelector.tsx" />
     <TypeScriptCompile Include="Scripts\app\components\common\pagination.tsx" />
     <TypeScriptCompile Include="Scripts\app\components\common\searchInput.tsx" />
@@ -381,7 +382,7 @@
     <TypeScriptCompile Include="Scripts\app\components\toolList.tsx" />
     <TypeScriptCompile Include="Scripts\app\components\toolListPanel.tsx" />
     <TypeScriptCompile Include="Scripts\app\components\toolListSection.tsx" />
-    <TypeScriptCompile Include="Scripts\app\components\toolUsagesSection.tsx" />
+    <TypeScriptCompile Include="Scripts\app\components\toolUsagesEditor.tsx" />
     <TypeScriptCompile Include="Scripts\app\constants\pageConstants.ts" />
     <TypeScriptCompile Include="Scripts\app\flux\actions\actionSourceTypes.ts" />
     <TypeScriptCompile Include="Scripts\app\flux\actions\errorActions.ts" />

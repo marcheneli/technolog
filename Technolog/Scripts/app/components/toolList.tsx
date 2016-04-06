@@ -9,39 +9,31 @@ import ConfirmDelete from "./common/confirmDelete";
 import Pagination from "./common/pagination";
 import SearchInput from "./common/searchInput";
 import ItemsPerPageSelector from "./common/itemsPerPageSelector";
+import ItemListControlPanel from "./common/itemListControlPanel"
 
-interface IToolListProps {
-    onToolSearchTextChange(text: string): void;
-    onToolsPerPageChange(toolAmout: number): void;
-    onToolPageChange(toolPage: number): void;
-    onNewToolClick(): void;
-    onToolDoubleClick(id: number): void;
+interface IToolTablbleProps {
+    onSelectedToolsChange(selectedTools: Array<ITool>)
 }
 
-interface IToolListState {
+interface IToolTablbleState {
     tools: Array<ITool>;
-    currentTool: ITool,
-    isConfirmDeleting: boolean,
-    toolAmount: number,
-    toolsPerPage: number,
+    selectedTools: Array<ITool>;
 }
 
-export default class ToolList extends React.Component<IToolListProps, IToolListState> {
+class ToolTable
+    extends React.Component<IToolTablbleProps, IToolTablbleState> {
 
-    constructor(props: IToolListProps, context: any) {
+    constructor(props: IToolTablbleProps, context: any) {
         super(props, context);
 
         this.props = props;
         this.context = context;
         this.state = {
             tools: [],
-            currentTool: null,
-            isConfirmDeleting: false,
-            toolAmount: 0,
-            toolsPerPage: PageConstants.ITEMS_PER_PAGE_INIT
+            selectedTools: []
         };
     }
-    
+
     componentWillMount() {
         ToolStore.addChangeToolsListener(this.handleToolsChange)
     }
@@ -57,6 +49,154 @@ export default class ToolList extends React.Component<IToolListProps, IToolListS
     private handleToolsChange = () => {
         this.setState({
             tools: ToolStore.getAll(),
+            selectedTools: []
+        });
+
+        this.props.onSelectedToolsChange([]);
+    }
+
+    private onToolSelect = (event: any) => {
+        var selectedTools = this.state.selectedTools;
+
+        if (event.target.checked) {
+            selectedTools[event.target.value] = this.state.tools[event.target.value];
+
+            this.setState({
+                tools: this.state.tools,
+                selectedTools: selectedTools 
+            });
+            
+        } else {
+            delete selectedTools[event.target.value];
+
+            this.setState({
+                tools: this.state.tools,
+                selectedTools: selectedTools
+            });
+        }
+        
+        this.props.onSelectedToolsChange(selectedTools);
+    }
+
+    private onAllToolSelect = (event: any) => {
+        var selectedTools = this.state.selectedTools;
+
+        if (event.target.checked) {
+            for (var key in this.state.tools) {
+                selectedTools[key] = this.state.tools[key];
+            }
+
+            this.setState({
+                tools: this.state.tools,
+                selectedTools: selectedTools
+            });
+        } else {
+
+            selectedTools = [];
+
+            this.setState({
+                tools: this.state.tools,
+                selectedTools: selectedTools
+            });
+        }
+        
+        this.props.onSelectedToolsChange(selectedTools);
+    }
+
+    render(): React.ReactElement<IToolTablbleProps> {
+        var isAllChecked = (Object.keys(this.state.tools).length ==
+            Object.keys(this.state.selectedTools).length);
+        var toolRows = [];
+
+        for (var key in this.state.tools) {
+            var tool = this.state.tools[key];
+
+            toolRows.push(<TableRow key={key}
+                item={tool}
+                isCurrent={false}
+                changeCurrent={() => { }}
+                rowDoubleClickHandler={() => { } }>
+                <td  style={{ width: 5 + '%' }}>
+                    <input
+                        type='checkbox'
+                        value={tool.id}
+                        onChange={this.onToolSelect}
+                        checked={this.state.selectedTools[tool.id]}>
+                    </input>
+                </td>
+                <td  style={{ width: 15 + '%' }}>{tool.id}</td>
+                <td  style={{ width: 80 + '%' }}>{tool.name}</td>
+            </TableRow>);
+        }
+
+        return (
+            <div style={{ marginBottom: 10 + 'px', display: 'flex', flexDirection: 'column' }}>
+                <div style={{ overflowY: 'auto' }}>
+                    <table className="table table-bordered" style={{ marginBottom: 1 + 'px' }}>
+                        <thead>
+                            <tr>
+                                <th  style={{ width: 5 + '%' }}>
+                                    <input
+                                        type='checkbox'
+                                        onChange={this.onAllToolSelect}
+                                        checked={isAllChecked}>
+                                    </input>
+                                </th>
+                                <th style={{ width: 15 + '%' }}>ID</th>
+                                <th style={{ width: 80 + '%' }}>Наименование</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {toolRows}
+                        </tbody>
+                    </table>
+                </div>
+            </div>    
+        );
+    }
+}
+
+interface IToolListProps {
+    onToolSearchTextChange(text: string): void;
+    onToolsPerPageChange(toolAmout: number): void;
+    onToolPageChange(toolPage: number): void;
+    onNewToolClick(): void;
+    onToolDoubleClick(id: number): void;
+    onSelectedToolsChange(selectedTools: Array<ITool>): void;
+}
+
+interface IToolListState {
+    currentTool: ITool,
+    isConfirmDeleting: boolean,
+    toolAmount: number,
+    toolsPerPage: number,
+}
+
+export default class ToolList extends React.Component<IToolListProps, IToolListState> {
+
+    constructor(props: IToolListProps, context: any) {
+        super(props, context);
+
+        this.props = props;
+        this.context = context;
+        this.state = {
+            currentTool: null,
+            isConfirmDeleting: false,
+            toolAmount: 0,
+            toolsPerPage: PageConstants.ITEMS_PER_PAGE_INIT
+        };
+    }
+    
+    componentWillMount() {
+        ToolStore.addChangeToolsListener(this.handleToolsChange)
+    }
+
+    componentWillUnmount() {
+        ToolStore.removeChangeToolsListener(this.handleToolsChange)
+    }
+
+    private handleToolsChange = () => {
+        this.setState({
             currentTool: this.state.currentTool,
             isConfirmDeleting: this.state.isConfirmDeleting,
             toolAmount: ToolStore.getToolAmount(),
@@ -66,7 +206,6 @@ export default class ToolList extends React.Component<IToolListProps, IToolListS
 
     private changeCurrent = (tool: ITool) => {
         this.setState({
-            tools: this.state.tools,
             currentTool: tool,
             isConfirmDeleting: this.state.isConfirmDeleting,
             toolAmount: this.state.toolAmount,
@@ -85,7 +224,6 @@ export default class ToolList extends React.Component<IToolListProps, IToolListS
     private handleDeleteSuccess = () => {
         ToolActions.remove(this.state.currentTool.id);
         this.setState({
-            tools: this.state.tools,
             currentTool: this.state.currentTool,
             isConfirmDeleting: !this.state.isConfirmDeleting,
             toolAmount: this.state.toolAmount,
@@ -95,7 +233,6 @@ export default class ToolList extends React.Component<IToolListProps, IToolListS
 
     private handleDeleteCancel = () => {
         this.setState({
-            tools: this.state.tools,
             currentTool: this.state.currentTool,
             isConfirmDeleting: !this.state.isConfirmDeleting,
             toolAmount: this.state.toolAmount,
@@ -120,22 +257,6 @@ export default class ToolList extends React.Component<IToolListProps, IToolListS
     }
 
     render(): React.ReactElement<{}> {
-
-        var toolRows = [];
-
-        for (var key in this.state.tools) {
-            var tool = this.state.tools[key];
-
-            toolRows.push(<TableRow key={key}
-                item={tool}
-                isCurrent={this.state.currentTool == tool}
-                changeCurrent={this.changeCurrent}
-                rowDoubleClickHandler={this.toolRowDoubleClick}>
-                <td  style={{ width: 25 + '%' }}>{tool.id}</td>
-                <td  style={{ width: 75 + '%' }}>{tool.name}</td>
-            </TableRow>);
-        }
-
         return (
             <div style={{ display: 'flex', flexDirection: 'column' }}>
                 {this.state.isConfirmDeleting ?
@@ -146,31 +267,15 @@ export default class ToolList extends React.Component<IToolListProps, IToolListS
                         success={this.handleDeleteSuccess}
                         cancel={this.handleDeleteCancel}/>
                     :
-                    <div className="input-group">
-                        <div className="input-group-btn">
-                            <button className="btn btn-default" type="button" onClick={this.newToolBtnClickHandler}><span className="glyphicon glyphicon-plus"></span></button>
-                            <button className="btn btn-default" type="button" onClick={function () { this.setState({ currentTool: this.state.currentTool, isConfirmDeleting: true }); }.bind(this) }><span className="glyphicon glyphicon-trash"></span></button>
-                            <button className="btn btn-default" type="button" onClick={this.refreshBtnClickHandler}><span className="glyphicon glyphicon-refresh"></span></button>
-                        </div>
-                        <SearchInput text="Поиск..." onChange={ function (text) { this.handleToolSearchTextChange(text) }.bind(this) } />
-                        <ItemsPerPageSelector onChange={this.handleToolsPerPageChange}/>
-                    </div>
+                    <ItemListControlPanel
+                        onNewItem={this.newToolBtnClickHandler}
+                        onItemDelete={function () { this.setState({ currentTool: this.state.currentTool, isConfirmDeleting: true }); }.bind(this) }
+                        onRefresh={this.refreshBtnClickHandler}
+                        onItemsPerPageChange={this.handleToolsPerPageChange}
+                        onSearchTextChange={function (text) { this.handleToolSearchTextChange(text) }.bind(this) }/>
                 }
-                <div style={{ marginBottom: 10 + 'px', display: 'flex', flexDirection: 'column' }}>
-                    <div style={{ overflowY: 'auto' }}>
-                        <table className="table table-bordered" style={{ marginBottom: 1 + 'px' }}>
-                            <thead>
-                                <tr>
-                                    <th style={{ width: 25 + '%' }}>ID</th>
-                                    <th style={{ width: 75 + '%' }}>Наименование</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {toolRows}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                <ToolTable
+                    onSelectedToolsChange={this.props.onSelectedToolsChange}/>
                 <Pagination
                     itemAmount={this.state.toolAmount}
                     itemsPerPage={this.state.toolsPerPage}

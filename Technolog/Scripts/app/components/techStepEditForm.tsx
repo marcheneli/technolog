@@ -10,6 +10,7 @@ import TableRow from "./common/tableRow";
 import TextInput from "./common/textInput";
 import TextAreaInput from "./common/textAreaInput";
 import ToolList from "./toolList";
+import ToolUsagesEditor from "./toolUsagesEditor";
 import ToolActions from "../flux/actions/toolActions";
 import ToolStore from "../flux/stores/toolStore";
 
@@ -21,9 +22,6 @@ interface ITechStepEditFormState {
     techStep: ITechStep,
     errorMessage: string,
     isValid: boolean,
-    isToolListOpen: boolean,
-    isPartListOpen: boolean,
-    currentToolUsage: IToolUsage;
 }
 
 export default class TechStepEditForm extends React.Component<ITechStepEditFormProps, ITechStepEditFormState> {
@@ -37,10 +35,7 @@ export default class TechStepEditForm extends React.Component<ITechStepEditFormP
         this.state = {
             techStep: null,
             errorMessage: null,
-            isValid: true,
-            isPartListOpen: false,
-            isToolListOpen: false,
-            currentToolUsage: null
+            isValid: true
         };
     }
 
@@ -69,9 +64,6 @@ export default class TechStepEditForm extends React.Component<ITechStepEditFormP
             techStep: TechStepStore.getEditTechStep(),
             errorMessage: null,
             isValid: true,
-            isPartListOpen: this.state.isPartListOpen,
-            isToolListOpen: this.state.isToolListOpen,
-            currentToolUsage: this.state.currentToolUsage
         });
     }
 
@@ -80,9 +72,6 @@ export default class TechStepEditForm extends React.Component<ITechStepEditFormP
             techStep: null,
             errorMessage: ErrorStore.getError(),
             isValid: true,
-            isPartListOpen: this.state.isPartListOpen,
-            isToolListOpen: this.state.isToolListOpen,
-            currentToolUsage: this.state.currentToolUsage
         });
     }
 
@@ -117,83 +106,23 @@ export default class TechStepEditForm extends React.Component<ITechStepEditFormP
             },
             errorMessage: null,
             isValid: true,
-            isPartListOpen: this.state.isPartListOpen,
-            isToolListOpen: this.state.isToolListOpen,
-            currentToolUsage: this.state.currentToolUsage
         });
     }
 
-    private openCloseToolList = () => {
+    private handleToolUsagesChange = (toolUsages: Array<IToolUsage>) => {
+        var techStep = this.state.techStep;
+
+        techStep.toolUsages = toolUsages;
+
         this.setState({
-            techStep: this.state.techStep,
+            techStep: techStep,
             errorMessage: this.state.errorMessage,
             isValid: this.state.isValid,
-            isPartListOpen: this.state.isPartListOpen,
-            isToolListOpen: !this.state.isToolListOpen,
-            currentToolUsage: this.state.currentToolUsage
         });
-    }
-
-    private toolEditFormOpen = (toolId: number) => {
-
-    }
-
-    private newToolBtnClickHandler = () => {
-
-    }
-
-    private handleToolDelete = (toolId: number) => {
-        ToolActions.remove(toolId);
-    }
-
-    private handleToolsPerPageChange = (toolsPerPage: number) => {
-        ToolActions.changeToolsPerPage(toolsPerPage);
-    }
-
-    private handleToolPageChange = (page: number) => {
-        ToolActions.changeToolPage(page);
-    }
-
-    private handleToolSearchTextChange = (text: string) => {
-        ToolActions.changeToolSearchText(text);
-    }
-
-    private changeCurrentToolUsage = (toolUsage: IToolUsage) => {
-
-    }
-
-    private toolUsageRowDoubleClick = (toolUsage: IToolUsage) => {
-
-    }
-
-    private toolUsageChanged = (text: string) => {
-        console.log(text);
     }
 
     render(): React.ReactElement<ITechStepEditFormProps> {
-
-        var toolUsageRows = [];
-
-        if (this.state.techStep != null) {
-            for (var key in this.state.techStep.toolUsages) {
-                var toolUsage = this.state.techStep.toolUsages[key];
-
-                toolUsageRows.push(<TableRow key={key}
-                    item={toolUsage}
-                    isCurrent={this.state.currentToolUsage == toolUsage}
-                    changeCurrent={this.changeCurrentToolUsage}
-                    rowDoubleClickHandler={this.toolUsageRowDoubleClick}>
-                    <td  style={{ width: 25 + '%' }}>{toolUsage.tool.id}</td>
-                    <td  style={{ width: 50 + '%' }}>{toolUsage.tool.name}</td>
-                    <td  style={{ width: 25 + '%', position: "relative", padding: 0 + 'px', verticalAlign: 'middle' }}>
-                        <ContentEditable
-                            html={String(toolUsage.quantity)}
-                            onChange={this.toolUsageChanged}/>
-                    </td>
-                </TableRow>);
-            }
-        }
-
+        console.log(this.state.techStep);
         return (
             <div className="panel panel-default wide-inner" style={{ marginBottom: 0 + 'px' }}>
                 <div className="panel-heading">
@@ -228,49 +157,9 @@ export default class TechStepEditForm extends React.Component<ITechStepEditFormP
                                     </fieldset>
                                     <fieldset>
                                         <legend>Инструменты</legend>
-                                        { this.state.techStep != null ?
-                                            <div>
-                                                <div style={{ marginBottom: 10 + 'px', display: 'flex', flexDirection: 'column' }}>
-                                                    <div style={{ overflowY: 'auto' }}>
-                                                        <table className="table table-bordered" style={{ marginBottom: 1 + 'px' }}>
-                                                            <thead>
-                                                                <tr>
-                                                                    <th style={{ width: 25 + '%' }}>ID</th>
-                                                                    <th style={{ width: 50 + '%' }}>Наименование</th>
-                                                                    <th style={{ width: 25 + '%' }}>Применяемость</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                {toolUsageRows}
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            : null
-                                        }
-                                        { this.state.isToolListOpen ?
-                                            <div>
-                                                <ToolList
-                                                    onNewToolClick={this.newToolBtnClickHandler}
-                                                    onToolDoubleClick={this.toolEditFormOpen}
-                                                    onToolPageChange={this.handleToolPageChange}
-                                                    onToolSearchTextChange={this.handleToolSearchTextChange}
-                                                    onToolsPerPageChange={this.handleToolsPerPageChange}
-                                                    />
-                                                <div className="form-group">
-                                                    <button onClick={this.openCloseToolList} className="btn btn-default">
-                                                        <span className="glyphicon glyphicon-minus"></span>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            :
-                                            <div className="form-group">
-                                                <button onClick={this.openCloseToolList} className="btn btn-default">
-                                                    <span className="glyphicon glyphicon-plus"></span>
-                                                </button>
-                                            </div>
-                                        }
+                                        <ToolUsagesEditor
+                                            toolUsages={this.state.techStep.toolUsages}
+                                            onToolUsagesChange={this.handleToolUsagesChange}/>
                                     </fieldset>
                                     <fieldset>
                                         <legend>Комплектующие</legend>

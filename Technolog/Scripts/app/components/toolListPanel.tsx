@@ -24,7 +24,11 @@ export default class ToolListPanel extends React.Component<IToolListPanelProps, 
         this.props = props;
         this.context = context;
         this.state = {};
+
+        this.selectedTools = [];
     }
+
+    private selectedTools: Array<ITool>;
 
     private toolEditFormOpen = (toolId: number) => {
         NavigationManager.openToolEditor(toolId);
@@ -48,6 +52,10 @@ export default class ToolListPanel extends React.Component<IToolListPanelProps, 
         PageParamsManager.changeSearchText(text);
         ToolActions.changeToolSearchText(text);
     }
+    
+    private handleSelectedToolsChange = (selectedTools: Array<ITool>) => {
+        this.selectedTools = selectedTools;
+    }
 
     render(): React.ReactElement<{}> {
         return (
@@ -57,6 +65,7 @@ export default class ToolListPanel extends React.Component<IToolListPanelProps, 
                 </div>
                 <div className="panel-body" style={{ display: 'flex', flexDirection: 'column' }}>
                     <ToolList
+                        onSelectedToolsChange={this.handleSelectedToolsChange}
                         onNewToolClick={this.newToolBtnClickHandler}
                         onToolDoubleClick={this.toolEditFormOpen}
                         onToolPageChange={this.handleToolPageChange}
