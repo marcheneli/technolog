@@ -2,6 +2,8 @@
     id: number;
     name: string;
     linkName: string;
+    mode: string;
+    type: string;
 }
 
 interface ITool {
@@ -38,6 +40,15 @@ interface ITechProcess {
     name: string;
 }
 
+declare enum PanelType {
+
+}
+
+interface IPanel {
+    id: string;
+    type: string;
+}
+
 interface AppPayload {
     actionType: number;
     actionSource: number;
@@ -51,6 +62,8 @@ interface AppPayload {
     techOperation?: ITechOperation;
     techProcess?: ITechProcess;
     errorMessage?: string;
+    callerPanelId?: string;
+    panelType?: string;
 }
 
 declare class Tool implements ITool {

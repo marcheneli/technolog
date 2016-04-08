@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import PageConstants from "../constants/pageConstants";
+import Utils from "../utils/utils";
 import ToolStore from "../flux/stores/toolStore";
 import ToolActions from "../flux/actions/toolActions";
 import TableRow from "./common/tableRow";
@@ -12,12 +13,12 @@ import ItemsPerPageSelector from "./common/itemsPerPageSelector";
 import ItemListControlPanel from "./common/itemListControlPanel"
 
 interface IToolTablbleProps {
-    onSelectedToolsChange(selectedTools: Array<ITool>)
+    onSelectedToolsChange(selectedTools: Array<ITool>);
+    selectedTools: Array<ITool>;
 }
 
 interface IToolTablbleState {
     tools: Array<ITool>;
-    selectedTools: Array<ITool>;
 }
 
 class ToolTable
@@ -29,8 +30,7 @@ class ToolTable
         this.props = props;
         this.context = context;
         this.state = {
-            tools: [],
-            selectedTools: []
+            tools: []
         };
     }
 
@@ -48,30 +48,27 @@ class ToolTable
 
     private handleToolsChange = () => {
         this.setState({
-            tools: ToolStore.getAll(),
-            selectedTools: []
+            tools: ToolStore.getAll()
         });
 
         this.props.onSelectedToolsChange([]);
     }
 
     private onToolSelect = (event: any) => {
-        var selectedTools = this.state.selectedTools;
+        var selectedTools = this.props.selectedTools;
 
         if (event.target.checked) {
             selectedTools[event.target.value] = this.state.tools[event.target.value];
 
             this.setState({
-                tools: this.state.tools,
-                selectedTools: selectedTools 
+                tools: this.state.tools 
             });
             
         } else {
             delete selectedTools[event.target.value];
 
             this.setState({
-                tools: this.state.tools,
-                selectedTools: selectedTools
+                tools: this.state.tools
             });
         }
         
@@ -79,7 +76,7 @@ class ToolTable
     }
 
     private onAllToolSelect = (event: any) => {
-        var selectedTools = this.state.selectedTools;
+        var selectedTools = this.props.selectedTools;
 
         if (event.target.checked) {
             for (var key in this.state.tools) {
@@ -87,16 +84,14 @@ class ToolTable
             }
 
             this.setState({
-                tools: this.state.tools,
-                selectedTools: selectedTools
+                tools: this.state.tools
             });
         } else {
 
             selectedTools = [];
 
             this.setState({
-                tools: this.state.tools,
-                selectedTools: selectedTools
+                tools: this.state.tools
             });
         }
         
@@ -105,7 +100,7 @@ class ToolTable
 
     render(): React.ReactElement<IToolTablbleProps> {
         var isAllChecked = (Object.keys(this.state.tools).length ==
-            Object.keys(this.state.selectedTools).length);
+            Object.keys(this.props.selectedTools).length);
         var toolRows = [];
 
         for (var key in this.state.tools) {
@@ -121,7 +116,7 @@ class ToolTable
                         type='checkbox'
                         value={tool.id}
                         onChange={this.onToolSelect}
-                        checked={this.state.selectedTools[tool.id]}>
+                        checked={this.props.selectedTools[tool.id]}>
                     </input>
                 </td>
                 <td  style={{ width: 15 + '%' }}>{tool.id}</td>
@@ -157,6 +152,7 @@ class ToolTable
 }
 
 interface IToolListProps {
+    selectedTools: Array<ITool>;
     onToolSearchTextChange(text: string): void;
     onToolsPerPageChange(toolAmout: number): void;
     onToolPageChange(toolPage: number): void;
@@ -275,6 +271,7 @@ export default class ToolList extends React.Component<IToolListProps, IToolListS
                         onSearchTextChange={function (text) { this.handleToolSearchTextChange(text) }.bind(this) }/>
                 }
                 <ToolTable
+                    selectedTools={this.props.selectedTools}
                     onSelectedToolsChange={this.props.onSelectedToolsChange}/>
                 <Pagination
                     itemAmount={this.state.toolAmount}

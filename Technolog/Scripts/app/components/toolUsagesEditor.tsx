@@ -3,45 +3,7 @@
 import * as React from "react";
 import ToolActions from "../flux/actions/toolActions";
 import ToolList from "./toolList";
-import ContentEditable from "./common/contentEditable";
-import TableRow from "./common/tableRow";
-
-interface IItemUsageRowProps {
-    itemId: number;
-    itemName: string;
-    quantity: number;
-    onChange(itemUsage: any): void;
-}
-
-interface IItemUsageRowState {
-
-}
-
-class ItemUsageRow
-    extends React.Component<IItemUsageRowProps, IItemUsageRowState> {
-
-    private onItemUsageQuantityChanged = (value: string) => {
-        this.props.onChange({ itemId: this.props.itemId, quantity: parseInt(value) });
-    }
-
-    render(): React.ReactElement<IItemUsageRowProps> {
-        return (
-            <TableRow 
-                item={this.props.itemId}
-                isCurrent={false}
-                changeCurrent={() => { }}
-                rowDoubleClickHandler={() => { } }>
-                <td  style={{ width: 25 + '%' }}>{this.props.itemId}</td>
-                <td  style={{ width: 50 + '%' }}>{this.props.itemName}</td>
-                <td  style={{ width: 25 + '%', position: "relative", padding: 0 + 'px', verticalAlign: 'middle' }}>
-                    <ContentEditable
-                        html={String(this.props.quantity) }
-                        onChange={this.onItemUsageQuantityChanged}/>
-                </td>
-            </TableRow>    
-        );
-    }
-}
+import ItemUsageRow from "./common/itemUsageRow";
 
 interface IToolChooserProps {
 
@@ -49,6 +11,7 @@ interface IToolChooserProps {
 
 interface IToolChooserState {
     isToolListOpen: boolean;
+    selectedTools: Array<ITool>;
 }
 
 class ToolChooser
@@ -60,19 +23,17 @@ class ToolChooser
         this.props = props;
         this.context = context;
         this.state = {
-            isToolListOpen: false
+            isToolListOpen: false,
+            selectedTools: []
         };
-
-        this.selectedTools = [];
     }
 
     private openCloseToolList = () => {
         this.setState({
-            isToolListOpen: !this.state.isToolListOpen
-        })
+            isToolListOpen: !this.state.isToolListOpen,
+            selectedTools: this.state.selectedTools
+        });
     }
-
-    private selectedTools: Array<ITool>;
 
     private toolEditFormOpen = (toolId: number) => {
 
@@ -99,7 +60,10 @@ class ToolChooser
     }
 
     private handleSelectedToolsChange = (selectedTools: Array<ITool>) => {
-        this.selectedTools = selectedTools;
+        this.setState({
+            isToolListOpen: this.state.isToolListOpen,
+            selectedTools: selectedTools
+        });
     }
 
     render(): React.ReactElement<IToolChooserProps> {
@@ -117,6 +81,7 @@ class ToolChooser
                             </button>
                         </div>
                         <ToolList
+                            selectedTools={this.state.selectedTools}
                             onSelectedToolsChange={this.handleSelectedToolsChange}
                             onNewToolClick={this.newToolBtnClickHandler}
                             onToolDoubleClick={this.toolEditFormOpen}
@@ -157,14 +122,6 @@ export default class ToolUsagesEditor
         this.state = {
             currentToolUsage: null
         };
-    }
-
-    private changeCurrentToolUsage = (toolUsage: IToolUsage) => {
-        
-    }
-
-    private toolUsageRowDoubleClick = (toolUsage: IToolUsage) => {
-
     }
 
     private toolUsageChanged = (itemUsage: any) => {

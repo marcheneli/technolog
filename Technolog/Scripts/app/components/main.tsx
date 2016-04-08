@@ -5,11 +5,11 @@ import MainSidebar from "./mainSidebar";
 import MainContentSection from "./mainContentSection";
 
 let tabList: Array<ITabElement> = [
-    { id: 1, name: 'Технологические процессы', linkName: 'processes' },
-    { id: 2, name: 'Технологические операции', linkName: 'operations' },
-    { id: 3, name: 'Технологические шаги', linkName: 'steps' },
-    { id: 4, name: 'Инструменты', linkName: 'tools' },
-    { id: 5, name: 'Детали', linkName: 'parts' }
+    { id: 1, name: 'Технологические процессы', linkName: 'processes', mode: "", type: "TECHPROCESS_LIST" },
+    { id: 2, name: 'Технологические операции', linkName: 'operations', mode: "", type: "TECHOPERATION_LIST" },
+    { id: 3, name: 'Технологические шаги', linkName: 'steps', mode: "", type: "TECHPSTEP_LIST" },
+    { id: 4, name: 'Инструменты', linkName: 'tools', mode: "", type: "TOOL_LIST" },
+    { id: 5, name: 'Детали', linkName: 'parts', mode: "", type: "PART_LIST" }
 ];
 
 export default class Main extends React.Component<{}, {}> {

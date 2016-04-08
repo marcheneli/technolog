@@ -356,13 +356,16 @@
     <TypeScriptCompile Include="Scripts\app\components\common\inputError.tsx" />
     <TypeScriptCompile Include="Scripts\app\components\common\itemListControlPanel.tsx" />
     <TypeScriptCompile Include="Scripts\app\components\common\itemsPerPageSelector.tsx" />
+    <TypeScriptCompile Include="Scripts\app\components\common\itemUsageRow.tsx" />
     <TypeScriptCompile Include="Scripts\app\components\common\pagination.tsx" />
     <TypeScriptCompile Include="Scripts\app\components\common\searchInput.tsx" />
     <TypeScriptCompile Include="Scripts\app\components\common\tableRow.tsx" />
     <TypeScriptCompile Include="Scripts\app\components\common\textAreaInput.tsx" />
     <TypeScriptCompile Include="Scripts\app\components\common\textInput.tsx" />
+    <TypeScriptCompile Include="Scripts\app\components\componentFactory.ts" />
     <TypeScriptCompile Include="Scripts\app\components\main.tsx" />
     <TypeScriptCompile Include="Scripts\app\components\mainContentSection.tsx" />
+    <TypeScriptCompile Include="Scripts\app\components\mainPanel.tsx" />
     <TypeScriptCompile Include="Scripts\app\components\mainSidebar.tsx" />
     <TypeScriptCompile Include="Scripts\app\components\partEditForm.tsx" />
     <TypeScriptCompile Include="Scripts\app\components\partList.tsx" />
@@ -387,6 +390,9 @@
     <TypeScriptCompile Include="Scripts\app\flux\actions\actionSourceTypes.ts" />
     <TypeScriptCompile Include="Scripts\app\flux\actions\errorActions.ts" />
     <TypeScriptCompile Include="Scripts\app\flux\actions\errorActionTypes.ts" />
+    <TypeScriptCompile Include="Scripts\app\flux\actions\panelActions.ts" />
+    <TypeScriptCompile Include="Scripts\app\flux\actions\panelActionTypes.ts" />
+    <TypeScriptCompile Include="Scripts\app\components\componentType.ts" />
     <TypeScriptCompile Include="Scripts\app\flux\actions\partActions.ts" />
     <TypeScriptCompile Include="Scripts\app\flux\actions\partActionTypes.ts" />
     <TypeScriptCompile Include="Scripts\app\flux\actions\techOperationActions.ts" />
@@ -399,6 +405,7 @@
     <TypeScriptCompile Include="Scripts\app\flux\actions\toolActionTypes.ts" />
     <TypeScriptCompile Include="Scripts\app\flux\dispatcher\appDispatcher.ts" />
     <TypeScriptCompile Include="Scripts\app\flux\stores\errorStore.ts" />
+    <TypeScriptCompile Include="Scripts\app\flux\stores\panelStore.ts" />
     <TypeScriptCompile Include="Scripts\app\flux\stores\partStore.ts" />
     <TypeScriptCompile Include="Scripts\app\flux\stores\techOperationStore.ts" />
     <TypeScriptCompile Include="Scripts\app\flux\stores\techProcessStore.ts" />
@@ -407,6 +414,7 @@
     <TypeScriptCompile Include="Scripts\app\managers\navigationManager.ts" />
     <TypeScriptCompile Include="Scripts\app\managers\pageParamsManager.ts" />
     <TypeScriptCompile Include="Scripts\app\person.ts" />
+    <TypeScriptCompile Include="Scripts\app\utils\utils.ts" />
     <TypeScriptCompile Include="Scripts\tests\personTest.ts" />
     <TypeScriptCompile Include="Scripts\tests\toolEditFormTest.tsx" />
     <TypeScriptCompile Include="Scripts\typings\app\app.d.ts" />

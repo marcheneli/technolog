@@ -48,7 +48,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/// <reference path="../typings/tsd.d.ts" />
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react-dom */ 26), __webpack_require__(/*! react-router */ 10), __webpack_require__(/*! ./components/main */ 27), __webpack_require__(/*! ./components/techProcessListSection */ 31), __webpack_require__(/*! ./components/techOperationListSection */ 36), __webpack_require__(/*! ./components/techStepListSection */ 41), __webpack_require__(/*! ./components/toolListSection */ 1), __webpack_require__(/*! ./components/partListSection */ 46), __webpack_require__(/*! ./components/toolEditForm */ 51), __webpack_require__(/*! ./components/partEditForm */ 55), __webpack_require__(/*! ./components/techStepEditForm */ 56), __webpack_require__(/*! ./components/techOperationEditForm */ 60), __webpack_require__(/*! ./components/techProcessEditForm */ 61)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, ReactDOM, ReactRouter, main_1, techProcessListSection_1, techOperationListSection_1, techStepListSection_1, toolListSection_1, partListSection_1, toolEditForm_1, partEditForm_1, techStepEditForm_1, techOperationEditForm_1, techProcessEditForm_1) {
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react-dom */ 26), __webpack_require__(/*! react-router */ 10), __webpack_require__(/*! ./components/main */ 27), __webpack_require__(/*! ./components/techProcessListSection */ 31), __webpack_require__(/*! ./components/techOperationListSection */ 36), __webpack_require__(/*! ./components/techStepListSection */ 41), __webpack_require__(/*! ./components/toolListSection */ 1), __webpack_require__(/*! ./components/partListSection */ 46), __webpack_require__(/*! ./components/toolEditForm */ 51), __webpack_require__(/*! ./components/partEditForm */ 55), __webpack_require__(/*! ./components/techStepEditForm */ 56), __webpack_require__(/*! ./components/techOperationEditForm */ 61), __webpack_require__(/*! ./components/techProcessEditForm */ 62)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, ReactDOM, ReactRouter, main_1, techProcessListSection_1, techOperationListSection_1, techStepListSection_1, toolListSection_1, partListSection_1, toolEditForm_1, partEditForm_1, techStepEditForm_1, techOperationEditForm_1, techProcessEditForm_1) {
 	    "use strict";
 	    var routers = (React.createElement(ReactRouter.Router, {history: ReactRouter.browserHistory}, React.createElement(ReactRouter.Route, {path: "/", component: main_1.default}, React.createElement(ReactRouter.Route, {path: "processes", component: techProcessListSection_1.default}, React.createElement(ReactRouter.Route, {path: ":techProcessId", component: techProcessEditForm_1.default})), React.createElement(ReactRouter.Route, {path: "operations", component: techOperationListSection_1.default}, React.createElement(ReactRouter.Route, {path: ":techOperationId", component: techOperationEditForm_1.default})), React.createElement(ReactRouter.Route, {path: "steps", component: techStepListSection_1.default}, React.createElement(ReactRouter.Route, {path: ":techStepId", component: techStepEditForm_1.default})), React.createElement(ReactRouter.Route, {path: "tools", component: toolListSection_1.default}, React.createElement(ReactRouter.Route, {path: ":toolId", component: toolEditForm_1.default})), React.createElement(ReactRouter.Route, {path: "parts", component: partListSection_1.default}, React.createElement(ReactRouter.Route, {path: ":partId", component: partEditForm_1.default})))));
 	    ReactDOM.render(routers, document.getElementById('content'));
@@ -133,15 +133,18 @@
 	                toolActions_1.default.changeToolSearchText(text);
 	            };
 	            this.handleSelectedToolsChange = function (selectedTools) {
-	                _this.selectedTools = selectedTools;
+	                _this.setState({
+	                    selectedTools: selectedTools
+	                });
 	            };
 	            this.props = props;
 	            this.context = context;
-	            this.state = {};
-	            this.selectedTools = [];
+	            this.state = {
+	                selectedTools: []
+	            };
 	        }
 	        ToolListPanel.prototype.render = function () {
-	            return (React.createElement("div", {className: "panel panel-default inner", style: { marginBottom: 0 + 'px', display: 'flex', flexDirection: 'column' }}, React.createElement("div", {className: "panel-heading"}, React.createElement("h4", null, "Инструменты")), React.createElement("div", {className: "panel-body", style: { display: 'flex', flexDirection: 'column' }}, React.createElement(toolList_1.default, {onSelectedToolsChange: this.handleSelectedToolsChange, onNewToolClick: this.newToolBtnClickHandler, onToolDoubleClick: this.toolEditFormOpen, onToolPageChange: this.handleToolPageChange, onToolSearchTextChange: this.handleToolSearchTextChange, onToolsPerPageChange: this.handleToolsPerPageChange}))));
+	            return (React.createElement("div", {className: "panel panel-default inner", style: { marginBottom: 0 + 'px', display: 'flex', flexDirection: 'column' }}, React.createElement("div", {className: "panel-heading"}, React.createElement("h4", null, "Инструменты")), React.createElement("div", {className: "panel-body", style: { display: 'flex', flexDirection: 'column' }}, React.createElement(toolList_1.default, {selectedTools: this.state.selectedTools, onSelectedToolsChange: this.handleSelectedToolsChange, onNewToolClick: this.newToolBtnClickHandler, onToolDoubleClick: this.toolEditFormOpen, onToolPageChange: this.handleToolPageChange, onToolSearchTextChange: this.handleToolSearchTextChange, onToolsPerPageChange: this.handleToolsPerPageChange}))));
 	        };
 	        return ToolListPanel;
 	    }(React.Component));
@@ -524,45 +527,40 @@
 	            _super.call(this, props, context);
 	            this.handleToolsChange = function () {
 	                _this.setState({
-	                    tools: toolStore_1.default.getAll(),
-	                    selectedTools: []
+	                    tools: toolStore_1.default.getAll()
 	                });
 	                _this.props.onSelectedToolsChange([]);
 	            };
 	            this.onToolSelect = function (event) {
-	                var selectedTools = _this.state.selectedTools;
+	                var selectedTools = _this.props.selectedTools;
 	                if (event.target.checked) {
 	                    selectedTools[event.target.value] = _this.state.tools[event.target.value];
 	                    _this.setState({
-	                        tools: _this.state.tools,
-	                        selectedTools: selectedTools
+	                        tools: _this.state.tools
 	                    });
 	                }
 	                else {
 	                    delete selectedTools[event.target.value];
 	                    _this.setState({
-	                        tools: _this.state.tools,
-	                        selectedTools: selectedTools
+	                        tools: _this.state.tools
 	                    });
 	                }
 	                _this.props.onSelectedToolsChange(selectedTools);
 	            };
 	            this.onAllToolSelect = function (event) {
-	                var selectedTools = _this.state.selectedTools;
+	                var selectedTools = _this.props.selectedTools;
 	                if (event.target.checked) {
 	                    for (var key in _this.state.tools) {
 	                        selectedTools[key] = _this.state.tools[key];
 	                    }
 	                    _this.setState({
-	                        tools: _this.state.tools,
-	                        selectedTools: selectedTools
+	                        tools: _this.state.tools
 	                    });
 	                }
 	                else {
 	                    selectedTools = [];
 	                    _this.setState({
-	                        tools: _this.state.tools,
-	                        selectedTools: selectedTools
+	                        tools: _this.state.tools
 	                    });
 	                }
 	                _this.props.onSelectedToolsChange(selectedTools);
@@ -570,8 +568,7 @@
 	            this.props = props;
 	            this.context = context;
 	            this.state = {
-	                tools: [],
-	                selectedTools: []
+	                tools: []
 	            };
 	        }
 	        ToolTable.prototype.componentWillMount = function () {
@@ -585,11 +582,11 @@
 	        };
 	        ToolTable.prototype.render = function () {
 	            var isAllChecked = (Object.keys(this.state.tools).length ==
-	                Object.keys(this.state.selectedTools).length);
+	                Object.keys(this.props.selectedTools).length);
 	            var toolRows = [];
 	            for (var key in this.state.tools) {
 	                var tool = this.state.tools[key];
-	                toolRows.push(React.createElement(tableRow_1.default, {key: key, item: tool, isCurrent: false, changeCurrent: function () { }, rowDoubleClickHandler: function () { }}, React.createElement("td", {style: { width: 5 + '%' }}, React.createElement("input", {type: 'checkbox', value: tool.id, onChange: this.onToolSelect, checked: this.state.selectedTools[tool.id]})), React.createElement("td", {style: { width: 15 + '%' }}, tool.id), React.createElement("td", {style: { width: 80 + '%' }}, tool.name)));
+	                toolRows.push(React.createElement(tableRow_1.default, {key: key, item: tool, isCurrent: false, changeCurrent: function () { }, rowDoubleClickHandler: function () { }}, React.createElement("td", {style: { width: 5 + '%' }}, React.createElement("input", {type: 'checkbox', value: tool.id, onChange: this.onToolSelect, checked: this.props.selectedTools[tool.id]})), React.createElement("td", {style: { width: 15 + '%' }}, tool.id), React.createElement("td", {style: { width: 80 + '%' }}, tool.name)));
 	            }
 	            return (React.createElement("div", {style: { marginBottom: 10 + 'px', display: 'flex', flexDirection: 'column' }}, React.createElement("div", {style: { overflowY: 'auto' }}, React.createElement("table", {className: "table table-bordered", style: { marginBottom: 1 + 'px' }}, React.createElement("thead", null, React.createElement("tr", null, React.createElement("th", {style: { width: 5 + '%' }}, React.createElement("input", {type: 'checkbox', onChange: this.onAllToolSelect, checked: isAllChecked})), React.createElement("th", {style: { width: 15 + '%' }}, "ID"), React.createElement("th", {style: { width: 80 + '%' }}, "Наименование"))), React.createElement("tbody", null, toolRows)))));
 	        };
@@ -670,7 +667,7 @@
 	            return (React.createElement("div", {style: { display: 'flex', flexDirection: 'column' }}, this.state.isConfirmDeleting ?
 	                React.createElement(confirmDelete_1.default, {id: this.state.currentTool.id, title: "Подтверждение удаления инструмента", message: "Вы действительно хотите удалить инструмент " + this.state.currentTool.name, success: this.handleDeleteSuccess, cancel: this.handleDeleteCancel})
 	                :
-	                    React.createElement(itemListControlPanel_1.default, {onNewItem: this.newToolBtnClickHandler, onItemDelete: function () { this.setState({ currentTool: this.state.currentTool, isConfirmDeleting: true }); }.bind(this), onRefresh: this.refreshBtnClickHandler, onItemsPerPageChange: this.handleToolsPerPageChange, onSearchTextChange: function (text) { this.handleToolSearchTextChange(text); }.bind(this)}), React.createElement(ToolTable, {onSelectedToolsChange: this.props.onSelectedToolsChange}), React.createElement(pagination_1.default, {itemAmount: this.state.toolAmount, itemsPerPage: this.state.toolsPerPage, firstSymbol: '«', nextSymbol: '›', prevSymbol: '‹', lastSymbol: '»', updatePage: this.handleToolPageChange})));
+	                    React.createElement(itemListControlPanel_1.default, {onNewItem: this.newToolBtnClickHandler, onItemDelete: function () { this.setState({ currentTool: this.state.currentTool, isConfirmDeleting: true }); }.bind(this), onRefresh: this.refreshBtnClickHandler, onItemsPerPageChange: this.handleToolsPerPageChange, onSearchTextChange: function (text) { this.handleToolSearchTextChange(text); }.bind(this)}), React.createElement(ToolTable, {selectedTools: this.props.selectedTools, onSelectedToolsChange: this.props.onSelectedToolsChange}), React.createElement(pagination_1.default, {itemAmount: this.state.toolAmount, itemsPerPage: this.state.toolsPerPage, firstSymbol: '«', nextSymbol: '›', prevSymbol: '‹', lastSymbol: '»', updatePage: this.handleToolPageChange})));
 	        };
 	        return ToolList;
 	    }(React.Component));
@@ -3854,22 +3851,8 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ../flux/actions/toolActions */ 4), __webpack_require__(/*! ./toolList */ 13), __webpack_require__(/*! ./common/contentEditable */ 59), __webpack_require__(/*! ./common/tableRow */ 20)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, toolActions_1, toolList_1, contentEditable_1, tableRow_1) {
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ../flux/actions/toolActions */ 4), __webpack_require__(/*! ./toolList */ 13), __webpack_require__(/*! ./common/itemUsageRow */ 59)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, toolActions_1, toolList_1, itemUsageRow_1) {
 	    "use strict";
-	    var ItemUsageRow = (function (_super) {
-	        __extends(ItemUsageRow, _super);
-	        function ItemUsageRow() {
-	            var _this = this;
-	            _super.apply(this, arguments);
-	            this.onItemUsageQuantityChanged = function (value) {
-	                _this.props.onChange({ itemId: _this.props.itemId, quantity: value });
-	            };
-	        }
-	        ItemUsageRow.prototype.render = function () {
-	            return (React.createElement(tableRow_1.default, {item: this.props.itemId, isCurrent: false, changeCurrent: function () { }, rowDoubleClickHandler: function () { }}, React.createElement("td", {style: { width: 25 + '%' }}, this.props.itemId), React.createElement("td", {style: { width: 50 + '%' }}, this.props.itemName), React.createElement("td", {style: { width: 25 + '%', position: "relative", padding: 0 + 'px', verticalAlign: 'middle' }}, React.createElement(contentEditable_1.default, {html: String(this.props.quantity), onChange: this.onItemUsageQuantityChanged}))));
-	        };
-	        return ItemUsageRow;
-	    }(React.Component));
 	    var ToolChooser = (function (_super) {
 	        __extends(ToolChooser, _super);
 	        function ToolChooser(props, context) {
@@ -3877,7 +3860,8 @@
 	            _super.call(this, props, context);
 	            this.openCloseToolList = function () {
 	                _this.setState({
-	                    isToolListOpen: !_this.state.isToolListOpen
+	                    isToolListOpen: !_this.state.isToolListOpen,
+	                    selectedTools: _this.state.selectedTools
 	                });
 	            };
 	            this.toolEditFormOpen = function (toolId) {
@@ -3897,18 +3881,21 @@
 	                toolActions_1.default.changeToolSearchText(text);
 	            };
 	            this.handleSelectedToolsChange = function (selectedTools) {
-	                _this.selectedTools = selectedTools;
+	                _this.setState({
+	                    isToolListOpen: _this.state.isToolListOpen,
+	                    selectedTools: selectedTools
+	                });
 	            };
 	            this.props = props;
 	            this.context = context;
 	            this.state = {
-	                isToolListOpen: false
+	                isToolListOpen: false,
+	                selectedTools: []
 	            };
-	            this.selectedTools = [];
 	        }
 	        ToolChooser.prototype.render = function () {
 	            return (React.createElement("div", null, this.state.isToolListOpen ?
-	                React.createElement("div", null, React.createElement("div", {className: "form-group"}, React.createElement("button", {onClick: this.openCloseToolList, className: "btn btn-default"}, React.createElement("span", {className: "glyphicon glyphicon-minus"})), React.createElement("button", {onClick: function () { }, className: "btn btn-default pull-right"}, React.createElement("span", {className: "glyphicon glyphicon-plus"}), React.createElement("span", null, " Добавить выбранный"))), React.createElement(toolList_1.default, {onSelectedToolsChange: this.handleSelectedToolsChange, onNewToolClick: this.newToolBtnClickHandler, onToolDoubleClick: this.toolEditFormOpen, onToolPageChange: this.handleToolPageChange, onToolSearchTextChange: this.handleToolSearchTextChange, onToolsPerPageChange: this.handleToolsPerPageChange}))
+	                React.createElement("div", null, React.createElement("div", {className: "form-group"}, React.createElement("button", {onClick: this.openCloseToolList, className: "btn btn-default"}, React.createElement("span", {className: "glyphicon glyphicon-minus"})), React.createElement("button", {onClick: function () { }, className: "btn btn-default pull-right"}, React.createElement("span", {className: "glyphicon glyphicon-plus"}), React.createElement("span", null, " Добавить выбранный"))), React.createElement(toolList_1.default, {selectedTools: this.state.selectedTools, onSelectedToolsChange: this.handleSelectedToolsChange, onNewToolClick: this.newToolBtnClickHandler, onToolDoubleClick: this.toolEditFormOpen, onToolPageChange: this.handleToolPageChange, onToolSearchTextChange: this.handleToolSearchTextChange, onToolsPerPageChange: this.handleToolsPerPageChange}))
 	                :
 	                    React.createElement("div", {className: "form-group"}, React.createElement("button", {onClick: this.openCloseToolList, className: "btn btn-default"}, React.createElement("span", {className: "glyphicon glyphicon-plus"})))));
 	        };
@@ -3919,10 +3906,6 @@
 	        function ToolUsagesEditor(props, context) {
 	            var _this = this;
 	            _super.call(this, props, context);
-	            this.changeCurrentToolUsage = function (toolUsage) {
-	            };
-	            this.toolUsageRowDoubleClick = function (toolUsage) {
-	            };
 	            this.toolUsageChanged = function (itemUsage) {
 	                var toolUsages = _this.props.toolUsages;
 	                for (var i = 0; i < toolUsages.length; i++) {
@@ -3943,7 +3926,7 @@
 	            var toolUsageRows = [];
 	            for (var key in this.props.toolUsages) {
 	                var toolUsage = this.props.toolUsages[key];
-	                toolUsageRows.push(React.createElement(ItemUsageRow, {key: key, itemId: toolUsage.tool.id, itemName: toolUsage.tool.name, quantity: toolUsage.quantity, onChange: this.toolUsageChanged}));
+	                toolUsageRows.push(React.createElement(itemUsageRow_1.default, {key: key, itemId: toolUsage.tool.id, itemName: toolUsage.tool.name, quantity: toolUsage.quantity, onChange: this.toolUsageChanged}));
 	            }
 	            return (React.createElement("div", null, React.createElement("div", {style: { marginBottom: 10 + 'px', display: 'flex', flexDirection: 'column' }}, React.createElement("div", {style: { overflowY: 'auto' }}, React.createElement("table", {className: "table table-bordered", style: { marginBottom: 1 + 'px' }}, React.createElement("thead", null, React.createElement("tr", null, React.createElement("th", {style: { width: 25 + '%' }}, "ID"), React.createElement("th", {style: { width: 50 + '%' }}, "Наименование"), React.createElement("th", {style: { width: 25 + '%' }}, "Применяемость"))), React.createElement("tbody", null, toolUsageRows)))), React.createElement(ToolChooser, null)));
 	        };
@@ -3956,6 +3939,40 @@
 
 /***/ },
 /* 59 */
+/*!*******************************************************!*\
+  !*** ./Scripts/app/components/common/itemUsageRow.js ***!
+  \*******************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/// <reference path="../../../typings/tsd.d.ts" />
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ./contentEditable */ 60), __webpack_require__(/*! ./tableRow */ 20)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, contentEditable_1, tableRow_1) {
+	    "use strict";
+	    var ItemUsageRow = (function (_super) {
+	        __extends(ItemUsageRow, _super);
+	        function ItemUsageRow() {
+	            var _this = this;
+	            _super.apply(this, arguments);
+	            this.onItemUsageQuantityChanged = function (value) {
+	                _this.props.onChange({ itemId: _this.props.itemId, quantity: parseInt(value) });
+	            };
+	        }
+	        ItemUsageRow.prototype.render = function () {
+	            return (React.createElement(tableRow_1.default, {item: this.props.itemId, isCurrent: false, changeCurrent: function () { }, rowDoubleClickHandler: function () { }}, React.createElement("td", {style: { width: 25 + '%' }}, this.props.itemId), React.createElement("td", {style: { width: 50 + '%' }}, this.props.itemName), React.createElement("td", {style: { width: 25 + '%', position: "relative", padding: 0 + 'px', verticalAlign: 'middle' }}, React.createElement(contentEditable_1.default, {html: String(this.props.quantity), onChange: this.onItemUsageQuantityChanged}))));
+	        };
+	        return ItemUsageRow;
+	    }(React.Component));
+	    Object.defineProperty(exports, "__esModule", { value: true });
+	    exports.default = ItemUsageRow;
+	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	//# sourceMappingURL=itemUsageRow.js.map
+
+/***/ },
+/* 60 */
 /*!**********************************************************!*\
   !*** ./Scripts/app/components/common/contentEditable.js ***!
   \**********************************************************/
@@ -3989,7 +4006,7 @@
 	//# sourceMappingURL=contentEditable.js.map
 
 /***/ },
-/* 60 */
+/* 61 */
 /*!*********************************************************!*\
   !*** ./Scripts/app/components/techOperationEditForm.js ***!
   \*********************************************************/
@@ -4092,7 +4109,7 @@
 	//# sourceMappingURL=techOperationEditForm.js.map
 
 /***/ },
-/* 61 */
+/* 62 */
 /*!*******************************************************!*\
   !*** ./Scripts/app/components/techProcessEditForm.js ***!
   \*******************************************************/
