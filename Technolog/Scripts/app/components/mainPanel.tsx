@@ -2,10 +2,14 @@
 
 import * as React from "react";
 
-export default class MainPanel extends React.Component<{}, {}> {
-    render(): React.ReactElement<{}> {
+interface MainPanelProps {
+    componentId: string;
+}
+
+export default class MainPanel extends React.Component<MainPanelProps, {}> {
+    render(): React.ReactElement<MainPanelProps> {
         return (
-            <div>Hi! I'm a main panel.</div>    
+            <div>Hi!I'm a main panel. Component id: {this.props.componentId}</div>    
         );
     }
 }

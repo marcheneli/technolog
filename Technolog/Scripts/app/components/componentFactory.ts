@@ -1,12 +1,14 @@
 ﻿/// <reference path="../../typings/tsd.d.ts" />
 
-import ToolListPanel from "./toolListPanel";
+import MainPanel from "./mainPanel";
+import ComponentType from "./componentType";
 
 export default class ComponentFactory {
-    public static getComponent(componentType: string): any {
+    public static getComponent(componentType: ComponentType): any {
+        console.log(componentType);
         switch (componentType) {
-            case "TOOL_LIST_PANEL":
-                return ToolListPanel;
+            case ComponentType.MainPanel:
+                return MainPanel;
             default:
         }
     }

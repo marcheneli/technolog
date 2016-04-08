@@ -40,13 +40,13 @@ interface ITechProcess {
     name: string;
 }
 
-declare enum PanelType {
+declare enum ComponentType {
 
 }
 
 interface IPanel {
     id: string;
-    type: string;
+    type: ComponentType;
 }
 
 interface AppPayload {
@@ -63,7 +63,7 @@ interface AppPayload {
     techProcess?: ITechProcess;
     errorMessage?: string;
     callerPanelId?: string;
-    panelType?: string;
+    panelType?: ComponentType;
 }
 
 declare class Tool implements ITool {

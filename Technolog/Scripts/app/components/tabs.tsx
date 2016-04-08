@@ -32,7 +32,7 @@ class Tab extends React.Component<ITabProps, ITabState> {
 
     render(): React.ReactElement<ITabProps> {
         return (
-            <li >
+            <li key={this.props.tabId}>
                 <a className={this.props.mode} onClick={this.clickHandler}>{this.props.children}</a>
             </li>    
         );
@@ -49,6 +49,16 @@ interface ITabsState {
 
 export default class Tabs
     extends React.Component<ITabsProps, ITabsState> {
+
+    constructor(props: ITabsProps, context: any) {
+        super(props, context);
+
+        this.props = props;
+        this.context = context;
+        this.state = {
+            activeTabId: 0
+        };
+    }
 
     onTabClick = (tabId: number): void => {
         this.setState({
@@ -70,23 +80,25 @@ export default class Tabs
 
     getSimpleLinks() {
         return (
-            this.props.tabList.map(function (tab: ITabElement) {
+            this.props.tabList.map((tab: ITabElement, index: number) => {
                 return (
                     <Tab
-                        key={tab.id}
+                        key={index}
                         tabId={tab.id}
                         componentType={tab.type}
                         mode={tab.id == this.state.activeTabId ? 'active' : 'unactive'}
-                        onClick={this.onTabClick} />
+                        onClick={this.onTabClick}>
+                        {tab.name}
+                    </Tab>
                 )
-            }.bind(this))
+            })
         );
     }
 
     render(): React.ReactElement<ITabsProps> {
         return (
             <ul className="nav nav-sidebar">
-                { this.getRouteLinks() }
+                { this.getSimpleLinks() }
                 </ul>
             )
     }

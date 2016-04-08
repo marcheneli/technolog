@@ -351,6 +351,7 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\app\app.tsx" />
+    <TypeScriptCompile Include="Scripts\app\components\componentFactory.ts" />
     <TypeScriptCompile Include="Scripts\app\components\common\confirmDelete.tsx" />
     <TypeScriptCompile Include="Scripts\app\components\common\contentEditable.tsx" />
     <TypeScriptCompile Include="Scripts\app\components\common\inputError.tsx" />
@@ -362,7 +363,6 @@
     <TypeScriptCompile Include="Scripts\app\components\common\tableRow.tsx" />
     <TypeScriptCompile Include="Scripts\app\components\common\textAreaInput.tsx" />
     <TypeScriptCompile Include="Scripts\app\components\common\textInput.tsx" />
-    <TypeScriptCompile Include="Scripts\app\components\componentFactory.ts" />
     <TypeScriptCompile Include="Scripts\app\components\main.tsx" />
     <TypeScriptCompile Include="Scripts\app\components\mainContentSection.tsx" />
     <TypeScriptCompile Include="Scripts\app\components\mainPanel.tsx" />

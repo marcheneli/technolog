@@ -4,13 +4,13 @@ import AppDispatcher from "../dispatcher/appDispatcher";
 import * as EventEmitter from "eventemitter3";
 import ActionSourceTypes from "../actions/actionSourceTypes";
 import PanelActionTypes from "../actions/panelActionTypes";
-import Utils from "../utils/utils";
+import Utils from "../../utils/utils";
 
-const CHANGE_EVENT = "CHANGE_EVENT";
+const CHANGE_EVENT = "PANEL_CHANGE_EVENT";
 
 var _panels: Array<IPanel>
 
-function _initialize(panelType: string):void {
+function _initialize(panelType: ComponentType): void {
     _panels = [];
 
     var panelId: string = Utils.uuid();
@@ -19,7 +19,7 @@ function _initialize(panelType: string):void {
     _panels.push(panel);
 }
 
-function _addPanel(callerPanelId: string, panelType: string) {
+function _addPanel(callerPanelId: string, panelType: ComponentType) {
     var panelId: string = Utils.uuid();
     var panel: IPanel = { type: panelType, id: panelId };
     var callerPanel: IPanel = _panels.filter((panel: IPanel, index: number) => { return panel.id == callerPanelId })[0];
@@ -56,13 +56,12 @@ class PanelStoreStatic extends EventEmitter {
     /**
      * @param {function} callback
      */
-
     public removeChangeListener(callback: () => void): void {
-        this.off(CHANGE_EVENT, callback);
+        this.removeListener(CHANGE_EVENT, callback);
     }
 }
 
-var PanelStore = new PanelStoreStatic();
+let PanelStore: PanelStoreStatic = new PanelStoreStatic();
 
 AppDispatcher.register(function (payload: AppPayload) {
 

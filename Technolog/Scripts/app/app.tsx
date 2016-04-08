@@ -37,6 +37,6 @@ let routers = (
 );
 
 ReactDOM.render(
-    routers,
+    <Main />,
     document.getElementById('content')
 );

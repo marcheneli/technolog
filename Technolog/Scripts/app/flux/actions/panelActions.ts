@@ -5,7 +5,7 @@ import ActionSourceTypes from "./actionSourceTypes";
 import PanelActionTypes from "./panelActionTypes";
 
 class PanelActionsStatic {
-    public open(callerId: string, type: string): void {
+    public open(callerId: string, type: ComponentType): void {
         AppDispatcher.dispatch({
             actionType: PanelActionTypes.PANEL_OPEN,
             actionSource: ActionSourceTypes.PANEL,
@@ -22,9 +22,9 @@ class PanelActionsStatic {
         });
     }
 
-    public init(type: string): void {
+    public init(type: ComponentType): void {
         AppDispatcher.dispatch({
-            actionType: PanelActionTypes.PANEL_CLOSE,
+            actionType: PanelActionTypes.PANEL_INIT,
             actionSource: ActionSourceTypes.PANEL,
             panelType: type
         });

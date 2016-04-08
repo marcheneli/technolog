@@ -1,20 +1,21 @@
-﻿// A '.tsx' file enables JSX support in the TypeScript compiler, 
-// for more information see the following page on the TypeScript wiki:
-// https://github.com/Microsoft/TypeScript/wiki/JSX
-/// <reference path="../../typings/tsd.d.ts" />
+﻿/// <reference path="../../typings/tsd.d.ts" />
 
 import * as React from "react";
 import PanelStore from "../flux/stores/panelStore";
+import PanelActions from "../flux/actions/panelActions";
 import ComponentFactory from "./componentFactory";
+import ComponentType from "./componentType";
+
+interface IMainContentSectionProps {
+}
 
 interface IMainContentSectionState {
     panels: Array<IPanel>;
 }
 
-export default class MainContentSection
-    extends React.Component<{}, IMainContentSectionState> {
+export default class MainContentSection extends React.Component<IMainContentSectionProps, IMainContentSectionState> {
 
-    constructor(props: any, context: any) {
+    constructor(props: IMainContentSectionProps, context: any) {
         super(props, context);
 
         this.props = props;
@@ -23,31 +24,31 @@ export default class MainContentSection
             panels: []
         };
     }
-
-    componentWillMount() {
-        PanelStore.addChangeListener(this.handlePanelsChange)
-    }
-
-    componentWillUnmount() {
-        PanelStore.removeChangeListener(this.handlePanelsChange)
-    }
-
-    componentDidMount() {
-
-    }
-
-    handlePanelsChange = () => {
+    
+    private handlePanelsChange() {
         this.setState({
             panels: PanelStore.getPanels()
         });
     }
 
-    render(): React.ReactElement<{}> {
+    componentWillMount() {
+        PanelStore.addChangeListener(this.handlePanelsChange.bind(this));
+    }
+
+    componentWillUnmount() {
+        PanelStore.removeChangeListener(this.handlePanelsChange.bind(this));
+    }
+
+    componentDidMount() {
+        PanelActions.init(ComponentType.MainPanel);
+    }
+
+    render(): React.ReactElement<IMainContentSectionProps> {
         var panels = [];
 
-        panels = this.state.panels.map((panel: IPanel) => {
+        panels = this.state.panels.map((panel: IPanel, index: number) => {
             var Component = ComponentFactory.getComponent(panel.type);
-            <Component componentId= { panel.id }/>
+            return <Component key={index} componentId={ panel.id }/>
         });
 
         return (
