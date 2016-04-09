@@ -3,6 +3,7 @@
 import AppDispatcher from "../dispatcher/appDispatcher";
 import ActionSourceTypes from "./actionSourceTypes";
 import PanelActionTypes from "./panelActionTypes";
+import ComponentType from "../../components/componentType";
 
 class PanelActionsStatic {
     public open(callerId: string, type: ComponentType): void {

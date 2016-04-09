@@ -5,6 +5,7 @@ import PanelStore from "../flux/stores/panelStore";
 import PanelActions from "../flux/actions/panelActions";
 import ComponentFactory from "./componentFactory";
 import ComponentType from "./componentType";
+import IPanel from "./iPanel";
 
 interface IMainContentSectionProps {
 }
@@ -25,18 +26,18 @@ export default class MainContentSection extends React.Component<IMainContentSect
         };
     }
     
-    private handlePanelsChange() {
+    private handlePanelsChange = () => {
         this.setState({
             panels: PanelStore.getPanels()
         });
     }
 
     componentWillMount() {
-        PanelStore.addChangeListener(this.handlePanelsChange.bind(this));
+        PanelStore.addChangeListener(this.handlePanelsChange);
     }
 
     componentWillUnmount() {
-        PanelStore.removeChangeListener(this.handlePanelsChange.bind(this));
+        PanelStore.removeChangeListener(this.handlePanelsChange);
     }
 
     componentDidMount() {
@@ -54,7 +55,9 @@ export default class MainContentSection extends React.Component<IMainContentSect
         return (
             <div className="col-lg-10 col-lg-offset-2 col-md-9 col-md-offset-3 col-sm-9 col-sm-offset-3 col-xs-8 col-xs-offset-4 full-height" id='infopanel'>
                 {this.props.children}
-                {panels}
+                <div className="outer">
+                    {panels}
+                </div>
             </div>
         )
     }

@@ -25,6 +25,10 @@ export default class PartListPanel extends React.Component<{}, {}> {
         PanelStore.removeChangeListener(this.handleError);
     }
 
+    componentDidMount() {
+        PanelActions.init(ComponentType.MainPanel);
+    }
+
     private handleError = () => {
         this.setState({});
     }
@@ -32,10 +36,6 @@ export default class PartListPanel extends React.Component<{}, {}> {
     private handleError3 = () => {
         console.log(this);
         this.setState({});
-    }
-
-    componentDidMount(): void {
-
     }
 
     render(): React.ReactElement<{}> {

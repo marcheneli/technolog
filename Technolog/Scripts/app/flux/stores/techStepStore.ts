@@ -9,6 +9,7 @@ import PageConstants from "../../constants/pageConstants";
 import NavigationManager from "../../managers/navigationManager";
 import assign = require('object-assign');
 import * as EventEmitter from "eventemitter3";
+import AppPayload from "../iAppPayload";
 
 let CHANGE_TECHSTEPS_EVENT = 'change_techSteps';
 let CHANGE_EDITTECHSTEP_EVENT = 'change_edittechStep';

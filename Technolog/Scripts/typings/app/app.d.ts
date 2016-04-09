@@ -1,12 +1,4 @@
-﻿interface ITabElement {
-    id: number;
-    name: string;
-    linkName: string;
-    mode: string;
-    type: string;
-}
-
-interface ITool {
+﻿interface ITool {
     id: number;
     name: string;
     price: number;
@@ -38,32 +30,6 @@ interface ITechOperation {
 interface ITechProcess {
     id: number;
     name: string;
-}
-
-declare enum ComponentType {
-
-}
-
-interface IPanel {
-    id: string;
-    type: ComponentType;
-}
-
-interface AppPayload {
-    actionType: number;
-    actionSource: number;
-    currentPage?: number;
-    pageSize?: number;
-    searchText?: string;
-    id?: number;
-    tool?: ITool;
-    part?: IPart;
-    techStep?: ITechStep;
-    techOperation?: ITechOperation;
-    techProcess?: ITechProcess;
-    errorMessage?: string;
-    callerPanelId?: string;
-    panelType?: ComponentType;
 }
 
 declare class Tool implements ITool {

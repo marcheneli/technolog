@@ -5,6 +5,7 @@ import AppDispatcher from "../dispatcher/appDispatcher";
 import ActionSourceTypes from "../actions/actionSourceTypes";
 import ErrorActionTypes from "../actions/errorActionTypes";
 import ErrorActions from "../actions/errorActions";
+import AppPayload from "../iAppPayload";
 
 let CHANGE_ERROR_EVENT = 'change_error_event';
 

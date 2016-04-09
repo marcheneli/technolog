@@ -1,6 +1,10 @@
 ﻿enum ComponentType {
-    MainPanel = <any>"MAIN_PANEL",
-    ToolListPanel = <any>"TOOL_LIST_PANEL"
+    MainPanel,
+    ToolListPanel,
+    PartListPanel,
+    TechStepListPanel,
+    TechOperationListPanel,
+    TechProcessListPanel
 }
 
 export default ComponentType;

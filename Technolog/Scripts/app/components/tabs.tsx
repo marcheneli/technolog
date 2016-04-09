@@ -1,12 +1,15 @@
 ﻿/// <reference path="../../typings/tsd.d.ts" />
 
 import * as React from "react";
+import ITabElement from "./iTabElement";
+import ComponentType from "./componentType";
+
+import PanelActions from "../flux/actions/panelActions";
 
 interface ITabProps {
-    onClick(tabId: number): void;
-    componentType: string;
+    onClick(tab: ITabElement): void;
     mode: string;
-    tabId: number;
+    tab: ITabElement;
 }
 
 interface ITabState {
@@ -27,12 +30,12 @@ class Tab extends React.Component<ITabProps, ITabState> {
 
     clickHandler = (event: any) => {
         event.preventDefault();
-        this.props.onClick(this.props.tabId);
+        this.props.onClick(this.props.tab);
     }
 
     render(): React.ReactElement<ITabProps> {
         return (
-            <li key={this.props.tabId}>
+            <li key={this.props.tab.id}>
                 <a className={this.props.mode} onClick={this.clickHandler}>{this.props.children}</a>
             </li>    
         );
@@ -60,10 +63,12 @@ export default class Tabs
         };
     }
 
-    onTabClick = (tabId: number): void => {
+    onTabClick = (tab: ITabElement): void => {
         this.setState({
-            activeTabId: tabId
+            activeTabId: tab.id
         });
+
+        PanelActions.init(tab.type);
     }
 
     getRouteLinks() {
@@ -84,8 +89,7 @@ export default class Tabs
                 return (
                     <Tab
                         key={index}
-                        tabId={tab.id}
-                        componentType={tab.type}
+                        tab={tab}
                         mode={tab.id == this.state.activeTabId ? 'active' : 'unactive'}
                         onClick={this.onTabClick}>
                         {tab.name}

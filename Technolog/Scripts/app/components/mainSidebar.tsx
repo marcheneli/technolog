@@ -5,6 +5,7 @@
 
 import * as React from "react";
 import Tabs from "./tabs";
+import ITabElement from "./iTabElement";
 
 export default class MainSidebar extends React.Component<{ tabList: Array<ITabElement> }, {}> {
     render(): React.ReactElement<{}> {

@@ -5,6 +5,9 @@ import * as EventEmitter from "eventemitter3";
 import ActionSourceTypes from "../actions/actionSourceTypes";
 import PanelActionTypes from "../actions/panelActionTypes";
 import Utils from "../../utils/utils";
+import ComponentType from "../../components/componentType";
+import IPanel from "../../components/iPanel";
+import AppPayload from "../iAppPayload";
 
 const CHANGE_EVENT = "PANEL_CHANGE_EVENT";
 

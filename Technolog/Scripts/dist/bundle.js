@@ -48,7 +48,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/// <reference path="../typings/tsd.d.ts" />
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react-dom */ 26), __webpack_require__(/*! react-router */ 10), __webpack_require__(/*! ./components/main */ 27), __webpack_require__(/*! ./components/techProcessListSection */ 38), __webpack_require__(/*! ./components/techOperationListSection */ 43), __webpack_require__(/*! ./components/techStepListSection */ 48), __webpack_require__(/*! ./components/toolListSection */ 1), __webpack_require__(/*! ./components/partListSection */ 53), __webpack_require__(/*! ./components/toolEditForm */ 58), __webpack_require__(/*! ./components/partEditForm */ 62), __webpack_require__(/*! ./components/techStepEditForm */ 63), __webpack_require__(/*! ./components/techOperationEditForm */ 68), __webpack_require__(/*! ./components/techProcessEditForm */ 69)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, ReactDOM, ReactRouter, main_1, techProcessListSection_1, techOperationListSection_1, techStepListSection_1, toolListSection_1, partListSection_1, toolEditForm_1, partEditForm_1, techStepEditForm_1, techOperationEditForm_1, techProcessEditForm_1) {
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react-dom */ 26), __webpack_require__(/*! react-router */ 10), __webpack_require__(/*! ./components/main */ 27), __webpack_require__(/*! ./components/techProcessListSection */ 54), __webpack_require__(/*! ./components/techOperationListSection */ 55), __webpack_require__(/*! ./components/techStepListSection */ 56), __webpack_require__(/*! ./components/toolListSection */ 1), __webpack_require__(/*! ./components/partListSection */ 57), __webpack_require__(/*! ./components/toolEditForm */ 58), __webpack_require__(/*! ./components/partEditForm */ 62), __webpack_require__(/*! ./components/techStepEditForm */ 63), __webpack_require__(/*! ./components/techOperationEditForm */ 68), __webpack_require__(/*! ./components/techProcessEditForm */ 69)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, ReactDOM, ReactRouter, main_1, techProcessListSection_1, techOperationListSection_1, techStepListSection_1, toolListSection_1, partListSection_1, toolEditForm_1, partEditForm_1, techStepEditForm_1, techOperationEditForm_1, techProcessEditForm_1) {
 	    "use strict";
 	    var routers = (React.createElement(ReactRouter.Router, {history: ReactRouter.browserHistory}, React.createElement(ReactRouter.Route, {path: "/", component: main_1.default}, React.createElement(ReactRouter.Route, {path: "processes", component: techProcessListSection_1.default}, React.createElement(ReactRouter.Route, {path: ":techProcessId", component: techProcessEditForm_1.default})), React.createElement(ReactRouter.Route, {path: "operations", component: techOperationListSection_1.default}, React.createElement(ReactRouter.Route, {path: ":techOperationId", component: techOperationEditForm_1.default})), React.createElement(ReactRouter.Route, {path: "steps", component: techStepListSection_1.default}, React.createElement(ReactRouter.Route, {path: ":techStepId", component: techStepEditForm_1.default})), React.createElement(ReactRouter.Route, {path: "tools", component: toolListSection_1.default}, React.createElement(ReactRouter.Route, {path: ":toolId", component: toolEditForm_1.default})), React.createElement(ReactRouter.Route, {path: "parts", component: partListSection_1.default}, React.createElement(ReactRouter.Route, {path: ":partId", component: partEditForm_1.default})))));
 	    ReactDOM.render(React.createElement(main_1.default, null), document.getElementById('content'));
@@ -1303,14 +1303,14 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ./mainSidebar */ 28), __webpack_require__(/*! ./mainContentSection */ 30)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, mainSidebar_1, mainContentSection_1) {
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ./mainSidebar */ 28), __webpack_require__(/*! ./mainContentSection */ 32), __webpack_require__(/*! ./componentType */ 53)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, mainSidebar_1, mainContentSection_1, componentType_1) {
 	    "use strict";
 	    var tabList = [
-	        { id: 1, name: 'Технологические процессы', linkName: 'processes', mode: "", type: "TECHPROCESS_LIST" },
-	        { id: 2, name: 'Технологические операции', linkName: 'operations', mode: "", type: "TECHOPERATION_LIST" },
-	        { id: 3, name: 'Технологические шаги', linkName: 'steps', mode: "", type: "TECHPSTEP_LIST" },
-	        { id: 4, name: 'Инструменты', linkName: 'tools', mode: "", type: "TOOL_LIST" },
-	        { id: 5, name: 'Детали', linkName: 'parts', mode: "", type: "PART_LIST" }
+	        { id: 1, name: 'Технологические процессы', linkName: 'processes', mode: "", type: componentType_1.default.TechProcessListPanel },
+	        { id: 2, name: 'Технологические операции', linkName: 'operations', mode: "", type: componentType_1.default.TechOperationListPanel },
+	        { id: 3, name: 'Технологические шаги', linkName: 'steps', mode: "", type: componentType_1.default.TechStepListPanel },
+	        { id: 4, name: 'Инструменты', linkName: 'tools', mode: "", type: componentType_1.default.ToolListPanel },
+	        { id: 5, name: 'Детали', linkName: 'parts', mode: "", type: componentType_1.default.PartListPanel }
 	    ];
 	    var Main = (function (_super) {
 	        __extends(Main, _super);
@@ -1373,7 +1373,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React) {
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ../flux/actions/panelActions */ 30)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, panelActions_1) {
 	    "use strict";
 	    var Tab = (function (_super) {
 	        __extends(Tab, _super);
@@ -1382,14 +1382,14 @@
 	            _super.call(this, props, context);
 	            this.clickHandler = function (event) {
 	                event.preventDefault();
-	                _this.props.onClick(_this.props.tabId);
+	                _this.props.onClick(_this.props.tab);
 	            };
 	            this.props = props;
 	            this.context = context;
 	            this.state = {};
 	        }
 	        Tab.prototype.render = function () {
-	            return (React.createElement("li", {key: this.props.tabId}, React.createElement("a", {className: this.props.mode, onClick: this.clickHandler}, this.props.children)));
+	            return (React.createElement("li", {key: this.props.tab.id}, React.createElement("a", {className: this.props.mode, onClick: this.clickHandler}, this.props.children)));
 	        };
 	        return Tab;
 	    }(React.Component));
@@ -1398,10 +1398,11 @@
 	        function Tabs(props, context) {
 	            var _this = this;
 	            _super.call(this, props, context);
-	            this.onTabClick = function (tabId) {
+	            this.onTabClick = function (tab) {
 	                _this.setState({
-	                    activeTabId: tabId
+	                    activeTabId: tab.id
 	                });
+	                panelActions_1.default.init(tab.type);
 	            };
 	            this.props = props;
 	            this.context = context;
@@ -1417,7 +1418,7 @@
 	        Tabs.prototype.getSimpleLinks = function () {
 	            var _this = this;
 	            return (this.props.tabList.map(function (tab, index) {
-	                return (React.createElement(Tab, {key: index, tabId: tab.id, componentType: tab.type, mode: tab.id == _this.state.activeTabId ? 'active' : 'unactive', onClick: _this.onTabClick}, tab.name));
+	                return (React.createElement(Tab, {key: index, tab: tab, mode: tab.id == _this.state.activeTabId ? 'active' : 'unactive', onClick: _this.onTabClick}, tab.name));
 	            }));
 	        };
 	        Tabs.prototype.render = function () {
@@ -1432,6 +1433,69 @@
 
 /***/ },
 /* 30 */
+/*!**************************************************!*\
+  !*** ./Scripts/app/flux/actions/panelActions.js ***!
+  \**************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/// <reference path="../../../typings/tsd.d.ts" />
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! ../dispatcher/appDispatcher */ 5), __webpack_require__(/*! ./actionSourceTypes */ 7), __webpack_require__(/*! ./panelActionTypes */ 31)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, appDispatcher_1, actionSourceTypes_1, panelActionTypes_1) {
+	    "use strict";
+	    var PanelActionsStatic = (function () {
+	        function PanelActionsStatic() {
+	        }
+	        PanelActionsStatic.prototype.open = function (callerId, type) {
+	            appDispatcher_1.default.dispatch({
+	                actionType: panelActionTypes_1.default.PANEL_OPEN,
+	                actionSource: actionSourceTypes_1.default.PANEL,
+	                callerPanelId: callerId,
+	                panelType: type
+	            });
+	        };
+	        PanelActionsStatic.prototype.close = function (panelId) {
+	            appDispatcher_1.default.dispatch({
+	                actionType: panelActionTypes_1.default.PANEL_CLOSE,
+	                actionSource: actionSourceTypes_1.default.PANEL,
+	                callerPanelId: panelId
+	            });
+	        };
+	        PanelActionsStatic.prototype.init = function (type) {
+	            appDispatcher_1.default.dispatch({
+	                actionType: panelActionTypes_1.default.PANEL_INIT,
+	                actionSource: actionSourceTypes_1.default.PANEL,
+	                panelType: type
+	            });
+	        };
+	        return PanelActionsStatic;
+	    }());
+	    var PanelActions = new PanelActionsStatic();
+	    Object.defineProperty(exports, "__esModule", { value: true });
+	    exports.default = PanelActions;
+	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	//# sourceMappingURL=panelActions.js.map
+
+/***/ },
+/* 31 */
+/*!******************************************************!*\
+  !*** ./Scripts/app/flux/actions/panelActionTypes.js ***!
+  \******************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports) {
+	    "use strict";
+	    var PanelActionTypes;
+	    (function (PanelActionTypes) {
+	        PanelActionTypes[PanelActionTypes["PANEL_OPEN"] = 0] = "PANEL_OPEN";
+	        PanelActionTypes[PanelActionTypes["PANEL_CLOSE"] = 1] = "PANEL_CLOSE";
+	        PanelActionTypes[PanelActionTypes["PANEL_INIT"] = 2] = "PANEL_INIT";
+	    })(PanelActionTypes || (PanelActionTypes = {}));
+	    Object.defineProperty(exports, "__esModule", { value: true });
+	    exports.default = PanelActionTypes;
+	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	//# sourceMappingURL=panelActionTypes.js.map
+
+/***/ },
+/* 32 */
 /*!******************************************************!*\
   !*** ./Scripts/app/components/mainContentSection.js ***!
   \******************************************************/
@@ -1443,28 +1507,29 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ../flux/stores/panelStore */ 31), __webpack_require__(/*! ../flux/actions/panelActions */ 34), __webpack_require__(/*! ./componentFactory */ 35), __webpack_require__(/*! ./componentType */ 37)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, panelStore_1, panelActions_1, componentFactory_1, componentType_1) {
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ../flux/stores/panelStore */ 33), __webpack_require__(/*! ../flux/actions/panelActions */ 30), __webpack_require__(/*! ./componentFactory */ 35), __webpack_require__(/*! ./componentType */ 53)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, panelStore_1, panelActions_1, componentFactory_1, componentType_1) {
 	    "use strict";
 	    var MainContentSection = (function (_super) {
 	        __extends(MainContentSection, _super);
 	        function MainContentSection(props, context) {
+	            var _this = this;
 	            _super.call(this, props, context);
+	            this.handlePanelsChange = function () {
+	                _this.setState({
+	                    panels: panelStore_1.default.getPanels()
+	                });
+	            };
 	            this.props = props;
 	            this.context = context;
 	            this.state = {
 	                panels: []
 	            };
 	        }
-	        MainContentSection.prototype.handlePanelsChange = function () {
-	            this.setState({
-	                panels: panelStore_1.default.getPanels()
-	            });
-	        };
 	        MainContentSection.prototype.componentWillMount = function () {
-	            panelStore_1.default.addChangeListener(this.handlePanelsChange.bind(this));
+	            panelStore_1.default.addChangeListener(this.handlePanelsChange);
 	        };
 	        MainContentSection.prototype.componentWillUnmount = function () {
-	            panelStore_1.default.removeChangeListener(this.handlePanelsChange.bind(this));
+	            panelStore_1.default.removeChangeListener(this.handlePanelsChange);
 	        };
 	        MainContentSection.prototype.componentDidMount = function () {
 	            panelActions_1.default.init(componentType_1.default.MainPanel);
@@ -1475,7 +1540,7 @@
 	                var Component = componentFactory_1.default.getComponent(panel.type);
 	                return React.createElement(Component, {key: index, componentId: panel.id});
 	            });
-	            return (React.createElement("div", {className: "col-lg-10 col-lg-offset-2 col-md-9 col-md-offset-3 col-sm-9 col-sm-offset-3 col-xs-8 col-xs-offset-4 full-height", id: 'infopanel'}, this.props.children, panels));
+	            return (React.createElement("div", {className: "col-lg-10 col-lg-offset-2 col-md-9 col-md-offset-3 col-sm-9 col-sm-offset-3 col-xs-8 col-xs-offset-4 full-height", id: 'infopanel'}, this.props.children, React.createElement("div", {className: "outer"}, panels)));
 	        };
 	        return MainContentSection;
 	    }(React.Component));
@@ -1485,7 +1550,7 @@
 	//# sourceMappingURL=mainContentSection.js.map
 
 /***/ },
-/* 31 */
+/* 33 */
 /*!***********************************************!*\
   !*** ./Scripts/app/flux/stores/panelStore.js ***!
   \***********************************************/
@@ -1497,7 +1562,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! ../dispatcher/appDispatcher */ 5), __webpack_require__(/*! eventemitter3 */ 19), __webpack_require__(/*! ../actions/actionSourceTypes */ 7), __webpack_require__(/*! ../actions/panelActionTypes */ 32), __webpack_require__(/*! ../../utils/utils */ 33)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, appDispatcher_1, EventEmitter, actionSourceTypes_1, panelActionTypes_1, utils_1) {
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! ../dispatcher/appDispatcher */ 5), __webpack_require__(/*! eventemitter3 */ 19), __webpack_require__(/*! ../actions/actionSourceTypes */ 7), __webpack_require__(/*! ../actions/panelActionTypes */ 31), __webpack_require__(/*! ../../utils/utils */ 34)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, appDispatcher_1, EventEmitter, actionSourceTypes_1, panelActionTypes_1, utils_1) {
 	    "use strict";
 	    var CHANGE_EVENT = "PANEL_CHANGE_EVENT";
 	    var _panels;
@@ -1573,27 +1638,7 @@
 	//# sourceMappingURL=panelStore.js.map
 
 /***/ },
-/* 32 */
-/*!******************************************************!*\
-  !*** ./Scripts/app/flux/actions/panelActionTypes.js ***!
-  \******************************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports) {
-	    "use strict";
-	    var PanelActionTypes;
-	    (function (PanelActionTypes) {
-	        PanelActionTypes[PanelActionTypes["PANEL_OPEN"] = 0] = "PANEL_OPEN";
-	        PanelActionTypes[PanelActionTypes["PANEL_CLOSE"] = 1] = "PANEL_CLOSE";
-	        PanelActionTypes[PanelActionTypes["PANEL_INIT"] = 2] = "PANEL_INIT";
-	    })(PanelActionTypes || (PanelActionTypes = {}));
-	    Object.defineProperty(exports, "__esModule", { value: true });
-	    exports.default = PanelActionTypes;
-	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	//# sourceMappingURL=panelActionTypes.js.map
-
-/***/ },
-/* 33 */
+/* 34 */
 /*!************************************!*\
   !*** ./Scripts/app/utils/utils.js ***!
   \************************************/
@@ -1625,49 +1670,6 @@
 	//# sourceMappingURL=utils.js.map
 
 /***/ },
-/* 34 */
-/*!**************************************************!*\
-  !*** ./Scripts/app/flux/actions/panelActions.js ***!
-  \**************************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/// <reference path="../../../typings/tsd.d.ts" />
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! ../dispatcher/appDispatcher */ 5), __webpack_require__(/*! ./actionSourceTypes */ 7), __webpack_require__(/*! ./panelActionTypes */ 32)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, appDispatcher_1, actionSourceTypes_1, panelActionTypes_1) {
-	    "use strict";
-	    var PanelActionsStatic = (function () {
-	        function PanelActionsStatic() {
-	        }
-	        PanelActionsStatic.prototype.open = function (callerId, type) {
-	            appDispatcher_1.default.dispatch({
-	                actionType: panelActionTypes_1.default.PANEL_OPEN,
-	                actionSource: actionSourceTypes_1.default.PANEL,
-	                callerPanelId: callerId,
-	                panelType: type
-	            });
-	        };
-	        PanelActionsStatic.prototype.close = function (panelId) {
-	            appDispatcher_1.default.dispatch({
-	                actionType: panelActionTypes_1.default.PANEL_CLOSE,
-	                actionSource: actionSourceTypes_1.default.PANEL,
-	                callerPanelId: panelId
-	            });
-	        };
-	        PanelActionsStatic.prototype.init = function (type) {
-	            appDispatcher_1.default.dispatch({
-	                actionType: panelActionTypes_1.default.PANEL_INIT,
-	                actionSource: actionSourceTypes_1.default.PANEL,
-	                panelType: type
-	            });
-	        };
-	        return PanelActionsStatic;
-	    }());
-	    var PanelActions = new PanelActionsStatic();
-	    Object.defineProperty(exports, "__esModule", { value: true });
-	    exports.default = PanelActions;
-	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	//# sourceMappingURL=panelActions.js.map
-
-/***/ },
 /* 35 */
 /*!****************************************************!*\
   !*** ./Scripts/app/components/componentFactory.js ***!
@@ -1675,7 +1677,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/// <reference path="../../typings/tsd.d.ts" />
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! ./mainPanel */ 36), __webpack_require__(/*! ./componentType */ 37)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, mainPanel_1, componentType_1) {
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! ./mainPanel */ 36), __webpack_require__(/*! ./partList */ 37), __webpack_require__(/*! ./toolListPanel */ 3), __webpack_require__(/*! ./techStepList */ 41), __webpack_require__(/*! ./techOperationList */ 45), __webpack_require__(/*! ./techProcessList */ 49), __webpack_require__(/*! ./componentType */ 53)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, mainPanel_1, partList_1, toolListPanel_1, techStepList_1, techOperationList_1, techProcessList_1, componentType_1) {
 	    "use strict";
 	    var ComponentFactory = (function () {
 	        function ComponentFactory() {
@@ -1685,6 +1687,16 @@
 	            switch (componentType) {
 	                case componentType_1.default.MainPanel:
 	                    return mainPanel_1.default;
+	                case componentType_1.default.PartListPanel:
+	                    return partList_1.default;
+	                case componentType_1.default.ToolListPanel:
+	                    return toolListPanel_1.default;
+	                case componentType_1.default.TechStepListPanel:
+	                    return techStepList_1.default;
+	                case componentType_1.default.TechOperationListPanel:
+	                    return techOperationList_1.default;
+	                case componentType_1.default.TechProcessListPanel:
+	                    return techProcessList_1.default;
 	                default:
 	            }
 	        };
@@ -1727,1432 +1739,6 @@
 
 /***/ },
 /* 37 */
-/*!*************************************************!*\
-  !*** ./Scripts/app/components/componentType.js ***!
-  \*************************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports) {
-	    "use strict";
-	    var ComponentType;
-	    (function (ComponentType) {
-	        ComponentType[ComponentType["MainPanel"] = "MAIN_PANEL"] = "MainPanel";
-	        ComponentType[ComponentType["ToolListPanel"] = "TOOL_LIST_PANEL"] = "ToolListPanel";
-	    })(ComponentType || (ComponentType = {}));
-	    Object.defineProperty(exports, "__esModule", { value: true });
-	    exports.default = ComponentType;
-	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	//# sourceMappingURL=componentType.js.map
-
-/***/ },
-/* 38 */
-/*!**********************************************************!*\
-  !*** ./Scripts/app/components/techProcessListSection.js ***!
-  \**********************************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/// <reference path="../../typings/tsd.d.ts" />
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ./techProcessList */ 39)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, techProcessList_1) {
-	    "use strict";
-	    var ToolProcessListSection = (function (_super) {
-	        __extends(ToolProcessListSection, _super);
-	        function ToolProcessListSection() {
-	            _super.apply(this, arguments);
-	        }
-	        ToolProcessListSection.prototype.render = function () {
-	            return (React.createElement("div", {className: "outer"}, React.createElement(techProcessList_1.default, null), this.props.children));
-	        };
-	        return ToolProcessListSection;
-	    }(React.Component));
-	    Object.defineProperty(exports, "__esModule", { value: true });
-	    exports.default = ToolProcessListSection;
-	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	//# sourceMappingURL=techProcessListSection.js.map
-
-/***/ },
-/* 39 */
-/*!***************************************************!*\
-  !*** ./Scripts/app/components/techProcessList.js ***!
-  \***************************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/// <reference path="../../typings/tsd.d.ts" />
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ../flux/stores/techProcessStore */ 40), __webpack_require__(/*! ../constants/pageConstants */ 11), __webpack_require__(/*! ../flux/actions/techProcessActions */ 42), __webpack_require__(/*! ../managers/pageParamsManager */ 9), __webpack_require__(/*! ../managers/navigationManager */ 12), __webpack_require__(/*! ./common/tableRow */ 20), __webpack_require__(/*! ./common/confirmDelete */ 21), __webpack_require__(/*! ./common/pagination */ 22), __webpack_require__(/*! ./common/searchInput */ 24), __webpack_require__(/*! ./common/itemsPerPageSelector */ 25)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, techProcessStore_1, pageConstants_1, techProcessActions_1, pageParamsManager_1, navigationManager_1, tableRow_1, confirmDelete_1, pagination_1, searchInput_1, itemsPerPageSelector_1) {
-	    "use strict";
-	    var TechProcessList = (function (_super) {
-	        __extends(TechProcessList, _super);
-	        function TechProcessList(props, context) {
-	            var _this = this;
-	            _super.call(this, props, context);
-	            this.handleTechProcessesChange = function () {
-	                _this.setState({
-	                    techProcesses: techProcessStore_1.default.getAll(),
-	                    currentTechProcess: null,
-	                    isConfirmDeleting: false,
-	                    techProcessAmount: techProcessStore_1.default.getTechProcessAmount(),
-	                    techProcessesPerPage: techProcessStore_1.default.getTechProcessesPerPage()
-	                });
-	            };
-	            this.changeCurrent = function (techProcess) {
-	                _this.setState({
-	                    techProcesses: _this.state.techProcesses,
-	                    currentTechProcess: techProcess,
-	                    isConfirmDeleting: _this.state.isConfirmDeleting,
-	                    techProcessAmount: _this.state.techProcessAmount,
-	                    techProcessesPerPage: _this.state.techProcessesPerPage
-	                });
-	            };
-	            this.techProcessRowDoubleClick = function (techProcess) {
-	                navigationManager_1.default.openTechProcessEditor(techProcess.id);
-	            };
-	            this.newTechProcessBtnClickHandler = function () {
-	                navigationManager_1.default.openTechProcessEditor(0);
-	            };
-	            this.handleDeleteSuccess = function () {
-	                techProcessActions_1.default.remove(_this.state.currentTechProcess.id);
-	            };
-	            this.handleDeleteCancel = function () {
-	                _this.setState({
-	                    techProcesses: _this.state.techProcesses,
-	                    currentTechProcess: _this.state.currentTechProcess,
-	                    isConfirmDeleting: !_this.state.isConfirmDeleting,
-	                    techProcessAmount: _this.state.techProcessAmount,
-	                    techProcessesPerPage: _this.state.techProcessesPerPage
-	                });
-	            };
-	            this.handleTechProcessesPerPageChange = function (techProcessesPerPage) {
-	                pageParamsManager_1.default.changePageSize(techProcessesPerPage);
-	                techProcessActions_1.default.changeTechProcessesPerPage(techProcessesPerPage);
-	            };
-	            this.handleTechProcessPageChange = function (page) {
-	                pageParamsManager_1.default.changePage(page);
-	                techProcessActions_1.default.changeTechProcessPage(page);
-	            };
-	            this.handleTechProcessSearchTextChange = function (text) {
-	                pageParamsManager_1.default.changeSearchText(text);
-	                techProcessActions_1.default.changeTechProcessSearchText(text);
-	            };
-	            this.refreshBtnClickHandler = function (text) {
-	                techProcessActions_1.default.init(pageParamsManager_1.default.getPage(), pageParamsManager_1.default.getPageSize(), pageParamsManager_1.default.getSearchText());
-	                _this.setState({
-	                    techProcesses: [],
-	                    currentTechProcess: null,
-	                    isConfirmDeleting: false,
-	                    techProcessAmount: 0,
-	                    techProcessesPerPage: _this.state.techProcessesPerPage
-	                });
-	            };
-	            this.props = props;
-	            this.context = context;
-	            this.state = {
-	                techProcesses: [],
-	                currentTechProcess: null,
-	                isConfirmDeleting: false,
-	                techProcessAmount: 0,
-	                techProcessesPerPage: pageConstants_1.default.ITEMS_PER_PAGE_INIT
-	            };
-	        }
-	        TechProcessList.prototype.componentWillMount = function () {
-	            techProcessStore_1.default.addChangeTechProcessesListener(this.handleTechProcessesChange);
-	        };
-	        TechProcessList.prototype.componentWillUnmount = function () {
-	            techProcessStore_1.default.removeChangeTechProcessesListener(this.handleTechProcessesChange);
-	        };
-	        TechProcessList.prototype.componentDidMount = function () {
-	            techProcessActions_1.default.init(pageParamsManager_1.default.getPage(), pageParamsManager_1.default.getPageSize(), pageParamsManager_1.default.getSearchText());
-	        };
-	        TechProcessList.prototype.render = function () {
-	            var techProcessRows = [];
-	            for (var key in this.state.techProcesses) {
-	                var techProcess = this.state.techProcesses[key];
-	                techProcessRows.push(React.createElement(tableRow_1.default, {key: key, item: techProcess, isCurrent: this.state.currentTechProcess == techProcess, changeCurrent: this.changeCurrent, rowDoubleClickHandler: this.techProcessRowDoubleClick}, React.createElement("td", {style: { width: 25 + '%' }}, techProcess.id), React.createElement("td", {style: { width: 75 + '%' }}, techProcess.name)));
-	            }
-	            return (React.createElement("div", {className: "panel panel-default inner", style: { marginBottom: 0 + 'px', display: 'flex', flexDirection: 'column' }}, React.createElement("div", {className: "panel-heading"}, React.createElement("h4", null, "Технологические процессы")), React.createElement("div", {className: "panel-body", style: { display: 'flex', flexDirection: 'column' }}, this.state.isConfirmDeleting ?
-	                React.createElement(confirmDelete_1.default, {id: this.state.currentTechProcess.id, title: "Подтверждение удаления технологического процесса", message: "Вы действительно хотите удалить технологический процесс " + this.state.currentTechProcess.name, success: this.handleDeleteSuccess, cancel: this.handleDeleteCancel})
-	                :
-	                    React.createElement("div", {className: "input-group"}, React.createElement("div", {className: "input-group-btn"}, React.createElement("button", {className: "btn btn-default", type: "button", onClick: this.newTechProcessBtnClickHandler}, React.createElement("span", {className: "glyphicon glyphicon-plus"})), React.createElement("button", {className: "btn btn-default", type: "button", onClick: function () { this.setState({ currentTechProcess: this.state.currentTechProcess, isConfirmDeleting: true }); }.bind(this)}, React.createElement("span", {className: "glyphicon glyphicon-trash"})), React.createElement("button", {className: "btn btn-default", type: "button", onClick: this.refreshBtnClickHandler}, React.createElement("span", {className: "glyphicon glyphicon-refresh"}))), React.createElement(searchInput_1.default, {text: "Поиск...", onChange: function (text) { this.handleTechProcessSearchTextChange(text); }.bind(this)}), React.createElement(itemsPerPageSelector_1.default, {onChange: this.handleTechProcessesPerPageChange})), React.createElement("div", {style: { marginBottom: 10 + 'px', display: 'flex', flexDirection: 'column' }}, React.createElement("div", {style: { overflowY: 'auto' }}, React.createElement("table", {className: "table table-bordered", style: { marginBottom: 1 + 'px' }}, React.createElement("thead", null, React.createElement("tr", null, React.createElement("th", {style: { width: 25 + '%' }}, "ID"), React.createElement("th", {style: { width: 75 + '%' }}, "Наименование"))), React.createElement("tbody", null, techProcessRows)))), React.createElement(pagination_1.default, {itemAmount: this.state.techProcessAmount, itemsPerPage: this.state.techProcessesPerPage, firstSymbol: '«', nextSymbol: '›', prevSymbol: '‹', lastSymbol: '»', updatePage: this.handleTechProcessPageChange}))));
-	        };
-	        return TechProcessList;
-	    }(React.Component));
-	    Object.defineProperty(exports, "__esModule", { value: true });
-	    exports.default = TechProcessList;
-	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	//# sourceMappingURL=techProcessList.js.map
-
-/***/ },
-/* 40 */
-/*!*****************************************************!*\
-  !*** ./Scripts/app/flux/stores/techProcessStore.js ***!
-  \*****************************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/// <reference path="../../../typings/tsd.d.ts" />
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! jquery */ 17), __webpack_require__(/*! ../dispatcher/appDispatcher */ 5), __webpack_require__(/*! ../actions/actionSourceTypes */ 7), __webpack_require__(/*! ../actions/techProcessActionTypes */ 41), __webpack_require__(/*! ../actions/errorActions */ 15), __webpack_require__(/*! ../../constants/pageConstants */ 11), __webpack_require__(/*! ../../managers/navigationManager */ 12), __webpack_require__(/*! object-assign */ 18), __webpack_require__(/*! eventemitter3 */ 19)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, $, appDispatcher_1, actionSourceTypes_1, techProcessActionTypes_1, errorActions_1, pageConstants_1, navigationManager_1, assign, EventEmitter) {
-	    "use strict";
-	    var CHANGE_TECHPROCESSES_EVENT = 'change_techProcesses';
-	    var CHANGE_EDITTECHPROCESS_EVENT = 'change_edittechProcess';
-	    var _techProcesses = new Array();
-	    var _techProcess;
-	    var _techProcessSearchText = "";
-	    var _totalTechProcessAmount = 0;
-	    var _techProcessesPerPage = pageConstants_1.default.ITEMS_PER_PAGE_INIT;
-	    var _currentTechProcessPage = 0;
-	    function _loadTechProcesses() {
-	        $.get(location.origin + "/api/techProcesses?search=" + _techProcessSearchText + "&page=" + _currentTechProcessPage + "&pageSize=" + _techProcessesPerPage, function (techProcessListModel) {
-	            _totalTechProcessAmount = techProcessListModel.techProcessAmount;
-	            _techProcesses = new Array();
-	            techProcessListModel.techProcesses.forEach(function (techProcess) {
-	                _techProcesses[techProcess.id] = techProcess;
-	            });
-	            TechProcessStore.emitChangeTechProcesses();
-	        });
-	    }
-	    function _loadTechProcess(id) {
-	        if (id == 0) {
-	            _techProcess = { id: 0, name: "" };
-	            TechProcessStore.emitChangeEditTechProcess();
-	            return;
-	        }
-	        if (_techProcesses[id]) {
-	            _techProcess = _techProcesses[id];
-	            TechProcessStore.emitChangeEditTechProcess();
-	        }
-	        else {
-	            $.ajax({
-	                url: location.origin + "/api/techProcesses/" + id,
-	                type: 'GET',
-	                success: function (techProcess) {
-	                    _techProcess = techProcess;
-	                    TechProcessStore.emitChangeEditTechProcess();
-	                },
-	                error: function (data) {
-	                    errorActions_1.default.received(data.responseJSON);
-	                }
-	            });
-	        }
-	    }
-	    function _addTechProcess(techProcess) {
-	        $.ajax({
-	            url: location.origin + '/api/techProcesses',
-	            dataType: 'json',
-	            type: 'PUT',
-	            data: {
-	                id: techProcess.id,
-	                __RequestVerificationToken: antiForgeryToken
-	            },
-	            success: function (techProcess) {
-	                _techProcess = techProcess;
-	                if (_techProcesses[techProcess.id]) {
-	                    _techProcesses[techProcess.id] = assign({}, _techProcesses[techProcess.id], techProcess);
-	                    TechProcessStore.emitChangeTechProcesses();
-	                }
-	                navigationManager_1.default.openTechProcessEditor(techProcess.id);
-	            },
-	            error: function (xhr, status, err) {
-	                console.error(this.props.url, status, err.toString());
-	            }.bind(this)
-	        });
-	    }
-	    function _deleteTechProcess(id) {
-	        $.ajax({
-	            url: location.origin + '/api/techProcesses/' + id,
-	            dataType: 'json',
-	            type: 'DELETE',
-	            data: { __RequestVerificationToken: antiForgeryToken },
-	            success: function (id) {
-	                _loadTechProcesses();
-	            },
-	            error: function (xhr, status, err) {
-	                console.error(this.props.url, status, err.toString());
-	            }
-	        });
-	    }
-	    function _updateTechProcess(techProcess) {
-	        $.ajax({
-	            url: location.origin + '/api/techProcesses',
-	            dataType: 'json',
-	            type: 'POST',
-	            data: {
-	                id: techProcess.id,
-	                __RequestVerificationToken: antiForgeryToken
-	            },
-	            success: function (techProcess) {
-	                if (_techProcesses[techProcess.id]) {
-	                    _techProcesses[techProcess.id] = assign({}, _techProcesses[techProcess.id], techProcess);
-	                    TechProcessStore.emitChangeTechProcesses();
-	                }
-	            },
-	            error: function (xhr, status, err) {
-	                console.error(this.props.url, status, err.toString());
-	            }
-	        });
-	    }
-	    function _init(currentPage, techProcessesPerPage, searchText) {
-	        _techProcessesPerPage = techProcessesPerPage;
-	        _currentTechProcessPage = currentPage;
-	        _techProcessSearchText = searchText;
-	        _loadTechProcesses();
-	    }
-	    var TechProcessStoreStatic = (function (_super) {
-	        __extends(TechProcessStoreStatic, _super);
-	        function TechProcessStoreStatic() {
-	            _super.apply(this, arguments);
-	        }
-	        TechProcessStoreStatic.prototype.getAll = function () {
-	            return _techProcesses;
-	        };
-	        TechProcessStoreStatic.prototype.getTechProcessAmount = function () {
-	            return _totalTechProcessAmount;
-	        };
-	        TechProcessStoreStatic.prototype.getTechProcessesPerPage = function () {
-	            return _techProcessesPerPage;
-	        };
-	        TechProcessStoreStatic.prototype.getEditTechProcess = function () {
-	            return _techProcess;
-	        };
-	        TechProcessStoreStatic.prototype.emitChangeTechProcesses = function () {
-	            this.emit(CHANGE_TECHPROCESSES_EVENT);
-	        };
-	        TechProcessStoreStatic.prototype.emitChangeEditTechProcess = function () {
-	            this.emit(CHANGE_EDITTECHPROCESS_EVENT);
-	        };
-	        /**
-	         * @param {function} callback
-	         */
-	        TechProcessStoreStatic.prototype.addChangeEditTechProcessListener = function (callback) {
-	            this.on(CHANGE_EDITTECHPROCESS_EVENT, callback);
-	        };
-	        /**
-	         * @param {function} callback
-	         */
-	        TechProcessStoreStatic.prototype.removeChangeEditTechProcessListener = function (callback) {
-	            this.removeListener(CHANGE_EDITTECHPROCESS_EVENT, callback);
-	        };
-	        /**
-	         * @param {function} callback
-	         */
-	        TechProcessStoreStatic.prototype.addChangeTechProcessesListener = function (callback) {
-	            this.on(CHANGE_TECHPROCESSES_EVENT, callback);
-	        };
-	        /**
-	         * @param {function} callback
-	         */
-	        TechProcessStoreStatic.prototype.removeChangeTechProcessesListener = function (callback) {
-	            this.removeListener(CHANGE_TECHPROCESSES_EVENT, callback);
-	        };
-	        return TechProcessStoreStatic;
-	    }(EventEmitter));
-	    var TechProcessStore = new TechProcessStoreStatic();
-	    appDispatcher_1.default.register(function (payload) {
-	        if (payload.actionSource != actionSourceTypes_1.default.TECHPROCESS)
-	            return;
-	        switch (payload.actionType) {
-	            case techProcessActionTypes_1.default.TECHPROCESS_INIT:
-	                _init(payload.currentPage, payload.pageSize, payload.searchText);
-	                break;
-	            case techProcessActionTypes_1.default.TECHPROCESS_LOAD_EDIT:
-	                _loadTechProcess(payload.id);
-	                break;
-	            case techProcessActionTypes_1.default.TECHPROCESS_CREATE:
-	                _addTechProcess(payload.techProcess);
-	                break;
-	            case techProcessActionTypes_1.default.TECHPROCESS_UPDATE:
-	                _updateTechProcess(payload.techProcess);
-	                break;
-	            case techProcessActionTypes_1.default.TECHPROCESS_DELETE:
-	                _deleteTechProcess(payload.id);
-	                break;
-	            case techProcessActionTypes_1.default.TECHPROCESS_PAGE_CHANGE:
-	                _currentTechProcessPage = payload.currentPage;
-	                _loadTechProcesses();
-	                break;
-	            case techProcessActionTypes_1.default.TECHPROCESSES_PER_PAGE_CHANGE:
-	                _techProcessesPerPage = payload.pageSize;
-	                _loadTechProcesses();
-	                break;
-	            case techProcessActionTypes_1.default.TECHPROCESS_SEARCH_TEXT_CHANGE:
-	                _techProcessSearchText = payload.searchText;
-	                _loadTechProcesses();
-	                break;
-	            default:
-	        }
-	    });
-	    Object.defineProperty(exports, "__esModule", { value: true });
-	    exports.default = TechProcessStore;
-	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	//# sourceMappingURL=techProcessStore.js.map
-
-/***/ },
-/* 41 */
-/*!************************************************************!*\
-  !*** ./Scripts/app/flux/actions/techProcessActionTypes.js ***!
-  \************************************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports) {
-	    "use strict";
-	    var TechProcessActionTypes;
-	    (function (TechProcessActionTypes) {
-	        TechProcessActionTypes[TechProcessActionTypes["TECHPROCESS_INIT"] = 0] = "TECHPROCESS_INIT";
-	        TechProcessActionTypes[TechProcessActionTypes["TECHPROCESS_LOAD_EDIT"] = 1] = "TECHPROCESS_LOAD_EDIT";
-	        TechProcessActionTypes[TechProcessActionTypes["TECHPROCESS_CREATE"] = 2] = "TECHPROCESS_CREATE";
-	        TechProcessActionTypes[TechProcessActionTypes["TECHPROCESS_DELETE"] = 3] = "TECHPROCESS_DELETE";
-	        TechProcessActionTypes[TechProcessActionTypes["TECHPROCESS_UPDATE"] = 4] = "TECHPROCESS_UPDATE";
-	        TechProcessActionTypes[TechProcessActionTypes["TECHPROCESS_PAGE_CHANGE"] = 5] = "TECHPROCESS_PAGE_CHANGE";
-	        TechProcessActionTypes[TechProcessActionTypes["TECHPROCESSES_PER_PAGE_CHANGE"] = 6] = "TECHPROCESSES_PER_PAGE_CHANGE";
-	        TechProcessActionTypes[TechProcessActionTypes["TECHPROCESS_SEARCH_TEXT_CHANGE"] = 7] = "TECHPROCESS_SEARCH_TEXT_CHANGE";
-	    })(TechProcessActionTypes || (TechProcessActionTypes = {}));
-	    Object.defineProperty(exports, "__esModule", { value: true });
-	    exports.default = TechProcessActionTypes;
-	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	//# sourceMappingURL=techProcessActionTypes.js.map
-
-/***/ },
-/* 42 */
-/*!********************************************************!*\
-  !*** ./Scripts/app/flux/actions/techProcessActions.js ***!
-  \********************************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/// <reference path="../../../typings/tsd.d.ts" />
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! ../dispatcher/appDispatcher */ 5), __webpack_require__(/*! ./actionSourceTypes */ 7), __webpack_require__(/*! ./techProcessActionTypes */ 41)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, appDispatcher_1, actionSourceTypes_1, techProcessActionTypes_1) {
-	    "use strict";
-	    var TechProcessActionsStatic = (function () {
-	        function TechProcessActionsStatic() {
-	        }
-	        TechProcessActionsStatic.prototype.init = function (currentPage, pageSize, searchText) {
-	            appDispatcher_1.default.dispatch({
-	                actionType: techProcessActionTypes_1.default.TECHPROCESS_INIT,
-	                actionSource: actionSourceTypes_1.default.TECHPROCESS,
-	                currentPage: currentPage,
-	                pageSize: pageSize,
-	                searchText: searchText
-	            });
-	        };
-	        TechProcessActionsStatic.prototype.loadEditTechProcess = function (id) {
-	            appDispatcher_1.default.dispatch({
-	                actionType: techProcessActionTypes_1.default.TECHPROCESS_LOAD_EDIT,
-	                actionSource: actionSourceTypes_1.default.TECHPROCESS,
-	                id: id
-	            });
-	        };
-	        TechProcessActionsStatic.prototype.create = function (techProcess) {
-	            appDispatcher_1.default.dispatch({
-	                actionType: techProcessActionTypes_1.default.TECHPROCESS_CREATE,
-	                actionSource: actionSourceTypes_1.default.TECHPROCESS,
-	                techProcess: techProcess
-	            });
-	        };
-	        TechProcessActionsStatic.prototype.update = function (techProcess) {
-	            appDispatcher_1.default.dispatch({
-	                actionType: techProcessActionTypes_1.default.TECHPROCESS_UPDATE,
-	                actionSource: actionSourceTypes_1.default.TECHPROCESS,
-	                techProcess: techProcess
-	            });
-	        };
-	        TechProcessActionsStatic.prototype.remove = function (id) {
-	            appDispatcher_1.default.dispatch({
-	                actionType: techProcessActionTypes_1.default.TECHPROCESS_DELETE,
-	                actionSource: actionSourceTypes_1.default.TECHPROCESS,
-	                id: id
-	            });
-	        };
-	        TechProcessActionsStatic.prototype.changeTechProcessPage = function (page) {
-	            appDispatcher_1.default.dispatch({
-	                actionType: techProcessActionTypes_1.default.TECHPROCESS_PAGE_CHANGE,
-	                actionSource: actionSourceTypes_1.default.TECHPROCESS,
-	                currentPage: page
-	            });
-	        };
-	        TechProcessActionsStatic.prototype.changeTechProcessesPerPage = function (techProcesssPerPage) {
-	            appDispatcher_1.default.dispatch({
-	                actionType: techProcessActionTypes_1.default.TECHPROCESSES_PER_PAGE_CHANGE,
-	                actionSource: actionSourceTypes_1.default.TECHPROCESS,
-	                pageSize: techProcesssPerPage
-	            });
-	        };
-	        TechProcessActionsStatic.prototype.changeTechProcessSearchText = function (text) {
-	            appDispatcher_1.default.dispatch({
-	                actionType: techProcessActionTypes_1.default.TECHPROCESS_SEARCH_TEXT_CHANGE,
-	                actionSource: actionSourceTypes_1.default.TECHPROCESS,
-	                searchText: text
-	            });
-	        };
-	        return TechProcessActionsStatic;
-	    }());
-	    var TechProcessActions = new TechProcessActionsStatic();
-	    Object.defineProperty(exports, "__esModule", { value: true });
-	    exports.default = TechProcessActions;
-	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	//# sourceMappingURL=techProcessActions.js.map
-
-/***/ },
-/* 43 */
-/*!************************************************************!*\
-  !*** ./Scripts/app/components/techOperationListSection.js ***!
-  \************************************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// A '.tsx' file enables JSX support in the TypeScript compiler, 
-	// for more information see the following page on the TypeScript wiki:
-	// https://github.com/Microsoft/TypeScript/wiki/JSX
-	/// <reference path="../../typings/tsd.d.ts" />
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ./techOperationList */ 44)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, techOperationList_1) {
-	    "use strict";
-	    var ToolListOperationSection = (function (_super) {
-	        __extends(ToolListOperationSection, _super);
-	        function ToolListOperationSection() {
-	            _super.apply(this, arguments);
-	        }
-	        ToolListOperationSection.prototype.render = function () {
-	            return (React.createElement("div", {className: "outer"}, React.createElement(techOperationList_1.default, null), this.props.children));
-	        };
-	        return ToolListOperationSection;
-	    }(React.Component));
-	    Object.defineProperty(exports, "__esModule", { value: true });
-	    exports.default = ToolListOperationSection;
-	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	//# sourceMappingURL=techOperationListSection.js.map
-
-/***/ },
-/* 44 */
-/*!*****************************************************!*\
-  !*** ./Scripts/app/components/techOperationList.js ***!
-  \*****************************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/// <reference path="../../typings/tsd.d.ts" />
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ../flux/stores/techOperationStore */ 45), __webpack_require__(/*! ../constants/pageConstants */ 11), __webpack_require__(/*! ../flux/actions/techOperationActions */ 47), __webpack_require__(/*! ../managers/pageParamsManager */ 9), __webpack_require__(/*! ../managers/navigationManager */ 12), __webpack_require__(/*! ./common/tableRow */ 20), __webpack_require__(/*! ./common/confirmDelete */ 21), __webpack_require__(/*! ./common/pagination */ 22), __webpack_require__(/*! ./common/searchInput */ 24), __webpack_require__(/*! ./common/itemsPerPageSelector */ 25)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, techOperationStore_1, pageConstants_1, techOperationActions_1, pageParamsManager_1, navigationManager_1, tableRow_1, confirmDelete_1, pagination_1, searchInput_1, itemsPerPageSelector_1) {
-	    "use strict";
-	    var TechOperationList = (function (_super) {
-	        __extends(TechOperationList, _super);
-	        function TechOperationList(props, context) {
-	            var _this = this;
-	            _super.call(this, props, context);
-	            this.handleTechOperationsChange = function () {
-	                _this.setState({
-	                    techOperations: techOperationStore_1.default.getAll(),
-	                    currentTechOperation: null,
-	                    isConfirmDeleting: false,
-	                    techOperationAmount: techOperationStore_1.default.getTechOperationAmount(),
-	                    techOperationsPerPage: techOperationStore_1.default.getTechOperationsPerPage()
-	                });
-	            };
-	            this.changeCurrent = function (techOperation) {
-	                _this.setState({
-	                    techOperations: _this.state.techOperations,
-	                    currentTechOperation: techOperation,
-	                    isConfirmDeleting: _this.state.isConfirmDeleting,
-	                    techOperationAmount: _this.state.techOperationAmount,
-	                    techOperationsPerPage: _this.state.techOperationsPerPage
-	                });
-	            };
-	            this.techOperationRowDoubleClick = function (techOperation) {
-	                navigationManager_1.default.openTechOperationEditor(techOperation.id);
-	            };
-	            this.newTechOperationBtnClickHandler = function () {
-	                navigationManager_1.default.openTechOperationEditor(0);
-	            };
-	            this.handleDeleteSuccess = function () {
-	                techOperationActions_1.default.remove(_this.state.currentTechOperation.id);
-	            };
-	            this.handleDeleteCancel = function () {
-	                _this.setState({
-	                    techOperations: _this.state.techOperations,
-	                    currentTechOperation: _this.state.currentTechOperation,
-	                    isConfirmDeleting: !_this.state.isConfirmDeleting,
-	                    techOperationAmount: _this.state.techOperationAmount,
-	                    techOperationsPerPage: _this.state.techOperationsPerPage
-	                });
-	            };
-	            this.handleTechOperationsPerPageChange = function (techOperationsPerPage) {
-	                pageParamsManager_1.default.changePageSize(techOperationsPerPage);
-	                techOperationActions_1.default.changeTechOperationsPerPage(techOperationsPerPage);
-	            };
-	            this.handleTechOperationPageChange = function (page) {
-	                pageParamsManager_1.default.changePage(page);
-	                techOperationActions_1.default.changeTechOperationPage(page);
-	            };
-	            this.handleTechOperationSearchTextChange = function (text) {
-	                pageParamsManager_1.default.changeSearchText(text);
-	                techOperationActions_1.default.changeTechOperationSearchText(text);
-	            };
-	            this.refreshBtnClickHandler = function (text) {
-	                techOperationActions_1.default.init(pageParamsManager_1.default.getPage(), pageParamsManager_1.default.getPageSize(), pageParamsManager_1.default.getSearchText());
-	                _this.setState({
-	                    techOperations: [],
-	                    currentTechOperation: null,
-	                    isConfirmDeleting: false,
-	                    techOperationAmount: 0,
-	                    techOperationsPerPage: _this.state.techOperationsPerPage
-	                });
-	            };
-	            this.props = props;
-	            this.context = context;
-	            this.state = {
-	                techOperations: [],
-	                currentTechOperation: null,
-	                isConfirmDeleting: false,
-	                techOperationAmount: 0,
-	                techOperationsPerPage: pageConstants_1.default.ITEMS_PER_PAGE_INIT
-	            };
-	        }
-	        TechOperationList.prototype.componentWillMount = function () {
-	            techOperationStore_1.default.addChangeTechOperationsListener(this.handleTechOperationsChange);
-	        };
-	        TechOperationList.prototype.componentWillUnmount = function () {
-	            techOperationStore_1.default.removeChangeTechOperationsListener(this.handleTechOperationsChange);
-	        };
-	        TechOperationList.prototype.componentDidMount = function () {
-	            techOperationActions_1.default.init(pageParamsManager_1.default.getPage(), pageParamsManager_1.default.getPageSize(), pageParamsManager_1.default.getSearchText());
-	        };
-	        TechOperationList.prototype.render = function () {
-	            var techOperationRows = [];
-	            for (var key in this.state.techOperations) {
-	                var techOperation = this.state.techOperations[key];
-	                techOperationRows.push(React.createElement(tableRow_1.default, {key: key, item: techOperation, isCurrent: this.state.currentTechOperation == techOperation, changeCurrent: this.changeCurrent, rowDoubleClickHandler: this.techOperationRowDoubleClick}, React.createElement("td", {style: { width: 25 + '%' }}, techOperation.id), React.createElement("td", {style: { width: 75 + '%' }}, techOperation.name)));
-	            }
-	            return (React.createElement("div", {className: "panel panel-default inner", style: { marginBottom: 0 + 'px', display: 'flex', flexDirection: 'column' }}, React.createElement("div", {className: "panel-heading"}, React.createElement("h4", null, "Технологические операции")), React.createElement("div", {className: "panel-body", style: { display: 'flex', flexDirection: 'column' }}, this.state.isConfirmDeleting ?
-	                React.createElement(confirmDelete_1.default, {id: this.state.currentTechOperation.id, title: "Подтверждение удаления технологической операции", message: "Вы действительно хотите удалить технологическую операцию " + this.state.currentTechOperation.name, success: this.handleDeleteSuccess, cancel: this.handleDeleteCancel})
-	                :
-	                    React.createElement("div", {className: "input-group"}, React.createElement("div", {className: "input-group-btn"}, React.createElement("button", {className: "btn btn-default", type: "button", onClick: this.newTechOperationBtnClickHandler}, React.createElement("span", {className: "glyphicon glyphicon-plus"})), React.createElement("button", {className: "btn btn-default", type: "button", onClick: function () { this.setState({ currentTechOperation: this.state.currentTechOperation, isConfirmDeleting: true }); }.bind(this)}, React.createElement("span", {className: "glyphicon glyphicon-trash"})), React.createElement("button", {className: "btn btn-default", type: "button", onClick: this.refreshBtnClickHandler}, React.createElement("span", {className: "glyphicon glyphicon-refresh"}))), React.createElement(searchInput_1.default, {text: "Поиск...", onChange: function (text) { this.handleTechOperationSearchTextChange(text); }.bind(this)}), React.createElement(itemsPerPageSelector_1.default, {onChange: this.handleTechOperationsPerPageChange})), React.createElement("div", {style: { marginBottom: 10 + 'px', display: 'flex', flexDirection: 'column' }}, React.createElement("div", {style: { overflowY: 'auto' }}, React.createElement("table", {className: "table table-bordered", style: { marginBottom: 1 + 'px' }}, React.createElement("thead", null, React.createElement("tr", null, React.createElement("th", {style: { width: 25 + '%' }}, "ID"), React.createElement("th", {style: { width: 75 + '%' }}, "Наименование"))), React.createElement("tbody", null, techOperationRows)))), React.createElement(pagination_1.default, {itemAmount: this.state.techOperationAmount, itemsPerPage: this.state.techOperationsPerPage, firstSymbol: '«', nextSymbol: '›', prevSymbol: '‹', lastSymbol: '»', updatePage: this.handleTechOperationPageChange}))));
-	        };
-	        return TechOperationList;
-	    }(React.Component));
-	    Object.defineProperty(exports, "__esModule", { value: true });
-	    exports.default = TechOperationList;
-	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	//# sourceMappingURL=techOperationList.js.map
-
-/***/ },
-/* 45 */
-/*!*******************************************************!*\
-  !*** ./Scripts/app/flux/stores/techOperationStore.js ***!
-  \*******************************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/// <reference path="../../../typings/tsd.d.ts" />
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! jquery */ 17), __webpack_require__(/*! ../dispatcher/appDispatcher */ 5), __webpack_require__(/*! ../actions/actionSourceTypes */ 7), __webpack_require__(/*! ../actions/techOperationActionTypes */ 46), __webpack_require__(/*! ../actions/errorActions */ 15), __webpack_require__(/*! ../../constants/pageConstants */ 11), __webpack_require__(/*! ../../managers/navigationManager */ 12), __webpack_require__(/*! object-assign */ 18), __webpack_require__(/*! eventemitter3 */ 19)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, $, appDispatcher_1, actionSourceTypes_1, techOperationActionTypes_1, errorActions_1, pageConstants_1, navigationManager_1, assign, EventEmitter) {
-	    "use strict";
-	    var CHANGE_TECHOPERATIONS_EVENT = 'change_techOperations';
-	    var CHANGE_EDITTECHOPERATION_EVENT = 'change_edittechOperation';
-	    var _techOperations = new Array();
-	    var _techOperation;
-	    var _techOperationSearchText = "";
-	    var _totalTechOperationAmount = 0;
-	    var _techOperationsPerPage = pageConstants_1.default.ITEMS_PER_PAGE_INIT;
-	    var _currentTechOperationPage = 0;
-	    function _loadTechOperations() {
-	        $.get(location.origin + "/api/techOperations?search=" + _techOperationSearchText + "&page=" + _currentTechOperationPage + "&pageSize=" + _techOperationsPerPage, function (techOperationListModel) {
-	            _totalTechOperationAmount = techOperationListModel.techOperationAmount;
-	            _techOperations = new Array();
-	            techOperationListModel.techOperations.forEach(function (techOperation) {
-	                _techOperations[techOperation.id] = techOperation;
-	            });
-	            TechOperationStore.emitChangeTechOperations();
-	        });
-	    }
-	    function _loadTechOperation(id) {
-	        if (id == 0) {
-	            _techOperation = { id: 0, name: "" };
-	            TechOperationStore.emitChangeEditTechOperation();
-	            return;
-	        }
-	        if (_techOperations[id]) {
-	            _techOperation = _techOperations[id];
-	            TechOperationStore.emitChangeEditTechOperation();
-	        }
-	        else {
-	            $.ajax({
-	                url: location.origin + "/api/techOperations/" + id,
-	                type: 'GET',
-	                success: function (techOperation) {
-	                    _techOperation = techOperation;
-	                    TechOperationStore.emitChangeEditTechOperation();
-	                },
-	                error: function (data) {
-	                    errorActions_1.default.received(data.responseJSON);
-	                }
-	            });
-	        }
-	    }
-	    function _addTechOperation(techOperation) {
-	        $.ajax({
-	            url: location.origin + '/api/techOperations',
-	            dataType: 'json',
-	            type: 'PUT',
-	            data: {
-	                id: techOperation.id,
-	                __RequestVerificationToken: antiForgeryToken
-	            },
-	            success: function (techOperation) {
-	                _techOperation = techOperation;
-	                if (_techOperations[techOperation.id]) {
-	                    _techOperations[techOperation.id] = assign({}, _techOperations[techOperation.id], techOperation);
-	                    TechOperationStore.emitChangeTechOperations();
-	                }
-	                navigationManager_1.default.openTechOperationEditor(techOperation.id);
-	            },
-	            error: function (xhr, status, err) {
-	                console.error(this.props.url, status, err.toString());
-	            }.bind(this)
-	        });
-	    }
-	    function _deleteTechOperation(id) {
-	        $.ajax({
-	            url: location.origin + '/api/techOperations/' + id,
-	            dataType: 'json',
-	            type: 'DELETE',
-	            data: { __RequestVerificationToken: antiForgeryToken },
-	            success: function (id) {
-	                _loadTechOperations();
-	            },
-	            error: function (xhr, status, err) {
-	                console.error(this.props.url, status, err.toString());
-	            }
-	        });
-	    }
-	    function _updateTechOperation(techOperation) {
-	        $.ajax({
-	            url: location.origin + '/api/techOperations',
-	            dataType: 'json',
-	            type: 'POST',
-	            data: {
-	                id: techOperation.id,
-	                __RequestVerificationToken: antiForgeryToken
-	            },
-	            success: function (techOperation) {
-	                if (_techOperations[techOperation.id]) {
-	                    _techOperations[techOperation.id] = assign({}, _techOperations[techOperation.id], techOperation);
-	                    TechOperationStore.emitChangeTechOperations();
-	                }
-	            },
-	            error: function (xhr, status, err) {
-	                console.error(this.props.url, status, err.toString());
-	            }
-	        });
-	    }
-	    function _init(currentPage, techOperationsPerPage, searchText) {
-	        _techOperationsPerPage = techOperationsPerPage;
-	        _currentTechOperationPage = currentPage;
-	        _techOperationSearchText = searchText;
-	        _loadTechOperations();
-	    }
-	    var TechOperationStoreStatic = (function (_super) {
-	        __extends(TechOperationStoreStatic, _super);
-	        function TechOperationStoreStatic() {
-	            _super.apply(this, arguments);
-	        }
-	        TechOperationStoreStatic.prototype.getAll = function () {
-	            return _techOperations;
-	        };
-	        TechOperationStoreStatic.prototype.getTechOperationAmount = function () {
-	            return _totalTechOperationAmount;
-	        };
-	        TechOperationStoreStatic.prototype.getTechOperationsPerPage = function () {
-	            return _techOperationsPerPage;
-	        };
-	        TechOperationStoreStatic.prototype.getEditTechOperation = function () {
-	            return _techOperation;
-	        };
-	        TechOperationStoreStatic.prototype.emitChangeTechOperations = function () {
-	            this.emit(CHANGE_TECHOPERATIONS_EVENT);
-	        };
-	        TechOperationStoreStatic.prototype.emitChangeEditTechOperation = function () {
-	            this.emit(CHANGE_EDITTECHOPERATION_EVENT);
-	        };
-	        /**
-	         * @param {function} callback
-	         */
-	        TechOperationStoreStatic.prototype.addChangeEditTechOperationListener = function (callback) {
-	            this.on(CHANGE_EDITTECHOPERATION_EVENT, callback);
-	        };
-	        /**
-	         * @param {function} callback
-	         */
-	        TechOperationStoreStatic.prototype.removeChangeEditTechOperationListener = function (callback) {
-	            this.removeListener(CHANGE_EDITTECHOPERATION_EVENT, callback);
-	        };
-	        /**
-	         * @param {function} callback
-	         */
-	        TechOperationStoreStatic.prototype.addChangeTechOperationsListener = function (callback) {
-	            this.on(CHANGE_TECHOPERATIONS_EVENT, callback);
-	        };
-	        /**
-	         * @param {function} callback
-	         */
-	        TechOperationStoreStatic.prototype.removeChangeTechOperationsListener = function (callback) {
-	            this.removeListener(CHANGE_TECHOPERATIONS_EVENT, callback);
-	        };
-	        return TechOperationStoreStatic;
-	    }(EventEmitter));
-	    var TechOperationStore = new TechOperationStoreStatic();
-	    appDispatcher_1.default.register(function (payload) {
-	        if (payload.actionSource != actionSourceTypes_1.default.TECHOPERATION)
-	            return;
-	        switch (payload.actionType) {
-	            case techOperationActionTypes_1.default.TECHOPERATION_INIT:
-	                _init(payload.currentPage, payload.pageSize, payload.searchText);
-	                break;
-	            case techOperationActionTypes_1.default.TECHOPERATION_LOAD_EDIT:
-	                _loadTechOperation(payload.id);
-	                break;
-	            case techOperationActionTypes_1.default.TECHOPERATION_CREATE:
-	                _addTechOperation(payload.techOperation);
-	                break;
-	            case techOperationActionTypes_1.default.TECHOPERATION_UPDATE:
-	                _updateTechOperation(payload.techOperation);
-	                break;
-	            case techOperationActionTypes_1.default.TECHOPERATION_DELETE:
-	                _deleteTechOperation(payload.id);
-	                break;
-	            case techOperationActionTypes_1.default.TECHOPERATION_PAGE_CHANGE:
-	                _currentTechOperationPage = payload.currentPage;
-	                _loadTechOperations();
-	                break;
-	            case techOperationActionTypes_1.default.TECHOPERATIONS_PER_PAGE_CHANGE:
-	                _techOperationsPerPage = payload.pageSize;
-	                _loadTechOperations();
-	                break;
-	            case techOperationActionTypes_1.default.TECHOPERATION_SEARCH_TEXT_CHANGE:
-	                _techOperationSearchText = payload.searchText;
-	                _loadTechOperations();
-	                break;
-	            default:
-	        }
-	    });
-	    Object.defineProperty(exports, "__esModule", { value: true });
-	    exports.default = TechOperationStore;
-	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	//# sourceMappingURL=techOperationStore.js.map
-
-/***/ },
-/* 46 */
-/*!**************************************************************!*\
-  !*** ./Scripts/app/flux/actions/techOperationActionTypes.js ***!
-  \**************************************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports) {
-	    "use strict";
-	    var TechOperationActionTypes;
-	    (function (TechOperationActionTypes) {
-	        TechOperationActionTypes[TechOperationActionTypes["TECHOPERATION_INIT"] = 0] = "TECHOPERATION_INIT";
-	        TechOperationActionTypes[TechOperationActionTypes["TECHOPERATION_LOAD_EDIT"] = 1] = "TECHOPERATION_LOAD_EDIT";
-	        TechOperationActionTypes[TechOperationActionTypes["TECHOPERATION_CREATE"] = 2] = "TECHOPERATION_CREATE";
-	        TechOperationActionTypes[TechOperationActionTypes["TECHOPERATION_DELETE"] = 3] = "TECHOPERATION_DELETE";
-	        TechOperationActionTypes[TechOperationActionTypes["TECHOPERATION_UPDATE"] = 4] = "TECHOPERATION_UPDATE";
-	        TechOperationActionTypes[TechOperationActionTypes["TECHOPERATION_PAGE_CHANGE"] = 5] = "TECHOPERATION_PAGE_CHANGE";
-	        TechOperationActionTypes[TechOperationActionTypes["TECHOPERATIONS_PER_PAGE_CHANGE"] = 6] = "TECHOPERATIONS_PER_PAGE_CHANGE";
-	        TechOperationActionTypes[TechOperationActionTypes["TECHOPERATION_SEARCH_TEXT_CHANGE"] = 7] = "TECHOPERATION_SEARCH_TEXT_CHANGE";
-	    })(TechOperationActionTypes || (TechOperationActionTypes = {}));
-	    Object.defineProperty(exports, "__esModule", { value: true });
-	    exports.default = TechOperationActionTypes;
-	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	//# sourceMappingURL=techOperationActionTypes.js.map
-
-/***/ },
-/* 47 */
-/*!**********************************************************!*\
-  !*** ./Scripts/app/flux/actions/techOperationActions.js ***!
-  \**********************************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/// <reference path="../../../typings/tsd.d.ts" />
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! ../dispatcher/appDispatcher */ 5), __webpack_require__(/*! ./actionSourceTypes */ 7), __webpack_require__(/*! ./techOperationActionTypes */ 46)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, appDispatcher_1, actionSourceTypes_1, techOperationActionTypes_1) {
-	    "use strict";
-	    var TechOperationActionsStatic = (function () {
-	        function TechOperationActionsStatic() {
-	        }
-	        TechOperationActionsStatic.prototype.init = function (currentPage, pageSize, searchText) {
-	            appDispatcher_1.default.dispatch({
-	                actionType: techOperationActionTypes_1.default.TECHOPERATION_INIT,
-	                actionSource: actionSourceTypes_1.default.TECHOPERATION,
-	                currentPage: currentPage,
-	                pageSize: pageSize,
-	                searchText: searchText
-	            });
-	        };
-	        TechOperationActionsStatic.prototype.loadEditTechOperation = function (id) {
-	            appDispatcher_1.default.dispatch({
-	                actionType: techOperationActionTypes_1.default.TECHOPERATION_LOAD_EDIT,
-	                actionSource: actionSourceTypes_1.default.TECHOPERATION,
-	                id: id
-	            });
-	        };
-	        TechOperationActionsStatic.prototype.create = function (techOperation) {
-	            appDispatcher_1.default.dispatch({
-	                actionType: techOperationActionTypes_1.default.TECHOPERATION_CREATE,
-	                actionSource: actionSourceTypes_1.default.TECHOPERATION,
-	                techOperation: techOperation
-	            });
-	        };
-	        TechOperationActionsStatic.prototype.update = function (techOperation) {
-	            appDispatcher_1.default.dispatch({
-	                actionType: techOperationActionTypes_1.default.TECHOPERATION_UPDATE,
-	                actionSource: actionSourceTypes_1.default.TECHOPERATION,
-	                techOperation: techOperation
-	            });
-	        };
-	        TechOperationActionsStatic.prototype.remove = function (id) {
-	            appDispatcher_1.default.dispatch({
-	                actionType: techOperationActionTypes_1.default.TECHOPERATION_DELETE,
-	                actionSource: actionSourceTypes_1.default.TECHOPERATION,
-	                id: id
-	            });
-	        };
-	        TechOperationActionsStatic.prototype.changeTechOperationPage = function (page) {
-	            appDispatcher_1.default.dispatch({
-	                actionType: techOperationActionTypes_1.default.TECHOPERATION_PAGE_CHANGE,
-	                actionSource: actionSourceTypes_1.default.TECHOPERATION,
-	                currentPage: page
-	            });
-	        };
-	        TechOperationActionsStatic.prototype.changeTechOperationsPerPage = function (techOperationsPerPage) {
-	            appDispatcher_1.default.dispatch({
-	                actionType: techOperationActionTypes_1.default.TECHOPERATIONS_PER_PAGE_CHANGE,
-	                actionSource: actionSourceTypes_1.default.TECHOPERATION,
-	                pageSize: techOperationsPerPage
-	            });
-	        };
-	        TechOperationActionsStatic.prototype.changeTechOperationSearchText = function (text) {
-	            appDispatcher_1.default.dispatch({
-	                actionType: techOperationActionTypes_1.default.TECHOPERATION_SEARCH_TEXT_CHANGE,
-	                actionSource: actionSourceTypes_1.default.TECHOPERATION,
-	                searchText: text
-	            });
-	        };
-	        return TechOperationActionsStatic;
-	    }());
-	    var TechOperationActions = new TechOperationActionsStatic();
-	    Object.defineProperty(exports, "__esModule", { value: true });
-	    exports.default = TechOperationActions;
-	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	//# sourceMappingURL=techOperationActions.js.map
-
-/***/ },
-/* 48 */
-/*!*******************************************************!*\
-  !*** ./Scripts/app/components/techStepListSection.js ***!
-  \*******************************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/// <reference path="../../typings/tsd.d.ts" />
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ./techStepList */ 49)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, techStepList_1) {
-	    "use strict";
-	    var ToolListSection = (function (_super) {
-	        __extends(ToolListSection, _super);
-	        function ToolListSection() {
-	            _super.apply(this, arguments);
-	        }
-	        ToolListSection.prototype.render = function () {
-	            return (React.createElement("div", {className: "outer"}, React.createElement(techStepList_1.default, null), this.props.children));
-	        };
-	        return ToolListSection;
-	    }(React.Component));
-	    Object.defineProperty(exports, "__esModule", { value: true });
-	    exports.default = ToolListSection;
-	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	//# sourceMappingURL=techStepListSection.js.map
-
-/***/ },
-/* 49 */
-/*!************************************************!*\
-  !*** ./Scripts/app/components/techStepList.js ***!
-  \************************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/// <reference path="../../typings/tsd.d.ts" />
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ../flux/stores/techStepStore */ 50), __webpack_require__(/*! ../constants/pageConstants */ 11), __webpack_require__(/*! ../flux/actions/techStepActions */ 52), __webpack_require__(/*! ../managers/pageParamsManager */ 9), __webpack_require__(/*! ../managers/navigationManager */ 12), __webpack_require__(/*! ./common/tableRow */ 20), __webpack_require__(/*! ./common/confirmDelete */ 21), __webpack_require__(/*! ./common/pagination */ 22), __webpack_require__(/*! ./common/searchInput */ 24), __webpack_require__(/*! ./common/itemsPerPageSelector */ 25)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, techStepStore_1, pageConstants_1, techStepActions_1, pageParamsManager_1, navigationManager_1, tableRow_1, confirmDelete_1, pagination_1, searchInput_1, itemsPerPageSelector_1) {
-	    "use strict";
-	    var TechStepList = (function (_super) {
-	        __extends(TechStepList, _super);
-	        function TechStepList(props, context) {
-	            var _this = this;
-	            _super.call(this, props, context);
-	            this.handleTechStepsChange = function () {
-	                _this.setState({
-	                    techSteps: techStepStore_1.default.getAll(),
-	                    currentTechStep: null,
-	                    isConfirmDeleting: false,
-	                    techStepAmount: techStepStore_1.default.getTechStepAmount(),
-	                    techStepsPerPage: techStepStore_1.default.getTechStepsPerPage()
-	                });
-	            };
-	            this.changeCurrent = function (techStep) {
-	                _this.setState({
-	                    techSteps: _this.state.techSteps,
-	                    currentTechStep: techStep,
-	                    isConfirmDeleting: _this.state.isConfirmDeleting,
-	                    techStepAmount: _this.state.techStepAmount,
-	                    techStepsPerPage: _this.state.techStepsPerPage
-	                });
-	            };
-	            this.techStepRowDoubleClick = function (techStep) {
-	                navigationManager_1.default.openTechStepEditor(techStep.id);
-	            };
-	            this.newTechStepBtnClickHandler = function () {
-	                navigationManager_1.default.openTechStepEditor(0);
-	            };
-	            this.handleDeleteSuccess = function () {
-	                techStepActions_1.default.remove(_this.state.currentTechStep.id);
-	            };
-	            this.handleDeleteCancel = function () {
-	                _this.setState({
-	                    techSteps: _this.state.techSteps,
-	                    currentTechStep: _this.state.currentTechStep,
-	                    isConfirmDeleting: !_this.state.isConfirmDeleting,
-	                    techStepAmount: _this.state.techStepAmount,
-	                    techStepsPerPage: _this.state.techStepsPerPage
-	                });
-	            };
-	            this.handleTechStepsPerPageChange = function (techStepsPerPage) {
-	                pageParamsManager_1.default.changePageSize(techStepsPerPage);
-	                techStepActions_1.default.changeTechStepsPerPage(techStepsPerPage);
-	            };
-	            this.handleTechStepPageChange = function (page) {
-	                pageParamsManager_1.default.changePage(page);
-	                techStepActions_1.default.changeTechStepPage(page);
-	            };
-	            this.handleTechStepSearchTextChange = function (text) {
-	                pageParamsManager_1.default.changeSearchText(text);
-	                techStepActions_1.default.changeTechStepSearchText(text);
-	            };
-	            this.refreshBtnClickHandler = function (text) {
-	                techStepActions_1.default.init(pageParamsManager_1.default.getPage(), pageParamsManager_1.default.getPageSize(), pageParamsManager_1.default.getSearchText());
-	                _this.setState({
-	                    techSteps: [],
-	                    currentTechStep: null,
-	                    isConfirmDeleting: false,
-	                    techStepAmount: 0,
-	                    techStepsPerPage: _this.state.techStepsPerPage
-	                });
-	            };
-	            this.props = props;
-	            this.context = context;
-	            this.state = {
-	                techSteps: [],
-	                currentTechStep: null,
-	                isConfirmDeleting: false,
-	                techStepAmount: 0,
-	                techStepsPerPage: pageConstants_1.default.ITEMS_PER_PAGE_INIT
-	            };
-	        }
-	        TechStepList.prototype.componentWillMount = function () {
-	            techStepStore_1.default.addChangeTechStepsListener(this.handleTechStepsChange);
-	        };
-	        TechStepList.prototype.componentWillUnmount = function () {
-	            techStepStore_1.default.removeChangeTechStepsListener(this.handleTechStepsChange);
-	        };
-	        TechStepList.prototype.componentDidMount = function () {
-	            techStepActions_1.default.init(pageParamsManager_1.default.getPage(), pageParamsManager_1.default.getPageSize(), pageParamsManager_1.default.getSearchText());
-	        };
-	        TechStepList.prototype.render = function () {
-	            var techStepRows = [];
-	            for (var key in this.state.techSteps) {
-	                var techStep = this.state.techSteps[key];
-	                techStepRows.push(React.createElement(tableRow_1.default, {key: key, item: techStep, isCurrent: this.state.currentTechStep == techStep, changeCurrent: this.changeCurrent, rowDoubleClickHandler: this.techStepRowDoubleClick}, React.createElement("td", {style: { width: 25 + '%' }}, techStep.id), React.createElement("td", {style: { width: 75 + '%' }}, techStep.description)));
-	            }
-	            return (React.createElement("div", {className: "panel panel-default inner", style: { marginBottom: 0 + 'px', display: 'flex', flexDirection: 'column' }}, React.createElement("div", {className: "panel-heading"}, React.createElement("h4", null, "Технологические шаги")), React.createElement("div", {className: "panel-body", style: { display: 'flex', flexDirection: 'column' }}, this.state.isConfirmDeleting ?
-	                React.createElement(confirmDelete_1.default, {id: this.state.currentTechStep.id, title: "Подтверждение удаления технологического шага", message: "Вы действительно хотите удалить технологический шаг " + this.state.currentTechStep.description, success: this.handleDeleteSuccess, cancel: this.handleDeleteCancel})
-	                :
-	                    React.createElement("div", {className: "input-group"}, React.createElement("div", {className: "input-group-btn"}, React.createElement("button", {className: "btn btn-default", type: "button", onClick: this.newTechStepBtnClickHandler}, React.createElement("span", {className: "glyphicon glyphicon-plus"})), React.createElement("button", {className: "btn btn-default", type: "button", onClick: function () { this.setState({ currentTechStep: this.state.currentTechStep, isConfirmDeleting: true }); }.bind(this)}, React.createElement("span", {className: "glyphicon glyphicon-trash"})), React.createElement("button", {className: "btn btn-default", type: "button", onClick: this.refreshBtnClickHandler}, React.createElement("span", {className: "glyphicon glyphicon-refresh"}))), React.createElement(searchInput_1.default, {text: "Поиск...", onChange: function (text) { this.handleTechStepSearchTextChange(text); }.bind(this)}), React.createElement(itemsPerPageSelector_1.default, {onChange: this.handleTechStepsPerPageChange})), React.createElement("div", {style: { marginBottom: 10 + 'px', display: 'flex', flexDirection: 'column' }}, React.createElement("div", {style: { overflowY: 'auto' }}, React.createElement("table", {className: "table table-bordered", style: { marginBottom: 1 + 'px' }}, React.createElement("thead", null, React.createElement("tr", null, React.createElement("th", {style: { width: 25 + '%' }}, "ID"), React.createElement("th", {style: { width: 75 + '%' }}, "Наименование"))), React.createElement("tbody", null, techStepRows)))), React.createElement(pagination_1.default, {itemAmount: this.state.techStepAmount, itemsPerPage: this.state.techStepsPerPage, firstSymbol: '«', nextSymbol: '›', prevSymbol: '‹', lastSymbol: '»', updatePage: this.handleTechStepPageChange}))));
-	        };
-	        return TechStepList;
-	    }(React.Component));
-	    Object.defineProperty(exports, "__esModule", { value: true });
-	    exports.default = TechStepList;
-	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	//# sourceMappingURL=techStepList.js.map
-
-/***/ },
-/* 50 */
-/*!**************************************************!*\
-  !*** ./Scripts/app/flux/stores/techStepStore.js ***!
-  \**************************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/// <reference path="../../../typings/tsd.d.ts" />
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! jquery */ 17), __webpack_require__(/*! ../dispatcher/appDispatcher */ 5), __webpack_require__(/*! ../actions/actionSourceTypes */ 7), __webpack_require__(/*! ../actions/techStepActionTypes */ 51), __webpack_require__(/*! ../actions/errorActions */ 15), __webpack_require__(/*! ../../constants/pageConstants */ 11), __webpack_require__(/*! ../../managers/navigationManager */ 12), __webpack_require__(/*! object-assign */ 18), __webpack_require__(/*! eventemitter3 */ 19)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, $, appDispatcher_1, actionSourceTypes_1, techStepActionTypes_1, errorActions_1, pageConstants_1, navigationManager_1, assign, EventEmitter) {
-	    "use strict";
-	    var CHANGE_TECHSTEPS_EVENT = 'change_techSteps';
-	    var CHANGE_EDITTECHSTEP_EVENT = 'change_edittechStep';
-	    var _techSteps = new Array();
-	    var _techStep;
-	    var _techStepSearchText = "";
-	    var _totalTechStepAmount = 0;
-	    var _techStepsPerPage = pageConstants_1.default.ITEMS_PER_PAGE_INIT;
-	    var _currentTechStepPage = 0;
-	    function _loadTechSteps() {
-	        $.get(location.origin + "/api/techSteps?search=" + _techStepSearchText + "&page=" + _currentTechStepPage + "&pageSize=" + _techStepsPerPage, function (techStepListModel) {
-	            _totalTechStepAmount = techStepListModel.techStepAmount;
-	            _techSteps = new Array();
-	            techStepListModel.techSteps.forEach(function (techStep) {
-	                _techSteps[techStep.id] = techStep;
-	            });
-	            TechStepStore.emitChangeTechSteps();
-	        });
-	    }
-	    function _loadTechStep(id) {
-	        if (id == 0) {
-	            _techStep = { id: 0, description: "", toolUsages: [] };
-	            TechStepStore.emitChangeEditTechStep();
-	            return;
-	        }
-	        if (_techSteps[id]) {
-	            _techStep = _techSteps[id];
-	            TechStepStore.emitChangeEditTechStep();
-	        }
-	        else {
-	            $.ajax({
-	                url: location.origin + "/api/techSteps/" + id,
-	                type: 'GET',
-	                success: function (techStep) {
-	                    _techStep = techStep;
-	                    TechStepStore.emitChangeEditTechStep();
-	                },
-	                error: function (data) {
-	                    errorActions_1.default.received(data.responseJSON);
-	                }
-	            });
-	        }
-	    }
-	    function _addTechStep(techStep) {
-	        $.ajax({
-	            url: location.origin + '/api/techSteps',
-	            dataType: 'json',
-	            type: 'PUT',
-	            data: {
-	                id: techStep.id,
-	                __RequestVerificationToken: antiForgeryToken
-	            },
-	            success: function (techStep) {
-	                _techStep = techStep;
-	                if (_techSteps[techStep.id]) {
-	                    _techSteps[techStep.id] = assign({}, _techSteps[techStep.id], techStep);
-	                    TechStepStore.emitChangeTechSteps();
-	                }
-	                navigationManager_1.default.openTechStepEditor(techStep.id);
-	            },
-	            error: function (xhr, status, err) {
-	                console.error(this.props.url, status, err.toString());
-	            }.bind(this)
-	        });
-	    }
-	    function _deleteTechStep(id) {
-	        $.ajax({
-	            url: location.origin + '/api/techSteps/' + id,
-	            dataType: 'json',
-	            type: 'DELETE',
-	            data: { __RequestVerificationToken: antiForgeryToken },
-	            success: function (id) {
-	                _loadTechSteps();
-	            },
-	            error: function (xhr, status, err) {
-	                console.error(this.props.url, status, err.toString());
-	            }
-	        });
-	    }
-	    function _updateTechStep(techStep) {
-	        $.ajax({
-	            url: location.origin + '/api/techSteps',
-	            dataType: 'json',
-	            type: 'POST',
-	            data: {
-	                id: techStep.id,
-	                __RequestVerificationToken: antiForgeryToken
-	            },
-	            success: function (techStep) {
-	                if (_techSteps[techStep.id]) {
-	                    _techSteps[techStep.id] = assign({}, _techSteps[techStep.id], techStep);
-	                    TechStepStore.emitChangeTechSteps();
-	                }
-	            },
-	            error: function (xhr, status, err) {
-	                console.error(this.props.url, status, err.toString());
-	            }
-	        });
-	    }
-	    function _init(currentPage, techStepsPerPage, searchText) {
-	        _techStepsPerPage = techStepsPerPage;
-	        _currentTechStepPage = currentPage;
-	        _techStepSearchText = searchText;
-	        _loadTechSteps();
-	    }
-	    var TechStepStoreStatic = (function (_super) {
-	        __extends(TechStepStoreStatic, _super);
-	        function TechStepStoreStatic() {
-	            _super.apply(this, arguments);
-	        }
-	        TechStepStoreStatic.prototype.getAll = function () {
-	            return _techSteps;
-	        };
-	        TechStepStoreStatic.prototype.getTechStepAmount = function () {
-	            return _totalTechStepAmount;
-	        };
-	        TechStepStoreStatic.prototype.getTechStepsPerPage = function () {
-	            return _techStepsPerPage;
-	        };
-	        TechStepStoreStatic.prototype.getEditTechStep = function () {
-	            return _techStep;
-	        };
-	        TechStepStoreStatic.prototype.emitChangeTechSteps = function () {
-	            this.emit(CHANGE_TECHSTEPS_EVENT);
-	        };
-	        TechStepStoreStatic.prototype.emitChangeEditTechStep = function () {
-	            this.emit(CHANGE_EDITTECHSTEP_EVENT);
-	        };
-	        /**
-	         * @param {function} callback
-	         */
-	        TechStepStoreStatic.prototype.addChangeEditTechStepListener = function (callback) {
-	            this.on(CHANGE_EDITTECHSTEP_EVENT, callback);
-	        };
-	        /**
-	         * @param {function} callback
-	         */
-	        TechStepStoreStatic.prototype.removeChangeEditTechStepListener = function (callback) {
-	            this.removeListener(CHANGE_EDITTECHSTEP_EVENT, callback);
-	        };
-	        /**
-	         * @param {function} callback
-	         */
-	        TechStepStoreStatic.prototype.addChangeTechStepsListener = function (callback) {
-	            this.on(CHANGE_TECHSTEPS_EVENT, callback);
-	        };
-	        /**
-	         * @param {function} callback
-	         */
-	        TechStepStoreStatic.prototype.removeChangeTechStepsListener = function (callback) {
-	            this.removeListener(CHANGE_TECHSTEPS_EVENT, callback);
-	        };
-	        return TechStepStoreStatic;
-	    }(EventEmitter));
-	    var TechStepStore = new TechStepStoreStatic();
-	    appDispatcher_1.default.register(function (payload) {
-	        if (payload.actionSource != actionSourceTypes_1.default.TECHSTEP)
-	            return;
-	        switch (payload.actionType) {
-	            case techStepActionTypes_1.default.TECHSTEP_INIT:
-	                _init(payload.currentPage, payload.pageSize, payload.searchText);
-	                break;
-	            case techStepActionTypes_1.default.TECHSTEP_LOAD_EDIT:
-	                _loadTechStep(payload.id);
-	                break;
-	            case techStepActionTypes_1.default.TECHSTEP_CREATE:
-	                _addTechStep(payload.techStep);
-	                break;
-	            case techStepActionTypes_1.default.TECHSTEP_UPDATE:
-	                _updateTechStep(payload.techStep);
-	                break;
-	            case techStepActionTypes_1.default.TECHSTEP_DELETE:
-	                _deleteTechStep(payload.id);
-	                break;
-	            case techStepActionTypes_1.default.TECHSTEP_PAGE_CHANGE:
-	                _currentTechStepPage = payload.currentPage;
-	                _loadTechSteps();
-	                break;
-	            case techStepActionTypes_1.default.TECHSTEPS_PER_PAGE_CHANGE:
-	                _techStepsPerPage = payload.pageSize;
-	                _loadTechSteps();
-	                break;
-	            case techStepActionTypes_1.default.TECHSTEP_SEARCH_TEXT_CHANGE:
-	                _techStepSearchText = payload.searchText;
-	                _loadTechSteps();
-	                break;
-	            default:
-	        }
-	    });
-	    Object.defineProperty(exports, "__esModule", { value: true });
-	    exports.default = TechStepStore;
-	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	//# sourceMappingURL=techStepStore.js.map
-
-/***/ },
-/* 51 */
-/*!*********************************************************!*\
-  !*** ./Scripts/app/flux/actions/techStepActionTypes.js ***!
-  \*********************************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports) {
-	    "use strict";
-	    var TechStepActionTypes;
-	    (function (TechStepActionTypes) {
-	        TechStepActionTypes[TechStepActionTypes["TECHSTEP_INIT"] = 0] = "TECHSTEP_INIT";
-	        TechStepActionTypes[TechStepActionTypes["TECHSTEP_LOAD_EDIT"] = 1] = "TECHSTEP_LOAD_EDIT";
-	        TechStepActionTypes[TechStepActionTypes["TECHSTEP_CREATE"] = 2] = "TECHSTEP_CREATE";
-	        TechStepActionTypes[TechStepActionTypes["TECHSTEP_DELETE"] = 3] = "TECHSTEP_DELETE";
-	        TechStepActionTypes[TechStepActionTypes["TECHSTEP_UPDATE"] = 4] = "TECHSTEP_UPDATE";
-	        TechStepActionTypes[TechStepActionTypes["TECHSTEP_PAGE_CHANGE"] = 5] = "TECHSTEP_PAGE_CHANGE";
-	        TechStepActionTypes[TechStepActionTypes["TECHSTEPS_PER_PAGE_CHANGE"] = 6] = "TECHSTEPS_PER_PAGE_CHANGE";
-	        TechStepActionTypes[TechStepActionTypes["TECHSTEP_SEARCH_TEXT_CHANGE"] = 7] = "TECHSTEP_SEARCH_TEXT_CHANGE";
-	    })(TechStepActionTypes || (TechStepActionTypes = {}));
-	    Object.defineProperty(exports, "__esModule", { value: true });
-	    exports.default = TechStepActionTypes;
-	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	//# sourceMappingURL=techStepActionTypes.js.map
-
-/***/ },
-/* 52 */
-/*!*****************************************************!*\
-  !*** ./Scripts/app/flux/actions/techStepActions.js ***!
-  \*****************************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/// <reference path="../../../typings/tsd.d.ts" />
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! ../dispatcher/appDispatcher */ 5), __webpack_require__(/*! ./actionSourceTypes */ 7), __webpack_require__(/*! ./techStepActionTypes */ 51)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, appDispatcher_1, actionSourceTypes_1, techStepActionTypes_1) {
-	    "use strict";
-	    var TechStepActionsStatic = (function () {
-	        function TechStepActionsStatic() {
-	        }
-	        TechStepActionsStatic.prototype.init = function (currentPage, pageSize, searchText) {
-	            appDispatcher_1.default.dispatch({
-	                actionType: techStepActionTypes_1.default.TECHSTEP_INIT,
-	                actionSource: actionSourceTypes_1.default.TECHSTEP,
-	                currentPage: currentPage,
-	                pageSize: pageSize,
-	                searchText: searchText
-	            });
-	        };
-	        TechStepActionsStatic.prototype.loadEditTechStep = function (id) {
-	            appDispatcher_1.default.dispatch({
-	                actionType: techStepActionTypes_1.default.TECHSTEP_LOAD_EDIT,
-	                actionSource: actionSourceTypes_1.default.TECHSTEP,
-	                id: id
-	            });
-	        };
-	        TechStepActionsStatic.prototype.create = function (techStep) {
-	            appDispatcher_1.default.dispatch({
-	                actionType: techStepActionTypes_1.default.TECHSTEP_CREATE,
-	                actionSource: actionSourceTypes_1.default.TECHSTEP,
-	                techStep: techStep
-	            });
-	        };
-	        TechStepActionsStatic.prototype.update = function (techStep) {
-	            appDispatcher_1.default.dispatch({
-	                actionType: techStepActionTypes_1.default.TECHSTEP_UPDATE,
-	                actionSource: actionSourceTypes_1.default.TECHSTEP,
-	                techStep: techStep
-	            });
-	        };
-	        TechStepActionsStatic.prototype.remove = function (id) {
-	            appDispatcher_1.default.dispatch({
-	                actionType: techStepActionTypes_1.default.TECHSTEP_DELETE,
-	                actionSource: actionSourceTypes_1.default.TECHSTEP,
-	                id: id
-	            });
-	        };
-	        TechStepActionsStatic.prototype.changeTechStepPage = function (page) {
-	            appDispatcher_1.default.dispatch({
-	                actionType: techStepActionTypes_1.default.TECHSTEP_PAGE_CHANGE,
-	                actionSource: actionSourceTypes_1.default.TECHSTEP,
-	                currentPage: page
-	            });
-	        };
-	        TechStepActionsStatic.prototype.changeTechStepsPerPage = function (techStepsPerPage) {
-	            appDispatcher_1.default.dispatch({
-	                actionType: techStepActionTypes_1.default.TECHSTEPS_PER_PAGE_CHANGE,
-	                actionSource: actionSourceTypes_1.default.TECHSTEP,
-	                pageSize: techStepsPerPage
-	            });
-	        };
-	        TechStepActionsStatic.prototype.changeTechStepSearchText = function (text) {
-	            appDispatcher_1.default.dispatch({
-	                actionType: techStepActionTypes_1.default.TECHSTEP_SEARCH_TEXT_CHANGE,
-	                actionSource: actionSourceTypes_1.default.TECHSTEP,
-	                searchText: text
-	            });
-	        };
-	        return TechStepActionsStatic;
-	    }());
-	    var TechStepActions = new TechStepActionsStatic();
-	    Object.defineProperty(exports, "__esModule", { value: true });
-	    exports.default = TechStepActions;
-	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	//# sourceMappingURL=techStepActions.js.map
-
-/***/ },
-/* 53 */
-/*!***************************************************!*\
-  !*** ./Scripts/app/components/partListSection.js ***!
-  \***************************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// A '.tsx' file enables JSX support in the TypeScript compiler, 
-	// for more information see the following page on the TypeScript wiki:
-	// https://github.com/Microsoft/TypeScript/wiki/JSX
-	/// <reference path="../../typings/tsd.d.ts" />
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ./partList */ 54)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, partList_1) {
-	    "use strict";
-	    var PartListSection = (function (_super) {
-	        __extends(PartListSection, _super);
-	        function PartListSection() {
-	            _super.apply(this, arguments);
-	        }
-	        PartListSection.prototype.render = function () {
-	            return (React.createElement("div", {className: "outer"}, React.createElement(partList_1.default, null), this.props.children));
-	        };
-	        return PartListSection;
-	    }(React.Component));
-	    Object.defineProperty(exports, "__esModule", { value: true });
-	    exports.default = PartListSection;
-	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	//# sourceMappingURL=partListSection.js.map
-
-/***/ },
-/* 54 */
 /*!********************************************!*\
   !*** ./Scripts/app/components/partList.js ***!
   \********************************************/
@@ -3164,7 +1750,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ../flux/stores/partStore */ 55), __webpack_require__(/*! ../constants/pageConstants */ 11), __webpack_require__(/*! ../flux/actions/partActions */ 57), __webpack_require__(/*! ../managers/pageParamsManager */ 9), __webpack_require__(/*! ../managers/navigationManager */ 12), __webpack_require__(/*! ./common/tableRow */ 20), __webpack_require__(/*! ./common/confirmDelete */ 21), __webpack_require__(/*! ./common/pagination */ 22), __webpack_require__(/*! ./common/searchInput */ 24), __webpack_require__(/*! ./common/itemsPerPageSelector */ 25)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, partStore_1, pageConstants_1, partActions_1, pageParamsManager_1, navigationManager_1, tableRow_1, confirmDelete_1, pagination_1, searchInput_1, itemsPerPageSelector_1) {
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ../flux/stores/partStore */ 38), __webpack_require__(/*! ../constants/pageConstants */ 11), __webpack_require__(/*! ../flux/actions/partActions */ 40), __webpack_require__(/*! ../managers/pageParamsManager */ 9), __webpack_require__(/*! ../managers/navigationManager */ 12), __webpack_require__(/*! ./common/tableRow */ 20), __webpack_require__(/*! ./common/confirmDelete */ 21), __webpack_require__(/*! ./common/pagination */ 22), __webpack_require__(/*! ./common/searchInput */ 24), __webpack_require__(/*! ./common/itemsPerPageSelector */ 25)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, partStore_1, pageConstants_1, partActions_1, pageParamsManager_1, navigationManager_1, tableRow_1, confirmDelete_1, pagination_1, searchInput_1, itemsPerPageSelector_1) {
 	    "use strict";
 	    var PartList = (function (_super) {
 	        __extends(PartList, _super);
@@ -3267,7 +1853,7 @@
 	//# sourceMappingURL=partList.js.map
 
 /***/ },
-/* 55 */
+/* 38 */
 /*!**********************************************!*\
   !*** ./Scripts/app/flux/stores/partStore.js ***!
   \**********************************************/
@@ -3279,7 +1865,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! jquery */ 17), __webpack_require__(/*! ../dispatcher/appDispatcher */ 5), __webpack_require__(/*! ../actions/actionSourceTypes */ 7), __webpack_require__(/*! ../actions/partActionTypes */ 56), __webpack_require__(/*! ../actions/errorActions */ 15), __webpack_require__(/*! ../../constants/pageConstants */ 11), __webpack_require__(/*! ../../managers/navigationManager */ 12), __webpack_require__(/*! object-assign */ 18), __webpack_require__(/*! eventemitter3 */ 19)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, $, appDispatcher_1, actionSourceTypes_1, partActionTypes_1, errorActions_1, pageConstants_1, navigationManager_1, assign, EventEmitter) {
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! jquery */ 17), __webpack_require__(/*! ../dispatcher/appDispatcher */ 5), __webpack_require__(/*! ../actions/actionSourceTypes */ 7), __webpack_require__(/*! ../actions/partActionTypes */ 39), __webpack_require__(/*! ../actions/errorActions */ 15), __webpack_require__(/*! ../../constants/pageConstants */ 11), __webpack_require__(/*! ../../managers/navigationManager */ 12), __webpack_require__(/*! object-assign */ 18), __webpack_require__(/*! eventemitter3 */ 19)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, $, appDispatcher_1, actionSourceTypes_1, partActionTypes_1, errorActions_1, pageConstants_1, navigationManager_1, assign, EventEmitter) {
 	    "use strict";
 	    var CHANGE_PARTS_EVENT = 'change_parts';
 	    var CHANGE_EDITPART_EVENT = 'change_editpart';
@@ -3479,7 +2065,7 @@
 	//# sourceMappingURL=partStore.js.map
 
 /***/ },
-/* 56 */
+/* 39 */
 /*!*****************************************************!*\
   !*** ./Scripts/app/flux/actions/partActionTypes.js ***!
   \*****************************************************/
@@ -3504,14 +2090,14 @@
 	//# sourceMappingURL=partActionTypes.js.map
 
 /***/ },
-/* 57 */
+/* 40 */
 /*!*************************************************!*\
   !*** ./Scripts/app/flux/actions/partActions.js ***!
   \*************************************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/// <reference path="../../../typings/tsd.d.ts" />
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! ../dispatcher/appDispatcher */ 5), __webpack_require__(/*! ./actionSourceTypes */ 7), __webpack_require__(/*! ./partActionTypes */ 56)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, appDispatcher_1, actionSourceTypes_1, partActionTypes_1) {
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! ../dispatcher/appDispatcher */ 5), __webpack_require__(/*! ./actionSourceTypes */ 7), __webpack_require__(/*! ./partActionTypes */ 39)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, appDispatcher_1, actionSourceTypes_1, partActionTypes_1) {
 	    "use strict";
 	    var PartActionsStatic = (function () {
 	        function PartActionsStatic() {
@@ -3581,6 +2167,1436 @@
 	    exports.default = PartActions;
 	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	//# sourceMappingURL=partActions.js.map
+
+/***/ },
+/* 41 */
+/*!************************************************!*\
+  !*** ./Scripts/app/components/techStepList.js ***!
+  \************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/// <reference path="../../typings/tsd.d.ts" />
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ../flux/stores/techStepStore */ 42), __webpack_require__(/*! ../constants/pageConstants */ 11), __webpack_require__(/*! ../flux/actions/techStepActions */ 44), __webpack_require__(/*! ../managers/pageParamsManager */ 9), __webpack_require__(/*! ../managers/navigationManager */ 12), __webpack_require__(/*! ./common/tableRow */ 20), __webpack_require__(/*! ./common/confirmDelete */ 21), __webpack_require__(/*! ./common/pagination */ 22), __webpack_require__(/*! ./common/searchInput */ 24), __webpack_require__(/*! ./common/itemsPerPageSelector */ 25)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, techStepStore_1, pageConstants_1, techStepActions_1, pageParamsManager_1, navigationManager_1, tableRow_1, confirmDelete_1, pagination_1, searchInput_1, itemsPerPageSelector_1) {
+	    "use strict";
+	    var TechStepList = (function (_super) {
+	        __extends(TechStepList, _super);
+	        function TechStepList(props, context) {
+	            var _this = this;
+	            _super.call(this, props, context);
+	            this.handleTechStepsChange = function () {
+	                _this.setState({
+	                    techSteps: techStepStore_1.default.getAll(),
+	                    currentTechStep: null,
+	                    isConfirmDeleting: false,
+	                    techStepAmount: techStepStore_1.default.getTechStepAmount(),
+	                    techStepsPerPage: techStepStore_1.default.getTechStepsPerPage()
+	                });
+	            };
+	            this.changeCurrent = function (techStep) {
+	                _this.setState({
+	                    techSteps: _this.state.techSteps,
+	                    currentTechStep: techStep,
+	                    isConfirmDeleting: _this.state.isConfirmDeleting,
+	                    techStepAmount: _this.state.techStepAmount,
+	                    techStepsPerPage: _this.state.techStepsPerPage
+	                });
+	            };
+	            this.techStepRowDoubleClick = function (techStep) {
+	                navigationManager_1.default.openTechStepEditor(techStep.id);
+	            };
+	            this.newTechStepBtnClickHandler = function () {
+	                navigationManager_1.default.openTechStepEditor(0);
+	            };
+	            this.handleDeleteSuccess = function () {
+	                techStepActions_1.default.remove(_this.state.currentTechStep.id);
+	            };
+	            this.handleDeleteCancel = function () {
+	                _this.setState({
+	                    techSteps: _this.state.techSteps,
+	                    currentTechStep: _this.state.currentTechStep,
+	                    isConfirmDeleting: !_this.state.isConfirmDeleting,
+	                    techStepAmount: _this.state.techStepAmount,
+	                    techStepsPerPage: _this.state.techStepsPerPage
+	                });
+	            };
+	            this.handleTechStepsPerPageChange = function (techStepsPerPage) {
+	                pageParamsManager_1.default.changePageSize(techStepsPerPage);
+	                techStepActions_1.default.changeTechStepsPerPage(techStepsPerPage);
+	            };
+	            this.handleTechStepPageChange = function (page) {
+	                pageParamsManager_1.default.changePage(page);
+	                techStepActions_1.default.changeTechStepPage(page);
+	            };
+	            this.handleTechStepSearchTextChange = function (text) {
+	                pageParamsManager_1.default.changeSearchText(text);
+	                techStepActions_1.default.changeTechStepSearchText(text);
+	            };
+	            this.refreshBtnClickHandler = function (text) {
+	                techStepActions_1.default.init(pageParamsManager_1.default.getPage(), pageParamsManager_1.default.getPageSize(), pageParamsManager_1.default.getSearchText());
+	                _this.setState({
+	                    techSteps: [],
+	                    currentTechStep: null,
+	                    isConfirmDeleting: false,
+	                    techStepAmount: 0,
+	                    techStepsPerPage: _this.state.techStepsPerPage
+	                });
+	            };
+	            this.props = props;
+	            this.context = context;
+	            this.state = {
+	                techSteps: [],
+	                currentTechStep: null,
+	                isConfirmDeleting: false,
+	                techStepAmount: 0,
+	                techStepsPerPage: pageConstants_1.default.ITEMS_PER_PAGE_INIT
+	            };
+	        }
+	        TechStepList.prototype.componentWillMount = function () {
+	            techStepStore_1.default.addChangeTechStepsListener(this.handleTechStepsChange);
+	        };
+	        TechStepList.prototype.componentWillUnmount = function () {
+	            techStepStore_1.default.removeChangeTechStepsListener(this.handleTechStepsChange);
+	        };
+	        TechStepList.prototype.componentDidMount = function () {
+	            techStepActions_1.default.init(pageParamsManager_1.default.getPage(), pageParamsManager_1.default.getPageSize(), pageParamsManager_1.default.getSearchText());
+	        };
+	        TechStepList.prototype.render = function () {
+	            var techStepRows = [];
+	            for (var key in this.state.techSteps) {
+	                var techStep = this.state.techSteps[key];
+	                techStepRows.push(React.createElement(tableRow_1.default, {key: key, item: techStep, isCurrent: this.state.currentTechStep == techStep, changeCurrent: this.changeCurrent, rowDoubleClickHandler: this.techStepRowDoubleClick}, React.createElement("td", {style: { width: 25 + '%' }}, techStep.id), React.createElement("td", {style: { width: 75 + '%' }}, techStep.description)));
+	            }
+	            return (React.createElement("div", {className: "panel panel-default inner", style: { marginBottom: 0 + 'px', display: 'flex', flexDirection: 'column' }}, React.createElement("div", {className: "panel-heading"}, React.createElement("h4", null, "Технологические шаги")), React.createElement("div", {className: "panel-body", style: { display: 'flex', flexDirection: 'column' }}, this.state.isConfirmDeleting ?
+	                React.createElement(confirmDelete_1.default, {id: this.state.currentTechStep.id, title: "Подтверждение удаления технологического шага", message: "Вы действительно хотите удалить технологический шаг " + this.state.currentTechStep.description, success: this.handleDeleteSuccess, cancel: this.handleDeleteCancel})
+	                :
+	                    React.createElement("div", {className: "input-group"}, React.createElement("div", {className: "input-group-btn"}, React.createElement("button", {className: "btn btn-default", type: "button", onClick: this.newTechStepBtnClickHandler}, React.createElement("span", {className: "glyphicon glyphicon-plus"})), React.createElement("button", {className: "btn btn-default", type: "button", onClick: function () { this.setState({ currentTechStep: this.state.currentTechStep, isConfirmDeleting: true }); }.bind(this)}, React.createElement("span", {className: "glyphicon glyphicon-trash"})), React.createElement("button", {className: "btn btn-default", type: "button", onClick: this.refreshBtnClickHandler}, React.createElement("span", {className: "glyphicon glyphicon-refresh"}))), React.createElement(searchInput_1.default, {text: "Поиск...", onChange: function (text) { this.handleTechStepSearchTextChange(text); }.bind(this)}), React.createElement(itemsPerPageSelector_1.default, {onChange: this.handleTechStepsPerPageChange})), React.createElement("div", {style: { marginBottom: 10 + 'px', display: 'flex', flexDirection: 'column' }}, React.createElement("div", {style: { overflowY: 'auto' }}, React.createElement("table", {className: "table table-bordered", style: { marginBottom: 1 + 'px' }}, React.createElement("thead", null, React.createElement("tr", null, React.createElement("th", {style: { width: 25 + '%' }}, "ID"), React.createElement("th", {style: { width: 75 + '%' }}, "Наименование"))), React.createElement("tbody", null, techStepRows)))), React.createElement(pagination_1.default, {itemAmount: this.state.techStepAmount, itemsPerPage: this.state.techStepsPerPage, firstSymbol: '«', nextSymbol: '›', prevSymbol: '‹', lastSymbol: '»', updatePage: this.handleTechStepPageChange}))));
+	        };
+	        return TechStepList;
+	    }(React.Component));
+	    Object.defineProperty(exports, "__esModule", { value: true });
+	    exports.default = TechStepList;
+	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	//# sourceMappingURL=techStepList.js.map
+
+/***/ },
+/* 42 */
+/*!**************************************************!*\
+  !*** ./Scripts/app/flux/stores/techStepStore.js ***!
+  \**************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/// <reference path="../../../typings/tsd.d.ts" />
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! jquery */ 17), __webpack_require__(/*! ../dispatcher/appDispatcher */ 5), __webpack_require__(/*! ../actions/actionSourceTypes */ 7), __webpack_require__(/*! ../actions/techStepActionTypes */ 43), __webpack_require__(/*! ../actions/errorActions */ 15), __webpack_require__(/*! ../../constants/pageConstants */ 11), __webpack_require__(/*! ../../managers/navigationManager */ 12), __webpack_require__(/*! object-assign */ 18), __webpack_require__(/*! eventemitter3 */ 19)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, $, appDispatcher_1, actionSourceTypes_1, techStepActionTypes_1, errorActions_1, pageConstants_1, navigationManager_1, assign, EventEmitter) {
+	    "use strict";
+	    var CHANGE_TECHSTEPS_EVENT = 'change_techSteps';
+	    var CHANGE_EDITTECHSTEP_EVENT = 'change_edittechStep';
+	    var _techSteps = new Array();
+	    var _techStep;
+	    var _techStepSearchText = "";
+	    var _totalTechStepAmount = 0;
+	    var _techStepsPerPage = pageConstants_1.default.ITEMS_PER_PAGE_INIT;
+	    var _currentTechStepPage = 0;
+	    function _loadTechSteps() {
+	        $.get(location.origin + "/api/techSteps?search=" + _techStepSearchText + "&page=" + _currentTechStepPage + "&pageSize=" + _techStepsPerPage, function (techStepListModel) {
+	            _totalTechStepAmount = techStepListModel.techStepAmount;
+	            _techSteps = new Array();
+	            techStepListModel.techSteps.forEach(function (techStep) {
+	                _techSteps[techStep.id] = techStep;
+	            });
+	            TechStepStore.emitChangeTechSteps();
+	        });
+	    }
+	    function _loadTechStep(id) {
+	        if (id == 0) {
+	            _techStep = { id: 0, description: "", toolUsages: [] };
+	            TechStepStore.emitChangeEditTechStep();
+	            return;
+	        }
+	        if (_techSteps[id]) {
+	            _techStep = _techSteps[id];
+	            TechStepStore.emitChangeEditTechStep();
+	        }
+	        else {
+	            $.ajax({
+	                url: location.origin + "/api/techSteps/" + id,
+	                type: 'GET',
+	                success: function (techStep) {
+	                    _techStep = techStep;
+	                    TechStepStore.emitChangeEditTechStep();
+	                },
+	                error: function (data) {
+	                    errorActions_1.default.received(data.responseJSON);
+	                }
+	            });
+	        }
+	    }
+	    function _addTechStep(techStep) {
+	        $.ajax({
+	            url: location.origin + '/api/techSteps',
+	            dataType: 'json',
+	            type: 'PUT',
+	            data: {
+	                id: techStep.id,
+	                __RequestVerificationToken: antiForgeryToken
+	            },
+	            success: function (techStep) {
+	                _techStep = techStep;
+	                if (_techSteps[techStep.id]) {
+	                    _techSteps[techStep.id] = assign({}, _techSteps[techStep.id], techStep);
+	                    TechStepStore.emitChangeTechSteps();
+	                }
+	                navigationManager_1.default.openTechStepEditor(techStep.id);
+	            },
+	            error: function (xhr, status, err) {
+	                console.error(this.props.url, status, err.toString());
+	            }.bind(this)
+	        });
+	    }
+	    function _deleteTechStep(id) {
+	        $.ajax({
+	            url: location.origin + '/api/techSteps/' + id,
+	            dataType: 'json',
+	            type: 'DELETE',
+	            data: { __RequestVerificationToken: antiForgeryToken },
+	            success: function (id) {
+	                _loadTechSteps();
+	            },
+	            error: function (xhr, status, err) {
+	                console.error(this.props.url, status, err.toString());
+	            }
+	        });
+	    }
+	    function _updateTechStep(techStep) {
+	        $.ajax({
+	            url: location.origin + '/api/techSteps',
+	            dataType: 'json',
+	            type: 'POST',
+	            data: {
+	                id: techStep.id,
+	                __RequestVerificationToken: antiForgeryToken
+	            },
+	            success: function (techStep) {
+	                if (_techSteps[techStep.id]) {
+	                    _techSteps[techStep.id] = assign({}, _techSteps[techStep.id], techStep);
+	                    TechStepStore.emitChangeTechSteps();
+	                }
+	            },
+	            error: function (xhr, status, err) {
+	                console.error(this.props.url, status, err.toString());
+	            }
+	        });
+	    }
+	    function _init(currentPage, techStepsPerPage, searchText) {
+	        _techStepsPerPage = techStepsPerPage;
+	        _currentTechStepPage = currentPage;
+	        _techStepSearchText = searchText;
+	        _loadTechSteps();
+	    }
+	    var TechStepStoreStatic = (function (_super) {
+	        __extends(TechStepStoreStatic, _super);
+	        function TechStepStoreStatic() {
+	            _super.apply(this, arguments);
+	        }
+	        TechStepStoreStatic.prototype.getAll = function () {
+	            return _techSteps;
+	        };
+	        TechStepStoreStatic.prototype.getTechStepAmount = function () {
+	            return _totalTechStepAmount;
+	        };
+	        TechStepStoreStatic.prototype.getTechStepsPerPage = function () {
+	            return _techStepsPerPage;
+	        };
+	        TechStepStoreStatic.prototype.getEditTechStep = function () {
+	            return _techStep;
+	        };
+	        TechStepStoreStatic.prototype.emitChangeTechSteps = function () {
+	            this.emit(CHANGE_TECHSTEPS_EVENT);
+	        };
+	        TechStepStoreStatic.prototype.emitChangeEditTechStep = function () {
+	            this.emit(CHANGE_EDITTECHSTEP_EVENT);
+	        };
+	        /**
+	         * @param {function} callback
+	         */
+	        TechStepStoreStatic.prototype.addChangeEditTechStepListener = function (callback) {
+	            this.on(CHANGE_EDITTECHSTEP_EVENT, callback);
+	        };
+	        /**
+	         * @param {function} callback
+	         */
+	        TechStepStoreStatic.prototype.removeChangeEditTechStepListener = function (callback) {
+	            this.removeListener(CHANGE_EDITTECHSTEP_EVENT, callback);
+	        };
+	        /**
+	         * @param {function} callback
+	         */
+	        TechStepStoreStatic.prototype.addChangeTechStepsListener = function (callback) {
+	            this.on(CHANGE_TECHSTEPS_EVENT, callback);
+	        };
+	        /**
+	         * @param {function} callback
+	         */
+	        TechStepStoreStatic.prototype.removeChangeTechStepsListener = function (callback) {
+	            this.removeListener(CHANGE_TECHSTEPS_EVENT, callback);
+	        };
+	        return TechStepStoreStatic;
+	    }(EventEmitter));
+	    var TechStepStore = new TechStepStoreStatic();
+	    appDispatcher_1.default.register(function (payload) {
+	        if (payload.actionSource != actionSourceTypes_1.default.TECHSTEP)
+	            return;
+	        switch (payload.actionType) {
+	            case techStepActionTypes_1.default.TECHSTEP_INIT:
+	                _init(payload.currentPage, payload.pageSize, payload.searchText);
+	                break;
+	            case techStepActionTypes_1.default.TECHSTEP_LOAD_EDIT:
+	                _loadTechStep(payload.id);
+	                break;
+	            case techStepActionTypes_1.default.TECHSTEP_CREATE:
+	                _addTechStep(payload.techStep);
+	                break;
+	            case techStepActionTypes_1.default.TECHSTEP_UPDATE:
+	                _updateTechStep(payload.techStep);
+	                break;
+	            case techStepActionTypes_1.default.TECHSTEP_DELETE:
+	                _deleteTechStep(payload.id);
+	                break;
+	            case techStepActionTypes_1.default.TECHSTEP_PAGE_CHANGE:
+	                _currentTechStepPage = payload.currentPage;
+	                _loadTechSteps();
+	                break;
+	            case techStepActionTypes_1.default.TECHSTEPS_PER_PAGE_CHANGE:
+	                _techStepsPerPage = payload.pageSize;
+	                _loadTechSteps();
+	                break;
+	            case techStepActionTypes_1.default.TECHSTEP_SEARCH_TEXT_CHANGE:
+	                _techStepSearchText = payload.searchText;
+	                _loadTechSteps();
+	                break;
+	            default:
+	        }
+	    });
+	    Object.defineProperty(exports, "__esModule", { value: true });
+	    exports.default = TechStepStore;
+	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	//# sourceMappingURL=techStepStore.js.map
+
+/***/ },
+/* 43 */
+/*!*********************************************************!*\
+  !*** ./Scripts/app/flux/actions/techStepActionTypes.js ***!
+  \*********************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports) {
+	    "use strict";
+	    var TechStepActionTypes;
+	    (function (TechStepActionTypes) {
+	        TechStepActionTypes[TechStepActionTypes["TECHSTEP_INIT"] = 0] = "TECHSTEP_INIT";
+	        TechStepActionTypes[TechStepActionTypes["TECHSTEP_LOAD_EDIT"] = 1] = "TECHSTEP_LOAD_EDIT";
+	        TechStepActionTypes[TechStepActionTypes["TECHSTEP_CREATE"] = 2] = "TECHSTEP_CREATE";
+	        TechStepActionTypes[TechStepActionTypes["TECHSTEP_DELETE"] = 3] = "TECHSTEP_DELETE";
+	        TechStepActionTypes[TechStepActionTypes["TECHSTEP_UPDATE"] = 4] = "TECHSTEP_UPDATE";
+	        TechStepActionTypes[TechStepActionTypes["TECHSTEP_PAGE_CHANGE"] = 5] = "TECHSTEP_PAGE_CHANGE";
+	        TechStepActionTypes[TechStepActionTypes["TECHSTEPS_PER_PAGE_CHANGE"] = 6] = "TECHSTEPS_PER_PAGE_CHANGE";
+	        TechStepActionTypes[TechStepActionTypes["TECHSTEP_SEARCH_TEXT_CHANGE"] = 7] = "TECHSTEP_SEARCH_TEXT_CHANGE";
+	    })(TechStepActionTypes || (TechStepActionTypes = {}));
+	    Object.defineProperty(exports, "__esModule", { value: true });
+	    exports.default = TechStepActionTypes;
+	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	//# sourceMappingURL=techStepActionTypes.js.map
+
+/***/ },
+/* 44 */
+/*!*****************************************************!*\
+  !*** ./Scripts/app/flux/actions/techStepActions.js ***!
+  \*****************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/// <reference path="../../../typings/tsd.d.ts" />
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! ../dispatcher/appDispatcher */ 5), __webpack_require__(/*! ./actionSourceTypes */ 7), __webpack_require__(/*! ./techStepActionTypes */ 43)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, appDispatcher_1, actionSourceTypes_1, techStepActionTypes_1) {
+	    "use strict";
+	    var TechStepActionsStatic = (function () {
+	        function TechStepActionsStatic() {
+	        }
+	        TechStepActionsStatic.prototype.init = function (currentPage, pageSize, searchText) {
+	            appDispatcher_1.default.dispatch({
+	                actionType: techStepActionTypes_1.default.TECHSTEP_INIT,
+	                actionSource: actionSourceTypes_1.default.TECHSTEP,
+	                currentPage: currentPage,
+	                pageSize: pageSize,
+	                searchText: searchText
+	            });
+	        };
+	        TechStepActionsStatic.prototype.loadEditTechStep = function (id) {
+	            appDispatcher_1.default.dispatch({
+	                actionType: techStepActionTypes_1.default.TECHSTEP_LOAD_EDIT,
+	                actionSource: actionSourceTypes_1.default.TECHSTEP,
+	                id: id
+	            });
+	        };
+	        TechStepActionsStatic.prototype.create = function (techStep) {
+	            appDispatcher_1.default.dispatch({
+	                actionType: techStepActionTypes_1.default.TECHSTEP_CREATE,
+	                actionSource: actionSourceTypes_1.default.TECHSTEP,
+	                techStep: techStep
+	            });
+	        };
+	        TechStepActionsStatic.prototype.update = function (techStep) {
+	            appDispatcher_1.default.dispatch({
+	                actionType: techStepActionTypes_1.default.TECHSTEP_UPDATE,
+	                actionSource: actionSourceTypes_1.default.TECHSTEP,
+	                techStep: techStep
+	            });
+	        };
+	        TechStepActionsStatic.prototype.remove = function (id) {
+	            appDispatcher_1.default.dispatch({
+	                actionType: techStepActionTypes_1.default.TECHSTEP_DELETE,
+	                actionSource: actionSourceTypes_1.default.TECHSTEP,
+	                id: id
+	            });
+	        };
+	        TechStepActionsStatic.prototype.changeTechStepPage = function (page) {
+	            appDispatcher_1.default.dispatch({
+	                actionType: techStepActionTypes_1.default.TECHSTEP_PAGE_CHANGE,
+	                actionSource: actionSourceTypes_1.default.TECHSTEP,
+	                currentPage: page
+	            });
+	        };
+	        TechStepActionsStatic.prototype.changeTechStepsPerPage = function (techStepsPerPage) {
+	            appDispatcher_1.default.dispatch({
+	                actionType: techStepActionTypes_1.default.TECHSTEPS_PER_PAGE_CHANGE,
+	                actionSource: actionSourceTypes_1.default.TECHSTEP,
+	                pageSize: techStepsPerPage
+	            });
+	        };
+	        TechStepActionsStatic.prototype.changeTechStepSearchText = function (text) {
+	            appDispatcher_1.default.dispatch({
+	                actionType: techStepActionTypes_1.default.TECHSTEP_SEARCH_TEXT_CHANGE,
+	                actionSource: actionSourceTypes_1.default.TECHSTEP,
+	                searchText: text
+	            });
+	        };
+	        return TechStepActionsStatic;
+	    }());
+	    var TechStepActions = new TechStepActionsStatic();
+	    Object.defineProperty(exports, "__esModule", { value: true });
+	    exports.default = TechStepActions;
+	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	//# sourceMappingURL=techStepActions.js.map
+
+/***/ },
+/* 45 */
+/*!*****************************************************!*\
+  !*** ./Scripts/app/components/techOperationList.js ***!
+  \*****************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/// <reference path="../../typings/tsd.d.ts" />
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ../flux/stores/techOperationStore */ 46), __webpack_require__(/*! ../constants/pageConstants */ 11), __webpack_require__(/*! ../flux/actions/techOperationActions */ 48), __webpack_require__(/*! ../managers/pageParamsManager */ 9), __webpack_require__(/*! ../managers/navigationManager */ 12), __webpack_require__(/*! ./common/tableRow */ 20), __webpack_require__(/*! ./common/confirmDelete */ 21), __webpack_require__(/*! ./common/pagination */ 22), __webpack_require__(/*! ./common/searchInput */ 24), __webpack_require__(/*! ./common/itemsPerPageSelector */ 25)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, techOperationStore_1, pageConstants_1, techOperationActions_1, pageParamsManager_1, navigationManager_1, tableRow_1, confirmDelete_1, pagination_1, searchInput_1, itemsPerPageSelector_1) {
+	    "use strict";
+	    var TechOperationList = (function (_super) {
+	        __extends(TechOperationList, _super);
+	        function TechOperationList(props, context) {
+	            var _this = this;
+	            _super.call(this, props, context);
+	            this.handleTechOperationsChange = function () {
+	                _this.setState({
+	                    techOperations: techOperationStore_1.default.getAll(),
+	                    currentTechOperation: null,
+	                    isConfirmDeleting: false,
+	                    techOperationAmount: techOperationStore_1.default.getTechOperationAmount(),
+	                    techOperationsPerPage: techOperationStore_1.default.getTechOperationsPerPage()
+	                });
+	            };
+	            this.changeCurrent = function (techOperation) {
+	                _this.setState({
+	                    techOperations: _this.state.techOperations,
+	                    currentTechOperation: techOperation,
+	                    isConfirmDeleting: _this.state.isConfirmDeleting,
+	                    techOperationAmount: _this.state.techOperationAmount,
+	                    techOperationsPerPage: _this.state.techOperationsPerPage
+	                });
+	            };
+	            this.techOperationRowDoubleClick = function (techOperation) {
+	                navigationManager_1.default.openTechOperationEditor(techOperation.id);
+	            };
+	            this.newTechOperationBtnClickHandler = function () {
+	                navigationManager_1.default.openTechOperationEditor(0);
+	            };
+	            this.handleDeleteSuccess = function () {
+	                techOperationActions_1.default.remove(_this.state.currentTechOperation.id);
+	            };
+	            this.handleDeleteCancel = function () {
+	                _this.setState({
+	                    techOperations: _this.state.techOperations,
+	                    currentTechOperation: _this.state.currentTechOperation,
+	                    isConfirmDeleting: !_this.state.isConfirmDeleting,
+	                    techOperationAmount: _this.state.techOperationAmount,
+	                    techOperationsPerPage: _this.state.techOperationsPerPage
+	                });
+	            };
+	            this.handleTechOperationsPerPageChange = function (techOperationsPerPage) {
+	                pageParamsManager_1.default.changePageSize(techOperationsPerPage);
+	                techOperationActions_1.default.changeTechOperationsPerPage(techOperationsPerPage);
+	            };
+	            this.handleTechOperationPageChange = function (page) {
+	                pageParamsManager_1.default.changePage(page);
+	                techOperationActions_1.default.changeTechOperationPage(page);
+	            };
+	            this.handleTechOperationSearchTextChange = function (text) {
+	                pageParamsManager_1.default.changeSearchText(text);
+	                techOperationActions_1.default.changeTechOperationSearchText(text);
+	            };
+	            this.refreshBtnClickHandler = function (text) {
+	                techOperationActions_1.default.init(pageParamsManager_1.default.getPage(), pageParamsManager_1.default.getPageSize(), pageParamsManager_1.default.getSearchText());
+	                _this.setState({
+	                    techOperations: [],
+	                    currentTechOperation: null,
+	                    isConfirmDeleting: false,
+	                    techOperationAmount: 0,
+	                    techOperationsPerPage: _this.state.techOperationsPerPage
+	                });
+	            };
+	            this.props = props;
+	            this.context = context;
+	            this.state = {
+	                techOperations: [],
+	                currentTechOperation: null,
+	                isConfirmDeleting: false,
+	                techOperationAmount: 0,
+	                techOperationsPerPage: pageConstants_1.default.ITEMS_PER_PAGE_INIT
+	            };
+	        }
+	        TechOperationList.prototype.componentWillMount = function () {
+	            techOperationStore_1.default.addChangeTechOperationsListener(this.handleTechOperationsChange);
+	        };
+	        TechOperationList.prototype.componentWillUnmount = function () {
+	            techOperationStore_1.default.removeChangeTechOperationsListener(this.handleTechOperationsChange);
+	        };
+	        TechOperationList.prototype.componentDidMount = function () {
+	            techOperationActions_1.default.init(pageParamsManager_1.default.getPage(), pageParamsManager_1.default.getPageSize(), pageParamsManager_1.default.getSearchText());
+	        };
+	        TechOperationList.prototype.render = function () {
+	            var techOperationRows = [];
+	            for (var key in this.state.techOperations) {
+	                var techOperation = this.state.techOperations[key];
+	                techOperationRows.push(React.createElement(tableRow_1.default, {key: key, item: techOperation, isCurrent: this.state.currentTechOperation == techOperation, changeCurrent: this.changeCurrent, rowDoubleClickHandler: this.techOperationRowDoubleClick}, React.createElement("td", {style: { width: 25 + '%' }}, techOperation.id), React.createElement("td", {style: { width: 75 + '%' }}, techOperation.name)));
+	            }
+	            return (React.createElement("div", {className: "panel panel-default inner", style: { marginBottom: 0 + 'px', display: 'flex', flexDirection: 'column' }}, React.createElement("div", {className: "panel-heading"}, React.createElement("h4", null, "Технологические операции")), React.createElement("div", {className: "panel-body", style: { display: 'flex', flexDirection: 'column' }}, this.state.isConfirmDeleting ?
+	                React.createElement(confirmDelete_1.default, {id: this.state.currentTechOperation.id, title: "Подтверждение удаления технологической операции", message: "Вы действительно хотите удалить технологическую операцию " + this.state.currentTechOperation.name, success: this.handleDeleteSuccess, cancel: this.handleDeleteCancel})
+	                :
+	                    React.createElement("div", {className: "input-group"}, React.createElement("div", {className: "input-group-btn"}, React.createElement("button", {className: "btn btn-default", type: "button", onClick: this.newTechOperationBtnClickHandler}, React.createElement("span", {className: "glyphicon glyphicon-plus"})), React.createElement("button", {className: "btn btn-default", type: "button", onClick: function () { this.setState({ currentTechOperation: this.state.currentTechOperation, isConfirmDeleting: true }); }.bind(this)}, React.createElement("span", {className: "glyphicon glyphicon-trash"})), React.createElement("button", {className: "btn btn-default", type: "button", onClick: this.refreshBtnClickHandler}, React.createElement("span", {className: "glyphicon glyphicon-refresh"}))), React.createElement(searchInput_1.default, {text: "Поиск...", onChange: function (text) { this.handleTechOperationSearchTextChange(text); }.bind(this)}), React.createElement(itemsPerPageSelector_1.default, {onChange: this.handleTechOperationsPerPageChange})), React.createElement("div", {style: { marginBottom: 10 + 'px', display: 'flex', flexDirection: 'column' }}, React.createElement("div", {style: { overflowY: 'auto' }}, React.createElement("table", {className: "table table-bordered", style: { marginBottom: 1 + 'px' }}, React.createElement("thead", null, React.createElement("tr", null, React.createElement("th", {style: { width: 25 + '%' }}, "ID"), React.createElement("th", {style: { width: 75 + '%' }}, "Наименование"))), React.createElement("tbody", null, techOperationRows)))), React.createElement(pagination_1.default, {itemAmount: this.state.techOperationAmount, itemsPerPage: this.state.techOperationsPerPage, firstSymbol: '«', nextSymbol: '›', prevSymbol: '‹', lastSymbol: '»', updatePage: this.handleTechOperationPageChange}))));
+	        };
+	        return TechOperationList;
+	    }(React.Component));
+	    Object.defineProperty(exports, "__esModule", { value: true });
+	    exports.default = TechOperationList;
+	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	//# sourceMappingURL=techOperationList.js.map
+
+/***/ },
+/* 46 */
+/*!*******************************************************!*\
+  !*** ./Scripts/app/flux/stores/techOperationStore.js ***!
+  \*******************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/// <reference path="../../../typings/tsd.d.ts" />
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! jquery */ 17), __webpack_require__(/*! ../dispatcher/appDispatcher */ 5), __webpack_require__(/*! ../actions/actionSourceTypes */ 7), __webpack_require__(/*! ../actions/techOperationActionTypes */ 47), __webpack_require__(/*! ../actions/errorActions */ 15), __webpack_require__(/*! ../../constants/pageConstants */ 11), __webpack_require__(/*! ../../managers/navigationManager */ 12), __webpack_require__(/*! object-assign */ 18), __webpack_require__(/*! eventemitter3 */ 19)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, $, appDispatcher_1, actionSourceTypes_1, techOperationActionTypes_1, errorActions_1, pageConstants_1, navigationManager_1, assign, EventEmitter) {
+	    "use strict";
+	    var CHANGE_TECHOPERATIONS_EVENT = 'change_techOperations';
+	    var CHANGE_EDITTECHOPERATION_EVENT = 'change_edittechOperation';
+	    var _techOperations = new Array();
+	    var _techOperation;
+	    var _techOperationSearchText = "";
+	    var _totalTechOperationAmount = 0;
+	    var _techOperationsPerPage = pageConstants_1.default.ITEMS_PER_PAGE_INIT;
+	    var _currentTechOperationPage = 0;
+	    function _loadTechOperations() {
+	        $.get(location.origin + "/api/techOperations?search=" + _techOperationSearchText + "&page=" + _currentTechOperationPage + "&pageSize=" + _techOperationsPerPage, function (techOperationListModel) {
+	            _totalTechOperationAmount = techOperationListModel.techOperationAmount;
+	            _techOperations = new Array();
+	            techOperationListModel.techOperations.forEach(function (techOperation) {
+	                _techOperations[techOperation.id] = techOperation;
+	            });
+	            TechOperationStore.emitChangeTechOperations();
+	        });
+	    }
+	    function _loadTechOperation(id) {
+	        if (id == 0) {
+	            _techOperation = { id: 0, name: "" };
+	            TechOperationStore.emitChangeEditTechOperation();
+	            return;
+	        }
+	        if (_techOperations[id]) {
+	            _techOperation = _techOperations[id];
+	            TechOperationStore.emitChangeEditTechOperation();
+	        }
+	        else {
+	            $.ajax({
+	                url: location.origin + "/api/techOperations/" + id,
+	                type: 'GET',
+	                success: function (techOperation) {
+	                    _techOperation = techOperation;
+	                    TechOperationStore.emitChangeEditTechOperation();
+	                },
+	                error: function (data) {
+	                    errorActions_1.default.received(data.responseJSON);
+	                }
+	            });
+	        }
+	    }
+	    function _addTechOperation(techOperation) {
+	        $.ajax({
+	            url: location.origin + '/api/techOperations',
+	            dataType: 'json',
+	            type: 'PUT',
+	            data: {
+	                id: techOperation.id,
+	                __RequestVerificationToken: antiForgeryToken
+	            },
+	            success: function (techOperation) {
+	                _techOperation = techOperation;
+	                if (_techOperations[techOperation.id]) {
+	                    _techOperations[techOperation.id] = assign({}, _techOperations[techOperation.id], techOperation);
+	                    TechOperationStore.emitChangeTechOperations();
+	                }
+	                navigationManager_1.default.openTechOperationEditor(techOperation.id);
+	            },
+	            error: function (xhr, status, err) {
+	                console.error(this.props.url, status, err.toString());
+	            }.bind(this)
+	        });
+	    }
+	    function _deleteTechOperation(id) {
+	        $.ajax({
+	            url: location.origin + '/api/techOperations/' + id,
+	            dataType: 'json',
+	            type: 'DELETE',
+	            data: { __RequestVerificationToken: antiForgeryToken },
+	            success: function (id) {
+	                _loadTechOperations();
+	            },
+	            error: function (xhr, status, err) {
+	                console.error(this.props.url, status, err.toString());
+	            }
+	        });
+	    }
+	    function _updateTechOperation(techOperation) {
+	        $.ajax({
+	            url: location.origin + '/api/techOperations',
+	            dataType: 'json',
+	            type: 'POST',
+	            data: {
+	                id: techOperation.id,
+	                __RequestVerificationToken: antiForgeryToken
+	            },
+	            success: function (techOperation) {
+	                if (_techOperations[techOperation.id]) {
+	                    _techOperations[techOperation.id] = assign({}, _techOperations[techOperation.id], techOperation);
+	                    TechOperationStore.emitChangeTechOperations();
+	                }
+	            },
+	            error: function (xhr, status, err) {
+	                console.error(this.props.url, status, err.toString());
+	            }
+	        });
+	    }
+	    function _init(currentPage, techOperationsPerPage, searchText) {
+	        _techOperationsPerPage = techOperationsPerPage;
+	        _currentTechOperationPage = currentPage;
+	        _techOperationSearchText = searchText;
+	        _loadTechOperations();
+	    }
+	    var TechOperationStoreStatic = (function (_super) {
+	        __extends(TechOperationStoreStatic, _super);
+	        function TechOperationStoreStatic() {
+	            _super.apply(this, arguments);
+	        }
+	        TechOperationStoreStatic.prototype.getAll = function () {
+	            return _techOperations;
+	        };
+	        TechOperationStoreStatic.prototype.getTechOperationAmount = function () {
+	            return _totalTechOperationAmount;
+	        };
+	        TechOperationStoreStatic.prototype.getTechOperationsPerPage = function () {
+	            return _techOperationsPerPage;
+	        };
+	        TechOperationStoreStatic.prototype.getEditTechOperation = function () {
+	            return _techOperation;
+	        };
+	        TechOperationStoreStatic.prototype.emitChangeTechOperations = function () {
+	            this.emit(CHANGE_TECHOPERATIONS_EVENT);
+	        };
+	        TechOperationStoreStatic.prototype.emitChangeEditTechOperation = function () {
+	            this.emit(CHANGE_EDITTECHOPERATION_EVENT);
+	        };
+	        /**
+	         * @param {function} callback
+	         */
+	        TechOperationStoreStatic.prototype.addChangeEditTechOperationListener = function (callback) {
+	            this.on(CHANGE_EDITTECHOPERATION_EVENT, callback);
+	        };
+	        /**
+	         * @param {function} callback
+	         */
+	        TechOperationStoreStatic.prototype.removeChangeEditTechOperationListener = function (callback) {
+	            this.removeListener(CHANGE_EDITTECHOPERATION_EVENT, callback);
+	        };
+	        /**
+	         * @param {function} callback
+	         */
+	        TechOperationStoreStatic.prototype.addChangeTechOperationsListener = function (callback) {
+	            this.on(CHANGE_TECHOPERATIONS_EVENT, callback);
+	        };
+	        /**
+	         * @param {function} callback
+	         */
+	        TechOperationStoreStatic.prototype.removeChangeTechOperationsListener = function (callback) {
+	            this.removeListener(CHANGE_TECHOPERATIONS_EVENT, callback);
+	        };
+	        return TechOperationStoreStatic;
+	    }(EventEmitter));
+	    var TechOperationStore = new TechOperationStoreStatic();
+	    appDispatcher_1.default.register(function (payload) {
+	        if (payload.actionSource != actionSourceTypes_1.default.TECHOPERATION)
+	            return;
+	        switch (payload.actionType) {
+	            case techOperationActionTypes_1.default.TECHOPERATION_INIT:
+	                _init(payload.currentPage, payload.pageSize, payload.searchText);
+	                break;
+	            case techOperationActionTypes_1.default.TECHOPERATION_LOAD_EDIT:
+	                _loadTechOperation(payload.id);
+	                break;
+	            case techOperationActionTypes_1.default.TECHOPERATION_CREATE:
+	                _addTechOperation(payload.techOperation);
+	                break;
+	            case techOperationActionTypes_1.default.TECHOPERATION_UPDATE:
+	                _updateTechOperation(payload.techOperation);
+	                break;
+	            case techOperationActionTypes_1.default.TECHOPERATION_DELETE:
+	                _deleteTechOperation(payload.id);
+	                break;
+	            case techOperationActionTypes_1.default.TECHOPERATION_PAGE_CHANGE:
+	                _currentTechOperationPage = payload.currentPage;
+	                _loadTechOperations();
+	                break;
+	            case techOperationActionTypes_1.default.TECHOPERATIONS_PER_PAGE_CHANGE:
+	                _techOperationsPerPage = payload.pageSize;
+	                _loadTechOperations();
+	                break;
+	            case techOperationActionTypes_1.default.TECHOPERATION_SEARCH_TEXT_CHANGE:
+	                _techOperationSearchText = payload.searchText;
+	                _loadTechOperations();
+	                break;
+	            default:
+	        }
+	    });
+	    Object.defineProperty(exports, "__esModule", { value: true });
+	    exports.default = TechOperationStore;
+	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	//# sourceMappingURL=techOperationStore.js.map
+
+/***/ },
+/* 47 */
+/*!**************************************************************!*\
+  !*** ./Scripts/app/flux/actions/techOperationActionTypes.js ***!
+  \**************************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports) {
+	    "use strict";
+	    var TechOperationActionTypes;
+	    (function (TechOperationActionTypes) {
+	        TechOperationActionTypes[TechOperationActionTypes["TECHOPERATION_INIT"] = 0] = "TECHOPERATION_INIT";
+	        TechOperationActionTypes[TechOperationActionTypes["TECHOPERATION_LOAD_EDIT"] = 1] = "TECHOPERATION_LOAD_EDIT";
+	        TechOperationActionTypes[TechOperationActionTypes["TECHOPERATION_CREATE"] = 2] = "TECHOPERATION_CREATE";
+	        TechOperationActionTypes[TechOperationActionTypes["TECHOPERATION_DELETE"] = 3] = "TECHOPERATION_DELETE";
+	        TechOperationActionTypes[TechOperationActionTypes["TECHOPERATION_UPDATE"] = 4] = "TECHOPERATION_UPDATE";
+	        TechOperationActionTypes[TechOperationActionTypes["TECHOPERATION_PAGE_CHANGE"] = 5] = "TECHOPERATION_PAGE_CHANGE";
+	        TechOperationActionTypes[TechOperationActionTypes["TECHOPERATIONS_PER_PAGE_CHANGE"] = 6] = "TECHOPERATIONS_PER_PAGE_CHANGE";
+	        TechOperationActionTypes[TechOperationActionTypes["TECHOPERATION_SEARCH_TEXT_CHANGE"] = 7] = "TECHOPERATION_SEARCH_TEXT_CHANGE";
+	    })(TechOperationActionTypes || (TechOperationActionTypes = {}));
+	    Object.defineProperty(exports, "__esModule", { value: true });
+	    exports.default = TechOperationActionTypes;
+	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	//# sourceMappingURL=techOperationActionTypes.js.map
+
+/***/ },
+/* 48 */
+/*!**********************************************************!*\
+  !*** ./Scripts/app/flux/actions/techOperationActions.js ***!
+  \**********************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/// <reference path="../../../typings/tsd.d.ts" />
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! ../dispatcher/appDispatcher */ 5), __webpack_require__(/*! ./actionSourceTypes */ 7), __webpack_require__(/*! ./techOperationActionTypes */ 47)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, appDispatcher_1, actionSourceTypes_1, techOperationActionTypes_1) {
+	    "use strict";
+	    var TechOperationActionsStatic = (function () {
+	        function TechOperationActionsStatic() {
+	        }
+	        TechOperationActionsStatic.prototype.init = function (currentPage, pageSize, searchText) {
+	            appDispatcher_1.default.dispatch({
+	                actionType: techOperationActionTypes_1.default.TECHOPERATION_INIT,
+	                actionSource: actionSourceTypes_1.default.TECHOPERATION,
+	                currentPage: currentPage,
+	                pageSize: pageSize,
+	                searchText: searchText
+	            });
+	        };
+	        TechOperationActionsStatic.prototype.loadEditTechOperation = function (id) {
+	            appDispatcher_1.default.dispatch({
+	                actionType: techOperationActionTypes_1.default.TECHOPERATION_LOAD_EDIT,
+	                actionSource: actionSourceTypes_1.default.TECHOPERATION,
+	                id: id
+	            });
+	        };
+	        TechOperationActionsStatic.prototype.create = function (techOperation) {
+	            appDispatcher_1.default.dispatch({
+	                actionType: techOperationActionTypes_1.default.TECHOPERATION_CREATE,
+	                actionSource: actionSourceTypes_1.default.TECHOPERATION,
+	                techOperation: techOperation
+	            });
+	        };
+	        TechOperationActionsStatic.prototype.update = function (techOperation) {
+	            appDispatcher_1.default.dispatch({
+	                actionType: techOperationActionTypes_1.default.TECHOPERATION_UPDATE,
+	                actionSource: actionSourceTypes_1.default.TECHOPERATION,
+	                techOperation: techOperation
+	            });
+	        };
+	        TechOperationActionsStatic.prototype.remove = function (id) {
+	            appDispatcher_1.default.dispatch({
+	                actionType: techOperationActionTypes_1.default.TECHOPERATION_DELETE,
+	                actionSource: actionSourceTypes_1.default.TECHOPERATION,
+	                id: id
+	            });
+	        };
+	        TechOperationActionsStatic.prototype.changeTechOperationPage = function (page) {
+	            appDispatcher_1.default.dispatch({
+	                actionType: techOperationActionTypes_1.default.TECHOPERATION_PAGE_CHANGE,
+	                actionSource: actionSourceTypes_1.default.TECHOPERATION,
+	                currentPage: page
+	            });
+	        };
+	        TechOperationActionsStatic.prototype.changeTechOperationsPerPage = function (techOperationsPerPage) {
+	            appDispatcher_1.default.dispatch({
+	                actionType: techOperationActionTypes_1.default.TECHOPERATIONS_PER_PAGE_CHANGE,
+	                actionSource: actionSourceTypes_1.default.TECHOPERATION,
+	                pageSize: techOperationsPerPage
+	            });
+	        };
+	        TechOperationActionsStatic.prototype.changeTechOperationSearchText = function (text) {
+	            appDispatcher_1.default.dispatch({
+	                actionType: techOperationActionTypes_1.default.TECHOPERATION_SEARCH_TEXT_CHANGE,
+	                actionSource: actionSourceTypes_1.default.TECHOPERATION,
+	                searchText: text
+	            });
+	        };
+	        return TechOperationActionsStatic;
+	    }());
+	    var TechOperationActions = new TechOperationActionsStatic();
+	    Object.defineProperty(exports, "__esModule", { value: true });
+	    exports.default = TechOperationActions;
+	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	//# sourceMappingURL=techOperationActions.js.map
+
+/***/ },
+/* 49 */
+/*!***************************************************!*\
+  !*** ./Scripts/app/components/techProcessList.js ***!
+  \***************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/// <reference path="../../typings/tsd.d.ts" />
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ../flux/stores/techProcessStore */ 50), __webpack_require__(/*! ../constants/pageConstants */ 11), __webpack_require__(/*! ../flux/actions/techProcessActions */ 52), __webpack_require__(/*! ../managers/pageParamsManager */ 9), __webpack_require__(/*! ../managers/navigationManager */ 12), __webpack_require__(/*! ./common/tableRow */ 20), __webpack_require__(/*! ./common/confirmDelete */ 21), __webpack_require__(/*! ./common/pagination */ 22), __webpack_require__(/*! ./common/searchInput */ 24), __webpack_require__(/*! ./common/itemsPerPageSelector */ 25)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, techProcessStore_1, pageConstants_1, techProcessActions_1, pageParamsManager_1, navigationManager_1, tableRow_1, confirmDelete_1, pagination_1, searchInput_1, itemsPerPageSelector_1) {
+	    "use strict";
+	    var TechProcessList = (function (_super) {
+	        __extends(TechProcessList, _super);
+	        function TechProcessList(props, context) {
+	            var _this = this;
+	            _super.call(this, props, context);
+	            this.handleTechProcessesChange = function () {
+	                _this.setState({
+	                    techProcesses: techProcessStore_1.default.getAll(),
+	                    currentTechProcess: null,
+	                    isConfirmDeleting: false,
+	                    techProcessAmount: techProcessStore_1.default.getTechProcessAmount(),
+	                    techProcessesPerPage: techProcessStore_1.default.getTechProcessesPerPage()
+	                });
+	            };
+	            this.changeCurrent = function (techProcess) {
+	                _this.setState({
+	                    techProcesses: _this.state.techProcesses,
+	                    currentTechProcess: techProcess,
+	                    isConfirmDeleting: _this.state.isConfirmDeleting,
+	                    techProcessAmount: _this.state.techProcessAmount,
+	                    techProcessesPerPage: _this.state.techProcessesPerPage
+	                });
+	            };
+	            this.techProcessRowDoubleClick = function (techProcess) {
+	                navigationManager_1.default.openTechProcessEditor(techProcess.id);
+	            };
+	            this.newTechProcessBtnClickHandler = function () {
+	                navigationManager_1.default.openTechProcessEditor(0);
+	            };
+	            this.handleDeleteSuccess = function () {
+	                techProcessActions_1.default.remove(_this.state.currentTechProcess.id);
+	            };
+	            this.handleDeleteCancel = function () {
+	                _this.setState({
+	                    techProcesses: _this.state.techProcesses,
+	                    currentTechProcess: _this.state.currentTechProcess,
+	                    isConfirmDeleting: !_this.state.isConfirmDeleting,
+	                    techProcessAmount: _this.state.techProcessAmount,
+	                    techProcessesPerPage: _this.state.techProcessesPerPage
+	                });
+	            };
+	            this.handleTechProcessesPerPageChange = function (techProcessesPerPage) {
+	                pageParamsManager_1.default.changePageSize(techProcessesPerPage);
+	                techProcessActions_1.default.changeTechProcessesPerPage(techProcessesPerPage);
+	            };
+	            this.handleTechProcessPageChange = function (page) {
+	                pageParamsManager_1.default.changePage(page);
+	                techProcessActions_1.default.changeTechProcessPage(page);
+	            };
+	            this.handleTechProcessSearchTextChange = function (text) {
+	                pageParamsManager_1.default.changeSearchText(text);
+	                techProcessActions_1.default.changeTechProcessSearchText(text);
+	            };
+	            this.refreshBtnClickHandler = function (text) {
+	                techProcessActions_1.default.init(pageParamsManager_1.default.getPage(), pageParamsManager_1.default.getPageSize(), pageParamsManager_1.default.getSearchText());
+	                _this.setState({
+	                    techProcesses: [],
+	                    currentTechProcess: null,
+	                    isConfirmDeleting: false,
+	                    techProcessAmount: 0,
+	                    techProcessesPerPage: _this.state.techProcessesPerPage
+	                });
+	            };
+	            this.props = props;
+	            this.context = context;
+	            this.state = {
+	                techProcesses: [],
+	                currentTechProcess: null,
+	                isConfirmDeleting: false,
+	                techProcessAmount: 0,
+	                techProcessesPerPage: pageConstants_1.default.ITEMS_PER_PAGE_INIT
+	            };
+	        }
+	        TechProcessList.prototype.componentWillMount = function () {
+	            techProcessStore_1.default.addChangeTechProcessesListener(this.handleTechProcessesChange);
+	        };
+	        TechProcessList.prototype.componentWillUnmount = function () {
+	            techProcessStore_1.default.removeChangeTechProcessesListener(this.handleTechProcessesChange);
+	        };
+	        TechProcessList.prototype.componentDidMount = function () {
+	            techProcessActions_1.default.init(pageParamsManager_1.default.getPage(), pageParamsManager_1.default.getPageSize(), pageParamsManager_1.default.getSearchText());
+	        };
+	        TechProcessList.prototype.render = function () {
+	            var techProcessRows = [];
+	            for (var key in this.state.techProcesses) {
+	                var techProcess = this.state.techProcesses[key];
+	                techProcessRows.push(React.createElement(tableRow_1.default, {key: key, item: techProcess, isCurrent: this.state.currentTechProcess == techProcess, changeCurrent: this.changeCurrent, rowDoubleClickHandler: this.techProcessRowDoubleClick}, React.createElement("td", {style: { width: 25 + '%' }}, techProcess.id), React.createElement("td", {style: { width: 75 + '%' }}, techProcess.name)));
+	            }
+	            return (React.createElement("div", {className: "panel panel-default inner", style: { marginBottom: 0 + 'px', display: 'flex', flexDirection: 'column' }}, React.createElement("div", {className: "panel-heading"}, React.createElement("h4", null, "Технологические процессы")), React.createElement("div", {className: "panel-body", style: { display: 'flex', flexDirection: 'column' }}, this.state.isConfirmDeleting ?
+	                React.createElement(confirmDelete_1.default, {id: this.state.currentTechProcess.id, title: "Подтверждение удаления технологического процесса", message: "Вы действительно хотите удалить технологический процесс " + this.state.currentTechProcess.name, success: this.handleDeleteSuccess, cancel: this.handleDeleteCancel})
+	                :
+	                    React.createElement("div", {className: "input-group"}, React.createElement("div", {className: "input-group-btn"}, React.createElement("button", {className: "btn btn-default", type: "button", onClick: this.newTechProcessBtnClickHandler}, React.createElement("span", {className: "glyphicon glyphicon-plus"})), React.createElement("button", {className: "btn btn-default", type: "button", onClick: function () { this.setState({ currentTechProcess: this.state.currentTechProcess, isConfirmDeleting: true }); }.bind(this)}, React.createElement("span", {className: "glyphicon glyphicon-trash"})), React.createElement("button", {className: "btn btn-default", type: "button", onClick: this.refreshBtnClickHandler}, React.createElement("span", {className: "glyphicon glyphicon-refresh"}))), React.createElement(searchInput_1.default, {text: "Поиск...", onChange: function (text) { this.handleTechProcessSearchTextChange(text); }.bind(this)}), React.createElement(itemsPerPageSelector_1.default, {onChange: this.handleTechProcessesPerPageChange})), React.createElement("div", {style: { marginBottom: 10 + 'px', display: 'flex', flexDirection: 'column' }}, React.createElement("div", {style: { overflowY: 'auto' }}, React.createElement("table", {className: "table table-bordered", style: { marginBottom: 1 + 'px' }}, React.createElement("thead", null, React.createElement("tr", null, React.createElement("th", {style: { width: 25 + '%' }}, "ID"), React.createElement("th", {style: { width: 75 + '%' }}, "Наименование"))), React.createElement("tbody", null, techProcessRows)))), React.createElement(pagination_1.default, {itemAmount: this.state.techProcessAmount, itemsPerPage: this.state.techProcessesPerPage, firstSymbol: '«', nextSymbol: '›', prevSymbol: '‹', lastSymbol: '»', updatePage: this.handleTechProcessPageChange}))));
+	        };
+	        return TechProcessList;
+	    }(React.Component));
+	    Object.defineProperty(exports, "__esModule", { value: true });
+	    exports.default = TechProcessList;
+	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	//# sourceMappingURL=techProcessList.js.map
+
+/***/ },
+/* 50 */
+/*!*****************************************************!*\
+  !*** ./Scripts/app/flux/stores/techProcessStore.js ***!
+  \*****************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/// <reference path="../../../typings/tsd.d.ts" />
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! jquery */ 17), __webpack_require__(/*! ../dispatcher/appDispatcher */ 5), __webpack_require__(/*! ../actions/actionSourceTypes */ 7), __webpack_require__(/*! ../actions/techProcessActionTypes */ 51), __webpack_require__(/*! ../actions/errorActions */ 15), __webpack_require__(/*! ../../constants/pageConstants */ 11), __webpack_require__(/*! ../../managers/navigationManager */ 12), __webpack_require__(/*! object-assign */ 18), __webpack_require__(/*! eventemitter3 */ 19)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, $, appDispatcher_1, actionSourceTypes_1, techProcessActionTypes_1, errorActions_1, pageConstants_1, navigationManager_1, assign, EventEmitter) {
+	    "use strict";
+	    var CHANGE_TECHPROCESSES_EVENT = 'change_techProcesses';
+	    var CHANGE_EDITTECHPROCESS_EVENT = 'change_edittechProcess';
+	    var _techProcesses = new Array();
+	    var _techProcess;
+	    var _techProcessSearchText = "";
+	    var _totalTechProcessAmount = 0;
+	    var _techProcessesPerPage = pageConstants_1.default.ITEMS_PER_PAGE_INIT;
+	    var _currentTechProcessPage = 0;
+	    function _loadTechProcesses() {
+	        $.get(location.origin + "/api/techProcesses?search=" + _techProcessSearchText + "&page=" + _currentTechProcessPage + "&pageSize=" + _techProcessesPerPage, function (techProcessListModel) {
+	            _totalTechProcessAmount = techProcessListModel.techProcessAmount;
+	            _techProcesses = new Array();
+	            techProcessListModel.techProcesses.forEach(function (techProcess) {
+	                _techProcesses[techProcess.id] = techProcess;
+	            });
+	            TechProcessStore.emitChangeTechProcesses();
+	        });
+	    }
+	    function _loadTechProcess(id) {
+	        if (id == 0) {
+	            _techProcess = { id: 0, name: "" };
+	            TechProcessStore.emitChangeEditTechProcess();
+	            return;
+	        }
+	        if (_techProcesses[id]) {
+	            _techProcess = _techProcesses[id];
+	            TechProcessStore.emitChangeEditTechProcess();
+	        }
+	        else {
+	            $.ajax({
+	                url: location.origin + "/api/techProcesses/" + id,
+	                type: 'GET',
+	                success: function (techProcess) {
+	                    _techProcess = techProcess;
+	                    TechProcessStore.emitChangeEditTechProcess();
+	                },
+	                error: function (data) {
+	                    errorActions_1.default.received(data.responseJSON);
+	                }
+	            });
+	        }
+	    }
+	    function _addTechProcess(techProcess) {
+	        $.ajax({
+	            url: location.origin + '/api/techProcesses',
+	            dataType: 'json',
+	            type: 'PUT',
+	            data: {
+	                id: techProcess.id,
+	                __RequestVerificationToken: antiForgeryToken
+	            },
+	            success: function (techProcess) {
+	                _techProcess = techProcess;
+	                if (_techProcesses[techProcess.id]) {
+	                    _techProcesses[techProcess.id] = assign({}, _techProcesses[techProcess.id], techProcess);
+	                    TechProcessStore.emitChangeTechProcesses();
+	                }
+	                navigationManager_1.default.openTechProcessEditor(techProcess.id);
+	            },
+	            error: function (xhr, status, err) {
+	                console.error(this.props.url, status, err.toString());
+	            }.bind(this)
+	        });
+	    }
+	    function _deleteTechProcess(id) {
+	        $.ajax({
+	            url: location.origin + '/api/techProcesses/' + id,
+	            dataType: 'json',
+	            type: 'DELETE',
+	            data: { __RequestVerificationToken: antiForgeryToken },
+	            success: function (id) {
+	                _loadTechProcesses();
+	            },
+	            error: function (xhr, status, err) {
+	                console.error(this.props.url, status, err.toString());
+	            }
+	        });
+	    }
+	    function _updateTechProcess(techProcess) {
+	        $.ajax({
+	            url: location.origin + '/api/techProcesses',
+	            dataType: 'json',
+	            type: 'POST',
+	            data: {
+	                id: techProcess.id,
+	                __RequestVerificationToken: antiForgeryToken
+	            },
+	            success: function (techProcess) {
+	                if (_techProcesses[techProcess.id]) {
+	                    _techProcesses[techProcess.id] = assign({}, _techProcesses[techProcess.id], techProcess);
+	                    TechProcessStore.emitChangeTechProcesses();
+	                }
+	            },
+	            error: function (xhr, status, err) {
+	                console.error(this.props.url, status, err.toString());
+	            }
+	        });
+	    }
+	    function _init(currentPage, techProcessesPerPage, searchText) {
+	        _techProcessesPerPage = techProcessesPerPage;
+	        _currentTechProcessPage = currentPage;
+	        _techProcessSearchText = searchText;
+	        _loadTechProcesses();
+	    }
+	    var TechProcessStoreStatic = (function (_super) {
+	        __extends(TechProcessStoreStatic, _super);
+	        function TechProcessStoreStatic() {
+	            _super.apply(this, arguments);
+	        }
+	        TechProcessStoreStatic.prototype.getAll = function () {
+	            return _techProcesses;
+	        };
+	        TechProcessStoreStatic.prototype.getTechProcessAmount = function () {
+	            return _totalTechProcessAmount;
+	        };
+	        TechProcessStoreStatic.prototype.getTechProcessesPerPage = function () {
+	            return _techProcessesPerPage;
+	        };
+	        TechProcessStoreStatic.prototype.getEditTechProcess = function () {
+	            return _techProcess;
+	        };
+	        TechProcessStoreStatic.prototype.emitChangeTechProcesses = function () {
+	            this.emit(CHANGE_TECHPROCESSES_EVENT);
+	        };
+	        TechProcessStoreStatic.prototype.emitChangeEditTechProcess = function () {
+	            this.emit(CHANGE_EDITTECHPROCESS_EVENT);
+	        };
+	        /**
+	         * @param {function} callback
+	         */
+	        TechProcessStoreStatic.prototype.addChangeEditTechProcessListener = function (callback) {
+	            this.on(CHANGE_EDITTECHPROCESS_EVENT, callback);
+	        };
+	        /**
+	         * @param {function} callback
+	         */
+	        TechProcessStoreStatic.prototype.removeChangeEditTechProcessListener = function (callback) {
+	            this.removeListener(CHANGE_EDITTECHPROCESS_EVENT, callback);
+	        };
+	        /**
+	         * @param {function} callback
+	         */
+	        TechProcessStoreStatic.prototype.addChangeTechProcessesListener = function (callback) {
+	            this.on(CHANGE_TECHPROCESSES_EVENT, callback);
+	        };
+	        /**
+	         * @param {function} callback
+	         */
+	        TechProcessStoreStatic.prototype.removeChangeTechProcessesListener = function (callback) {
+	            this.removeListener(CHANGE_TECHPROCESSES_EVENT, callback);
+	        };
+	        return TechProcessStoreStatic;
+	    }(EventEmitter));
+	    var TechProcessStore = new TechProcessStoreStatic();
+	    appDispatcher_1.default.register(function (payload) {
+	        if (payload.actionSource != actionSourceTypes_1.default.TECHPROCESS)
+	            return;
+	        switch (payload.actionType) {
+	            case techProcessActionTypes_1.default.TECHPROCESS_INIT:
+	                _init(payload.currentPage, payload.pageSize, payload.searchText);
+	                break;
+	            case techProcessActionTypes_1.default.TECHPROCESS_LOAD_EDIT:
+	                _loadTechProcess(payload.id);
+	                break;
+	            case techProcessActionTypes_1.default.TECHPROCESS_CREATE:
+	                _addTechProcess(payload.techProcess);
+	                break;
+	            case techProcessActionTypes_1.default.TECHPROCESS_UPDATE:
+	                _updateTechProcess(payload.techProcess);
+	                break;
+	            case techProcessActionTypes_1.default.TECHPROCESS_DELETE:
+	                _deleteTechProcess(payload.id);
+	                break;
+	            case techProcessActionTypes_1.default.TECHPROCESS_PAGE_CHANGE:
+	                _currentTechProcessPage = payload.currentPage;
+	                _loadTechProcesses();
+	                break;
+	            case techProcessActionTypes_1.default.TECHPROCESSES_PER_PAGE_CHANGE:
+	                _techProcessesPerPage = payload.pageSize;
+	                _loadTechProcesses();
+	                break;
+	            case techProcessActionTypes_1.default.TECHPROCESS_SEARCH_TEXT_CHANGE:
+	                _techProcessSearchText = payload.searchText;
+	                _loadTechProcesses();
+	                break;
+	            default:
+	        }
+	    });
+	    Object.defineProperty(exports, "__esModule", { value: true });
+	    exports.default = TechProcessStore;
+	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	//# sourceMappingURL=techProcessStore.js.map
+
+/***/ },
+/* 51 */
+/*!************************************************************!*\
+  !*** ./Scripts/app/flux/actions/techProcessActionTypes.js ***!
+  \************************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports) {
+	    "use strict";
+	    var TechProcessActionTypes;
+	    (function (TechProcessActionTypes) {
+	        TechProcessActionTypes[TechProcessActionTypes["TECHPROCESS_INIT"] = 0] = "TECHPROCESS_INIT";
+	        TechProcessActionTypes[TechProcessActionTypes["TECHPROCESS_LOAD_EDIT"] = 1] = "TECHPROCESS_LOAD_EDIT";
+	        TechProcessActionTypes[TechProcessActionTypes["TECHPROCESS_CREATE"] = 2] = "TECHPROCESS_CREATE";
+	        TechProcessActionTypes[TechProcessActionTypes["TECHPROCESS_DELETE"] = 3] = "TECHPROCESS_DELETE";
+	        TechProcessActionTypes[TechProcessActionTypes["TECHPROCESS_UPDATE"] = 4] = "TECHPROCESS_UPDATE";
+	        TechProcessActionTypes[TechProcessActionTypes["TECHPROCESS_PAGE_CHANGE"] = 5] = "TECHPROCESS_PAGE_CHANGE";
+	        TechProcessActionTypes[TechProcessActionTypes["TECHPROCESSES_PER_PAGE_CHANGE"] = 6] = "TECHPROCESSES_PER_PAGE_CHANGE";
+	        TechProcessActionTypes[TechProcessActionTypes["TECHPROCESS_SEARCH_TEXT_CHANGE"] = 7] = "TECHPROCESS_SEARCH_TEXT_CHANGE";
+	    })(TechProcessActionTypes || (TechProcessActionTypes = {}));
+	    Object.defineProperty(exports, "__esModule", { value: true });
+	    exports.default = TechProcessActionTypes;
+	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	//# sourceMappingURL=techProcessActionTypes.js.map
+
+/***/ },
+/* 52 */
+/*!********************************************************!*\
+  !*** ./Scripts/app/flux/actions/techProcessActions.js ***!
+  \********************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/// <reference path="../../../typings/tsd.d.ts" />
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! ../dispatcher/appDispatcher */ 5), __webpack_require__(/*! ./actionSourceTypes */ 7), __webpack_require__(/*! ./techProcessActionTypes */ 51)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, appDispatcher_1, actionSourceTypes_1, techProcessActionTypes_1) {
+	    "use strict";
+	    var TechProcessActionsStatic = (function () {
+	        function TechProcessActionsStatic() {
+	        }
+	        TechProcessActionsStatic.prototype.init = function (currentPage, pageSize, searchText) {
+	            appDispatcher_1.default.dispatch({
+	                actionType: techProcessActionTypes_1.default.TECHPROCESS_INIT,
+	                actionSource: actionSourceTypes_1.default.TECHPROCESS,
+	                currentPage: currentPage,
+	                pageSize: pageSize,
+	                searchText: searchText
+	            });
+	        };
+	        TechProcessActionsStatic.prototype.loadEditTechProcess = function (id) {
+	            appDispatcher_1.default.dispatch({
+	                actionType: techProcessActionTypes_1.default.TECHPROCESS_LOAD_EDIT,
+	                actionSource: actionSourceTypes_1.default.TECHPROCESS,
+	                id: id
+	            });
+	        };
+	        TechProcessActionsStatic.prototype.create = function (techProcess) {
+	            appDispatcher_1.default.dispatch({
+	                actionType: techProcessActionTypes_1.default.TECHPROCESS_CREATE,
+	                actionSource: actionSourceTypes_1.default.TECHPROCESS,
+	                techProcess: techProcess
+	            });
+	        };
+	        TechProcessActionsStatic.prototype.update = function (techProcess) {
+	            appDispatcher_1.default.dispatch({
+	                actionType: techProcessActionTypes_1.default.TECHPROCESS_UPDATE,
+	                actionSource: actionSourceTypes_1.default.TECHPROCESS,
+	                techProcess: techProcess
+	            });
+	        };
+	        TechProcessActionsStatic.prototype.remove = function (id) {
+	            appDispatcher_1.default.dispatch({
+	                actionType: techProcessActionTypes_1.default.TECHPROCESS_DELETE,
+	                actionSource: actionSourceTypes_1.default.TECHPROCESS,
+	                id: id
+	            });
+	        };
+	        TechProcessActionsStatic.prototype.changeTechProcessPage = function (page) {
+	            appDispatcher_1.default.dispatch({
+	                actionType: techProcessActionTypes_1.default.TECHPROCESS_PAGE_CHANGE,
+	                actionSource: actionSourceTypes_1.default.TECHPROCESS,
+	                currentPage: page
+	            });
+	        };
+	        TechProcessActionsStatic.prototype.changeTechProcessesPerPage = function (techProcesssPerPage) {
+	            appDispatcher_1.default.dispatch({
+	                actionType: techProcessActionTypes_1.default.TECHPROCESSES_PER_PAGE_CHANGE,
+	                actionSource: actionSourceTypes_1.default.TECHPROCESS,
+	                pageSize: techProcesssPerPage
+	            });
+	        };
+	        TechProcessActionsStatic.prototype.changeTechProcessSearchText = function (text) {
+	            appDispatcher_1.default.dispatch({
+	                actionType: techProcessActionTypes_1.default.TECHPROCESS_SEARCH_TEXT_CHANGE,
+	                actionSource: actionSourceTypes_1.default.TECHPROCESS,
+	                searchText: text
+	            });
+	        };
+	        return TechProcessActionsStatic;
+	    }());
+	    var TechProcessActions = new TechProcessActionsStatic();
+	    Object.defineProperty(exports, "__esModule", { value: true });
+	    exports.default = TechProcessActions;
+	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	//# sourceMappingURL=techProcessActions.js.map
+
+/***/ },
+/* 53 */
+/*!*************************************************!*\
+  !*** ./Scripts/app/components/componentType.js ***!
+  \*************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports) {
+	    "use strict";
+	    var ComponentType;
+	    (function (ComponentType) {
+	        ComponentType[ComponentType["MainPanel"] = 0] = "MainPanel";
+	        ComponentType[ComponentType["ToolListPanel"] = 1] = "ToolListPanel";
+	        ComponentType[ComponentType["PartListPanel"] = 2] = "PartListPanel";
+	        ComponentType[ComponentType["TechStepListPanel"] = 3] = "TechStepListPanel";
+	        ComponentType[ComponentType["TechOperationListPanel"] = 4] = "TechOperationListPanel";
+	        ComponentType[ComponentType["TechProcessListPanel"] = 5] = "TechProcessListPanel";
+	    })(ComponentType || (ComponentType = {}));
+	    Object.defineProperty(exports, "__esModule", { value: true });
+	    exports.default = ComponentType;
+	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	//# sourceMappingURL=componentType.js.map
+
+/***/ },
+/* 54 */
+/*!**********************************************************!*\
+  !*** ./Scripts/app/components/techProcessListSection.js ***!
+  \**********************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/// <reference path="../../typings/tsd.d.ts" />
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ./techProcessList */ 49)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, techProcessList_1) {
+	    "use strict";
+	    var ToolProcessListSection = (function (_super) {
+	        __extends(ToolProcessListSection, _super);
+	        function ToolProcessListSection() {
+	            _super.apply(this, arguments);
+	        }
+	        ToolProcessListSection.prototype.render = function () {
+	            return (React.createElement("div", {className: "outer"}, React.createElement(techProcessList_1.default, null), this.props.children));
+	        };
+	        return ToolProcessListSection;
+	    }(React.Component));
+	    Object.defineProperty(exports, "__esModule", { value: true });
+	    exports.default = ToolProcessListSection;
+	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	//# sourceMappingURL=techProcessListSection.js.map
+
+/***/ },
+/* 55 */
+/*!************************************************************!*\
+  !*** ./Scripts/app/components/techOperationListSection.js ***!
+  \************************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// A '.tsx' file enables JSX support in the TypeScript compiler, 
+	// for more information see the following page on the TypeScript wiki:
+	// https://github.com/Microsoft/TypeScript/wiki/JSX
+	/// <reference path="../../typings/tsd.d.ts" />
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ./techOperationList */ 45)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, techOperationList_1) {
+	    "use strict";
+	    var ToolListOperationSection = (function (_super) {
+	        __extends(ToolListOperationSection, _super);
+	        function ToolListOperationSection() {
+	            _super.apply(this, arguments);
+	        }
+	        ToolListOperationSection.prototype.render = function () {
+	            return (React.createElement("div", {className: "outer"}, React.createElement(techOperationList_1.default, null), this.props.children));
+	        };
+	        return ToolListOperationSection;
+	    }(React.Component));
+	    Object.defineProperty(exports, "__esModule", { value: true });
+	    exports.default = ToolListOperationSection;
+	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	//# sourceMappingURL=techOperationListSection.js.map
+
+/***/ },
+/* 56 */
+/*!*******************************************************!*\
+  !*** ./Scripts/app/components/techStepListSection.js ***!
+  \*******************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/// <reference path="../../typings/tsd.d.ts" />
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ./techStepList */ 41)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, techStepList_1) {
+	    "use strict";
+	    var ToolListSection = (function (_super) {
+	        __extends(ToolListSection, _super);
+	        function ToolListSection() {
+	            _super.apply(this, arguments);
+	        }
+	        ToolListSection.prototype.render = function () {
+	            return (React.createElement("div", {className: "outer"}, React.createElement(techStepList_1.default, null), this.props.children));
+	        };
+	        return ToolListSection;
+	    }(React.Component));
+	    Object.defineProperty(exports, "__esModule", { value: true });
+	    exports.default = ToolListSection;
+	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	//# sourceMappingURL=techStepListSection.js.map
+
+/***/ },
+/* 57 */
+/*!***************************************************!*\
+  !*** ./Scripts/app/components/partListSection.js ***!
+  \***************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// A '.tsx' file enables JSX support in the TypeScript compiler, 
+	// for more information see the following page on the TypeScript wiki:
+	// https://github.com/Microsoft/TypeScript/wiki/JSX
+	/// <reference path="../../typings/tsd.d.ts" />
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ./partList */ 37)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, partList_1) {
+	    "use strict";
+	    var PartListSection = (function (_super) {
+	        __extends(PartListSection, _super);
+	        function PartListSection() {
+	            _super.apply(this, arguments);
+	        }
+	        PartListSection.prototype.render = function () {
+	            return (React.createElement("div", {className: "outer"}, React.createElement(partList_1.default, null), this.props.children));
+	        };
+	        return PartListSection;
+	    }(React.Component));
+	    Object.defineProperty(exports, "__esModule", { value: true });
+	    exports.default = PartListSection;
+	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	//# sourceMappingURL=partListSection.js.map
 
 /***/ },
 /* 58 */
@@ -3911,7 +3927,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ../flux/stores/partStore */ 55), __webpack_require__(/*! ../flux/stores/errorStore */ 59), __webpack_require__(/*! ../flux/actions/partActions */ 57), __webpack_require__(/*! ../managers/navigationManager */ 12), __webpack_require__(/*! ./common/textInput */ 60)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, partStore_1, errorStore_1, partActions_1, navigationManager_1, textInput_1) {
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ../flux/stores/partStore */ 38), __webpack_require__(/*! ../flux/stores/errorStore */ 59), __webpack_require__(/*! ../flux/actions/partActions */ 40), __webpack_require__(/*! ../managers/navigationManager */ 12), __webpack_require__(/*! ./common/textInput */ 60)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, partStore_1, errorStore_1, partActions_1, navigationManager_1, textInput_1) {
 	    "use strict";
 	    var PartEditForm = (function (_super) {
 	        __extends(PartEditForm, _super);
@@ -4026,7 +4042,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ../flux/stores/techStepStore */ 50), __webpack_require__(/*! ../flux/stores/errorStore */ 59), __webpack_require__(/*! ../flux/actions/techStepActions */ 52), __webpack_require__(/*! ../managers/navigationManager */ 12), __webpack_require__(/*! ./common/textAreaInput */ 64), __webpack_require__(/*! ./toolUsagesEditor */ 65), __webpack_require__(/*! ../flux/actions/toolActions */ 4), __webpack_require__(/*! ../flux/stores/toolStore */ 14)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, techStepStore_1, errorStore_1, techStepActions_1, navigationManager_1, textAreaInput_1, toolUsagesEditor_1, toolActions_1, toolStore_1) {
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ../flux/stores/techStepStore */ 42), __webpack_require__(/*! ../flux/stores/errorStore */ 59), __webpack_require__(/*! ../flux/actions/techStepActions */ 44), __webpack_require__(/*! ../managers/navigationManager */ 12), __webpack_require__(/*! ./common/textAreaInput */ 64), __webpack_require__(/*! ./toolUsagesEditor */ 65), __webpack_require__(/*! ../flux/actions/toolActions */ 4), __webpack_require__(/*! ../flux/stores/toolStore */ 14)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, techStepStore_1, errorStore_1, techStepActions_1, navigationManager_1, textAreaInput_1, toolUsagesEditor_1, toolActions_1, toolStore_1) {
 	    "use strict";
 	    var TechStepEditForm = (function (_super) {
 	        __extends(TechStepEditForm, _super);
@@ -4338,7 +4354,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ../flux/stores/techOperationStore */ 45), __webpack_require__(/*! ../flux/stores/errorStore */ 59), __webpack_require__(/*! ../flux/actions/techOperationActions */ 47), __webpack_require__(/*! ../managers/navigationManager */ 12), __webpack_require__(/*! ./common/textInput */ 60)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, techOperationStore_1, errorStore_1, techOperationActions_1, navigationManager_1, textInput_1) {
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ../flux/stores/techOperationStore */ 46), __webpack_require__(/*! ../flux/stores/errorStore */ 59), __webpack_require__(/*! ../flux/actions/techOperationActions */ 48), __webpack_require__(/*! ../managers/navigationManager */ 12), __webpack_require__(/*! ./common/textInput */ 60)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, techOperationStore_1, errorStore_1, techOperationActions_1, navigationManager_1, textInput_1) {
 	    "use strict";
 	    var TechOperationEditForm = (function (_super) {
 	        __extends(TechOperationEditForm, _super);
@@ -4441,7 +4457,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ../flux/stores/techProcessStore */ 40), __webpack_require__(/*! ../flux/stores/errorStore */ 59), __webpack_require__(/*! ../flux/actions/techProcessActions */ 42), __webpack_require__(/*! ../managers/navigationManager */ 12), __webpack_require__(/*! ./common/textInput */ 60)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, techProcessStore_1, errorStore_1, techProcessActions_1, navigationManager_1, textInput_1) {
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ../flux/stores/techProcessStore */ 50), __webpack_require__(/*! ../flux/stores/errorStore */ 59), __webpack_require__(/*! ../flux/actions/techProcessActions */ 52), __webpack_require__(/*! ../managers/navigationManager */ 12), __webpack_require__(/*! ./common/textInput */ 60)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, techProcessStore_1, errorStore_1, techProcessActions_1, navigationManager_1, textInput_1) {
 	    "use strict";
 	    var TechProcessEditForm = (function (_super) {
 	        __extends(TechProcessEditForm, _super);

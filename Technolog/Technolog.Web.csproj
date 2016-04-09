@@ -351,6 +351,10 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\app\app.tsx" />
+    <TypeScriptCompile Include="Scripts\app\components\componentType.ts" />
+    <TypeScriptCompile Include="Scripts\app\components\iPanel.ts" />
+    <TypeScriptCompile Include="Scripts\app\components\iTabElement.ts" />
+    <TypeScriptCompile Include="Scripts\app\flux\iAppPayload.ts" />
     <TypeScriptCompile Include="Scripts\app\components\componentFactory.ts" />
     <TypeScriptCompile Include="Scripts\app\components\common\confirmDelete.tsx" />
     <TypeScriptCompile Include="Scripts\app\components\common\contentEditable.tsx" />
@@ -392,7 +396,6 @@
     <TypeScriptCompile Include="Scripts\app\flux\actions\errorActionTypes.ts" />
     <TypeScriptCompile Include="Scripts\app\flux\actions\panelActions.ts" />
     <TypeScriptCompile Include="Scripts\app\flux\actions\panelActionTypes.ts" />
-    <TypeScriptCompile Include="Scripts\app\components\componentType.ts" />
     <TypeScriptCompile Include="Scripts\app\flux\actions\partActions.ts" />
     <TypeScriptCompile Include="Scripts\app\flux\actions\partActionTypes.ts" />
     <TypeScriptCompile Include="Scripts\app\flux\actions\techOperationActions.ts" />
