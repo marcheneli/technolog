@@ -177,14 +177,6 @@ export default class TechOperationList extends React.Component<ITechOperationLis
                             </table>
                         </div>
                     </div>
-                    <Pagination
-                        itemAmount={this.state.techOperationAmount}
-                        itemsPerPage={this.state.techOperationsPerPage}
-                        firstSymbol='«'
-                        nextSymbol='›'
-                        prevSymbol='‹'
-                        lastSymbol='»'
-                        updatePage={this.handleTechOperationPageChange}/>
                 </div>
             </div>
         )

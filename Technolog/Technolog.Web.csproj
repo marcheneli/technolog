@@ -354,6 +354,7 @@
     <TypeScriptCompile Include="Scripts\app\components\componentType.ts" />
     <TypeScriptCompile Include="Scripts\app\components\iPanel.ts" />
     <TypeScriptCompile Include="Scripts\app\components\iTabElement.ts" />
+    <TypeScriptCompile Include="Scripts\app\components\toolDeleteConfirmation.tsx" />
     <TypeScriptCompile Include="Scripts\app\flux\iAppPayload.ts" />
     <TypeScriptCompile Include="Scripts\app\components\componentFactory.ts" />
     <TypeScriptCompile Include="Scripts\app\components\common\confirmDelete.tsx" />
@@ -408,6 +409,7 @@
     <TypeScriptCompile Include="Scripts\app\flux\actions\toolActionTypes.ts" />
     <TypeScriptCompile Include="Scripts\app\flux\dispatcher\appDispatcher.ts" />
     <TypeScriptCompile Include="Scripts\app\flux\stores\errorStore.ts" />
+    <TypeScriptCompile Include="Scripts\app\flux\stores\newToolStore.ts" />
     <TypeScriptCompile Include="Scripts\app\flux\stores\panelStore.ts" />
     <TypeScriptCompile Include="Scripts\app\flux\stores\partStore.ts" />
     <TypeScriptCompile Include="Scripts\app\flux\stores\techOperationStore.ts" />
@@ -417,6 +419,7 @@
     <TypeScriptCompile Include="Scripts\app\managers\navigationManager.ts" />
     <TypeScriptCompile Include="Scripts\app\managers\pageParamsManager.ts" />
     <TypeScriptCompile Include="Scripts\app\person.ts" />
+    <TypeScriptCompile Include="Scripts\app\flux\services\toolService.ts" />
     <TypeScriptCompile Include="Scripts\app\utils\utils.ts" />
     <TypeScriptCompile Include="Scripts\tests\personTest.ts" />
     <TypeScriptCompile Include="Scripts\tests\toolEditFormTest.tsx" />

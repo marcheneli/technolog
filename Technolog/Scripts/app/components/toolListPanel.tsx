@@ -7,9 +7,10 @@ import ToolActions from "../flux/actions/toolActions";
 import PageParamsManager from "../managers/pageParamsManager";
 import NavigationManager from "../managers/navigationManager";
 import ToolList from "./toolList";
+import ToolDeleteConfirmation from "./toolDeleteConfirmation";
 
 interface IToolListPanelProps {
-
+    componentId: string;
 }
 
 interface IToolListPanelState {
@@ -63,16 +64,22 @@ export default class ToolListPanel extends React.Component<IToolListPanelProps, 
                 <div className="panel-heading">
                     <h4>Инструменты</h4>
                 </div>
-                <div className="panel-body" style={{ display: 'flex', flexDirection: 'column' }}>
-                    <ToolList
-                        selectedTools={this.state.selectedTools}
-                        onSelectedToolsChange={this.handleSelectedToolsChange}
-                        onNewToolClick={this.newToolBtnClickHandler}
-                        onToolDoubleClick={this.toolEditFormOpen}
-                        onToolPageChange={this.handleToolPageChange}
-                        onToolSearchTextChange={this.handleToolSearchTextChange}
-                        onToolsPerPageChange={this.handleToolsPerPageChange}
-                        />
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                    <div style={{ position: 'absolute', width: 600 + 'px', height: 100 + '%' }}>
+                        <ToolDeleteConfirmation componentId={this.props.componentId}/>
+                    </div>
+                    <div className="panel-body" style={{ display: 'flex', flexDirection: 'column' }}>
+                        <ToolList
+                            componentId={this.props.componentId}
+                            selectedTools={this.state.selectedTools}
+                            onSelectedToolsChange={this.handleSelectedToolsChange}
+                            onNewToolClick={this.newToolBtnClickHandler}
+                            onToolDoubleClick={this.toolEditFormOpen}
+                            onToolPageChange={this.handleToolPageChange}
+                            onToolSearchTextChange={this.handleToolSearchTextChange}
+                            onToolsPerPageChange={this.handleToolsPerPageChange}
+                            />
+                    </div>
                 </div>
             </div>
         )

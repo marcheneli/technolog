@@ -4,6 +4,7 @@ import * as React from "react";
 import ToolActions from "../flux/actions/toolActions";
 import ToolList from "./toolList";
 import ItemUsageRow from "./common/itemUsageRow";
+import Utils from "../utils/utils";
 
 interface IToolChooserProps {
 
@@ -11,6 +12,7 @@ interface IToolChooserProps {
 
 interface IToolChooserState {
     isToolListOpen: boolean;
+    toolListId: string;
     selectedTools: Array<ITool>;
 }
 
@@ -24,6 +26,7 @@ class ToolChooser
         this.context = context;
         this.state = {
             isToolListOpen: false,
+            toolListId: "",
             selectedTools: []
         };
     }
@@ -31,6 +34,7 @@ class ToolChooser
     private openCloseToolList = () => {
         this.setState({
             isToolListOpen: !this.state.isToolListOpen,
+            toolListId: !this.state.isToolListOpen ? Utils.uuid() : "",
             selectedTools: this.state.selectedTools
         });
     }
@@ -62,6 +66,7 @@ class ToolChooser
     private handleSelectedToolsChange = (selectedTools: Array<ITool>) => {
         this.setState({
             isToolListOpen: this.state.isToolListOpen,
+            toolListId: this.state.toolListId,
             selectedTools: selectedTools
         });
     }
@@ -81,6 +86,7 @@ class ToolChooser
                             </button>
                         </div>
                         <ToolList
+                            componentId={this.state.toolListId}
                             selectedTools={this.state.selectedTools}
                             onSelectedToolsChange={this.handleSelectedToolsChange}
                             onNewToolClick={this.newToolBtnClickHandler}

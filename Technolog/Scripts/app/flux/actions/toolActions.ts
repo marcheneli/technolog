@@ -3,6 +3,7 @@
 import AppDispatcher from "../dispatcher/appDispatcher";
 import ActionSourceTypes from "./actionSourceTypes";
 import ToolActionTypes from "./toolActionTypes";
+import ToolService from "../services/toolService";
 
 class ToolActionsStatic {
     public init(currentPage: number, pageSize: number, searchText: string): void {
@@ -12,6 +13,45 @@ class ToolActionsStatic {
             currentPage: currentPage,
             pageSize: pageSize,
             searchText: searchText
+        });
+    }
+
+    public load(compoentId: string,
+        currentPage: number, pageSize: number, searchText: string): void {
+
+        ToolService.loadTools(compoentId, currentPage, pageSize, searchText);
+    }
+
+    public updateToolList(componentId: string,
+        toolList: Array<ITool>, totalAmount: number, toolsPerPage: number, page: number, searchText: string): void {
+
+        AppDispatcher.dispatch({
+            actionType: ToolActionTypes.TOOL_UPDATE_TOOL_LIST,
+            actionSource: ActionSourceTypes.TOOL,
+            tools: toolList,
+            totalAmount: totalAmount,
+            currentPage: page,
+            searchText: searchText,
+            pageSize: toolsPerPage,
+            componentId: componentId
+        });
+    }
+
+    public showToolDeleteConfirmation(compoentId: string): void {
+
+        AppDispatcher.dispatch({
+            actionType: ToolActionTypes.TOOL_SHOW_DELETE_CONFIRMATION,
+            actionSource: ActionSourceTypes.TOOL,
+            componentId: compoentId
+        });
+    }
+
+    public closeToolDeleteConfirmation(compoentId: string): void {
+
+        AppDispatcher.dispatch({
+            actionType: ToolActionTypes.TOOL_CLOSE_DELETE_CONFIRMATION,
+            actionSource: ActionSourceTypes.TOOL,
+            componentId: compoentId
         });
     }
 

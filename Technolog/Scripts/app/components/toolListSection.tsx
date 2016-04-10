@@ -7,7 +7,7 @@ export default class ToolListSection extends React.Component<{}, {}> {
     render(): React.ReactElement<{}> {
         return (
             <div className="outer">
-                <ToolListPanel />
+                <ToolListPanel componentId=""/>
                 {this.props.children}
             </div>
         )

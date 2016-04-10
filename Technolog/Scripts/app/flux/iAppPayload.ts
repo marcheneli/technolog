@@ -6,8 +6,10 @@ interface AppPayload {
     currentPage?: number;
     pageSize?: number;
     searchText?: string;
+    totalAmount?: number;
     id?: number;
     tool?: ITool;
+    tools?: Array<ITool>;
     part?: IPart;
     techStep?: ITechStep;
     techOperation?: ITechOperation;
@@ -15,6 +17,7 @@ interface AppPayload {
     errorMessage?: string;
     callerPanelId?: string;
     panelType?: ComponentType;
+    componentId?: string;
 }
 
 export default AppPayload;

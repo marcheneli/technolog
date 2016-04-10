@@ -39,26 +39,40 @@ export default class ItemsPerPageSelector extends React.Component<IItemsPerPageP
 
         if (this.state.isButtonClicked) {
             this.setState({
-                itemsPerPage: this.state.itemsPerPage, dropdowndisplay: 'block', isButtonClicked: false
+                itemsPerPage: this.state.itemsPerPage,
+                dropdowndisplay: 'block',
+                isButtonClicked: false
             });
 
             return;
         }
 
         this.setState({
-            itemsPerPage: this.state.itemsPerPage, dropdowndisplay: 'none', isButtonClicked: false
+            itemsPerPage: this.state.itemsPerPage,
+            dropdowndisplay: 'none',
+            isButtonClicked: false
         });
     }
     private toggleDropDown = (e) => {
         if (this.state.dropdowndisplay == 'none')
-            this.setState({ itemsPerPage: this.state.itemsPerPage, dropdowndisplay: 'block', isButtonClicked: true });
+            this.setState({
+                itemsPerPage: this.state.itemsPerPage,
+                dropdowndisplay: 'block',
+                isButtonClicked: true
+            });
 
         if (this.state.dropdowndisplay == 'block')
-            this.setState({ itemsPerPage: this.state.itemsPerPage, dropdowndisplay: 'none', isButtonClicked: false });
+            this.setState({
+                itemsPerPage: this.state.itemsPerPage,
+                dropdowndisplay: 'none',
+                isButtonClicked: false
+            });
     }
-    updateItemsPerPage = (itemsPerPage) => {
+    private updateItemsPerPage = (itemsPerPage) => {
         this.setState({
-            itemsPerPage: itemsPerPage, dropdowndisplay: 'none', isButtonClicked: this.state.isButtonClicked
+            itemsPerPage: itemsPerPage,
+            dropdowndisplay: 'none',
+            isButtonClicked: this.state.isButtonClicked
         });
         this.props.onChange(itemsPerPage)
     }

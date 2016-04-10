@@ -3,22 +3,24 @@
 import * as React from "react";
 import PageConstants from "../constants/pageConstants";
 import Utils from "../utils/utils";
-import ToolStore from "../flux/stores/toolStore";
+import ToolStore from "../flux/stores/newToolStore";
 import ToolActions from "../flux/actions/toolActions";
 import TableRow from "./common/tableRow";
 import ConfirmDelete from "./common/confirmDelete";
+import ToolDeleteConfirmation from "./toolDeleteConfirmation";
 import Pagination from "./common/pagination";
 import SearchInput from "./common/searchInput";
 import ItemsPerPageSelector from "./common/itemsPerPageSelector";
 import ItemListControlPanel from "./common/itemListControlPanel"
 
 interface IToolTablbleProps {
+    tools: Array<ITool>;
     onSelectedToolsChange(selectedTools: Array<ITool>);
     selectedTools: Array<ITool>;
+    componentId: string;
 }
 
 interface IToolTablbleState {
-    tools: Array<ITool>;
 }
 
 class ToolTable
@@ -26,50 +28,35 @@ class ToolTable
 
     constructor(props: IToolTablbleProps, context: any) {
         super(props, context);
-
         this.props = props;
         this.context = context;
         this.state = {
-            tools: []
         };
-    }
-
-    componentWillMount() {
-        ToolStore.addChangeToolsListener(this.handleToolsChange)
-    }
-
-    componentWillUnmount() {
-        ToolStore.removeChangeToolsListener(this.handleToolsChange)
-    }
-
-    componentDidMount() {
-        ToolActions.init(ToolStore.getCurrentToolPage(), ToolStore.getToolsPerPage(), ToolStore.getSearchText());
-    }
-
-    private handleToolsChange = () => {
-        this.setState({
-            tools: ToolStore.getAll()
-        });
-
-        this.props.onSelectedToolsChange([]);
     }
 
     private onToolSelect = (event: any) => {
         var selectedTools = this.props.selectedTools;
+        var tools = this.props.tools;
 
         if (event.target.checked) {
-            selectedTools[event.target.value] = this.state.tools[event.target.value];
+            var tool;
 
-            this.setState({
-                tools: this.state.tools 
-            });
-            
+            for (var i = 0; i < tools.length; i++) {
+                if (tools[i].id == event.target.value) {
+                    tool = tools[i];
+                    break;
+                }
+            }
+
+            selectedTools.push(tool);
+            console.log(selectedTools);
         } else {
-            delete selectedTools[event.target.value];
-
-            this.setState({
-                tools: this.state.tools
-            });
+            for (var i = 0; i < selectedTools.length; i++) {
+                if (selectedTools[i].id == event.target.value) {
+                    selectedTools.splice(i, 1);
+                    break;
+                }
+            }
         }
         
         this.props.onSelectedToolsChange(selectedTools);
@@ -77,36 +64,36 @@ class ToolTable
 
     private onAllToolSelect = (event: any) => {
         var selectedTools = this.props.selectedTools;
+        var tools = this.props.tools;
 
         if (event.target.checked) {
-            for (var key in this.state.tools) {
-                selectedTools[key] = this.state.tools[key];
-            }
-
-            this.setState({
-                tools: this.state.tools
-            });
+            selectedTools = tools;
         } else {
-
             selectedTools = [];
-
-            this.setState({
-                tools: this.state.tools
-            });
         }
         
         this.props.onSelectedToolsChange(selectedTools);
     }
 
     render(): React.ReactElement<IToolTablbleProps> {
-        var isAllChecked = (Object.keys(this.state.tools).length ==
-            Object.keys(this.props.selectedTools).length);
         var toolRows = [];
+        var tools = this.props.tools;
+        var selectedTools = this.props.selectedTools;
 
-        for (var key in this.state.tools) {
-            var tool = this.state.tools[key];
+        var isAllChecked = tools.length == selectedTools.length && tools.length != 0;
 
-            toolRows.push(<TableRow key={key}
+        for (var i = 0; i < tools.length; i++) {
+            var tool = tools[i];
+            var selectedTool = null;
+
+            for (var j = 0; j < selectedTools.length; j++) {
+                if (selectedTools[j].id == tool.id) {
+                    selectedTool = selectedTools[j];
+                    break;
+                }
+            }
+
+            toolRows.push(<TableRow key={i}
                 item={tool}
                 isCurrent={false}
                 changeCurrent={() => { }}
@@ -116,7 +103,7 @@ class ToolTable
                         type='checkbox'
                         value={tool.id}
                         onChange={this.onToolSelect}
-                        checked={this.props.selectedTools[tool.id]}>
+                        checked={selectedTool}>
                     </input>
                 </td>
                 <td  style={{ width: 15 + '%' }}>{tool.id}</td>
@@ -159,13 +146,16 @@ interface IToolListProps {
     onNewToolClick(): void;
     onToolDoubleClick(id: number): void;
     onSelectedToolsChange(selectedTools: Array<ITool>): void;
+    componentId: string;
 }
 
 interface IToolListState {
-    currentTool: ITool,
+    tools: Array<ITool>,
     isConfirmDeleting: boolean,
-    toolAmount: number,
+    totalAmount: number,
     toolsPerPage: number,
+    toolSearchText: string,
+    toolPage: number
 }
 
 export default class ToolList extends React.Component<IToolListProps, IToolListState> {
@@ -176,37 +166,30 @@ export default class ToolList extends React.Component<IToolListProps, IToolListS
         this.props = props;
         this.context = context;
         this.state = {
-            currentTool: null,
+            tools: [],
             isConfirmDeleting: false,
-            toolAmount: 0,
-            toolsPerPage: PageConstants.ITEMS_PER_PAGE_INIT
+            totalAmount: 0,
+            toolsPerPage: PageConstants.ITEMS_PER_PAGE_INIT,
+            toolSearchText: "",
+            toolPage: 0
         };
     }
-    
+
     componentWillMount() {
-        ToolStore.addChangeToolsListener(this.handleToolsChange)
+        ToolStore.addChangeListener(this.handleToolsChange, this.props.componentId)
     }
 
     componentWillUnmount() {
-        ToolStore.removeChangeToolsListener(this.handleToolsChange)
+        ToolStore.removeChangeListener(this.handleToolsChange, this.props.componentId)
+    }
+
+    componentDidMount() {
+        ToolActions.load(this.props.componentId,
+            0, PageConstants.ITEMS_PER_PAGE_INIT, "");
     }
 
     private handleToolsChange = () => {
-        this.setState({
-            currentTool: this.state.currentTool,
-            isConfirmDeleting: this.state.isConfirmDeleting,
-            toolAmount: ToolStore.getToolAmount(),
-            toolsPerPage: ToolStore.getToolsPerPage()
-        });
-    }
-
-    private changeCurrent = (tool: ITool) => {
-        this.setState({
-            currentTool: tool,
-            isConfirmDeleting: this.state.isConfirmDeleting,
-            toolAmount: this.state.toolAmount,
-            toolsPerPage: this.state.toolsPerPage
-        });
+        this.setState(ToolStore.getState(this.props.componentId));
     }
 
     private toolRowDoubleClick = (tool: ITool) => {
@@ -217,65 +200,62 @@ export default class ToolList extends React.Component<IToolListProps, IToolListS
         this.props.onNewToolClick();
     }
 
+    private toolDeleteHandler = () => {
+        ToolActions.showToolDeleteConfirmation(this.props.componentId);
+    }
+
     private handleDeleteSuccess = () => {
-        ToolActions.remove(this.state.currentTool.id);
-        this.setState({
-            currentTool: this.state.currentTool,
-            isConfirmDeleting: !this.state.isConfirmDeleting,
-            toolAmount: this.state.toolAmount,
-            toolsPerPage: this.state.toolsPerPage
-        });
+        ToolActions;
     }
 
     private handleDeleteCancel = () => {
-        this.setState({
-            currentTool: this.state.currentTool,
-            isConfirmDeleting: !this.state.isConfirmDeleting,
-            toolAmount: this.state.toolAmount,
-            toolsPerPage: this.state.toolsPerPage
-        });
+        ToolActions.closeToolDeleteConfirmation(this.props.componentId);
     }
 
     private handleToolsPerPageChange = (toolsPerPage: number) => {
-        this.props.onToolsPerPageChange(toolsPerPage);
+        ToolActions.load(this.props.componentId,
+            this.state.toolPage,
+            toolsPerPage,
+            this.state.toolSearchText);
     }
 
     private handleToolPageChange = (page: number) => {
-        this.props.onToolPageChange(page);
+        ToolActions.load(this.props.componentId,
+            page,
+            this.state.toolsPerPage,
+            this.state.toolSearchText);
     }
 
     private handleToolSearchTextChange = (text: string) => {
-        this.props.onToolSearchTextChange(text);
+        ToolActions.load(this.props.componentId,
+            this.state.toolPage,
+            this.state.toolsPerPage,
+            text);
     }
 
     private refreshBtnClickHandler = () => {
-        ToolActions.init(ToolStore.getCurrentToolPage(), ToolStore.getToolsPerPage(), ToolStore.getSearchText());
+
     }
 
     render(): React.ReactElement<{}> {
         return (
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
-                {this.state.isConfirmDeleting ?
-                    <ConfirmDelete
-                        id={this.state.currentTool.id}
-                        title={"Подтверждение удаления инструмента"}
-                        message={"Вы действительно хотите удалить инструмент " + this.state.currentTool.name}
-                        success={this.handleDeleteSuccess}
-                        cancel={this.handleDeleteCancel}/>
-                    :
-                    <ItemListControlPanel
-                        onNewItem={this.newToolBtnClickHandler}
-                        onItemDelete={function () { this.setState({ currentTool: this.state.currentTool, isConfirmDeleting: true }); }.bind(this) }
-                        onRefresh={this.refreshBtnClickHandler}
-                        onItemsPerPageChange={this.handleToolsPerPageChange}
-                        onSearchTextChange={function (text) { this.handleToolSearchTextChange(text) }.bind(this) }/>
-                }
+            <div style={{ display: 'flex', flexDirection: 'column', position: 'relative' }}>
+                <ItemListControlPanel
+                    onNewItem={this.newToolBtnClickHandler}
+                    onItemDelete={this.toolDeleteHandler}
+                    onRefresh={this.refreshBtnClickHandler}
+                    onItemsPerPageChange={this.handleToolsPerPageChange}
+                    onSearchTextChange={function (text) { this.handleToolSearchTextChange(text) }.bind(this) }
+                    />
                 <ToolTable
+                    componentId={this.props.componentId}
+                    tools={this.state.tools}
                     selectedTools={this.props.selectedTools}
                     onSelectedToolsChange={this.props.onSelectedToolsChange}/>
                 <Pagination
-                    itemAmount={this.state.toolAmount}
+                    itemAmount={this.state.totalAmount}
                     itemsPerPage={this.state.toolsPerPage}
+                    currentPage={this.state.toolPage}
                     firstSymbol='«'
                     nextSymbol='›'
                     prevSymbol='‹'

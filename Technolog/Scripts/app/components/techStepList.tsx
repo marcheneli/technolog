@@ -177,14 +177,6 @@ export default class TechStepList extends React.Component<ITechStepListProps, IT
                             </table>
                         </div>
                     </div>
-                    <Pagination
-                        itemAmount={this.state.techStepAmount}
-                        itemsPerPage={this.state.techStepsPerPage}
-                        firstSymbol='«'
-                        nextSymbol='›'
-                        prevSymbol='‹'
-                        lastSymbol='»'
-                        updatePage={this.handleTechStepPageChange}/>
                 </div>
             </div>
         )

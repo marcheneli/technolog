@@ -177,14 +177,6 @@ export default class PartList extends React.Component<IPartListProps, IPartListS
                             </table>
                         </div>
                     </div>
-                    <Pagination
-                        itemAmount={this.state.partAmount}
-                        itemsPerPage={this.state.partsPerPage}
-                        firstSymbol='«'
-                        nextSymbol='›'
-                        prevSymbol='‹'
-                        lastSymbol='»'
-                        updatePage={this.handlePartPageChange}/>
                 </div>
             </div>
         )

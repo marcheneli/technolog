@@ -25,6 +25,7 @@ interface IPaginationProps {
     updatePage(pageNumber: number): void,
     itemAmount: number,
     itemsPerPage: number,
+    currentPage: number,
     prevSymbol: string,
     firstSymbol: string,
     nextSymbol: string,
@@ -32,7 +33,6 @@ interface IPaginationProps {
 }
 
 interface IPaginationState {
-    currentPage: number
 }
 
 export default class Pagination extends React.Component<IPaginationProps, IPaginationState> {
@@ -43,25 +43,21 @@ export default class Pagination extends React.Component<IPaginationProps, IPagin
         this.props = props;
         this.context = context;
         this.state = {
-            currentPage: 0
         };
     }
 
     private pageButtonClickHandler = (pageNumber: number): void => {
         var totalPageAmount = Math.ceil(this.props.itemAmount / this.props.itemsPerPage);
 
-        if (pageNumber == -1 && this.state.currentPage != 0) {
-            this.setState({ currentPage: this.state.currentPage - 1 });
-            this.props.updatePage(this.state.currentPage - 1);
+        if (pageNumber == -1 && this.props.currentPage != 0) {
+            this.props.updatePage(this.props.currentPage - 1);
         }
 
-        if (pageNumber == -2 && this.state.currentPage != totalPageAmount - 1) {
-            this.setState({ currentPage: this.state.currentPage + 1 });
-            this.props.updatePage(this.state.currentPage + 1);
+        if (pageNumber == -2 && this.props.currentPage != totalPageAmount - 1) {
+            this.props.updatePage(this.props.currentPage + 1);
         }
 
-        if (pageNumber >= 0 && pageNumber != this.state.currentPage) {
-            this.setState({ currentPage: pageNumber });
+        if (pageNumber >= 0 && pageNumber != this.props.currentPage) {
             this.props.updatePage(pageNumber);
         }
     }
@@ -70,13 +66,13 @@ export default class Pagination extends React.Component<IPaginationProps, IPagin
         var pageButtons = [];
 
         if (totalPageAmount > 0) {
-            if (totalPageAmount != 1 && this.state.currentPage != 0) {
+            if (totalPageAmount != 1 && this.props.currentPage != 0) {
                 pageButtons.push(<PageButton key={0} mode='' onClick={this.pageButtonClickHandler} symbol={this.props.firstSymbol} pageNumber={0} />);
                 pageButtons.push(<PageButton key={1} mode='' onClick={this.pageButtonClickHandler} symbol={this.props.prevSymbol} pageNumber={-1} />);
             }
 
             for (var i = 0; i < totalPageAmount; i++) {
-                if (this.state.currentPage == i) {
+                if (this.props.currentPage == i) {
                     pageButtons.push(<PageButton key={i + 2} mode='active' onClick={ function () { } } symbol={ String(i + 1) } pageNumber={i} />);
                 } else {
                     pageButtons.push(<PageButton key={i + 2} mode='' onClick={this.pageButtonClickHandler} symbol={ String(i + 1) } pageNumber={i} />);
@@ -84,7 +80,7 @@ export default class Pagination extends React.Component<IPaginationProps, IPagin
 
             }
 
-            if (totalPageAmount != 1 && this.state.currentPage != totalPageAmount - 1) {
+            if (totalPageAmount != 1 && this.props.currentPage != totalPageAmount - 1) {
                 pageButtons.push(<PageButton key={i + 3} mode='' onClick={this.pageButtonClickHandler} symbol={this.props.nextSymbol} pageNumber={-2} />);
                 pageButtons.push(<PageButton key={i + 4} mode='' onClick={this.pageButtonClickHandler} symbol={this.props.lastSymbol} pageNumber={totalPageAmount - 1} />);
             }

@@ -177,14 +177,6 @@ export default class TechProcessList extends React.Component<ITechProcessListPro
                             </table>
                         </div>
                     </div>
-                    <Pagination
-                        itemAmount={this.state.techProcessAmount}
-                        itemsPerPage={this.state.techProcessesPerPage}
-                        firstSymbol='«'
-                        nextSymbol='›'
-                        prevSymbol='‹'
-                        lastSymbol='»'
-                        updatePage={this.handleTechProcessPageChange}/>
                 </div>
             </div>
         )
