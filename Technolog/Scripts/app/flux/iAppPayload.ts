@@ -18,6 +18,7 @@ interface AppPayload {
     callerPanelId?: string;
     panelType?: ComponentType;
     componentId?: string;
+    params?: any;
 }
 
 export default AppPayload;

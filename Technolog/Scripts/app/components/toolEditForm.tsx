@@ -44,11 +44,15 @@ export default class ToolEditForm extends React.Component<IToolEditFormProps, IT
     }
 
     componentDidMount() {
-        ToolActions.loadEditTool(this.props.params.toolId);
+        this.setState({
+            tool: this.props.params.tool,
+            errorMessage: null,
+            isValid: true
+        });
     }
 
     componentWillReceiveProps(nextProps) {
-        ToolActions.loadEditTool(nextProps.params.toolId);
+        //ToolActions.loadEditTool(nextProps.params.toolId);
     }
 
     private handleEditToolChange = () => {

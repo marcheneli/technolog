@@ -3,6 +3,7 @@
 interface IPanel {
     id: string;
     type: ComponentType;
+    params?: any;
 }
 
 export default IPanel;

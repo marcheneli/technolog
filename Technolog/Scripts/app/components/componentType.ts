@@ -4,7 +4,8 @@
     PartListPanel,
     TechStepListPanel,
     TechOperationListPanel,
-    TechProcessListPanel
+    TechProcessListPanel,
+    ToolEditPanel
 }
 
 export default ComponentType;

@@ -56,21 +56,17 @@ export default class ToolDeleteConfirmation
     render(): React.ReactElement<IToolDeleteConfirmationProps> {
         return (
             this.state.isConfirming ?
-                <div style={{ position: 'absolute', height: 100 + '%', width: 100 + '%', zIndex: 1030, }}>
-                    <div style={{ position: 'absolute', height: 100 + '%', width: 100 + '%', zIndex: 1040, backgroundColor: '#333', opacity: 0.15 }}>
+                <div style={{ position: 'absolute', height: 100 + '%', width: 100 + '%', bottom: 0, zIndex: 1030, }}>
+                    <div style={{ position: 'absolute', height: 100 + '%', width: 100 + '%', bottom: 0, zIndex: 1040, backgroundColor: '#333', opacity: 0.15 }}>
 
                     </div>
-                    <div style={{ position: 'absolute', height: 100 + '%', width: 100 + '%', zIndex: 1049, alignContent: 'center' }}>
-                        <div style={{ height: 100 + '%', left: 0, right: 0, margin: 'auto', display: 'table' }}>
-                            <div style={{ height: 100 + '%', display: 'table-cell', verticalAlign: 'middle' }}>
-                                <ConfirmDelete
-                                    id={1}
-                                    title={"Подтверждение удаления инструмента"}
-                                    message={"Вы действительно хотите удалить инструмент "}
-                                    success={this.handleDeleteSuccess}
-                                    cancel={this.handleDeleteCancel}/>
-                            </div>
-                        </div>
+                    <div style={{ position: 'relative', top: 200 + 'px', margin: 0 + ' auto', width: 400 + 'px', zIndex: 1050 }}>
+                        <ConfirmDelete
+                            id={1}
+                            title={"Подтверждение удаления инструмента"}
+                            message={"Вы действительно хотите удалить инструмент "}
+                            success={this.handleDeleteSuccess}
+                            cancel={this.handleDeleteCancel}/>
                     </div>
                 </div>
                 :

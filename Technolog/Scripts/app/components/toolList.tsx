@@ -5,13 +5,13 @@ import PageConstants from "../constants/pageConstants";
 import Utils from "../utils/utils";
 import ToolStore from "../flux/stores/newToolStore";
 import ToolActions from "../flux/actions/toolActions";
+import PanelActions from "../flux/actions/panelActions";
+import ComponentType from "./componentType";
 import TableRow from "./common/tableRow";
-import ConfirmDelete from "./common/confirmDelete";
-import ToolDeleteConfirmation from "./toolDeleteConfirmation";
 import Pagination from "./common/pagination";
 import SearchInput from "./common/searchInput";
 import ItemsPerPageSelector from "./common/itemsPerPageSelector";
-import ItemListControlPanel from "./common/itemListControlPanel"
+import ItemListControlPanel from "./common/itemListControlPanel";
 
 interface IToolTablbleProps {
     tools: Array<ITool>;
@@ -75,6 +75,10 @@ class ToolTable
         this.props.onSelectedToolsChange(selectedTools);
     }
 
+    private onRowDoubleClick = (tool: ITool) => {
+        PanelActions.open(this.props.componentId, ComponentType.ToolEditPanel, { tool: tool });
+    }
+
     render(): React.ReactElement<IToolTablbleProps> {
         var toolRows = [];
         var tools = this.props.tools;
@@ -96,8 +100,8 @@ class ToolTable
             toolRows.push(<TableRow key={i}
                 item={tool}
                 isCurrent={false}
-                changeCurrent={() => { }}
-                rowDoubleClickHandler={() => { } }>
+                changeCurrent={() => { } }
+                rowDoubleClickHandler={this.onRowDoubleClick}>
                 <td  style={{ width: 5 + '%' }}>
                     <input
                         type='checkbox'

@@ -6,12 +6,13 @@ import PanelActionTypes from "./panelActionTypes";
 import ComponentType from "../../components/componentType";
 
 class PanelActionsStatic {
-    public open(callerId: string, type: ComponentType): void {
+    public open(callerId: string, type: ComponentType, params?: any): void {
         AppDispatcher.dispatch({
             actionType: PanelActionTypes.PANEL_OPEN,
             actionSource: ActionSourceTypes.PANEL,
             callerPanelId: callerId,
-            panelType: type
+            panelType: type,
+            params: params
         });
     }
 

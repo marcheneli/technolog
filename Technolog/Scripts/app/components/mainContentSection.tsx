@@ -49,7 +49,7 @@ export default class MainContentSection extends React.Component<IMainContentSect
 
         panels = this.state.panels.map((panel: IPanel, index: number) => {
             var Component = ComponentFactory.getComponent(panel.type);
-            return <Component key={index} componentId={ panel.id }/>
+            return <Component key={index} componentId={ panel.id } params={panel.params}/>
         });
 
         return (

@@ -60,26 +60,22 @@ export default class ToolListPanel extends React.Component<IToolListPanelProps, 
 
     render(): React.ReactElement<{}> {
         return (
-            <div className="panel panel-default inner" style={{ marginBottom: 0 + 'px', display: 'flex', flexDirection: 'column' }}>
-                <div className="panel-heading">
+            <div className="panel panel-default inner" style={{ marginBottom: 0 + 'px', position: 'relative' }}>
+                <div className="panel-heading" style={{ marginBottom: 0 + 'px', zIndex: 1050, position: 'relative' }}>
                     <h4>Инструменты</h4>
                 </div>
-                <div style={{ display: 'flex', flexDirection: 'column' }}>
-                    <div style={{ position: 'absolute', width: 600 + 'px', height: 100 + '%' }}>
-                        <ToolDeleteConfirmation componentId={this.props.componentId}/>
-                    </div>
-                    <div className="panel-body" style={{ display: 'flex', flexDirection: 'column' }}>
-                        <ToolList
-                            componentId={this.props.componentId}
-                            selectedTools={this.state.selectedTools}
-                            onSelectedToolsChange={this.handleSelectedToolsChange}
-                            onNewToolClick={this.newToolBtnClickHandler}
-                            onToolDoubleClick={this.toolEditFormOpen}
-                            onToolPageChange={this.handleToolPageChange}
-                            onToolSearchTextChange={this.handleToolSearchTextChange}
-                            onToolsPerPageChange={this.handleToolsPerPageChange}
-                            />
-                    </div>
+                <ToolDeleteConfirmation componentId={this.props.componentId}/>
+                <div className="panel-body" style={{ display: 'flex', flexDirection: 'column' }}>
+                    <ToolList
+                        componentId={this.props.componentId}
+                        selectedTools={this.state.selectedTools}
+                        onSelectedToolsChange={this.handleSelectedToolsChange}
+                        onNewToolClick={this.newToolBtnClickHandler}
+                        onToolDoubleClick={this.toolEditFormOpen}
+                        onToolPageChange={this.handleToolPageChange}
+                        onToolSearchTextChange={this.handleToolSearchTextChange}
+                        onToolsPerPageChange={this.handleToolsPerPageChange}
+                        />
                 </div>
             </div>
         )

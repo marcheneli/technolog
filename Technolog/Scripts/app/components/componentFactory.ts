@@ -3,6 +3,7 @@
 import MainPanel from "./mainPanel";
 import PartListPanel from "./partList";
 import ToolListPanel from "./toolListPanel";
+import ToolEditPanel from "./toolEditForm";
 import TechStepListPanel from "./techStepList";
 import TechOperationListPanel from "./techOperationList";
 import TechProcessListPanel from "./techProcessList";
@@ -23,6 +24,8 @@ export default class ComponentFactory {
                 return TechOperationListPanel;
             case ComponentType.TechProcessListPanel:
                 return TechProcessListPanel;
+            case ComponentType.ToolEditPanel:
+                return ToolEditPanel;
             default:
         }
     }

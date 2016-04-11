@@ -13,18 +13,18 @@ const CHANGE_EVENT = "PANEL_CHANGE_EVENT";
 
 var _panels: Array<IPanel>
 
-function _initialize(panelType: ComponentType): void {
+function _initialize(panelType: ComponentType, params?: any): void {
     _panels = [];
 
     var panelId: string = Utils.uuid();
-    var panel: IPanel = { type: panelType, id: panelId };
+    var panel: IPanel = { type: panelType, id: panelId, params: params };
 
     _panels.push(panel);
 }
 
-function _addPanel(callerPanelId: string, panelType: ComponentType) {
+function _addPanel(callerPanelId: string, panelType: ComponentType, params?: any) {
     var panelId: string = Utils.uuid();
-    var panel: IPanel = { type: panelType, id: panelId };
+    var panel: IPanel = { type: panelType, id: panelId, params: params };
     var callerPanel: IPanel = _panels.filter((panel: IPanel, index: number) => { return panel.id == callerPanelId })[0];
     var indexOfCallerPanel = _panels.indexOf(callerPanel);
     _panels.splice(indexOfCallerPanel + 1, 0, panel);
@@ -72,7 +72,7 @@ AppDispatcher.register(function (payload: AppPayload) {
 
     switch (payload.actionType) {
         case PanelActionTypes.PANEL_OPEN:
-            _addPanel(payload.callerPanelId, payload.panelType);
+            _addPanel(payload.callerPanelId, payload.panelType, payload.params);
             PanelStore.emitChange();
             break;
         case PanelActionTypes.PANEL_CLOSE:
