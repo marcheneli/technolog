@@ -1473,7 +1473,7 @@
 	            var panels = [];
 	            panels = this.state.panels.map(function (panel, index) {
 	                var Component = componentFactory_1.default.getComponent(panel.type);
-	                return React.createElement(Component, {key: index, componentId: panel.id, params: panel.params});
+	                return React.createElement(Component, {key: panel.id, componentId: panel.id, params: panel.params});
 	            });
 	            return (React.createElement("div", {className: "col-lg-10 col-lg-offset-2 col-md-9 col-md-offset-3 col-sm-9 col-sm-offset-3 col-xs-8 col-xs-offset-4 full-height", id: 'infopanel'}, this.props.children, React.createElement("div", {className: "outer"}, panels)));
 	        };
