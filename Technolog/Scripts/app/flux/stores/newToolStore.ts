@@ -9,6 +9,7 @@ import ToolActionTypes from "../actions/toolActionTypes";
 const CHANGE_EVENT: string = "CHANGE_EVENT";
 
 const _toolComponentStates = {};
+const _toolComponentHistories = {};
 
 function _updateToolList(componentId: string, tools: Array<ITool>): void {
     _toolComponentStates[componentId].tools = tools;
@@ -29,6 +30,34 @@ function _updateToolsPerPage(componentId: string, toolsPerPage: number): void {
 function _updateDeleteConfirmation(componentId: string): void {
     _toolComponentStates[componentId].isConfirmDeleting =
         !_toolComponentStates[componentId].isConfirmDeleting;
+}
+
+function _updateSavePending(componentId: string): void {
+    _toolComponentStates[componentId].isSaving =
+        !_toolComponentStates[componentId].isSaving;
+}
+
+function _updateDeletePending(componentId: string): void {
+    _toolComponentStates[componentId].isDeleting =
+        !_toolComponentStates[componentId].isDeleting;
+}
+
+function _updateToolComponentHistory(componentId: string, changedTool: ITool): void {
+    var toolComponentHistory = _toolComponentHistories[componentId];
+    toolComponentHistory.toolUnDoes.push(changedTool);
+    toolComponentHistory.toolReDoes = [];
+}
+
+function _unDoToolComponentHistory(componentId: string): void {
+    var toolComponentHistory = _toolComponentHistories[componentId];
+    var tool = toolComponentHistory.toolUnDoes.pop();
+    toolComponentHistory.toolReDoes.push(tool);
+}
+
+function _reDoToolComponentHistory(componentId: string): void {
+    var toolComponentHistory = _toolComponentHistories[componentId];
+    var tool = toolComponentHistory.toolReDoes.pop();
+    toolComponentHistory.toolUnDoes.push(tool);
 }
 
 class ToolStore extends EventEmitter {
@@ -72,12 +101,45 @@ AppDispatcher.register(function (payload: AppPayload) {
             _updateToolsPerPage(payload.componentId, payload.pageSize);
             toolStore.emitChange(payload.componentId);
             break;
+        case ToolActionTypes.TOOL_REDO:
+            toolStore.emitChange(payload.componentId);
+            break;
+        case ToolActionTypes.TOOL_UNDO:
+            toolStore.emitChange(payload.componentId);
+            break;
+        case ToolActionTypes.TOOL_CHANGE:
+            toolStore.emitChange(payload.componentId);
+            break;
         case ToolActionTypes.TOOL_SHOW_DELETE_CONFIRMATION:
             _updateDeleteConfirmation(payload.componentId);
             toolStore.emitChange(payload.componentId);
             break;
         case ToolActionTypes.TOOL_CLOSE_DELETE_CONFIRMATION:
             _updateDeleteConfirmation(payload.componentId);
+            toolStore.emitChange(payload.componentId);
+            break;
+        case ToolActionTypes.TOOL_SAVE_PENDING:
+            _updateSavePending(payload.componentId)
+            toolStore.emitChange(payload.componentId);
+            break;
+        case ToolActionTypes.TOOL_SAVE_SUCCEED:
+            _updateSavePending(payload.componentId);
+            toolStore.emitChange(payload.componentId);
+            break;
+        case ToolActionTypes.TOOL_SAVE_FAILED:
+            _updateSavePending(payload.componentId);
+            toolStore.emitChange(payload.componentId);
+            break;
+        case ToolActionTypes.TOOL_DELETE_PENDING:
+            _updateDeletePending(payload.componentId);
+            toolStore.emitChange(payload.componentId);
+            break;
+        case ToolActionTypes.TOOL_DELETE_SUCCEED:
+            _updateDeletePending(payload.componentId);
+            toolStore.emitChange(payload.componentId);
+            break;
+        case ToolActionTypes.TOOL_DELETE_FAILED:
+            _updateDeletePending(payload.componentId);
             toolStore.emitChange(payload.componentId);
             break;
         default:

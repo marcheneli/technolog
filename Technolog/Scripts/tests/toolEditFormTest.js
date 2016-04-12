@@ -5,10 +5,10 @@ define(["require", "exports", "react-dom", "react-addons-test-utils", "../app/co
     "use strict";
     describe('ToolEditForm', function () {
         it('should display the correct content', function () {
-            expect(ReactDOM.findDOMNode(TestUtils.renderIntoDocument(React.createElement(toolEditForm_1.default, {params: ''}))).textContent).Any;
+            expect(ReactDOM.findDOMNode(TestUtils.renderIntoDocument(React.createElement(toolEditForm_1.default, {params: '', componentId: ""}))).textContent).Any;
         });
         it('should display the correct content 2', function () {
-            expect(ReactDOM.findDOMNode(TestUtils.renderIntoDocument(React.createElement(toolEditForm_1.default, {params: ''}))).textContent).Any;
+            expect(ReactDOM.findDOMNode(TestUtils.renderIntoDocument(React.createElement(toolEditForm_1.default, {params: '', componentId: ""}))).textContent).Any;
         });
     });
 });

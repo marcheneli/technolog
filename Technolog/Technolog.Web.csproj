@@ -227,6 +227,7 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="Content\spin.css" />
     <Content Include="Scripts\react-with-addons.js" />
     <Content Include="Scripts\require-config.js" />
     <Content Include="Scripts\tests\toolEditFormTest.js" />
@@ -351,6 +352,7 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\app\app.tsx" />
+    <TypeScriptCompile Include="Scripts\app\components\common\loadingAnimation.tsx" />
     <TypeScriptCompile Include="Scripts\app\components\componentType.ts" />
     <TypeScriptCompile Include="Scripts\app\components\iPanel.ts" />
     <TypeScriptCompile Include="Scripts\app\components\iTabElement.ts" />

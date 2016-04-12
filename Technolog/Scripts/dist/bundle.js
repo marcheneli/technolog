@@ -48,7 +48,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/// <reference path="../typings/tsd.d.ts" />
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react-dom */ 27), __webpack_require__(/*! react-router */ 11), __webpack_require__(/*! ./components/main */ 28), __webpack_require__(/*! ./components/techProcessListSection */ 61), __webpack_require__(/*! ./components/techOperationListSection */ 62), __webpack_require__(/*! ./components/techStepListSection */ 63), __webpack_require__(/*! ./components/toolListSection */ 1), __webpack_require__(/*! ./components/partListSection */ 64), __webpack_require__(/*! ./components/toolEditForm */ 35), __webpack_require__(/*! ./components/partEditForm */ 65), __webpack_require__(/*! ./components/techStepEditForm */ 66), __webpack_require__(/*! ./components/techOperationEditForm */ 71), __webpack_require__(/*! ./components/techProcessEditForm */ 72)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, ReactDOM, ReactRouter, main_1, techProcessListSection_1, techOperationListSection_1, techStepListSection_1, toolListSection_1, partListSection_1, toolEditForm_1, partEditForm_1, techStepEditForm_1, techOperationEditForm_1, techProcessEditForm_1) {
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react-dom */ 27), __webpack_require__(/*! react-router */ 13), __webpack_require__(/*! ./components/main */ 28), __webpack_require__(/*! ./components/techProcessListSection */ 61), __webpack_require__(/*! ./components/techOperationListSection */ 62), __webpack_require__(/*! ./components/techStepListSection */ 63), __webpack_require__(/*! ./components/toolListSection */ 1), __webpack_require__(/*! ./components/partListSection */ 64), __webpack_require__(/*! ./components/toolEditForm */ 35), __webpack_require__(/*! ./components/partEditForm */ 65), __webpack_require__(/*! ./components/techStepEditForm */ 66), __webpack_require__(/*! ./components/techOperationEditForm */ 72), __webpack_require__(/*! ./components/techProcessEditForm */ 73)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, ReactDOM, ReactRouter, main_1, techProcessListSection_1, techOperationListSection_1, techStepListSection_1, toolListSection_1, partListSection_1, toolEditForm_1, partEditForm_1, techStepEditForm_1, techOperationEditForm_1, techProcessEditForm_1) {
 	    "use strict";
 	    var routers = (React.createElement(ReactRouter.Router, {history: ReactRouter.browserHistory}, React.createElement(ReactRouter.Route, {path: "/", component: main_1.default}, React.createElement(ReactRouter.Route, {path: "processes", component: techProcessListSection_1.default}, React.createElement(ReactRouter.Route, {path: ":techProcessId", component: techProcessEditForm_1.default})), React.createElement(ReactRouter.Route, {path: "operations", component: techOperationListSection_1.default}, React.createElement(ReactRouter.Route, {path: ":techOperationId", component: techOperationEditForm_1.default})), React.createElement(ReactRouter.Route, {path: "steps", component: techStepListSection_1.default}, React.createElement(ReactRouter.Route, {path: ":techStepId", component: techStepEditForm_1.default})), React.createElement(ReactRouter.Route, {path: "tools", component: toolListSection_1.default}, React.createElement(ReactRouter.Route, {path: ":toolId", component: toolEditForm_1.default})), React.createElement(ReactRouter.Route, {path: "parts", component: partListSection_1.default}, React.createElement(ReactRouter.Route, {path: ":partId", component: partEditForm_1.default})))));
 	    ReactDOM.render(React.createElement(main_1.default, null), document.getElementById('content'));
@@ -107,7 +107,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ../flux/actions/toolActions */ 4), __webpack_require__(/*! ../managers/pageParamsManager */ 10), __webpack_require__(/*! ../managers/navigationManager */ 13), __webpack_require__(/*! ./toolList */ 14), __webpack_require__(/*! ./toolDeleteConfirmation */ 25)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, toolActions_1, pageParamsManager_1, navigationManager_1, toolList_1, toolDeleteConfirmation_1) {
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ../flux/actions/toolActions */ 4), __webpack_require__(/*! ../flux/actions/panelActions */ 10), __webpack_require__(/*! ../managers/pageParamsManager */ 12), __webpack_require__(/*! ../managers/navigationManager */ 15), __webpack_require__(/*! ./toolList */ 16), __webpack_require__(/*! ./toolDeleteConfirmation */ 25)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, toolActions_1, panelActions_1, pageParamsManager_1, navigationManager_1, toolList_1, toolDeleteConfirmation_1) {
 	    "use strict";
 	    var ToolListPanel = (function (_super) {
 	        __extends(ToolListPanel, _super);
@@ -137,6 +137,9 @@
 	                    selectedTools: selectedTools
 	                });
 	            };
+	            this.closePanel = function () {
+	                panelActions_1.default.close(_this.props.componentId);
+	            };
 	            this.props = props;
 	            this.context = context;
 	            this.state = {
@@ -144,7 +147,7 @@
 	            };
 	        }
 	        ToolListPanel.prototype.render = function () {
-	            return (React.createElement("div", {className: "panel panel-default inner", style: { marginBottom: 0 + 'px', position: 'relative' }}, React.createElement("div", {className: "panel-heading", style: { marginBottom: 0 + 'px', zIndex: 1050, position: 'relative' }}, React.createElement("h4", null, "Инструменты")), React.createElement(toolDeleteConfirmation_1.default, {componentId: this.props.componentId}), React.createElement("div", {className: "panel-body", style: { display: 'flex', flexDirection: 'column' }}, React.createElement(toolList_1.default, {componentId: this.props.componentId, selectedTools: this.state.selectedTools, onSelectedToolsChange: this.handleSelectedToolsChange, onNewToolClick: this.newToolBtnClickHandler, onToolDoubleClick: this.toolEditFormOpen, onToolPageChange: this.handleToolPageChange, onToolSearchTextChange: this.handleToolSearchTextChange, onToolsPerPageChange: this.handleToolsPerPageChange}))));
+	            return (React.createElement("div", {className: "panel panel-default inner", style: { marginBottom: 0 + 'px', position: 'relative' }}, React.createElement("div", {className: "panel-heading table-style", style: { zIndex: 1050, position: 'relative' }}, React.createElement("h2", {className: "panel-title"}, "Инструменты"), React.createElement("div", {className: "button-wrap"}, React.createElement("div", {className: "btn btn-default", onClick: this.closePanel}, React.createElement("div", {style: { display: 'table-cell', verticalAlign: 'middle' }}, React.createElement("span", null, '❌'))))), React.createElement(toolDeleteConfirmation_1.default, {componentId: this.props.componentId}), React.createElement("div", {className: "panel-body", style: { display: 'flex', flexDirection: 'column' }}, React.createElement(toolList_1.default, {componentId: this.props.componentId, selectedTools: this.state.selectedTools, onSelectedToolsChange: this.handleSelectedToolsChange, onNewToolClick: this.newToolBtnClickHandler, onToolDoubleClick: this.toolEditFormOpen, onToolPageChange: this.handleToolPageChange, onToolSearchTextChange: this.handleToolSearchTextChange, onToolsPerPageChange: this.handleToolsPerPageChange}))));
 	        };
 	        return ToolListPanel;
 	    }(React.Component));
@@ -253,6 +256,28 @@
 	                searchText: text
 	            });
 	        };
+	        ToolActionsStatic.prototype.undo = function (componentId) {
+	            appDispatcher_1.default.dispatch({
+	                actionType: toolActionTypes_1.default.TOOL_UNDO,
+	                actionSource: actionSourceTypes_1.default.TOOL,
+	                componentId: componentId
+	            });
+	        };
+	        ToolActionsStatic.prototype.redo = function (componentId) {
+	            appDispatcher_1.default.dispatch({
+	                actionType: toolActionTypes_1.default.TOOL_REDO,
+	                actionSource: actionSourceTypes_1.default.TOOL,
+	                componentId: componentId
+	            });
+	        };
+	        ToolActionsStatic.prototype.change = function (componentId, changedTool) {
+	            appDispatcher_1.default.dispatch({
+	                actionType: toolActionTypes_1.default.TOOL_REDO,
+	                actionSource: actionSourceTypes_1.default.TOOL,
+	                componentId: componentId,
+	                tool: changedTool
+	            });
+	        };
 	        return ToolActionsStatic;
 	    }());
 	    var ToolActions = new ToolActionsStatic();
@@ -326,13 +351,16 @@
 	        ToolActionTypes[ToolActionTypes["TOOL_UPDATE_TOOL_LIST"] = 2] = "TOOL_UPDATE_TOOL_LIST";
 	        ToolActionTypes[ToolActionTypes["TOOL_SHOW_DELETE_CONFIRMATION"] = 3] = "TOOL_SHOW_DELETE_CONFIRMATION";
 	        ToolActionTypes[ToolActionTypes["TOOL_CLOSE_DELETE_CONFIRMATION"] = 4] = "TOOL_CLOSE_DELETE_CONFIRMATION";
-	        ToolActionTypes[ToolActionTypes["TOOL_LOAD_EDIT"] = 5] = "TOOL_LOAD_EDIT";
-	        ToolActionTypes[ToolActionTypes["TOOL_CREATE"] = 6] = "TOOL_CREATE";
-	        ToolActionTypes[ToolActionTypes["TOOL_DELETE"] = 7] = "TOOL_DELETE";
-	        ToolActionTypes[ToolActionTypes["TOOL_UPDATE"] = 8] = "TOOL_UPDATE";
-	        ToolActionTypes[ToolActionTypes["TOOL_PAGE_CHANGE"] = 9] = "TOOL_PAGE_CHANGE";
-	        ToolActionTypes[ToolActionTypes["TOOLS_PER_PAGE_CHANGE"] = 10] = "TOOLS_PER_PAGE_CHANGE";
-	        ToolActionTypes[ToolActionTypes["TOOL_SEARCH_TEXT_CHANGE"] = 11] = "TOOL_SEARCH_TEXT_CHANGE";
+	        ToolActionTypes[ToolActionTypes["TOOL_REDO"] = 5] = "TOOL_REDO";
+	        ToolActionTypes[ToolActionTypes["TOOL_UNDO"] = 6] = "TOOL_UNDO";
+	        ToolActionTypes[ToolActionTypes["TOOL_CHANGE"] = 7] = "TOOL_CHANGE";
+	        ToolActionTypes[ToolActionTypes["TOOL_LOAD_EDIT"] = 8] = "TOOL_LOAD_EDIT";
+	        ToolActionTypes[ToolActionTypes["TOOL_CREATE"] = 9] = "TOOL_CREATE";
+	        ToolActionTypes[ToolActionTypes["TOOL_DELETE"] = 10] = "TOOL_DELETE";
+	        ToolActionTypes[ToolActionTypes["TOOL_UPDATE"] = 11] = "TOOL_UPDATE";
+	        ToolActionTypes[ToolActionTypes["TOOL_PAGE_CHANGE"] = 12] = "TOOL_PAGE_CHANGE";
+	        ToolActionTypes[ToolActionTypes["TOOLS_PER_PAGE_CHANGE"] = 13] = "TOOLS_PER_PAGE_CHANGE";
+	        ToolActionTypes[ToolActionTypes["TOOL_SEARCH_TEXT_CHANGE"] = 14] = "TOOL_SEARCH_TEXT_CHANGE";
 	    })(ToolActionTypes || (ToolActionTypes = {}));
 	    Object.defineProperty(exports, "__esModule", { value: true });
 	    exports.default = ToolActionTypes;
@@ -369,13 +397,77 @@
 
 /***/ },
 /* 10 */
+/*!**************************************************!*\
+  !*** ./Scripts/app/flux/actions/panelActions.js ***!
+  \**************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/// <reference path="../../../typings/tsd.d.ts" />
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! ../dispatcher/appDispatcher */ 5), __webpack_require__(/*! ./actionSourceTypes */ 7), __webpack_require__(/*! ./panelActionTypes */ 11)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, appDispatcher_1, actionSourceTypes_1, panelActionTypes_1) {
+	    "use strict";
+	    var PanelActionsStatic = (function () {
+	        function PanelActionsStatic() {
+	        }
+	        PanelActionsStatic.prototype.open = function (callerId, type, params) {
+	            appDispatcher_1.default.dispatch({
+	                actionType: panelActionTypes_1.default.PANEL_OPEN,
+	                actionSource: actionSourceTypes_1.default.PANEL,
+	                callerPanelId: callerId,
+	                panelType: type,
+	                params: params
+	            });
+	        };
+	        PanelActionsStatic.prototype.close = function (panelId) {
+	            appDispatcher_1.default.dispatch({
+	                actionType: panelActionTypes_1.default.PANEL_CLOSE,
+	                actionSource: actionSourceTypes_1.default.PANEL,
+	                callerPanelId: panelId
+	            });
+	        };
+	        PanelActionsStatic.prototype.init = function (type) {
+	            appDispatcher_1.default.dispatch({
+	                actionType: panelActionTypes_1.default.PANEL_INIT,
+	                actionSource: actionSourceTypes_1.default.PANEL,
+	                panelType: type
+	            });
+	        };
+	        return PanelActionsStatic;
+	    }());
+	    var PanelActions = new PanelActionsStatic();
+	    Object.defineProperty(exports, "__esModule", { value: true });
+	    exports.default = PanelActions;
+	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	//# sourceMappingURL=panelActions.js.map
+
+/***/ },
+/* 11 */
+/*!******************************************************!*\
+  !*** ./Scripts/app/flux/actions/panelActionTypes.js ***!
+  \******************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports) {
+	    "use strict";
+	    var PanelActionTypes;
+	    (function (PanelActionTypes) {
+	        PanelActionTypes[PanelActionTypes["PANEL_OPEN"] = 0] = "PANEL_OPEN";
+	        PanelActionTypes[PanelActionTypes["PANEL_CLOSE"] = 1] = "PANEL_CLOSE";
+	        PanelActionTypes[PanelActionTypes["PANEL_INIT"] = 2] = "PANEL_INIT";
+	    })(PanelActionTypes || (PanelActionTypes = {}));
+	    Object.defineProperty(exports, "__esModule", { value: true });
+	    exports.default = PanelActionTypes;
+	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	//# sourceMappingURL=panelActionTypes.js.map
+
+/***/ },
+/* 12 */
 /*!***************************************************!*\
   !*** ./Scripts/app/managers/pageParamsManager.js ***!
   \***************************************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/// <reference path="../../typings/tsd.d.ts" />
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react-router */ 11), __webpack_require__(/*! ../constants/pageConstants */ 12)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, ReactRouter, pageConstants_1) {
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react-router */ 13), __webpack_require__(/*! ../constants/pageConstants */ 14)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, ReactRouter, pageConstants_1) {
 	    "use strict";
 	    var PageParamsManagerStatic = (function () {
 	        function PageParamsManagerStatic() {
@@ -434,7 +526,7 @@
 	//# sourceMappingURL=pageParamsManager.js.map
 
 /***/ },
-/* 11 */
+/* 13 */
 /*!******************************!*\
   !*** external "ReactRouter" ***!
   \******************************/
@@ -443,7 +535,7 @@
 	module.exports = ReactRouter;
 
 /***/ },
-/* 12 */
+/* 14 */
 /*!************************************************!*\
   !*** ./Scripts/app/constants/pageConstants.js ***!
   \************************************************/
@@ -463,14 +555,14 @@
 	//# sourceMappingURL=pageConstants.js.map
 
 /***/ },
-/* 13 */
+/* 15 */
 /*!***************************************************!*\
   !*** ./Scripts/app/managers/navigationManager.js ***!
   \***************************************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/// <reference path="../../typings/tsd.d.ts" />
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react-router */ 11)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, ReactRouter) {
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react-router */ 13)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, ReactRouter) {
 	    "use strict";
 	    var NavigationManagerStatic = (function () {
 	        function NavigationManagerStatic() {
@@ -568,7 +660,7 @@
 	//# sourceMappingURL=navigationManager.js.map
 
 /***/ },
-/* 14 */
+/* 16 */
 /*!********************************************!*\
   !*** ./Scripts/app/components/toolList.js ***!
   \********************************************/
@@ -580,7 +672,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ../constants/pageConstants */ 12), __webpack_require__(/*! ../flux/stores/newToolStore */ 17), __webpack_require__(/*! ../flux/actions/toolActions */ 4), __webpack_require__(/*! ../flux/actions/panelActions */ 15), __webpack_require__(/*! ./componentType */ 19), __webpack_require__(/*! ./common/tableRow */ 20), __webpack_require__(/*! ./common/pagination */ 21), __webpack_require__(/*! ./common/itemListControlPanel */ 22)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, pageConstants_1, newToolStore_1, toolActions_1, panelActions_1, componentType_1, tableRow_1, pagination_1, itemListControlPanel_1) {
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ../constants/pageConstants */ 14), __webpack_require__(/*! ../flux/stores/newToolStore */ 17), __webpack_require__(/*! ../flux/actions/toolActions */ 4), __webpack_require__(/*! ../flux/actions/panelActions */ 10), __webpack_require__(/*! ./componentType */ 19), __webpack_require__(/*! ./common/tableRow */ 20), __webpack_require__(/*! ./common/pagination */ 21), __webpack_require__(/*! ./common/itemListControlPanel */ 22)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, pageConstants_1, newToolStore_1, toolActions_1, panelActions_1, componentType_1, tableRow_1, pagination_1, itemListControlPanel_1) {
 	    "use strict";
 	    var ToolTable = (function (_super) {
 	        __extends(ToolTable, _super);
@@ -714,70 +806,6 @@
 	//# sourceMappingURL=toolList.js.map
 
 /***/ },
-/* 15 */
-/*!**************************************************!*\
-  !*** ./Scripts/app/flux/actions/panelActions.js ***!
-  \**************************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/// <reference path="../../../typings/tsd.d.ts" />
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! ../dispatcher/appDispatcher */ 5), __webpack_require__(/*! ./actionSourceTypes */ 7), __webpack_require__(/*! ./panelActionTypes */ 16)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, appDispatcher_1, actionSourceTypes_1, panelActionTypes_1) {
-	    "use strict";
-	    var PanelActionsStatic = (function () {
-	        function PanelActionsStatic() {
-	        }
-	        PanelActionsStatic.prototype.open = function (callerId, type, params) {
-	            appDispatcher_1.default.dispatch({
-	                actionType: panelActionTypes_1.default.PANEL_OPEN,
-	                actionSource: actionSourceTypes_1.default.PANEL,
-	                callerPanelId: callerId,
-	                panelType: type,
-	                params: params
-	            });
-	        };
-	        PanelActionsStatic.prototype.close = function (panelId) {
-	            appDispatcher_1.default.dispatch({
-	                actionType: panelActionTypes_1.default.PANEL_CLOSE,
-	                actionSource: actionSourceTypes_1.default.PANEL,
-	                callerPanelId: panelId
-	            });
-	        };
-	        PanelActionsStatic.prototype.init = function (type) {
-	            appDispatcher_1.default.dispatch({
-	                actionType: panelActionTypes_1.default.PANEL_INIT,
-	                actionSource: actionSourceTypes_1.default.PANEL,
-	                panelType: type
-	            });
-	        };
-	        return PanelActionsStatic;
-	    }());
-	    var PanelActions = new PanelActionsStatic();
-	    Object.defineProperty(exports, "__esModule", { value: true });
-	    exports.default = PanelActions;
-	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	//# sourceMappingURL=panelActions.js.map
-
-/***/ },
-/* 16 */
-/*!******************************************************!*\
-  !*** ./Scripts/app/flux/actions/panelActionTypes.js ***!
-  \******************************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports) {
-	    "use strict";
-	    var PanelActionTypes;
-	    (function (PanelActionTypes) {
-	        PanelActionTypes[PanelActionTypes["PANEL_OPEN"] = 0] = "PANEL_OPEN";
-	        PanelActionTypes[PanelActionTypes["PANEL_CLOSE"] = 1] = "PANEL_CLOSE";
-	        PanelActionTypes[PanelActionTypes["PANEL_INIT"] = 2] = "PANEL_INIT";
-	    })(PanelActionTypes || (PanelActionTypes = {}));
-	    Object.defineProperty(exports, "__esModule", { value: true });
-	    exports.default = PanelActionTypes;
-	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	//# sourceMappingURL=panelActionTypes.js.map
-
-/***/ },
 /* 17 */
 /*!*************************************************!*\
   !*** ./Scripts/app/flux/stores/newToolStore.js ***!
@@ -794,6 +822,7 @@
 	    "use strict";
 	    var CHANGE_EVENT = "CHANGE_EVENT";
 	    var _toolComponentStates = {};
+	    var _toolComponentHistories = {};
 	    function _updateToolList(componentId, tools) {
 	        _toolComponentStates[componentId].tools = tools;
 	    }
@@ -809,6 +838,21 @@
 	    function _updateDeleteConfirmation(componentId) {
 	        _toolComponentStates[componentId].isConfirmDeleting =
 	            !_toolComponentStates[componentId].isConfirmDeleting;
+	    }
+	    function _updateToolComponentHistory(componentId, changedTool) {
+	        var toolComponentHistory = _toolComponentHistories[componentId];
+	        toolComponentHistory.toolUnDoes.push(changedTool);
+	        toolComponentHistory.toolReDoes = [];
+	    }
+	    function _unDoToolComponentHistory(componentId) {
+	        var toolComponentHistory = _toolComponentHistories[componentId];
+	        var tool = toolComponentHistory.toolUnDoes.pop();
+	        toolComponentHistory.toolReDoes.push(tool);
+	    }
+	    function _reDoToolComponentHistory(componentId) {
+	        var toolComponentHistory = _toolComponentHistories[componentId];
+	        var tool = toolComponentHistory.toolReDoes.pop();
+	        toolComponentHistory.toolUnDoes.push(tool);
 	    }
 	    var ToolStore = (function (_super) {
 	        __extends(ToolStore, _super);
@@ -847,6 +891,15 @@
 	                _updateTotalAmount(payload.componentId, payload.totalAmount);
 	                _updateToolPage(payload.componentId, payload.currentPage);
 	                _updateToolsPerPage(payload.componentId, payload.pageSize);
+	                toolStore.emitChange(payload.componentId);
+	                break;
+	            case toolActionTypes_1.default.TOOL_REDO:
+	                toolStore.emitChange(payload.componentId);
+	                break;
+	            case toolActionTypes_1.default.TOOL_UNDO:
+	                toolStore.emitChange(payload.componentId);
+	                break;
+	            case toolActionTypes_1.default.TOOL_CHANGE:
 	                toolStore.emitChange(payload.componentId);
 	                break;
 	            case toolActionTypes_1.default.TOOL_SHOW_DELETE_CONFIRMATION:
@@ -1112,7 +1165,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ../../constants/pageConstants */ 12)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, pageConstants_1) {
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ../../constants/pageConstants */ 14)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, pageConstants_1) {
 	    "use strict";
 	    var ItemsPerPageSelector = (function (_super) {
 	        __extends(ItemsPerPageSelector, _super);
@@ -1371,7 +1424,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ../flux/actions/panelActions */ 15)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, panelActions_1) {
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ../flux/actions/panelActions */ 10)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, panelActions_1) {
 	    "use strict";
 	    var Tab = (function (_super) {
 	        __extends(Tab, _super);
@@ -1442,7 +1495,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ../flux/stores/panelStore */ 32), __webpack_require__(/*! ../flux/actions/panelActions */ 15), __webpack_require__(/*! ./componentFactory */ 34), __webpack_require__(/*! ./componentType */ 19)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, panelStore_1, panelActions_1, componentFactory_1, componentType_1) {
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ../flux/stores/panelStore */ 32), __webpack_require__(/*! ../flux/actions/panelActions */ 10), __webpack_require__(/*! ./componentFactory */ 34), __webpack_require__(/*! ./componentType */ 19)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, panelStore_1, panelActions_1, componentFactory_1, componentType_1) {
 	    "use strict";
 	    var MainContentSection = (function (_super) {
 	        __extends(MainContentSection, _super);
@@ -1497,7 +1550,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! ../dispatcher/appDispatcher */ 5), __webpack_require__(/*! eventemitter3 */ 18), __webpack_require__(/*! ../actions/actionSourceTypes */ 7), __webpack_require__(/*! ../actions/panelActionTypes */ 16), __webpack_require__(/*! ../../utils/utils */ 33)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, appDispatcher_1, EventEmitter, actionSourceTypes_1, panelActionTypes_1, utils_1) {
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! ../dispatcher/appDispatcher */ 5), __webpack_require__(/*! eventemitter3 */ 18), __webpack_require__(/*! ../actions/actionSourceTypes */ 7), __webpack_require__(/*! ../actions/panelActionTypes */ 11), __webpack_require__(/*! ../../utils/utils */ 33)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, appDispatcher_1, EventEmitter, actionSourceTypes_1, panelActionTypes_1, utils_1) {
 	    "use strict";
 	    var CHANGE_EVENT = "PANEL_CHANGE_EVENT";
 	    var _panels;
@@ -1612,7 +1665,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/// <reference path="../../typings/tsd.d.ts" />
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! ./mainPanel */ 44), __webpack_require__(/*! ./partList */ 45), __webpack_require__(/*! ./toolListPanel */ 3), __webpack_require__(/*! ./toolEditForm */ 35), __webpack_require__(/*! ./techStepList */ 49), __webpack_require__(/*! ./techOperationList */ 53), __webpack_require__(/*! ./techProcessList */ 57), __webpack_require__(/*! ./componentType */ 19)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, mainPanel_1, partList_1, toolListPanel_1, toolEditForm_1, techStepList_1, techOperationList_1, techProcessList_1, componentType_1) {
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! ./mainPanel */ 41), __webpack_require__(/*! ./partList */ 42), __webpack_require__(/*! ./toolListPanel */ 3), __webpack_require__(/*! ./toolEditForm */ 35), __webpack_require__(/*! ./techStepList */ 49), __webpack_require__(/*! ./techOperationList */ 53), __webpack_require__(/*! ./techProcessList */ 57), __webpack_require__(/*! ./componentType */ 19)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, mainPanel_1, partList_1, toolListPanel_1, toolEditForm_1, techStepList_1, techOperationList_1, techProcessList_1, componentType_1) {
 	    "use strict";
 	    var ComponentFactory = (function () {
 	        function ComponentFactory() {
@@ -1656,7 +1709,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ../flux/stores/toolStore */ 36), __webpack_require__(/*! ../flux/stores/errorStore */ 41), __webpack_require__(/*! ../flux/actions/toolActions */ 4), __webpack_require__(/*! ../managers/navigationManager */ 13), __webpack_require__(/*! ./common/textInput */ 42)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, toolStore_1, errorStore_1, toolActions_1, navigationManager_1, textInput_1) {
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ../flux/stores/newToolStore */ 17), __webpack_require__(/*! ../flux/stores/errorStore */ 36), __webpack_require__(/*! ../flux/actions/panelActions */ 10), __webpack_require__(/*! ../flux/actions/toolActions */ 4), __webpack_require__(/*! ../managers/navigationManager */ 15), __webpack_require__(/*! ./common/textInput */ 38), __webpack_require__(/*! ./common/loadingAnimation */ 40)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, newToolStore_1, errorStore_1, panelActions_1, toolActions_1, navigationManager_1, textInput_1, loadingAnimation_1) {
 	    "use strict";
 	    var ToolEditForm = (function (_super) {
 	        __extends(ToolEditForm, _super);
@@ -1665,7 +1718,7 @@
 	            _super.call(this, props, context);
 	            this.handleEditToolChange = function () {
 	                _this.setState({
-	                    tool: toolStore_1.default.getEditTool(),
+	                    tool: newToolStore_1.default.getState(_this.props.componentId),
 	                    errorMessage: null,
 	                    isValid: true
 	                });
@@ -1714,6 +1767,9 @@
 	                    isValid: true
 	                });
 	            };
+	            this.closePanel = function () {
+	                panelActions_1.default.close(_this.props.componentId);
+	            };
 	            this.props = props;
 	            this.context = context;
 	            this.state = {
@@ -1724,12 +1780,10 @@
 	        }
 	        ToolEditForm.prototype.componentWillMount = function () {
 	            this.inputs = {};
-	            toolStore_1.default.addChangeEditToolListener(this.handleEditToolChange);
-	            errorStore_1.default.addChangeErrorListener(this.handleNewError);
+	            newToolStore_1.default.addChangeListener(this.handleEditToolChange, this.props.componentId);
 	        };
 	        ToolEditForm.prototype.componentWillUnmount = function () {
-	            toolStore_1.default.removeChangeEditToolListener(this.handleEditToolChange);
-	            errorStore_1.default.removeChangeErrorListener(this.handleNewError);
+	            newToolStore_1.default.removeChangeListener(this.handleEditToolChange, this.props.componentId);
 	        };
 	        ToolEditForm.prototype.componentDidMount = function () {
 	            this.setState({
@@ -1746,7 +1800,7 @@
 	            return true;
 	        };
 	        ToolEditForm.prototype.render = function () {
-	            return (React.createElement("div", {className: "panel panel-default inner", style: { marginBottom: 0 + 'px' }}, React.createElement("div", {className: "panel-heading"}, React.createElement("h4", null, "Редактирование инструмента")), React.createElement("div", {className: "panel-body"}, this.state.errorMessage != null ?
+	            return (React.createElement("div", {className: "panel panel-default inner", style: { marginBottom: 0 + 'px', position: 'relative' }}, React.createElement("div", {className: "panel-heading table-style", style: { zIndex: 1050, position: 'relative' }}, React.createElement("h2", {className: "panel-title"}, "Редактирование инструмента"), React.createElement("div", {className: "button-wrap"}, React.createElement("div", {className: "btn btn-default", onClick: this.closePanel}, React.createElement("div", {style: { display: 'table-cell', verticalAlign: 'middle' }}, React.createElement("span", null, '❌'))))), React.createElement(loadingAnimation_1.default, null, React.createElement("h4", null, "Пожалуйста, подождите."), React.createElement("h4", null, "Идет сохранение.")), React.createElement("div", {className: "panel-body"}, this.state.errorMessage != null ?
 	                React.createElement("div", null, React.createElement("div", {className: "form-group"}, React.createElement("span", null, this.state.errorMessage)), React.createElement("div", {className: "form-group"}, React.createElement("div", {className: "btn-toolbar"}, React.createElement("button", {className: "btn btn-default", type: "button", onClick: this.cancelClickHandler}, "Закрыть"))))
 	                : null, this.state.tool == null ?
 	                this.state.errorMessage == null ?
@@ -1764,288 +1818,6 @@
 
 /***/ },
 /* 36 */
-/*!**********************************************!*\
-  !*** ./Scripts/app/flux/stores/toolStore.js ***!
-  \**********************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/// <reference path="../../../typings/tsd.d.ts" />
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! jquery */ 39), __webpack_require__(/*! ../dispatcher/appDispatcher */ 5), __webpack_require__(/*! ../actions/actionSourceTypes */ 7), __webpack_require__(/*! ../actions/toolActionTypes */ 8), __webpack_require__(/*! ../actions/errorActions */ 37), __webpack_require__(/*! ../../constants/pageConstants */ 12), __webpack_require__(/*! ../../managers/navigationManager */ 13), __webpack_require__(/*! object-assign */ 40), __webpack_require__(/*! eventemitter3 */ 18)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, $, appDispatcher_1, actionSourceTypes_1, toolActionTypes_1, errorActions_1, pageConstants_1, navigationManager_1, assign, EventEmitter) {
-	    "use strict";
-	    var CHANGE_TOOLS_EVENT = 'change_tools';
-	    var CHANGE_EDITTOOL_EVENT = 'change_edittool';
-	    var _tools = new Array();
-	    var _tool;
-	    var _toolSearchText = "";
-	    var _totalToolAmount = 0;
-	    var _toolsPerPage = pageConstants_1.default.ITEMS_PER_PAGE_INIT;
-	    var _currentToolPage = 0;
-	    function _loadTools() {
-	        $.get(location.origin + "/api/tools?search=" + _toolSearchText + "&page=" + _currentToolPage + "&pageSize=" + _toolsPerPage, function (toolListModel) {
-	            _totalToolAmount = toolListModel.toolAmount;
-	            _tools = new Array();
-	            toolListModel.tools.forEach(function (tool) {
-	                _tools[tool.id] = tool;
-	            });
-	            ToolStore.emitChangeTools();
-	        });
-	    }
-	    function _loadTool(id) {
-	        if (id == 0) {
-	            _tool = { id: 0, name: "", price: 0 };
-	            ToolStore.emitChangeEditTool();
-	            return;
-	        }
-	        if (_tools[id]) {
-	            _tool = _tools[id];
-	            ToolStore.emitChangeEditTool();
-	        }
-	        else {
-	            $.ajax({
-	                url: location.origin + "/api/tools/" + id,
-	                type: 'GET',
-	                success: function (tool) {
-	                    _tool = tool;
-	                    ToolStore.emitChangeEditTool();
-	                },
-	                error: function (data) {
-	                    errorActions_1.default.received(data.responseJSON);
-	                }
-	            });
-	        }
-	    }
-	    function _addTool(tool) {
-	        $.ajax({
-	            url: location.origin + '/api/tools',
-	            dataType: 'json',
-	            type: 'PUT',
-	            data: {
-	                id: tool.id,
-	                name: tool.name,
-	                price: tool.price,
-	                __RequestVerificationToken: antiForgeryToken
-	            },
-	            success: function (tool) {
-	                _tool = tool;
-	                if (_tools[tool.id]) {
-	                    _tools[tool.id] = assign({}, _tools[tool.id], tool);
-	                    ToolStore.emitChangeTools();
-	                }
-	                navigationManager_1.default.openToolEditor(tool.id);
-	            },
-	            error: function (xhr, status, err) {
-	                console.error(this.props.url, status, err.toString());
-	            }.bind(this)
-	        });
-	    }
-	    function _deleteTool(id) {
-	        $.ajax({
-	            url: location.origin + '/api/tools/' + id,
-	            dataType: 'json',
-	            type: 'DELETE',
-	            data: { __RequestVerificationToken: antiForgeryToken },
-	            success: function (id) {
-	                _loadTools();
-	            },
-	            error: function (xhr, status, err) {
-	                console.error(this.props.url, status, err.toString());
-	            }
-	        });
-	    }
-	    function _updateTool(tool) {
-	        $.ajax({
-	            url: location.origin + '/api/tools',
-	            dataType: 'json',
-	            type: 'POST',
-	            data: {
-	                id: tool.id,
-	                name: tool.name,
-	                price: tool.price,
-	                __RequestVerificationToken: antiForgeryToken
-	            },
-	            success: function (tool) {
-	                if (_tools[tool.id]) {
-	                    _tools[tool.id] = assign({}, _tools[tool.id], tool);
-	                    ToolStore.emitChangeTools();
-	                }
-	            },
-	            error: function (xhr, status, err) {
-	                console.error(this.props.url, status, err.toString());
-	            }
-	        });
-	    }
-	    function _init(currentPage, toolsPerPage, searchText) {
-	        _toolsPerPage = toolsPerPage;
-	        _currentToolPage = currentPage;
-	        _toolSearchText = searchText;
-	        _loadTools();
-	    }
-	    var ToolStoreStatic = (function (_super) {
-	        __extends(ToolStoreStatic, _super);
-	        function ToolStoreStatic() {
-	            _super.apply(this, arguments);
-	        }
-	        ToolStoreStatic.prototype.getAll = function () {
-	            return _tools;
-	        };
-	        ToolStoreStatic.prototype.getToolAmount = function () {
-	            return _totalToolAmount;
-	        };
-	        ToolStoreStatic.prototype.getToolsPerPage = function () {
-	            return _toolsPerPage;
-	        };
-	        ToolStoreStatic.prototype.getCurrentToolPage = function () {
-	            return _currentToolPage;
-	        };
-	        ToolStoreStatic.prototype.getSearchText = function () {
-	            return _toolSearchText;
-	        };
-	        ToolStoreStatic.prototype.getEditTool = function () {
-	            return _tool;
-	        };
-	        ToolStoreStatic.prototype.emitChangeTools = function () {
-	            this.emit(CHANGE_TOOLS_EVENT);
-	        };
-	        ToolStoreStatic.prototype.emitChangeEditTool = function () {
-	            this.emit(CHANGE_EDITTOOL_EVENT);
-	        };
-	        /**
-	         * @param {function} callback
-	         */
-	        ToolStoreStatic.prototype.addChangeEditToolListener = function (callback) {
-	            this.on(CHANGE_EDITTOOL_EVENT, callback);
-	        };
-	        /**
-	         * @param {function} callback
-	         */
-	        ToolStoreStatic.prototype.removeChangeEditToolListener = function (callback) {
-	            this.removeListener(CHANGE_EDITTOOL_EVENT, callback);
-	        };
-	        /**
-	         * @param {function} callback
-	         */
-	        ToolStoreStatic.prototype.addChangeToolsListener = function (callback) {
-	            this.on(CHANGE_TOOLS_EVENT, callback);
-	        };
-	        /**
-	         * @param {function} callback
-	         */
-	        ToolStoreStatic.prototype.removeChangeToolsListener = function (callback) {
-	            this.removeListener(CHANGE_TOOLS_EVENT, callback);
-	        };
-	        return ToolStoreStatic;
-	    }(EventEmitter));
-	    var ToolStore = new ToolStoreStatic();
-	    appDispatcher_1.default.register(function (payload) {
-	        if (payload.actionSource != actionSourceTypes_1.default.TOOL)
-	            return;
-	        switch (payload.actionType) {
-	            case toolActionTypes_1.default.TOOL_INIT:
-	                _init(payload.currentPage, payload.pageSize, payload.searchText);
-	                break;
-	            case toolActionTypes_1.default.TOOL_LOAD_EDIT:
-	                _loadTool(payload.id);
-	                break;
-	            case toolActionTypes_1.default.TOOL_CREATE:
-	                _addTool(payload.tool);
-	                break;
-	            case toolActionTypes_1.default.TOOL_UPDATE:
-	                _updateTool(payload.tool);
-	                break;
-	            case toolActionTypes_1.default.TOOL_DELETE:
-	                _deleteTool(payload.id);
-	                break;
-	            case toolActionTypes_1.default.TOOL_PAGE_CHANGE:
-	                _currentToolPage = payload.currentPage;
-	                _loadTools();
-	                break;
-	            case toolActionTypes_1.default.TOOLS_PER_PAGE_CHANGE:
-	                _toolsPerPage = payload.pageSize;
-	                _loadTools();
-	                break;
-	            case toolActionTypes_1.default.TOOL_SEARCH_TEXT_CHANGE:
-	                _toolSearchText = payload.searchText;
-	                _loadTools();
-	                break;
-	            default:
-	        }
-	    });
-	    Object.defineProperty(exports, "__esModule", { value: true });
-	    exports.default = ToolStore;
-	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	//# sourceMappingURL=toolStore.js.map
-
-/***/ },
-/* 37 */
-/*!**************************************************!*\
-  !*** ./Scripts/app/flux/actions/errorActions.js ***!
-  \**************************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/// <reference path="../../../typings/tsd.d.ts" />
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! ../dispatcher/appDispatcher */ 5), __webpack_require__(/*! ./actionSourceTypes */ 7), __webpack_require__(/*! ./errorActionTypes */ 38)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, appDispatcher_1, actionSourceTypes_1, errorActionTypes_1) {
-	    "use strict";
-	    var ErrorActionsStatic = (function () {
-	        function ErrorActionsStatic() {
-	        }
-	        ErrorActionsStatic.prototype.received = function (message) {
-	            appDispatcher_1.default.dispatch({
-	                actionType: errorActionTypes_1.default.RECEIVE_ERROR_MESSAGE,
-	                actionSource: actionSourceTypes_1.default.ERROR,
-	                errorMessage: message
-	            });
-	        };
-	        return ErrorActionsStatic;
-	    }());
-	    var ErrorActions = new ErrorActionsStatic();
-	    Object.defineProperty(exports, "__esModule", { value: true });
-	    exports.default = ErrorActions;
-	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	//# sourceMappingURL=errorActions.js.map
-
-/***/ },
-/* 38 */
-/*!******************************************************!*\
-  !*** ./Scripts/app/flux/actions/errorActionTypes.js ***!
-  \******************************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports) {
-	    "use strict";
-	    var ErrorActionTypes;
-	    (function (ErrorActionTypes) {
-	        ErrorActionTypes[ErrorActionTypes["RECEIVE_ERROR_MESSAGE"] = 0] = "RECEIVE_ERROR_MESSAGE";
-	    })(ErrorActionTypes || (ErrorActionTypes = {}));
-	    Object.defineProperty(exports, "__esModule", { value: true });
-	    exports.default = ErrorActionTypes;
-	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	//# sourceMappingURL=errorActionTypes.js.map
-
-/***/ },
-/* 39 */
-/*!********************!*\
-  !*** external "$" ***!
-  \********************/
-/***/ function(module, exports) {
-
-	module.exports = $;
-
-/***/ },
-/* 40 */
-/*!*************************!*\
-  !*** external "assign" ***!
-  \*************************/
-/***/ function(module, exports) {
-
-	module.exports = assign;
-
-/***/ },
-/* 41 */
 /*!***********************************************!*\
   !*** ./Scripts/app/flux/stores/errorStore.js ***!
   \***********************************************/
@@ -2057,7 +1829,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! eventemitter3 */ 18), __webpack_require__(/*! ../dispatcher/appDispatcher */ 5), __webpack_require__(/*! ../actions/actionSourceTypes */ 7), __webpack_require__(/*! ../actions/errorActionTypes */ 38)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, EventEmitter, appDispatcher_1, actionSourceTypes_1, errorActionTypes_1) {
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! eventemitter3 */ 18), __webpack_require__(/*! ../dispatcher/appDispatcher */ 5), __webpack_require__(/*! ../actions/actionSourceTypes */ 7), __webpack_require__(/*! ../actions/errorActionTypes */ 37)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, EventEmitter, appDispatcher_1, actionSourceTypes_1, errorActionTypes_1) {
 	    "use strict";
 	    var CHANGE_ERROR_EVENT = 'change_error_event';
 	    var _errorMessage = null;
@@ -2107,7 +1879,25 @@
 	//# sourceMappingURL=errorStore.js.map
 
 /***/ },
-/* 42 */
+/* 37 */
+/*!******************************************************!*\
+  !*** ./Scripts/app/flux/actions/errorActionTypes.js ***!
+  \******************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports) {
+	    "use strict";
+	    var ErrorActionTypes;
+	    (function (ErrorActionTypes) {
+	        ErrorActionTypes[ErrorActionTypes["RECEIVE_ERROR_MESSAGE"] = 0] = "RECEIVE_ERROR_MESSAGE";
+	    })(ErrorActionTypes || (ErrorActionTypes = {}));
+	    Object.defineProperty(exports, "__esModule", { value: true });
+	    exports.default = ErrorActionTypes;
+	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	//# sourceMappingURL=errorActionTypes.js.map
+
+/***/ },
+/* 38 */
 /*!****************************************************!*\
   !*** ./Scripts/app/components/common/textInput.js ***!
   \****************************************************/
@@ -2119,7 +1909,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ./inputError */ 43)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, inputError_1) {
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ./inputError */ 39)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, inputError_1) {
 	    "use strict";
 	    var TextInput = (function (_super) {
 	        __extends(TextInput, _super);
@@ -2216,7 +2006,7 @@
 	//# sourceMappingURL=textInput.js.map
 
 /***/ },
-/* 43 */
+/* 39 */
 /*!*****************************************************!*\
   !*** ./Scripts/app/components/common/inputError.js ***!
   \*****************************************************/
@@ -2246,7 +2036,37 @@
 	//# sourceMappingURL=inputError.js.map
 
 /***/ },
-/* 44 */
+/* 40 */
+/*!***********************************************************!*\
+  !*** ./Scripts/app/components/common/loadingAnimation.js ***!
+  \***********************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/// <reference path="../../../typings/tsd.d.ts" />
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React) {
+	    "use strict";
+	    var LoadingAnimation = (function (_super) {
+	        __extends(LoadingAnimation, _super);
+	        function LoadingAnimation() {
+	            _super.apply(this, arguments);
+	        }
+	        LoadingAnimation.prototype.render = function () {
+	            return (React.createElement("div", {style: { position: 'absolute', height: 100 + '%', width: 100 + '%', bottom: 0, zIndex: 1030, }}, React.createElement("div", {style: { position: 'absolute', height: 100 + '%', width: 100 + '%', bottom: 0, zIndex: 1040, backgroundColor: '#333', opacity: 0.15 }}), React.createElement("div", {style: { position: 'relative', display: 'table', height: 100 + '%', width: 100 + '%', zIndex: 1050 }}, React.createElement("div", {style: { display: 'table-cell', height: 100 + '%', verticalAlign: 'middle', zIndex: 1050 }}, React.createElement("div", {style: { width: 100 + '%', textAlign: 'center' }}, React.createElement("div", {className: 'uil-spin-css', style: { transform: 'scale(0.79)', display: 'inline-block' }}, React.createElement("div", null, React.createElement("div", null)), React.createElement("div", null, React.createElement("div", null)), React.createElement("div", null, React.createElement("div", null)), React.createElement("div", null, React.createElement("div", null)), React.createElement("div", null, React.createElement("div", null)), React.createElement("div", null, React.createElement("div", null)), React.createElement("div", null, React.createElement("div", null)), React.createElement("div", null, React.createElement("div", null))), this.props.children)))));
+	        };
+	        return LoadingAnimation;
+	    }(React.Component));
+	    Object.defineProperty(exports, "__esModule", { value: true });
+	    exports.default = LoadingAnimation;
+	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	//# sourceMappingURL=loadingAnimation.js.map
+
+/***/ },
+/* 41 */
 /*!*********************************************!*\
   !*** ./Scripts/app/components/mainPanel.js ***!
   \*********************************************/
@@ -2276,7 +2096,7 @@
 	//# sourceMappingURL=mainPanel.js.map
 
 /***/ },
-/* 45 */
+/* 42 */
 /*!********************************************!*\
   !*** ./Scripts/app/components/partList.js ***!
   \********************************************/
@@ -2288,7 +2108,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ../flux/stores/partStore */ 46), __webpack_require__(/*! ../constants/pageConstants */ 12), __webpack_require__(/*! ../flux/actions/partActions */ 48), __webpack_require__(/*! ../managers/pageParamsManager */ 10), __webpack_require__(/*! ../managers/navigationManager */ 13), __webpack_require__(/*! ./common/tableRow */ 20), __webpack_require__(/*! ./common/confirmDelete */ 26), __webpack_require__(/*! ./common/searchInput */ 23), __webpack_require__(/*! ./common/itemsPerPageSelector */ 24)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, partStore_1, pageConstants_1, partActions_1, pageParamsManager_1, navigationManager_1, tableRow_1, confirmDelete_1, searchInput_1, itemsPerPageSelector_1) {
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ../flux/stores/partStore */ 43), __webpack_require__(/*! ../constants/pageConstants */ 14), __webpack_require__(/*! ../flux/actions/partActions */ 48), __webpack_require__(/*! ../managers/pageParamsManager */ 12), __webpack_require__(/*! ../managers/navigationManager */ 15), __webpack_require__(/*! ./common/tableRow */ 20), __webpack_require__(/*! ./common/confirmDelete */ 26), __webpack_require__(/*! ./common/searchInput */ 23), __webpack_require__(/*! ./common/itemsPerPageSelector */ 24)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, partStore_1, pageConstants_1, partActions_1, pageParamsManager_1, navigationManager_1, tableRow_1, confirmDelete_1, searchInput_1, itemsPerPageSelector_1) {
 	    "use strict";
 	    var PartList = (function (_super) {
 	        __extends(PartList, _super);
@@ -2391,7 +2211,7 @@
 	//# sourceMappingURL=partList.js.map
 
 /***/ },
-/* 46 */
+/* 43 */
 /*!**********************************************!*\
   !*** ./Scripts/app/flux/stores/partStore.js ***!
   \**********************************************/
@@ -2403,7 +2223,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! jquery */ 39), __webpack_require__(/*! ../dispatcher/appDispatcher */ 5), __webpack_require__(/*! ../actions/actionSourceTypes */ 7), __webpack_require__(/*! ../actions/partActionTypes */ 47), __webpack_require__(/*! ../actions/errorActions */ 37), __webpack_require__(/*! ../../constants/pageConstants */ 12), __webpack_require__(/*! ../../managers/navigationManager */ 13), __webpack_require__(/*! object-assign */ 40), __webpack_require__(/*! eventemitter3 */ 18)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, $, appDispatcher_1, actionSourceTypes_1, partActionTypes_1, errorActions_1, pageConstants_1, navigationManager_1, assign, EventEmitter) {
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! jquery */ 45), __webpack_require__(/*! ../dispatcher/appDispatcher */ 5), __webpack_require__(/*! ../actions/actionSourceTypes */ 7), __webpack_require__(/*! ../actions/partActionTypes */ 46), __webpack_require__(/*! ../actions/errorActions */ 44), __webpack_require__(/*! ../../constants/pageConstants */ 14), __webpack_require__(/*! ../../managers/navigationManager */ 15), __webpack_require__(/*! object-assign */ 47), __webpack_require__(/*! eventemitter3 */ 18)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, $, appDispatcher_1, actionSourceTypes_1, partActionTypes_1, errorActions_1, pageConstants_1, navigationManager_1, assign, EventEmitter) {
 	    "use strict";
 	    var CHANGE_PARTS_EVENT = 'change_parts';
 	    var CHANGE_EDITPART_EVENT = 'change_editpart';
@@ -2603,7 +2423,44 @@
 	//# sourceMappingURL=partStore.js.map
 
 /***/ },
-/* 47 */
+/* 44 */
+/*!**************************************************!*\
+  !*** ./Scripts/app/flux/actions/errorActions.js ***!
+  \**************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/// <reference path="../../../typings/tsd.d.ts" />
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! ../dispatcher/appDispatcher */ 5), __webpack_require__(/*! ./actionSourceTypes */ 7), __webpack_require__(/*! ./errorActionTypes */ 37)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, appDispatcher_1, actionSourceTypes_1, errorActionTypes_1) {
+	    "use strict";
+	    var ErrorActionsStatic = (function () {
+	        function ErrorActionsStatic() {
+	        }
+	        ErrorActionsStatic.prototype.received = function (message) {
+	            appDispatcher_1.default.dispatch({
+	                actionType: errorActionTypes_1.default.RECEIVE_ERROR_MESSAGE,
+	                actionSource: actionSourceTypes_1.default.ERROR,
+	                errorMessage: message
+	            });
+	        };
+	        return ErrorActionsStatic;
+	    }());
+	    var ErrorActions = new ErrorActionsStatic();
+	    Object.defineProperty(exports, "__esModule", { value: true });
+	    exports.default = ErrorActions;
+	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	//# sourceMappingURL=errorActions.js.map
+
+/***/ },
+/* 45 */
+/*!********************!*\
+  !*** external "$" ***!
+  \********************/
+/***/ function(module, exports) {
+
+	module.exports = $;
+
+/***/ },
+/* 46 */
 /*!*****************************************************!*\
   !*** ./Scripts/app/flux/actions/partActionTypes.js ***!
   \*****************************************************/
@@ -2628,6 +2485,15 @@
 	//# sourceMappingURL=partActionTypes.js.map
 
 /***/ },
+/* 47 */
+/*!*************************!*\
+  !*** external "assign" ***!
+  \*************************/
+/***/ function(module, exports) {
+
+	module.exports = assign;
+
+/***/ },
 /* 48 */
 /*!*************************************************!*\
   !*** ./Scripts/app/flux/actions/partActions.js ***!
@@ -2635,7 +2501,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/// <reference path="../../../typings/tsd.d.ts" />
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! ../dispatcher/appDispatcher */ 5), __webpack_require__(/*! ./actionSourceTypes */ 7), __webpack_require__(/*! ./partActionTypes */ 47)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, appDispatcher_1, actionSourceTypes_1, partActionTypes_1) {
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! ../dispatcher/appDispatcher */ 5), __webpack_require__(/*! ./actionSourceTypes */ 7), __webpack_require__(/*! ./partActionTypes */ 46)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, appDispatcher_1, actionSourceTypes_1, partActionTypes_1) {
 	    "use strict";
 	    var PartActionsStatic = (function () {
 	        function PartActionsStatic() {
@@ -2719,7 +2585,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ../flux/stores/techStepStore */ 50), __webpack_require__(/*! ../constants/pageConstants */ 12), __webpack_require__(/*! ../flux/actions/techStepActions */ 52), __webpack_require__(/*! ../managers/pageParamsManager */ 10), __webpack_require__(/*! ../managers/navigationManager */ 13), __webpack_require__(/*! ./common/tableRow */ 20), __webpack_require__(/*! ./common/confirmDelete */ 26), __webpack_require__(/*! ./common/searchInput */ 23), __webpack_require__(/*! ./common/itemsPerPageSelector */ 24)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, techStepStore_1, pageConstants_1, techStepActions_1, pageParamsManager_1, navigationManager_1, tableRow_1, confirmDelete_1, searchInput_1, itemsPerPageSelector_1) {
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ../flux/stores/techStepStore */ 50), __webpack_require__(/*! ../constants/pageConstants */ 14), __webpack_require__(/*! ../flux/actions/techStepActions */ 52), __webpack_require__(/*! ../managers/pageParamsManager */ 12), __webpack_require__(/*! ../managers/navigationManager */ 15), __webpack_require__(/*! ./common/tableRow */ 20), __webpack_require__(/*! ./common/confirmDelete */ 26), __webpack_require__(/*! ./common/searchInput */ 23), __webpack_require__(/*! ./common/itemsPerPageSelector */ 24)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, techStepStore_1, pageConstants_1, techStepActions_1, pageParamsManager_1, navigationManager_1, tableRow_1, confirmDelete_1, searchInput_1, itemsPerPageSelector_1) {
 	    "use strict";
 	    var TechStepList = (function (_super) {
 	        __extends(TechStepList, _super);
@@ -2834,7 +2700,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! jquery */ 39), __webpack_require__(/*! ../dispatcher/appDispatcher */ 5), __webpack_require__(/*! ../actions/actionSourceTypes */ 7), __webpack_require__(/*! ../actions/techStepActionTypes */ 51), __webpack_require__(/*! ../actions/errorActions */ 37), __webpack_require__(/*! ../../constants/pageConstants */ 12), __webpack_require__(/*! ../../managers/navigationManager */ 13), __webpack_require__(/*! object-assign */ 40), __webpack_require__(/*! eventemitter3 */ 18)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, $, appDispatcher_1, actionSourceTypes_1, techStepActionTypes_1, errorActions_1, pageConstants_1, navigationManager_1, assign, EventEmitter) {
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! jquery */ 45), __webpack_require__(/*! ../dispatcher/appDispatcher */ 5), __webpack_require__(/*! ../actions/actionSourceTypes */ 7), __webpack_require__(/*! ../actions/techStepActionTypes */ 51), __webpack_require__(/*! ../actions/errorActions */ 44), __webpack_require__(/*! ../../constants/pageConstants */ 14), __webpack_require__(/*! ../../managers/navigationManager */ 15), __webpack_require__(/*! object-assign */ 47), __webpack_require__(/*! eventemitter3 */ 18)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, $, appDispatcher_1, actionSourceTypes_1, techStepActionTypes_1, errorActions_1, pageConstants_1, navigationManager_1, assign, EventEmitter) {
 	    "use strict";
 	    var CHANGE_TECHSTEPS_EVENT = 'change_techSteps';
 	    var CHANGE_EDITTECHSTEP_EVENT = 'change_edittechStep';
@@ -3146,7 +3012,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ../flux/stores/techOperationStore */ 54), __webpack_require__(/*! ../constants/pageConstants */ 12), __webpack_require__(/*! ../flux/actions/techOperationActions */ 56), __webpack_require__(/*! ../managers/pageParamsManager */ 10), __webpack_require__(/*! ../managers/navigationManager */ 13), __webpack_require__(/*! ./common/tableRow */ 20), __webpack_require__(/*! ./common/confirmDelete */ 26), __webpack_require__(/*! ./common/searchInput */ 23), __webpack_require__(/*! ./common/itemsPerPageSelector */ 24)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, techOperationStore_1, pageConstants_1, techOperationActions_1, pageParamsManager_1, navigationManager_1, tableRow_1, confirmDelete_1, searchInput_1, itemsPerPageSelector_1) {
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ../flux/stores/techOperationStore */ 54), __webpack_require__(/*! ../constants/pageConstants */ 14), __webpack_require__(/*! ../flux/actions/techOperationActions */ 56), __webpack_require__(/*! ../managers/pageParamsManager */ 12), __webpack_require__(/*! ../managers/navigationManager */ 15), __webpack_require__(/*! ./common/tableRow */ 20), __webpack_require__(/*! ./common/confirmDelete */ 26), __webpack_require__(/*! ./common/searchInput */ 23), __webpack_require__(/*! ./common/itemsPerPageSelector */ 24)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, techOperationStore_1, pageConstants_1, techOperationActions_1, pageParamsManager_1, navigationManager_1, tableRow_1, confirmDelete_1, searchInput_1, itemsPerPageSelector_1) {
 	    "use strict";
 	    var TechOperationList = (function (_super) {
 	        __extends(TechOperationList, _super);
@@ -3261,7 +3127,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! jquery */ 39), __webpack_require__(/*! ../dispatcher/appDispatcher */ 5), __webpack_require__(/*! ../actions/actionSourceTypes */ 7), __webpack_require__(/*! ../actions/techOperationActionTypes */ 55), __webpack_require__(/*! ../actions/errorActions */ 37), __webpack_require__(/*! ../../constants/pageConstants */ 12), __webpack_require__(/*! ../../managers/navigationManager */ 13), __webpack_require__(/*! object-assign */ 40), __webpack_require__(/*! eventemitter3 */ 18)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, $, appDispatcher_1, actionSourceTypes_1, techOperationActionTypes_1, errorActions_1, pageConstants_1, navigationManager_1, assign, EventEmitter) {
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! jquery */ 45), __webpack_require__(/*! ../dispatcher/appDispatcher */ 5), __webpack_require__(/*! ../actions/actionSourceTypes */ 7), __webpack_require__(/*! ../actions/techOperationActionTypes */ 55), __webpack_require__(/*! ../actions/errorActions */ 44), __webpack_require__(/*! ../../constants/pageConstants */ 14), __webpack_require__(/*! ../../managers/navigationManager */ 15), __webpack_require__(/*! object-assign */ 47), __webpack_require__(/*! eventemitter3 */ 18)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, $, appDispatcher_1, actionSourceTypes_1, techOperationActionTypes_1, errorActions_1, pageConstants_1, navigationManager_1, assign, EventEmitter) {
 	    "use strict";
 	    var CHANGE_TECHOPERATIONS_EVENT = 'change_techOperations';
 	    var CHANGE_EDITTECHOPERATION_EVENT = 'change_edittechOperation';
@@ -3573,7 +3439,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ../flux/stores/techProcessStore */ 58), __webpack_require__(/*! ../constants/pageConstants */ 12), __webpack_require__(/*! ../flux/actions/techProcessActions */ 60), __webpack_require__(/*! ../managers/pageParamsManager */ 10), __webpack_require__(/*! ../managers/navigationManager */ 13), __webpack_require__(/*! ./common/tableRow */ 20), __webpack_require__(/*! ./common/confirmDelete */ 26), __webpack_require__(/*! ./common/searchInput */ 23), __webpack_require__(/*! ./common/itemsPerPageSelector */ 24)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, techProcessStore_1, pageConstants_1, techProcessActions_1, pageParamsManager_1, navigationManager_1, tableRow_1, confirmDelete_1, searchInput_1, itemsPerPageSelector_1) {
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ../flux/stores/techProcessStore */ 58), __webpack_require__(/*! ../constants/pageConstants */ 14), __webpack_require__(/*! ../flux/actions/techProcessActions */ 60), __webpack_require__(/*! ../managers/pageParamsManager */ 12), __webpack_require__(/*! ../managers/navigationManager */ 15), __webpack_require__(/*! ./common/tableRow */ 20), __webpack_require__(/*! ./common/confirmDelete */ 26), __webpack_require__(/*! ./common/searchInput */ 23), __webpack_require__(/*! ./common/itemsPerPageSelector */ 24)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, techProcessStore_1, pageConstants_1, techProcessActions_1, pageParamsManager_1, navigationManager_1, tableRow_1, confirmDelete_1, searchInput_1, itemsPerPageSelector_1) {
 	    "use strict";
 	    var TechProcessList = (function (_super) {
 	        __extends(TechProcessList, _super);
@@ -3688,7 +3554,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! jquery */ 39), __webpack_require__(/*! ../dispatcher/appDispatcher */ 5), __webpack_require__(/*! ../actions/actionSourceTypes */ 7), __webpack_require__(/*! ../actions/techProcessActionTypes */ 59), __webpack_require__(/*! ../actions/errorActions */ 37), __webpack_require__(/*! ../../constants/pageConstants */ 12), __webpack_require__(/*! ../../managers/navigationManager */ 13), __webpack_require__(/*! object-assign */ 40), __webpack_require__(/*! eventemitter3 */ 18)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, $, appDispatcher_1, actionSourceTypes_1, techProcessActionTypes_1, errorActions_1, pageConstants_1, navigationManager_1, assign, EventEmitter) {
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! jquery */ 45), __webpack_require__(/*! ../dispatcher/appDispatcher */ 5), __webpack_require__(/*! ../actions/actionSourceTypes */ 7), __webpack_require__(/*! ../actions/techProcessActionTypes */ 59), __webpack_require__(/*! ../actions/errorActions */ 44), __webpack_require__(/*! ../../constants/pageConstants */ 14), __webpack_require__(/*! ../../managers/navigationManager */ 15), __webpack_require__(/*! object-assign */ 47), __webpack_require__(/*! eventemitter3 */ 18)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, $, appDispatcher_1, actionSourceTypes_1, techProcessActionTypes_1, errorActions_1, pageConstants_1, navigationManager_1, assign, EventEmitter) {
 	    "use strict";
 	    var CHANGE_TECHPROCESSES_EVENT = 'change_techProcesses';
 	    var CHANGE_EDITTECHPROCESS_EVENT = 'change_edittechProcess';
@@ -4096,7 +3962,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ./partList */ 45)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, partList_1) {
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ./partList */ 42)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, partList_1) {
 	    "use strict";
 	    var PartListSection = (function (_super) {
 	        __extends(PartListSection, _super);
@@ -4126,7 +3992,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ../flux/stores/partStore */ 46), __webpack_require__(/*! ../flux/stores/errorStore */ 41), __webpack_require__(/*! ../flux/actions/partActions */ 48), __webpack_require__(/*! ../managers/navigationManager */ 13), __webpack_require__(/*! ./common/textInput */ 42)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, partStore_1, errorStore_1, partActions_1, navigationManager_1, textInput_1) {
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ../flux/stores/partStore */ 43), __webpack_require__(/*! ../flux/stores/errorStore */ 36), __webpack_require__(/*! ../flux/actions/partActions */ 48), __webpack_require__(/*! ../managers/navigationManager */ 15), __webpack_require__(/*! ./common/textInput */ 38)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, partStore_1, errorStore_1, partActions_1, navigationManager_1, textInput_1) {
 	    "use strict";
 	    var PartEditForm = (function (_super) {
 	        __extends(PartEditForm, _super);
@@ -4241,7 +4107,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ../flux/stores/techStepStore */ 50), __webpack_require__(/*! ../flux/stores/errorStore */ 41), __webpack_require__(/*! ../flux/actions/techStepActions */ 52), __webpack_require__(/*! ../managers/navigationManager */ 13), __webpack_require__(/*! ./common/textAreaInput */ 67), __webpack_require__(/*! ./toolUsagesEditor */ 68), __webpack_require__(/*! ../flux/actions/toolActions */ 4), __webpack_require__(/*! ../flux/stores/toolStore */ 36)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, techStepStore_1, errorStore_1, techStepActions_1, navigationManager_1, textAreaInput_1, toolUsagesEditor_1, toolActions_1, toolStore_1) {
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ../flux/stores/techStepStore */ 50), __webpack_require__(/*! ../flux/stores/errorStore */ 36), __webpack_require__(/*! ../flux/actions/techStepActions */ 52), __webpack_require__(/*! ../managers/navigationManager */ 15), __webpack_require__(/*! ./common/textAreaInput */ 67), __webpack_require__(/*! ./toolUsagesEditor */ 68), __webpack_require__(/*! ../flux/actions/toolActions */ 4), __webpack_require__(/*! ../flux/stores/toolStore */ 71)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, techStepStore_1, errorStore_1, techStepActions_1, navigationManager_1, textAreaInput_1, toolUsagesEditor_1, toolActions_1, toolStore_1) {
 	    "use strict";
 	    var TechStepEditForm = (function (_super) {
 	        __extends(TechStepEditForm, _super);
@@ -4386,7 +4252,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ../flux/actions/toolActions */ 4), __webpack_require__(/*! ./toolList */ 14), __webpack_require__(/*! ./common/itemUsageRow */ 69), __webpack_require__(/*! ../utils/utils */ 33)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, toolActions_1, toolList_1, itemUsageRow_1, utils_1) {
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ../flux/actions/toolActions */ 4), __webpack_require__(/*! ./toolList */ 16), __webpack_require__(/*! ./common/itemUsageRow */ 69), __webpack_require__(/*! ../utils/utils */ 33)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, toolActions_1, toolList_1, itemUsageRow_1, utils_1) {
 	    "use strict";
 	    var ToolChooser = (function (_super) {
 	        __extends(ToolChooser, _super);
@@ -4545,6 +4411,224 @@
 
 /***/ },
 /* 71 */
+/*!**********************************************!*\
+  !*** ./Scripts/app/flux/stores/toolStore.js ***!
+  \**********************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/// <reference path="../../../typings/tsd.d.ts" />
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! jquery */ 45), __webpack_require__(/*! ../dispatcher/appDispatcher */ 5), __webpack_require__(/*! ../actions/actionSourceTypes */ 7), __webpack_require__(/*! ../actions/toolActionTypes */ 8), __webpack_require__(/*! ../actions/errorActions */ 44), __webpack_require__(/*! ../../constants/pageConstants */ 14), __webpack_require__(/*! ../../managers/navigationManager */ 15), __webpack_require__(/*! object-assign */ 47), __webpack_require__(/*! eventemitter3 */ 18)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, $, appDispatcher_1, actionSourceTypes_1, toolActionTypes_1, errorActions_1, pageConstants_1, navigationManager_1, assign, EventEmitter) {
+	    "use strict";
+	    var CHANGE_TOOLS_EVENT = 'change_tools';
+	    var CHANGE_EDITTOOL_EVENT = 'change_edittool';
+	    var _tools = new Array();
+	    var _tool;
+	    var _toolSearchText = "";
+	    var _totalToolAmount = 0;
+	    var _toolsPerPage = pageConstants_1.default.ITEMS_PER_PAGE_INIT;
+	    var _currentToolPage = 0;
+	    function _loadTools() {
+	        $.get(location.origin + "/api/tools?search=" + _toolSearchText + "&page=" + _currentToolPage + "&pageSize=" + _toolsPerPage, function (toolListModel) {
+	            _totalToolAmount = toolListModel.toolAmount;
+	            _tools = new Array();
+	            toolListModel.tools.forEach(function (tool) {
+	                _tools[tool.id] = tool;
+	            });
+	            ToolStore.emitChangeTools();
+	        });
+	    }
+	    function _loadTool(id) {
+	        if (id == 0) {
+	            _tool = { id: 0, name: "", price: 0 };
+	            ToolStore.emitChangeEditTool();
+	            return;
+	        }
+	        if (_tools[id]) {
+	            _tool = _tools[id];
+	            ToolStore.emitChangeEditTool();
+	        }
+	        else {
+	            $.ajax({
+	                url: location.origin + "/api/tools/" + id,
+	                type: 'GET',
+	                success: function (tool) {
+	                    _tool = tool;
+	                    ToolStore.emitChangeEditTool();
+	                },
+	                error: function (data) {
+	                    errorActions_1.default.received(data.responseJSON);
+	                }
+	            });
+	        }
+	    }
+	    function _addTool(tool) {
+	        $.ajax({
+	            url: location.origin + '/api/tools',
+	            dataType: 'json',
+	            type: 'PUT',
+	            data: {
+	                id: tool.id,
+	                name: tool.name,
+	                price: tool.price,
+	                __RequestVerificationToken: antiForgeryToken
+	            },
+	            success: function (tool) {
+	                _tool = tool;
+	                if (_tools[tool.id]) {
+	                    _tools[tool.id] = assign({}, _tools[tool.id], tool);
+	                    ToolStore.emitChangeTools();
+	                }
+	                navigationManager_1.default.openToolEditor(tool.id);
+	            },
+	            error: function (xhr, status, err) {
+	                console.error(this.props.url, status, err.toString());
+	            }.bind(this)
+	        });
+	    }
+	    function _deleteTool(id) {
+	        $.ajax({
+	            url: location.origin + '/api/tools/' + id,
+	            dataType: 'json',
+	            type: 'DELETE',
+	            data: { __RequestVerificationToken: antiForgeryToken },
+	            success: function (id) {
+	                _loadTools();
+	            },
+	            error: function (xhr, status, err) {
+	                console.error(this.props.url, status, err.toString());
+	            }
+	        });
+	    }
+	    function _updateTool(tool) {
+	        $.ajax({
+	            url: location.origin + '/api/tools',
+	            dataType: 'json',
+	            type: 'POST',
+	            data: {
+	                id: tool.id,
+	                name: tool.name,
+	                price: tool.price,
+	                __RequestVerificationToken: antiForgeryToken
+	            },
+	            success: function (tool) {
+	                if (_tools[tool.id]) {
+	                    _tools[tool.id] = assign({}, _tools[tool.id], tool);
+	                    ToolStore.emitChangeTools();
+	                }
+	            },
+	            error: function (xhr, status, err) {
+	                console.error(this.props.url, status, err.toString());
+	            }
+	        });
+	    }
+	    function _init(currentPage, toolsPerPage, searchText) {
+	        _toolsPerPage = toolsPerPage;
+	        _currentToolPage = currentPage;
+	        _toolSearchText = searchText;
+	        _loadTools();
+	    }
+	    var ToolStoreStatic = (function (_super) {
+	        __extends(ToolStoreStatic, _super);
+	        function ToolStoreStatic() {
+	            _super.apply(this, arguments);
+	        }
+	        ToolStoreStatic.prototype.getAll = function () {
+	            return _tools;
+	        };
+	        ToolStoreStatic.prototype.getToolAmount = function () {
+	            return _totalToolAmount;
+	        };
+	        ToolStoreStatic.prototype.getToolsPerPage = function () {
+	            return _toolsPerPage;
+	        };
+	        ToolStoreStatic.prototype.getCurrentToolPage = function () {
+	            return _currentToolPage;
+	        };
+	        ToolStoreStatic.prototype.getSearchText = function () {
+	            return _toolSearchText;
+	        };
+	        ToolStoreStatic.prototype.getEditTool = function () {
+	            return _tool;
+	        };
+	        ToolStoreStatic.prototype.emitChangeTools = function () {
+	            this.emit(CHANGE_TOOLS_EVENT);
+	        };
+	        ToolStoreStatic.prototype.emitChangeEditTool = function () {
+	            this.emit(CHANGE_EDITTOOL_EVENT);
+	        };
+	        /**
+	         * @param {function} callback
+	         */
+	        ToolStoreStatic.prototype.addChangeEditToolListener = function (callback) {
+	            this.on(CHANGE_EDITTOOL_EVENT, callback);
+	        };
+	        /**
+	         * @param {function} callback
+	         */
+	        ToolStoreStatic.prototype.removeChangeEditToolListener = function (callback) {
+	            this.removeListener(CHANGE_EDITTOOL_EVENT, callback);
+	        };
+	        /**
+	         * @param {function} callback
+	         */
+	        ToolStoreStatic.prototype.addChangeToolsListener = function (callback) {
+	            this.on(CHANGE_TOOLS_EVENT, callback);
+	        };
+	        /**
+	         * @param {function} callback
+	         */
+	        ToolStoreStatic.prototype.removeChangeToolsListener = function (callback) {
+	            this.removeListener(CHANGE_TOOLS_EVENT, callback);
+	        };
+	        return ToolStoreStatic;
+	    }(EventEmitter));
+	    var ToolStore = new ToolStoreStatic();
+	    appDispatcher_1.default.register(function (payload) {
+	        if (payload.actionSource != actionSourceTypes_1.default.TOOL)
+	            return;
+	        switch (payload.actionType) {
+	            case toolActionTypes_1.default.TOOL_INIT:
+	                _init(payload.currentPage, payload.pageSize, payload.searchText);
+	                break;
+	            case toolActionTypes_1.default.TOOL_LOAD_EDIT:
+	                _loadTool(payload.id);
+	                break;
+	            case toolActionTypes_1.default.TOOL_CREATE:
+	                _addTool(payload.tool);
+	                break;
+	            case toolActionTypes_1.default.TOOL_UPDATE:
+	                _updateTool(payload.tool);
+	                break;
+	            case toolActionTypes_1.default.TOOL_DELETE:
+	                _deleteTool(payload.id);
+	                break;
+	            case toolActionTypes_1.default.TOOL_PAGE_CHANGE:
+	                _currentToolPage = payload.currentPage;
+	                _loadTools();
+	                break;
+	            case toolActionTypes_1.default.TOOLS_PER_PAGE_CHANGE:
+	                _toolsPerPage = payload.pageSize;
+	                _loadTools();
+	                break;
+	            case toolActionTypes_1.default.TOOL_SEARCH_TEXT_CHANGE:
+	                _toolSearchText = payload.searchText;
+	                _loadTools();
+	                break;
+	            default:
+	        }
+	    });
+	    Object.defineProperty(exports, "__esModule", { value: true });
+	    exports.default = ToolStore;
+	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	//# sourceMappingURL=toolStore.js.map
+
+/***/ },
+/* 72 */
 /*!*********************************************************!*\
   !*** ./Scripts/app/components/techOperationEditForm.js ***!
   \*********************************************************/
@@ -4556,7 +4640,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ../flux/stores/techOperationStore */ 54), __webpack_require__(/*! ../flux/stores/errorStore */ 41), __webpack_require__(/*! ../flux/actions/techOperationActions */ 56), __webpack_require__(/*! ../managers/navigationManager */ 13), __webpack_require__(/*! ./common/textInput */ 42)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, techOperationStore_1, errorStore_1, techOperationActions_1, navigationManager_1, textInput_1) {
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ../flux/stores/techOperationStore */ 54), __webpack_require__(/*! ../flux/stores/errorStore */ 36), __webpack_require__(/*! ../flux/actions/techOperationActions */ 56), __webpack_require__(/*! ../managers/navigationManager */ 15), __webpack_require__(/*! ./common/textInput */ 38)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, techOperationStore_1, errorStore_1, techOperationActions_1, navigationManager_1, textInput_1) {
 	    "use strict";
 	    var TechOperationEditForm = (function (_super) {
 	        __extends(TechOperationEditForm, _super);
@@ -4647,7 +4731,7 @@
 	//# sourceMappingURL=techOperationEditForm.js.map
 
 /***/ },
-/* 72 */
+/* 73 */
 /*!*******************************************************!*\
   !*** ./Scripts/app/components/techProcessEditForm.js ***!
   \*******************************************************/
@@ -4659,7 +4743,7 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ../flux/stores/techProcessStore */ 58), __webpack_require__(/*! ../flux/stores/errorStore */ 41), __webpack_require__(/*! ../flux/actions/techProcessActions */ 60), __webpack_require__(/*! ../managers/navigationManager */ 13), __webpack_require__(/*! ./common/textInput */ 42)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, techProcessStore_1, errorStore_1, techProcessActions_1, navigationManager_1, textInput_1) {
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(/*! react */ 2), __webpack_require__(/*! ../flux/stores/techProcessStore */ 58), __webpack_require__(/*! ../flux/stores/errorStore */ 36), __webpack_require__(/*! ../flux/actions/techProcessActions */ 60), __webpack_require__(/*! ../managers/navigationManager */ 15), __webpack_require__(/*! ./common/textInput */ 38)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, React, techProcessStore_1, errorStore_1, techProcessActions_1, navigationManager_1, textInput_1) {
 	    "use strict";
 	    var TechProcessEditForm = (function (_super) {
 	        __extends(TechProcessEditForm, _super);

@@ -13,7 +13,8 @@ namespace Technolog.Web
         {
             bundles.Add(new StyleBundle("~/bundles/main-styles")
                 .Include("~/Content/bootstrap.css")
-                .Include("~/Content/Site.css"));
+                .Include("~/Content/Site.css")
+                .Include("~/Content/spin.css"));
 
             bundles.Add(new ScriptBundle("~/bundles/main-scripts")
                 .Include("~/Scripts/jquery-{version}.js")

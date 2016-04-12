@@ -4,6 +4,7 @@ import * as React from "react";
 import ToolStore from "../flux/stores/toolStore";
 import PageConstants from "../constants/pageConstants";
 import ToolActions from "../flux/actions/toolActions";
+import PanelActions from "../flux/actions/panelActions";
 import PageParamsManager from "../managers/pageParamsManager";
 import NavigationManager from "../managers/navigationManager";
 import ToolList from "./toolList";
@@ -58,11 +59,24 @@ export default class ToolListPanel extends React.Component<IToolListPanelProps, 
         });
     }
 
+    private closePanel = () => {
+        PanelActions.close(this.props.componentId);
+    }
+
     render(): React.ReactElement<{}> {
         return (
             <div className="panel panel-default inner" style={{ marginBottom: 0 + 'px', position: 'relative' }}>
-                <div className="panel-heading" style={{ marginBottom: 0 + 'px', zIndex: 1050, position: 'relative' }}>
-                    <h4>Инструменты</h4>
+                <div className="panel-heading table-style" style={{ zIndex: 1050, position: 'relative' }}>
+                    <h2 className="panel-title">Инструменты</h2>
+                    <div className="button-wrap">
+                        <div
+                            className="btn btn-default"
+                            onClick={this.closePanel}>
+                            <div style={{ display: 'table-cell', verticalAlign: 'middle' }}>
+                                <span>{'❌'}</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <ToolDeleteConfirmation componentId={this.props.componentId}/>
                 <div className="panel-body" style={{ display: 'flex', flexDirection: 'column' }}>

@@ -12,6 +12,7 @@ import Pagination from "./common/pagination";
 import SearchInput from "./common/searchInput";
 import ItemsPerPageSelector from "./common/itemsPerPageSelector";
 import ItemListControlPanel from "./common/itemListControlPanel";
+import Alert from "./common/alert";
 
 interface IToolTablbleProps {
     tools: Array<ITool>;
@@ -159,7 +160,8 @@ interface IToolListState {
     totalAmount: number,
     toolsPerPage: number,
     toolSearchText: string,
-    toolPage: number
+    toolPage: number,
+    alerts: Array<any>
 }
 
 export default class ToolList extends React.Component<IToolListProps, IToolListState> {
@@ -175,7 +177,8 @@ export default class ToolList extends React.Component<IToolListProps, IToolListS
             totalAmount: 0,
             toolsPerPage: PageConstants.ITEMS_PER_PAGE_INIT,
             toolSearchText: "",
-            toolPage: 0
+            toolPage: 0,
+            alerts: []
         };
     }
 
@@ -241,9 +244,27 @@ export default class ToolList extends React.Component<IToolListProps, IToolListS
 
     }
 
+    private getAlerts(): Array<any> {
+        var alerts: Array<any> = [];
+
+        alerts = this.state.alerts.map(function (alert: any, index: number) {
+            return (
+                <Alert
+                    key={alert.id}
+                    alert={alert}
+                    onCloseClick={() => { } }>
+                    <span>{alert.message}</span>
+                </Alert>
+            );
+        });
+
+        return alerts;
+    }
+
     render(): React.ReactElement<{}> {
         return (
             <div style={{ display: 'flex', flexDirection: 'column', position: 'relative' }}>
+                {this.getAlerts()}
                 <ItemListControlPanel
                     onNewItem={this.newToolBtnClickHandler}
                     onItemDelete={this.toolDeleteHandler}

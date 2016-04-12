@@ -1,14 +1,17 @@
 ﻿/// <reference path="../../typings/tsd.d.ts" />
 
 import * as React from "react";
-import ToolStore from "../flux/stores/toolStore";
+import ToolStore from "../flux/stores/newToolStore";
 import ErrorStore from "../flux/stores/errorStore";
+import PanelActions from "../flux/actions/panelActions";
 import ToolActions from "../flux/actions/toolActions";
 import NavigationManager from "../managers/navigationManager";
 import TextInput from "./common/textInput";
+import LoadingAnimation from "./common/loadingAnimation";
 
 interface IToolEditFormProps {
-    params: any,
+    params: any;
+    componentId: string;
 }
 
 interface IToolEditFormState {
@@ -34,13 +37,11 @@ export default class ToolEditForm extends React.Component<IToolEditFormProps, IT
 
     componentWillMount() {
         this.inputs = {};
-        ToolStore.addChangeEditToolListener(this.handleEditToolChange);
-        ErrorStore.addChangeErrorListener(this.handleNewError)
+        ToolStore.addChangeListener(this.handleEditToolChange, this.props.componentId);
     }
 
     componentWillUnmount() {
-        ToolStore.removeChangeEditToolListener(this.handleEditToolChange);
-        ErrorStore.removeChangeErrorListener(this.handleNewError)
+        ToolStore.removeChangeListener(this.handleEditToolChange, this.props.componentId);
     }
 
     componentDidMount() {
@@ -57,7 +58,7 @@ export default class ToolEditForm extends React.Component<IToolEditFormProps, IT
 
     private handleEditToolChange = () => {
         this.setState({
-            tool: ToolStore.getEditTool(),
+            tool: ToolStore.getState(this.props.componentId),
             errorMessage: null,
             isValid: true
         });
@@ -117,12 +118,29 @@ export default class ToolEditForm extends React.Component<IToolEditFormProps, IT
         });
     }
 
+    private closePanel = () => {
+        PanelActions.close(this.props.componentId);
+    }
+
     render(): React.ReactElement<IToolEditFormProps> {
         return (
-            <div className="panel panel-default inner" style={{ marginBottom: 0 + 'px' }}>
-                <div className="panel-heading">
-                    <h4>Редактирование инструмента</h4>
+            <div className="panel panel-default inner" style={{ marginBottom: 0 + 'px', position: 'relative' }}>
+                <div className="panel-heading table-style" style={{ zIndex: 1050, position: 'relative' }}>
+                    <h2 className="panel-title">Редактирование инструмента</h2>
+                    <div className="button-wrap">
+                        <div
+                            className="btn btn-default"
+                            onClick={this.closePanel}>
+                            <div style={{ display: 'table-cell', verticalAlign: 'middle' }}>
+                                <span>{'❌'}</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+                <LoadingAnimation>
+                    <h4>Пожалуйста, подождите.</h4>
+                    <h4>Идет сохранение.</h4>
+                </LoadingAnimation>
                 <div className="panel-body">
                     { this.state.errorMessage != null ?
                         <div>

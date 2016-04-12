@@ -16,10 +16,35 @@ class ToolActionsStatic {
         });
     }
 
-    public load(compoentId: string,
+    public load(componentId: string,
         currentPage: number, pageSize: number, searchText: string): void {
 
-        ToolService.loadTools(compoentId, currentPage, pageSize, searchText);
+        ToolService.loadTools(componentId, currentPage, pageSize, searchText);
+    }
+
+    public loadPending(componentId: string,
+        currentPage: number, pageSize: number, searchText: string): void {
+        AppDispatcher.dispatch({
+            actionType: ToolActionTypes.TOOL_LOAD_PENDING,
+            actionSource: ActionSourceTypes.TOOL,
+            componentId: componentId
+        });
+    }
+
+    public loadSucceed(componentId: string): void {
+        AppDispatcher.dispatch({
+            actionType: ToolActionTypes.TOOL_LOAD_SUCCEED,
+            actionSource: ActionSourceTypes.TOOL,
+            componentId: componentId
+        });
+    }
+
+    public loadFailed(componentId: string): void {
+        AppDispatcher.dispatch({
+            actionType: ToolActionTypes.TOOL_LOAD_FAILED,
+            actionSource: ActionSourceTypes.TOOL,
+            componentId: componentId
+        });
     }
 
     public updateToolList(componentId: string,
@@ -108,6 +133,88 @@ class ToolActionsStatic {
             actionType: ToolActionTypes.TOOL_SEARCH_TEXT_CHANGE,
             actionSource: ActionSourceTypes.TOOL,
             searchText: text
+        });
+    }
+
+    public undo(componentId: string): void {
+        AppDispatcher.dispatch({
+            actionType: ToolActionTypes.TOOL_UNDO,
+            actionSource: ActionSourceTypes.TOOL,
+            componentId: componentId
+        });
+    }
+
+    public redo(componentId: string): void {
+        AppDispatcher.dispatch({
+            actionType: ToolActionTypes.TOOL_REDO,
+            actionSource: ActionSourceTypes.TOOL,
+            componentId: componentId
+        });
+    }
+
+    public change(componentId: string, changedTool: ITool): void {
+        AppDispatcher.dispatch({
+            actionType: ToolActionTypes.TOOL_REDO,
+            actionSource: ActionSourceTypes.TOOL,
+            componentId: componentId,
+            tool: changedTool
+        });
+    }
+
+    public save(componentId: string, tool: ITool): void {
+        ToolService.saveTool(componentId, tool);
+    }
+
+    public savePending(componentId: string): void {
+        AppDispatcher.dispatch({
+            actionType: ToolActionTypes.TOOL_SAVE_PENDING,
+            actionSource: ActionSourceTypes.TOOL,
+            componentId: componentId
+        });
+    }
+
+    public saveSucceed(componentId: string, savedTool: ITool): void {
+        AppDispatcher.dispatch({
+            actionType: ToolActionTypes.TOOL_SAVE_SUCCEED,
+            actionSource: ActionSourceTypes.TOOL,
+            componentId: componentId,
+            tool: savedTool
+        });
+    }
+
+    public saveFailed(componentId: string, message: string): void {
+        AppDispatcher.dispatch({
+            actionType: ToolActionTypes.TOOL_SAVE_FAILED,
+            actionSource: ActionSourceTypes.TOOL,
+            errorMessage: message
+        });
+    }
+
+    public delete(componentId: string, tools: Array<ITool>): void {
+        ToolService.deleteTools(componentId, tools);
+    }
+
+    public deletePending(componentId: string): void {
+        AppDispatcher.dispatch({
+            actionType: ToolActionTypes.TOOL_DELETE_PENDING,
+            actionSource: ActionSourceTypes.TOOL,
+            componentId: componentId
+        });
+    }
+
+    public deleteSucceed(componentId: string): void {
+        AppDispatcher.dispatch({
+            actionType: ToolActionTypes.TOOL_DELETE_SUCCEED,
+            actionSource: ActionSourceTypes.TOOL,
+            componentId: componentId
+        });
+    }
+
+    public deleteFailed(componentId: string, message: string): void {
+        AppDispatcher.dispatch({
+            actionType: ToolActionTypes.TOOL_SAVE_FAILED,
+            actionSource: ActionSourceTypes.TOOL,
+            errorMessage: message
         });
     }
 }

@@ -83,3 +83,18 @@ html,body {
 .edit:focus {
     outline: none;
 }
+
+.panel-heading.table-style {
+    display: table;
+    width: 100%;
+}
+.panel-heading.table-style .panel-title {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: left;
+}
+.panel-heading.table-style .button-wrap {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: right;
+}
