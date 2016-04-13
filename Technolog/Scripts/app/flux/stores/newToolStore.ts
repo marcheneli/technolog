@@ -5,6 +5,7 @@ import * as EventEmitter from "eventemitter3";
 import AppPayload from "../iAppPayload";
 import ActionSourceTypes from "../actions/actionSourceTypes";
 import ToolActionTypes from "../actions/toolActionTypes";
+import Utils from "../../utils/utils";
 
 const CHANGE_EVENT: string = "CHANGE_EVENT";
 
@@ -46,6 +47,25 @@ function _updateToolComponentHistory(componentId: string, changedTool: ITool): v
     var toolComponentHistory = _toolComponentHistories[componentId];
     toolComponentHistory.toolUnDoes.push(changedTool);
     toolComponentHistory.toolReDoes = [];
+}
+
+function _addAlert(componentId: string, message: string, alertType: string) {
+    _toolComponentStates[componentId].alerts.push({ id: Utils.uuid(), message: message, type: alertType });
+}
+
+function _removeAlert(componentId: string, alertId: string) {
+    var alerts = _toolComponentStates[componentId].alerts;
+    var alert;
+
+    for (var i = 0; i < alerts.length; i++)
+    {
+        if (alerts[i].id == alertId) {
+            alert = alerts[i];
+            break;
+        }
+    }
+
+    alerts.splice(alerts.indexOf(alert), 1);
 }
 
 function _unDoToolComponentHistory(componentId: string): void {
@@ -128,6 +148,7 @@ AppDispatcher.register(function (payload: AppPayload) {
             break;
         case ToolActionTypes.TOOL_SAVE_FAILED:
             _updateSavePending(payload.componentId);
+            _addAlert(payload.componentId, payload.errorMessage, "danger");
             toolStore.emitChange(payload.componentId);
             break;
         case ToolActionTypes.TOOL_DELETE_PENDING:
@@ -140,6 +161,7 @@ AppDispatcher.register(function (payload: AppPayload) {
             break;
         case ToolActionTypes.TOOL_DELETE_FAILED:
             _updateDeletePending(payload.componentId);
+            _addAlert(payload.componentId, payload.errorMessage, "warning");
             toolStore.emitChange(payload.componentId);
             break;
         default:

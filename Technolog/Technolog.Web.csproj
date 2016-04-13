@@ -352,11 +352,16 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\app\app.tsx" />
-    <TypeScriptCompile Include="Scripts\app\components\common\loadingAnimation.tsx" />
+    <TypeScriptCompile Include="Scripts\app\components\common\alert.tsx" />
+    <TypeScriptCompile Include="Scripts\app\components\common\pendingAnimation.tsx" />
     <TypeScriptCompile Include="Scripts\app\components\componentType.ts" />
     <TypeScriptCompile Include="Scripts\app\components\iPanel.ts" />
     <TypeScriptCompile Include="Scripts\app\components\iTabElement.ts" />
     <TypeScriptCompile Include="Scripts\app\components\toolDeleteConfirmation.tsx" />
+    <TypeScriptCompile Include="Scripts\app\flux\actions\entityActionCreator.ts" />
+    <TypeScriptCompile Include="Scripts\app\flux\actions\entityActionType.ts" />
+    <TypeScriptCompile Include="Scripts\app\flux\actions\entityType.ts" />
+    <TypeScriptCompile Include="Scripts\app\flux\actions\toolActionCreator.ts" />
     <TypeScriptCompile Include="Scripts\app\flux\iAppPayload.ts" />
     <TypeScriptCompile Include="Scripts\app\components\componentFactory.ts" />
     <TypeScriptCompile Include="Scripts\app\components\common\confirmDelete.tsx" />
@@ -410,10 +415,14 @@
     <TypeScriptCompile Include="Scripts\app\flux\actions\toolActions.ts" />
     <TypeScriptCompile Include="Scripts\app\flux\actions\toolActionTypes.ts" />
     <TypeScriptCompile Include="Scripts\app\flux\dispatcher\appDispatcher.ts" />
+    <TypeScriptCompile Include="Scripts\app\flux\services\entityService.ts" />
+    <TypeScriptCompile Include="Scripts\app\flux\services\newToolService.ts" />
+    <TypeScriptCompile Include="Scripts\app\flux\stores\entityStore.ts" />
     <TypeScriptCompile Include="Scripts\app\flux\stores\errorStore.ts" />
     <TypeScriptCompile Include="Scripts\app\flux\stores\newToolStore.ts" />
     <TypeScriptCompile Include="Scripts\app\flux\stores\panelStore.ts" />
     <TypeScriptCompile Include="Scripts\app\flux\stores\partStore.ts" />
+    <TypeScriptCompile Include="Scripts\app\flux\stores\secondToolStore.ts" />
     <TypeScriptCompile Include="Scripts\app\flux\stores\techOperationStore.ts" />
     <TypeScriptCompile Include="Scripts\app\flux\stores\techProcessStore.ts" />
     <TypeScriptCompile Include="Scripts\app\flux\stores\techStepStore.ts" />

@@ -1,4 +1,5 @@
 ﻿import ComponentType from "../components/componentType";
+import EntityType from "./actions/entityType";
 
 interface AppPayload {
     actionType: number;
@@ -19,6 +20,8 @@ interface AppPayload {
     panelType?: ComponentType;
     componentId?: string;
     params?: any;
+    entityType?: EntityType;
+    entities?: any;
 }
 
 export default AppPayload;

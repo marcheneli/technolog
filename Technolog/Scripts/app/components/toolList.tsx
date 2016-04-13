@@ -3,8 +3,9 @@
 import * as React from "react";
 import PageConstants from "../constants/pageConstants";
 import Utils from "../utils/utils";
-import ToolStore from "../flux/stores/newToolStore";
+import ToolStore from "../flux/stores/secondToolStore";
 import ToolActions from "../flux/actions/toolActions";
+import ToolActionCreator from "../flux/actions/toolActionCreator";
 import PanelActions from "../flux/actions/panelActions";
 import ComponentType from "./componentType";
 import TableRow from "./common/tableRow";
@@ -191,7 +192,7 @@ export default class ToolList extends React.Component<IToolListProps, IToolListS
     }
 
     componentDidMount() {
-        ToolActions.load(this.props.componentId,
+        ToolActionCreator.load(this.props.componentId,
             0, PageConstants.ITEMS_PER_PAGE_INIT, "");
     }
 

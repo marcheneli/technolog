@@ -7,7 +7,7 @@ import PanelActions from "../flux/actions/panelActions";
 import ToolActions from "../flux/actions/toolActions";
 import NavigationManager from "../managers/navigationManager";
 import TextInput from "./common/textInput";
-import LoadingAnimation from "./common/loadingAnimation";
+import PendingAnimation from "./common/pendingAnimation";
 
 interface IToolEditFormProps {
     params: any;
@@ -137,10 +137,10 @@ export default class ToolEditForm extends React.Component<IToolEditFormProps, IT
                         </div>
                     </div>
                 </div>
-                <LoadingAnimation>
+                <PendingAnimation>
                     <h4>Пожалуйста, подождите.</h4>
                     <h4>Идет сохранение.</h4>
-                </LoadingAnimation>
+                </PendingAnimation>
                 <div className="panel-body">
                     { this.state.errorMessage != null ?
                         <div>

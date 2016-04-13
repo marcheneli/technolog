@@ -3,7 +3,6 @@
 import * as React from "react";
 
 interface IAlertProps {
-    type: string;
     alert: any;
     onCloseClick(alertId: string): void;
 }
@@ -17,7 +16,7 @@ export default class Alert
 
     render(): React.ReactElement<IAlertProps> {
         return (
-            <div class={"alert alert-" + this.props.type + " alert-dismissible"} role="alert">
+            <div class={"alert alert-" + this.props.alert.type + " alert-dismissible"} role="alert">
                 <button
                     type="button"
                     class="close"

@@ -29,7 +29,7 @@ namespace Technolog.SL.Services
             {
                 database.Save();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw new ValidationException("Не удалось удалить данный инструмент.", "");
             }
@@ -43,7 +43,7 @@ namespace Technolog.SL.Services
             {
                 await database.SaveAsync();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw new ValidationException("Не удалось удалить данный инструмент.", "");
             }
@@ -93,7 +93,7 @@ namespace Technolog.SL.Services
             {
                 database.Save();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw new ValidationException("Не удалось добавить новый инструмент.", "");
             }
@@ -110,7 +110,7 @@ namespace Technolog.SL.Services
             {
                 await database.SaveAsync();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw new ValidationException("Не удалось добавить новый инструмент.", "");
             }
@@ -125,7 +125,7 @@ namespace Technolog.SL.Services
             {
                 database.Save();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw new ValidationException("Не удалось сохранить изменения.", "");
             }
@@ -140,10 +140,20 @@ namespace Technolog.SL.Services
             {
                 await database.SaveAsync();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw new ValidationException("Не удалось сохранить изменения.", "");
             }
+        }
+
+        public void Delete(IEnumerable<TechProcessDTO> items)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task DeleteAsync(IEnumerable<TechProcessDTO> items)
+        {
+            throw new NotImplementedException();
         }
     }
 }

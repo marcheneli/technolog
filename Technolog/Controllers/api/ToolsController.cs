@@ -126,6 +126,23 @@ namespace Technolog.Web.Controllers.api
             return Ok(id);
         }
 
+        public IHttpActionResult Delete(IEnumerable<ToolModel> tools)
+        {
+            try
+            {
+                toolService.Delete(mapper.Map<IEnumerable<ToolDTO>>(tools));
+            }
+            catch (ValidationException ex)
+            {
+                return ResponseMessage(
+                    Request.CreateResponse(
+                        HttpStatusCode.BadRequest,
+                        ex.Message));
+            }
+
+            return Ok();
+        }
+
         private bool disposed = false;
 
         protected override void Dispose(bool disposing)

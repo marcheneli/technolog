@@ -5,7 +5,8 @@
     TECHSTEP,
     TECHOPERATION,
     TECHPROCESS,
-    PANEL
+    PANEL,
+    Entity
 }
 
 export default ActionSourceTypes
