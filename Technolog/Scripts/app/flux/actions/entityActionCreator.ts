@@ -125,4 +125,22 @@ export default class EntityActionCreator {
             errorMessage: errorMessage
         });
     }
+
+    public openDeleteConfirmation(componentId: string): void {
+        AppDispatcher.dispatch({
+            actionType: EntityActionType.OpenDeleteConfirmation,
+            actionSource: ActionSourceTypes.Entity,
+            entityType: this.entityType,
+            componentId: componentId
+        });
+    }
+
+    public closeDeleteConfirmation(componentId: string): void {
+        AppDispatcher.dispatch({
+            actionType: EntityActionType.CloseDeleteConfirmation,
+            actionSource: ActionSourceTypes.Entity,
+            entityType: this.entityType,
+            componentId: componentId
+        });
+    }
 }

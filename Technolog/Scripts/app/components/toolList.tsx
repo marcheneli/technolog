@@ -11,6 +11,8 @@ import ComponentType from "./componentType";
 import TableRow from "./common/tableRow";
 import Pagination from "./common/pagination";
 import SearchInput from "./common/searchInput";
+import DialogContainer from "./common/dialogContainer";
+import ConfirmationDialogPanel from "./common/confirmationDialogPanel";
 import ItemsPerPageSelector from "./common/itemsPerPageSelector";
 import ItemListControlPanel from "./common/itemListControlPanel";
 import Alert from "./common/alert";
@@ -51,7 +53,7 @@ class ToolTable
             }
 
             selectedTools.push(tool);
-            console.log(selectedTools);
+
         } else {
             for (var i = 0; i < selectedTools.length; i++) {
                 if (selectedTools[i].id == event.target.value) {
@@ -65,11 +67,13 @@ class ToolTable
     }
 
     private onAllToolSelect = (event: any) => {
-        var selectedTools = this.props.selectedTools;
+        var selectedTools;
         var tools = this.props.tools;
 
         if (event.target.checked) {
-            selectedTools = tools;
+            selectedTools = tools.map((tool: ITool) => {
+                return tool;
+            });
         } else {
             selectedTools = [];
         }
@@ -162,7 +166,7 @@ interface IToolListState {
     toolsPerPage: number,
     toolSearchText: string,
     toolPage: number,
-    alerts: Array<any>
+    alerts: Array<any>,
 }
 
 export default class ToolList extends React.Component<IToolListProps, IToolListState> {
@@ -209,7 +213,7 @@ export default class ToolList extends React.Component<IToolListProps, IToolListS
     }
 
     private toolDeleteHandler = () => {
-        ToolActions.showToolDeleteConfirmation(this.props.componentId);
+        ToolActionCreator.openDeleteConfirmation(this.props.componentId);
     }
 
     private handleDeleteSuccess = () => {
@@ -217,7 +221,7 @@ export default class ToolList extends React.Component<IToolListProps, IToolListS
     }
 
     private handleDeleteCancel = () => {
-        ToolActions.closeToolDeleteConfirmation(this.props.componentId);
+        ToolActionCreator.closeDeleteConfirmation(this.props.componentId);
     }
 
     private handleToolsPerPageChange = (toolsPerPage: number) => {
@@ -264,14 +268,25 @@ export default class ToolList extends React.Component<IToolListProps, IToolListS
 
     render(): React.ReactElement<{}> {
         return (
-            <div style={{ display: 'flex', flexDirection: 'column', position: 'relative' }}>
-                {this.getAlerts()}
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+                {this.getAlerts() }
+                <DialogContainer isShow={this.state.isConfirmDeleting}>
+                    <ConfirmationDialogPanel
+                        title={"Удаление инструмента"}
+                        onSuccess={this.handleDeleteSuccess}
+                        onCancel={this.handleDeleteCancel}>
+                        <span>
+                            Вы действительно хотите удалить данный инструмент?
+                        </span>
+                    </ConfirmationDialogPanel>
+                </DialogContainer>
                 <ItemListControlPanel
                     onNewItem={this.newToolBtnClickHandler}
                     onItemDelete={this.toolDeleteHandler}
                     onRefresh={this.refreshBtnClickHandler}
                     onItemsPerPageChange={this.handleToolsPerPageChange}
                     onSearchTextChange={function (text) { this.handleToolSearchTextChange(text) }.bind(this) }
+                    isDeleteEnable={this.props.selectedTools.length > 0}
                     />
                 <ToolTable
                     componentId={this.props.componentId}

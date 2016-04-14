@@ -141,6 +141,15 @@ abstract class EntityStore extends EventEmitter {
                     this.updateDeletePending(payload.componentId);
                     this.emitChange(payload.componentId);
                     break;
+                case EntityActionType.OpenDeleteConfirmation:
+                    this.updateDeleteConfirmation(payload.componentId);
+                    this.emitChange(payload.componentId);
+                    break;
+                case EntityActionType.CloseDeleteConfirmation:
+                    this.updateDeleteConfirmation(payload.componentId);
+                    this.emitChange(payload.componentId);
+                    break;
+
             }
         });
     }

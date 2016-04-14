@@ -10,6 +10,7 @@ interface ItemListControlPanelProps {
     onItemDelete(): void;
     onNewItem(): void;
     onRefresh(): void;
+    isDeleteEnable: boolean
 }
 
 interface ItemListControlPanelState {
@@ -35,7 +36,8 @@ export default class ItemListControlPanel
                         <button
                             className="btn btn-default"
                             type="button"
-                            onClick={this.props.onItemDelete}>
+                            onClick={this.props.onItemDelete}
+                            disabled={!this.props.isDeleteEnable}>
                             <span
                                 className="glyphicon glyphicon-trash">
                             </span>

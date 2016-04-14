@@ -8,7 +8,7 @@ import PanelActions from "../flux/actions/panelActions";
 import PageParamsManager from "../managers/pageParamsManager";
 import NavigationManager from "../managers/navigationManager";
 import ToolList from "./toolList";
-import ToolDeleteConfirmation from "./toolDeleteConfirmation";
+import Panel from "./common/panel";
 
 interface IToolListPanelProps {
     componentId: string;
@@ -59,26 +59,13 @@ export default class ToolListPanel extends React.Component<IToolListPanelProps, 
         });
     }
 
-    private closePanel = () => {
+    private closePanelHandler = () => {
         PanelActions.close(this.props.componentId);
     }
 
     render(): React.ReactElement<{}> {
         return (
-            <div className="panel panel-default inner" style={{ marginBottom: 0 + 'px', position: 'relative' }}>
-                <div className="panel-heading table-style" style={{ zIndex: 1050, position: 'relative' }}>
-                    <h2 className="panel-title">Инструменты</h2>
-                    <div className="button-wrap">
-                        <div
-                            className="btn btn-default"
-                            onClick={this.closePanel}>
-                            <div style={{ display: 'table-cell', verticalAlign: 'middle' }}>
-                                <span>{'❌'}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <ToolDeleteConfirmation componentId={this.props.componentId}/>
+            <Panel title="Инструменты" size="inner" onClosePanel={this.closePanelHandler}>
                 <div className="panel-body" style={{ display: 'flex', flexDirection: 'column' }}>
                     <ToolList
                         componentId={this.props.componentId}
@@ -91,7 +78,7 @@ export default class ToolListPanel extends React.Component<IToolListPanelProps, 
                         onToolsPerPageChange={this.handleToolsPerPageChange}
                         />
                 </div>
-            </div>
+            </Panel>
         )
     }
 }

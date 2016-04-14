@@ -7,7 +7,6 @@ import TechOperationActions from "../flux/actions/techOperationActions";
 import PageParamsManager from "../managers/pageParamsManager";
 import NavigationManager from "../managers/navigationManager";
 import TableRow from "./common/tableRow";
-import ConfirmDelete from "./common/confirmDelete";
 import Pagination from "./common/pagination";
 import SearchInput from "./common/searchInput";
 import ItemsPerPageSelector from "./common/itemsPerPageSelector";
@@ -145,12 +144,7 @@ export default class TechOperationList extends React.Component<ITechOperationLis
                 </div>
                 <div className="panel-body" style={{ display: 'flex', flexDirection: 'column' }}>
                     {this.state.isConfirmDeleting ?
-                        <ConfirmDelete
-                            id={this.state.currentTechOperation.id}
-                            title={"Подтверждение удаления технологической операции"}
-                            message={"Вы действительно хотите удалить технологическую операцию " + this.state.currentTechOperation.name}
-                            success={this.handleDeleteSuccess}
-                            cancel={this.handleDeleteCancel}/>
+                        null
                         :
                         <div className="input-group">
                             <div className="input-group-btn">

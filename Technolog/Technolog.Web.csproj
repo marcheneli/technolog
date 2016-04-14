@@ -353,18 +353,22 @@
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\app\app.tsx" />
     <TypeScriptCompile Include="Scripts\app\components\common\alert.tsx" />
+    <TypeScriptCompile Include="Scripts\app\components\common\confirmationDialogPanel.tsx" />
+    <TypeScriptCompile Include="Scripts\app\components\common\dialogContainer.tsx" />
+    <TypeScriptCompile Include="Scripts\app\components\common\dialogPanel.tsx" />
+    <TypeScriptCompile Include="Scripts\app\components\common\okDialogPanel.tsx" />
+    <TypeScriptCompile Include="Scripts\app\components\common\panel.tsx" />
     <TypeScriptCompile Include="Scripts\app\components\common\pendingAnimation.tsx" />
     <TypeScriptCompile Include="Scripts\app\components\componentType.ts" />
     <TypeScriptCompile Include="Scripts\app\components\iPanel.ts" />
     <TypeScriptCompile Include="Scripts\app\components\iTabElement.ts" />
-    <TypeScriptCompile Include="Scripts\app\components\toolDeleteConfirmation.tsx" />
+    <TypeScriptCompile Include="Scripts\app\components\toolEditPanel.tsx" />
     <TypeScriptCompile Include="Scripts\app\flux\actions\entityActionCreator.ts" />
     <TypeScriptCompile Include="Scripts\app\flux\actions\entityActionType.ts" />
     <TypeScriptCompile Include="Scripts\app\flux\actions\entityType.ts" />
     <TypeScriptCompile Include="Scripts\app\flux\actions\toolActionCreator.ts" />
     <TypeScriptCompile Include="Scripts\app\flux\iAppPayload.ts" />
     <TypeScriptCompile Include="Scripts\app\components\componentFactory.ts" />
-    <TypeScriptCompile Include="Scripts\app\components\common\confirmDelete.tsx" />
     <TypeScriptCompile Include="Scripts\app\components\common\contentEditable.tsx" />
     <TypeScriptCompile Include="Scripts\app\components\common\inputError.tsx" />
     <TypeScriptCompile Include="Scripts\app\components\common\itemListControlPanel.tsx" />

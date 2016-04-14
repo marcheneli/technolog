@@ -16,7 +16,4 @@ var toolActionCreator: ToolActionCreator = new ToolActionCreator(toolService);
 
 toolService.setActionCreator(toolActionCreator);
 
-console.log(toolService);
-console.log(toolActionCreator);
-
 export default toolActionCreator;

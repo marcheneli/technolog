@@ -7,7 +7,6 @@ import PartActions from "../flux/actions/partActions";
 import PageParamsManager from "../managers/pageParamsManager";
 import NavigationManager from "../managers/navigationManager";
 import TableRow from "./common/tableRow";
-import ConfirmDelete from "./common/confirmDelete";
 import Pagination from "./common/pagination";
 import SearchInput from "./common/searchInput";
 import ItemsPerPageSelector from "./common/itemsPerPageSelector";
@@ -145,12 +144,7 @@ export default class PartList extends React.Component<IPartListProps, IPartListS
                 </div>
                 <div className="panel-body" style={{ display: 'flex', flexDirection: 'column' }}>
                     {this.state.isConfirmDeleting ?
-                        <ConfirmDelete
-                            id={this.state.currentPart.id}
-                            title={"Подтверждение удаления детали"}
-                            message={"Вы действительно хотите удалить деталь " + this.state.currentPart.name}
-                            success={this.handleDeleteSuccess}
-                            cancel={this.handleDeleteCancel}/>
+                        null
                         :
                         <div className="input-group">
                             <div className="input-group-btn">

@@ -7,7 +7,6 @@ import TechStepActions from "../flux/actions/techStepActions";
 import PageParamsManager from "../managers/pageParamsManager";
 import NavigationManager from "../managers/navigationManager";
 import TableRow from "./common/tableRow";
-import ConfirmDelete from "./common/confirmDelete";
 import Pagination from "./common/pagination";
 import SearchInput from "./common/searchInput";
 import ItemsPerPageSelector from "./common/itemsPerPageSelector";
@@ -145,12 +144,7 @@ export default class TechStepList extends React.Component<ITechStepListProps, IT
                 </div>
                 <div className="panel-body" style={{ display: 'flex', flexDirection: 'column' }}>
                     {this.state.isConfirmDeleting ?
-                        <ConfirmDelete
-                            id={this.state.currentTechStep.id}
-                            title={"Подтверждение удаления технологического шага"}
-                            message={"Вы действительно хотите удалить технологический шаг " + this.state.currentTechStep.description}
-                            success={this.handleDeleteSuccess}
-                            cancel={this.handleDeleteCancel}/>
+                        null
                         :
                         <div className="input-group">
                             <div className="input-group-btn">
