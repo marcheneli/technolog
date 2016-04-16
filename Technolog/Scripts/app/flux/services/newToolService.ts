@@ -16,4 +16,11 @@ export default class ToolService extends EntityService {
     protected getEntities(entityListModel: any): Array<any> {
         return entityListModel.tools;
     }
+
+    protected getDeleteData(entities: Array<any>): any {
+        return {
+            tools: entities,
+            __RequestVerificationToken: antiForgeryToken
+        }
+    }
 }

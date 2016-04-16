@@ -25,7 +25,7 @@ export default class MainContentSection extends React.Component<IMainContentSect
             panels: []
         };
     }
-    
+
     private handlePanelsChange = () => {
         this.setState({
             panels: PanelStore.getPanels()
@@ -41,7 +41,7 @@ export default class MainContentSection extends React.Component<IMainContentSect
     }
 
     componentDidMount() {
-        PanelActions.init(ComponentType.MainPanel);
+        //PanelActions.init(ComponentType.MainPanel);
     }
 
     render(): React.ReactElement<IMainContentSectionProps> {
@@ -49,12 +49,14 @@ export default class MainContentSection extends React.Component<IMainContentSect
 
         panels = this.state.panels.map((panel: IPanel, index: number) => {
             var Component = ComponentFactory.getComponent(panel.type);
-            return <Component key={panel.id} componentId={ panel.id } params={panel.params}/>
+            return <div key={panel.id} style={{display: 'inline-block',height: 100 + '%'}}><Component key={panel.id} componentId={ panel.id } params={panel.params}/></div>
         });
 
         return (
-            <div className="col-lg-10 col-lg-offset-2 col-md-9 col-md-offset-3 col-sm-9 col-sm-offset-3 col-xs-8 col-xs-offset-4 full-height" id='infopanel'>
-                {this.props.children}
+            <div
+                className="col-lg-10 col-lg-offset-2 col-md-9 col-md-offset-3 col-sm-9 col-sm-offset-3 col-xs-8 col-xs-offset-4 full-height"
+                id='infopanel'
+                style={{ overflowX: 'auto', whiteSpace: 'nowrap' }}>
                 <div className="outer">
                     {panels}
                 </div>

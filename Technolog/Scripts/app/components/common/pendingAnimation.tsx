@@ -14,50 +14,12 @@ export default class PendingAnimation
 
     render(): React.ReactElement<ILoadingAnimationProps> {
         return (
-            <div style={{ position: 'absolute', height: 100 + '%', width: 100 + '%', bottom: 0, zIndex: 1030, }}>
-                <div style={{ position: 'absolute', height: 100 + '%', width: 100 + '%', bottom: 0, zIndex: 1040, backgroundColor: '#333', opacity: 0.15 }}>
-
+            <div style={{ position: 'relative', display: 'table', margin: 0 + ' auto'}}>
+                <div style={{ display: 'table-cell', verticalAlign: 'middle', zIndex: 1050, position: 'relative' }}>
+                    <img src="Content/loaders/spin.gif"/>
                 </div>
-                <div style={{ position: 'relative', display: 'table', height: 100 + '%', width: 100 + '%', zIndex: 1050 }}>
-                    <div style={{ display: 'table-cell', height: 100 + '%', verticalAlign: 'middle', zIndex: 1050 }}>
-                        <div style={{ width: 100 + '%', textAlign: 'center' }}>
-                            <div className='uil-spin-css' style={{ transform: 'scale(0.79)', display: 'inline-block' }}>
-                                <div>
-                                    <div>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div>
-                                    </div>
-                                </div>
-                            </div>
-                            {this.props.children}
-                        </div>
-                    </div>
+                <div style={{ display: 'table-cell', verticalAlign: 'middle', textAlign: 'center', zIndex: 1050 }}>
+                    {this.props.children}
                 </div>
             </div>
         );

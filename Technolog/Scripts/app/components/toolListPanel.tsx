@@ -71,11 +71,6 @@ export default class ToolListPanel extends React.Component<IToolListPanelProps, 
                         componentId={this.props.componentId}
                         selectedTools={this.state.selectedTools}
                         onSelectedToolsChange={this.handleSelectedToolsChange}
-                        onNewToolClick={this.newToolBtnClickHandler}
-                        onToolDoubleClick={this.toolEditFormOpen}
-                        onToolPageChange={this.handleToolPageChange}
-                        onToolSearchTextChange={this.handleToolSearchTextChange}
-                        onToolsPerPageChange={this.handleToolsPerPageChange}
                         />
                 </div>
             </Panel>

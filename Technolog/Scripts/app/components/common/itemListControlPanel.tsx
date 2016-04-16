@@ -5,16 +5,15 @@ import SearchInput from "./searchInput";
 import ItemsPerPageSelector from "./itemsPerPageSelector";
 
 interface ItemListControlPanelProps {
-    onItemsPerPageChange(itemsPerPage: number): void;
     onSearchTextChange(searchText: string): void;
     onItemDelete(): void;
     onNewItem(): void;
     onRefresh(): void;
-    isDeleteEnable: boolean
+    isDeleteEnable: boolean;
+    isUpdating: boolean;
 }
 
 interface ItemListControlPanelState {
-
 }
 
 export default class ItemListControlPanel
@@ -47,15 +46,15 @@ export default class ItemListControlPanel
                             type="button"
                             onClick={this.props.onRefresh}>
                             <span
-                                className="glyphicon glyphicon-refresh">
+                                className={ this.props.isUpdating ? 
+                                    "glyphicon glyphicon-refresh glyphicon-refresh-animate" : 
+                                    "glyphicon glyphicon-refresh"}>
                             </span>
                         </button>
                     </div>
                     <SearchInput
                         text="Поиск..."
                         onChange={this.props.onSearchTextChange} />
-                    <ItemsPerPageSelector
-                        onChange={this.props.onItemsPerPageChange}/>
                 </div>
             </div>    
         );

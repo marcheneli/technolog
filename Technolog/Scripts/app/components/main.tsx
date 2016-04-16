@@ -17,12 +17,12 @@ let tabList: Array<ITabElement> = [
 export default class Main extends React.Component<{}, {}> {
     public render(): React.ReactElement<{}> {
         return (
-                <div className="row full-height">
-                    <MainSidebar tabList={tabList} />
-                    <MainContentSection>
-                        {this.props.children}
-                    </MainContentSection>
-                </div>
-            )
+            <div className="row full-height">
+                <MainSidebar tabList={tabList} />
+                <MainContentSection>
+                    {this.props.children}
+                </MainContentSection>
+            </div>
+        )
     }
 }

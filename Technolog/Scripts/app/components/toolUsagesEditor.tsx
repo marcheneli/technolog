@@ -89,11 +89,6 @@ class ToolChooser
                             componentId={this.state.toolListId}
                             selectedTools={this.state.selectedTools}
                             onSelectedToolsChange={this.handleSelectedToolsChange}
-                            onNewToolClick={this.newToolBtnClickHandler}
-                            onToolDoubleClick={this.toolEditFormOpen}
-                            onToolPageChange={this.handleToolPageChange}
-                            onToolSearchTextChange={this.handleToolSearchTextChange}
-                            onToolsPerPageChange={this.handleToolsPerPageChange}
                             />
                     </div>
                     :

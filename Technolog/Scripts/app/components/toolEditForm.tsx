@@ -8,6 +8,7 @@ import ToolActions from "../flux/actions/toolActions";
 import NavigationManager from "../managers/navigationManager";
 import TextInput from "./common/textInput";
 import PendingAnimation from "./common/pendingAnimation";
+import Panel from "./common/panel";
 
 interface IToolEditFormProps {
     params: any;
@@ -118,30 +119,18 @@ export default class ToolEditForm extends React.Component<IToolEditFormProps, IT
         });
     }
 
-    private closePanel = () => {
+    private closePanelHandler = () => {
         PanelActions.close(this.props.componentId);
     }
 
     render(): React.ReactElement<IToolEditFormProps> {
         return (
-            <div className="panel panel-default inner" style={{ marginBottom: 0 + 'px', position: 'relative' }}>
-                <div className="panel-heading table-style" style={{ zIndex: 1050, position: 'relative' }}>
-                    <h2 className="panel-title">Редактирование инструмента</h2>
-                    <div className="button-wrap">
-                        <div
-                            className="btn btn-default"
-                            onClick={this.closePanel}>
-                            <div style={{ display: 'table-cell', verticalAlign: 'middle' }}>
-                                <span>{'❌'}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <PendingAnimation>
-                    <h4>Пожалуйста, подождите.</h4>
-                    <h4>Идет сохранение.</h4>
-                </PendingAnimation>
-                <div className="panel-body">
+            <Panel title="Редактирование инструмента" size="inner" onClosePanel={this.closePanelHandler}>
+                <div className="panel-body" style={{ display: 'flex', flexDirection: 'column' }}>
+                    <PendingAnimation>
+                        <h4>Пожалуйста, подождите.</h4>
+                        <h4>Идет сохранение.</h4>
+                    </PendingAnimation>
                     { this.state.errorMessage != null ?
                         <div>
                             <div className="form-group">
@@ -178,7 +167,7 @@ export default class ToolEditForm extends React.Component<IToolEditFormProps, IT
                                 <label className="control-label">Цена: </label>
                                 <TextInput name="toolPrice"
                                     text=""
-                                    value={String(this.state.tool.price)}
+                                    value={String(this.state.tool.price) }
                                     required={true}
                                     onChange={this.setToolPrice}
                                     errorMessage="Данное значение недействительно"
@@ -197,7 +186,7 @@ export default class ToolEditForm extends React.Component<IToolEditFormProps, IT
                         </form>
                     }
                 </div>
-            </div>
+            </Panel>
         )
     }
 }

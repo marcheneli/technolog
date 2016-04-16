@@ -1,8 +1,9 @@
 .uil-spin-css {
   background: none;
   position: relative;
-  width: 200px;
-  height: 200px;
+  width: 100px;
+  height: 100px;
+  -webkit-transform: scale(0.5);
 }
 width: 100%;
 @-webkit-keyframes uil-spin-css {

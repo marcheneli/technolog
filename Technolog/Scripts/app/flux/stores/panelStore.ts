@@ -11,10 +11,10 @@ import AppPayload from "../iAppPayload";
 
 const CHANGE_EVENT = "PANEL_CHANGE_EVENT";
 
-var _panels: Array<IPanel>
+var _panels: Array<IPanel> = [];
 
 function _initialize(panelType: ComponentType, params?: any): void {
-    _panels = [];
+    //_panels = [];
 
     var panelId: string = Utils.uuid();
     var panel: IPanel = { type: panelType, id: panelId, params: params };

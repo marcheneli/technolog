@@ -87,8 +87,8 @@ export default class Pagination extends React.Component<IPaginationProps, IPagin
         }
 
         return (
-            <div className="pull-right">
-                <ul className="pagination pull-right" style={{ marginTop: 0 + 'px', marginBottom: 0 + 'px' }}>
+            <div style={{ float: 'right' }}>
+                <ul className="pagination" style={{ marginTop: 0 + 'px', marginBottom: 0 + 'px', float: 'right' }}>
                     {pageButtons}
                 </ul>
             </div>

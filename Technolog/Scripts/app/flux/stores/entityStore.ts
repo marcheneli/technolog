@@ -52,13 +52,9 @@ abstract class EntityStore extends EventEmitter {
         this.entityComponentStates[componentId].totalAmount = totalAmount;
     }
 
-    protected updateEntityPage(componentId: string, entityPage: number): void {
-        this.entityComponentStates[componentId].entityPage = entityPage;
-    }
+    protected abstract updateEntityPage(componentId: string, entityPage: number): void;
 
-    protected updateEntitysPerPage(componentId: string, entitiesPerPage: number): void {
-        this.entityComponentStates[componentId].entitiesPerPage = entitiesPerPage;
-    }
+    protected abstract updateEntitysPerPage(componentId: string, entitiesPerPage: number): void;
 
     protected updateDeleteConfirmation(componentId: string): void {
         this.entityComponentStates[componentId].isConfirmDeleting =
@@ -131,13 +127,23 @@ abstract class EntityStore extends EventEmitter {
                     this.updateTotalAmount(payload.componentId, payload.totalAmount);
                     this.updateEntityPage(payload.componentId, payload.currentPage);
                     this.updateEntitysPerPage(payload.componentId, payload.pageSize);
+                    this.updateLoadPending(payload.componentId);
                     this.emitChange(payload.componentId);
                     break;
                 case EntityActionType.SavePending:
                     this.updateSavePending(payload.componentId);
                     this.emitChange(payload.componentId);
                     break;
+                case EntityActionType.SaveSucceed:
+                    this.updateSavePending(payload.componentId);
+                    this.emitChange(payload.componentId);
+                    break;
                 case EntityActionType.DeletePending:
+                    this.updateDeletePending(payload.componentId);
+                    this.emitChange(payload.componentId);
+                    break;
+                case EntityActionType.DeleteSucceed:
+                    console.log("delete succeed");
                     this.updateDeletePending(payload.componentId);
                     this.emitChange(payload.componentId);
                     break;

@@ -16,6 +16,9 @@ import ConfirmationDialogPanel from "./common/confirmationDialogPanel";
 import ItemsPerPageSelector from "./common/itemsPerPageSelector";
 import ItemListControlPanel from "./common/itemListControlPanel";
 import Alert from "./common/alert";
+import PendingAnimation from "./common/pendingAnimation";
+import BlockingContainer from "./common/blockingContainer";
+import PendingPanel from "./common/pendingPanel";
 
 interface IToolTablbleProps {
     tools: Array<ITool>;
@@ -150,11 +153,6 @@ class ToolTable
 
 interface IToolListProps {
     selectedTools: Array<ITool>;
-    onToolSearchTextChange(text: string): void;
-    onToolsPerPageChange(toolAmout: number): void;
-    onToolPageChange(toolPage: number): void;
-    onNewToolClick(): void;
-    onToolDoubleClick(id: number): void;
     onSelectedToolsChange(selectedTools: Array<ITool>): void;
     componentId: string;
 }
@@ -167,6 +165,8 @@ interface IToolListState {
     toolSearchText: string,
     toolPage: number,
     alerts: Array<any>,
+    isDeleting: boolean,
+    isLoading: boolean
 }
 
 export default class ToolList extends React.Component<IToolListProps, IToolListState> {
@@ -183,7 +183,9 @@ export default class ToolList extends React.Component<IToolListProps, IToolListS
             toolsPerPage: PageConstants.ITEMS_PER_PAGE_INIT,
             toolSearchText: "",
             toolPage: 0,
-            alerts: []
+            alerts: [],
+            isDeleting: false,
+            isLoading: false
         };
     }
 
@@ -205,11 +207,11 @@ export default class ToolList extends React.Component<IToolListProps, IToolListS
     }
 
     private toolRowDoubleClick = (tool: ITool) => {
-        this.props.onToolDoubleClick(tool.id);
+
     }
 
     private newToolBtnClickHandler = () => {
-        this.props.onNewToolClick();
+
     }
 
     private toolDeleteHandler = () => {
@@ -217,7 +219,8 @@ export default class ToolList extends React.Component<IToolListProps, IToolListS
     }
 
     private handleDeleteSuccess = () => {
-        ToolActions;
+        ToolActionCreator.closeDeleteConfirmation(this.props.componentId);
+        ToolActionCreator.delete(this.props.componentId, this.props.selectedTools);
     }
 
     private handleDeleteCancel = () => {
@@ -225,28 +228,23 @@ export default class ToolList extends React.Component<IToolListProps, IToolListS
     }
 
     private handleToolsPerPageChange = (toolsPerPage: number) => {
-        ToolActions.load(this.props.componentId,
-            this.state.toolPage,
-            toolsPerPage,
-            this.state.toolSearchText);
+        ToolActionCreator.load(this.props.componentId,
+            this.state.toolPage, toolsPerPage, this.state.toolSearchText);
     }
 
     private handleToolPageChange = (page: number) => {
-        ToolActions.load(this.props.componentId,
-            page,
-            this.state.toolsPerPage,
-            this.state.toolSearchText);
+        ToolActionCreator.load(this.props.componentId,
+            page, this.state.toolsPerPage, this.state.toolSearchText);
     }
 
     private handleToolSearchTextChange = (text: string) => {
-        ToolActions.load(this.props.componentId,
-            this.state.toolPage,
-            this.state.toolsPerPage,
-            text);
+        ToolActionCreator.load(this.props.componentId,
+            this.state.toolPage, this.state.toolsPerPage, text);
     }
 
     private refreshBtnClickHandler = () => {
-
+        ToolActionCreator.load(this.props.componentId,
+            this.state.toolPage, this.state.toolsPerPage, this.state.toolSearchText);
     }
 
     private getAlerts(): Array<any> {
@@ -280,28 +278,42 @@ export default class ToolList extends React.Component<IToolListProps, IToolListS
                         </span>
                     </ConfirmationDialogPanel>
                 </DialogContainer>
-                <ItemListControlPanel
-                    onNewItem={this.newToolBtnClickHandler}
-                    onItemDelete={this.toolDeleteHandler}
-                    onRefresh={this.refreshBtnClickHandler}
-                    onItemsPerPageChange={this.handleToolsPerPageChange}
-                    onSearchTextChange={function (text) { this.handleToolSearchTextChange(text) }.bind(this) }
-                    isDeleteEnable={this.props.selectedTools.length > 0}
-                    />
-                <ToolTable
-                    componentId={this.props.componentId}
-                    tools={this.state.tools}
-                    selectedTools={this.props.selectedTools}
-                    onSelectedToolsChange={this.props.onSelectedToolsChange}/>
-                <Pagination
-                    itemAmount={this.state.totalAmount}
-                    itemsPerPage={this.state.toolsPerPage}
-                    currentPage={this.state.toolPage}
-                    firstSymbol='«'
-                    nextSymbol='›'
-                    prevSymbol='‹'
-                    lastSymbol='»'
-                    updatePage={this.handleToolPageChange}/>
+                <DialogContainer isShow={this.state.isDeleting}>
+                    <PendingPanel title={"Удаление инструмента"}>
+                        <PendingAnimation>
+                            <h4>Пожалуйста, подождите.</h4>
+                            <h4>Идет удаление.</h4>
+                        </PendingAnimation>
+                    </PendingPanel>
+                </DialogContainer>
+                <BlockingContainer isBlocked={this.state.isLoading}>
+                    <ItemListControlPanel
+                        onNewItem={this.newToolBtnClickHandler}
+                        onItemDelete={this.toolDeleteHandler}
+                        onRefresh={this.refreshBtnClickHandler}
+                        onSearchTextChange={function (text) { this.handleToolSearchTextChange(text) }.bind(this) }
+                        isDeleteEnable={this.props.selectedTools.length > 0}
+                        isUpdating={this.state.isLoading}
+                        />
+                    <ToolTable
+                        componentId={this.props.componentId}
+                        tools={this.state.tools}
+                        selectedTools={this.props.selectedTools}
+                        onSelectedToolsChange={this.props.onSelectedToolsChange}/>
+                    <div className="btn-toolbar">
+                        <ItemsPerPageSelector
+                            onChange={this.handleToolsPerPageChange}/>
+                        <Pagination
+                            itemAmount={this.state.totalAmount}
+                            itemsPerPage={this.state.toolsPerPage}
+                            currentPage={this.state.toolPage}
+                            firstSymbol='«'
+                            nextSymbol='›'
+                            prevSymbol='‹'
+                            lastSymbol='»'
+                            updatePage={this.handleToolPageChange}/>
+                    </div>
+                </BlockingContainer>
             </div>
         )
     }

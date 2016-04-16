@@ -227,6 +227,8 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="Content\loaders\spin.gif" />
+    <Content Include="Content\refresh-animate.css" />
     <Content Include="Content\spin.css" />
     <Content Include="Scripts\react-with-addons.js" />
     <Content Include="Scripts\require-config.js" />
@@ -353,12 +355,14 @@
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\app\app.tsx" />
     <TypeScriptCompile Include="Scripts\app\components\common\alert.tsx" />
+    <TypeScriptCompile Include="Scripts\app\components\common\blockingContainer.tsx" />
     <TypeScriptCompile Include="Scripts\app\components\common\confirmationDialogPanel.tsx" />
     <TypeScriptCompile Include="Scripts\app\components\common\dialogContainer.tsx" />
     <TypeScriptCompile Include="Scripts\app\components\common\dialogPanel.tsx" />
     <TypeScriptCompile Include="Scripts\app\components\common\okDialogPanel.tsx" />
     <TypeScriptCompile Include="Scripts\app\components\common\panel.tsx" />
     <TypeScriptCompile Include="Scripts\app\components\common\pendingAnimation.tsx" />
+    <TypeScriptCompile Include="Scripts\app\components\common\pendingPanel.tsx" />
     <TypeScriptCompile Include="Scripts\app\components\componentType.ts" />
     <TypeScriptCompile Include="Scripts\app\components\iPanel.ts" />
     <TypeScriptCompile Include="Scripts\app\components\iTabElement.ts" />

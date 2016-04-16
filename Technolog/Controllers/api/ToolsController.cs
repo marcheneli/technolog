@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading;
 using System.Web.Http;
 using System.Web.Mvc;
 using Technolog.Infrastructure.Interfaces;
@@ -61,6 +62,8 @@ namespace Technolog.Web.Controllers.api
             
             ToolListModel toolListModel = mapper.Map<ToolListModel>(toolListDTO);
 
+            Thread.Sleep(3000);
+
             return Ok(toolListModel);
         }
 
@@ -87,6 +90,7 @@ namespace Technolog.Web.Controllers.api
             return Ok(toolModel);
         }
 
+        [ValidateAntiForgeryToken]
         public IHttpActionResult Put(ToolModel toolModel)
         {
             if (!ModelState.IsValid)
@@ -109,6 +113,7 @@ namespace Technolog.Web.Controllers.api
             return Ok(toolModel);
         }
 
+        [ValidateAntiForgeryToken]
         public IHttpActionResult Delete(int id)
         {
             try
@@ -126,11 +131,13 @@ namespace Technolog.Web.Controllers.api
             return Ok(id);
         }
 
-        public IHttpActionResult Delete(IEnumerable<ToolModel> tools)
+        [ValidateAntiForgeryToken]
+        public IHttpActionResult Delete(ToolListModel toolListModel)
         {
+            IEnumerable<ToolModel> tools = new List<ToolModel>();
             try
             {
-                toolService.Delete(mapper.Map<IEnumerable<ToolDTO>>(tools));
+                toolService.Delete(mapper.Map<IEnumerable<ToolDTO>>(toolListModel.Tools));
             }
             catch (ValidationException ex)
             {
@@ -140,7 +147,9 @@ namespace Technolog.Web.Controllers.api
                         ex.Message));
             }
 
-            return Ok();
+            Thread.Sleep(3000);
+
+            return Ok(toolListModel);
         }
 
         private bool disposed = false;

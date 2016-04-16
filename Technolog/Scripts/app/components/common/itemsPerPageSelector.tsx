@@ -79,7 +79,7 @@ export default class ItemsPerPageSelector extends React.Component<IItemsPerPageP
 
     render(): React.ReactElement<{}> {
         return (
-            <div className="input-group-btn">
+            <div className="btn-group dropup" style={{ float: 'left' }}>
                 <button type="button" className="btn btn-default">{this.state.itemsPerPage}</button>
                 <button type="button" className="btn btn-default dropdown-toggle" dataToggle="dropdown" onClick={this.toggleDropDown}>
                     <span className="caret"></span>

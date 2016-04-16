@@ -15,8 +15,8 @@ interface IPanelState {
 export default class Panel extends React.Component<IPanelProps, IPanelState> {
     render(): React.ReactElement<IPanelProps> {
         return (
-            <div className={"panel panel-default " + this.props.size} style={{ marginBottom: 0 + 'px', position: 'relative' }}>
-                <div className="panel-heading table-style" style={{ zIndex: 1050, position: 'relative' }}>
+            <div className={"panel panel-default " + this.props.size} style={{ marginBottom: 0 + 'px', position: 'relative', display: 'flex', flexDirection: 'column', height: 100 + '%' }}>
+                <div className="panel-heading table-style" style={{ zIndex: 1050, position: 'relative', }}>
                     <h2 className="panel-title">{this.props.title}</h2>
                     <div className="button-wrap">
                         <div

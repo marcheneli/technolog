@@ -15,6 +15,8 @@ abstract class EntityService {
 
     protected abstract getEntities(entityListModel: any): Array<any>;
 
+    protected abstract getDeleteData(entities: Array<any>): any;
+
     public setActionCreator(actionCreator: EntityActionCreator): void {
         this.actionCreator = actionCreator;
     }
@@ -72,13 +74,12 @@ abstract class EntityService {
 
         $.ajax({
             url: location.origin + '/api/' + this.controllerName + "/",
-            dataType: 'json',
             type: 'DELETE',
-            data: {
-                entities: entities,
-                __RequestVerificationToken: antiForgeryToken
-            },
-            success: () => {
+            dataType: "json",
+            data: this.getDeleteData(entities),
+            success: (response) => {
+                console.log("delete");
+                console.log(componentId);
                 this.actionCreator.deleteSucceed(componentId);
             },
             error: (xhr, status, err) => {
