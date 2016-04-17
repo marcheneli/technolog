@@ -13,8 +13,7 @@ export default class BlockingContainer
     extends React.Component<BlockingContainerProps, BlockingContainerState> {
     render(): React.ReactElement<BlockingContainerProps> {
         return (
-            <div style={{ position: 'relative' }}>
-                { this.props.isBlocked ?
+                this.props.isBlocked ?
                     <div style={{
                             position: 'absolute',
                             height: 100 + '%',
@@ -25,11 +24,7 @@ export default class BlockingContainer
                             opacity: 0.3
                         }}>
                     </div>
-                    :
-                    null
-                }
-                {this.props.children}
-            </div>
+                    : null
         );
     }
 }

@@ -23,7 +23,6 @@ abstract class EntityService {
 
     public load(componentId: string, page: number,
         entitiesPerPage: number, searchText: string): void {
-
         this.actionCreator.loadPending(componentId);
 
         $.ajax({
@@ -78,9 +77,7 @@ abstract class EntityService {
             dataType: "json",
             data: this.getDeleteData(entities),
             success: (response) => {
-                console.log("delete");
-                console.log(componentId);
-                this.actionCreator.deleteSucceed(componentId);
+                this.actionCreator.deleteSucceed(componentId, entities);
             },
             error: (xhr, status, err) => {
                 this.actionCreator.deleteFailed(componentId, err);

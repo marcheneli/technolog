@@ -21,7 +21,8 @@ interface AppPayload {
     componentId?: string;
     params?: any;
     entityType?: EntityType;
-    entities?: any;
+    entities?: Array<any>;
+    entity?: any;
 }
 
 export default AppPayload;

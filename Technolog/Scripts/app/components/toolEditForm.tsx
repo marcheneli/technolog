@@ -1,10 +1,10 @@
 ﻿/// <reference path="../../typings/tsd.d.ts" />
 
 import * as React from "react";
-import ToolStore from "../flux/stores/newToolStore";
+import ToolStore from "../flux/stores/secondToolStore";
 import ErrorStore from "../flux/stores/errorStore";
 import PanelActions from "../flux/actions/panelActions";
-import ToolActions from "../flux/actions/toolActions";
+import ToolActionCreator from "../flux/actions/toolActionCreator";
 import NavigationManager from "../managers/navigationManager";
 import TextInput from "./common/textInput";
 import PendingAnimation from "./common/pendingAnimation";
@@ -17,6 +17,8 @@ interface IToolEditFormProps {
 
 interface IToolEditFormState {
     tool: ITool,
+    isRedoAvailable: boolean;
+    isUndoAvailable: boolean;
     errorMessage: string,
     isValid: boolean
 }
@@ -30,8 +32,10 @@ export default class ToolEditForm extends React.Component<IToolEditFormProps, IT
         this.props = props;
         this.context = context;
         this.state = {
-            tool: null,
+            tool: props.params.tool,
             errorMessage: null,
+            isRedoAvailable: false,
+            isUndoAvailable: false,
             isValid: true
         };
     }
@@ -45,146 +49,132 @@ export default class ToolEditForm extends React.Component<IToolEditFormProps, IT
         ToolStore.removeChangeListener(this.handleEditToolChange, this.props.componentId);
     }
 
-    componentDidMount() {
-        this.setState({
-            tool: this.props.params.tool,
-            errorMessage: null,
-            isValid: true
-        });
-    }
-
     componentWillReceiveProps(nextProps) {
         //ToolActions.loadEditTool(nextProps.params.toolId);
     }
 
+    componentDidMount() {
+        ToolActionCreator.initEntityState(this.props.componentId, this.state.tool);
+    }
+
     private handleEditToolChange = () => {
+
+        console.log(ToolStore.getState(this.props.componentId));
         this.setState({
-            tool: ToolStore.getState(this.props.componentId),
+            tool: ToolStore.getState(this.props.componentId).entity,
             errorMessage: null,
+            isRedoAvailable: ToolStore.getState(this.props.componentId).isRedoAvailable,
+            isUndoAvailable: ToolStore.getState(this.props.componentId).isUndoAvailable,
             isValid: true
         });
     }
 
-    private handleNewError = () => {
-        this.setState({
-            tool: null,
-            errorMessage: ErrorStore.getError(),
-            isValid: true
-        });
-    }
-
-    private nameValidate() {
-        //you could do something here that does general validation for any form field
+    private nameValidate = (value: string) => {
+        
         return true;
+    }
+
+    private priceValidate = (value: string) => {
+        var price = parseFloat(value);
+
+        return price !== undefined;
     }
 
     private handleSubmit = (e) => {
         e.preventDefault();
 
-        if (this.state.tool.id == 0) {
-            ToolActions.create(this.state.tool);
-        } else {
-            ToolActions.update(this.state.tool);
-        }
-    }
-
-    private cancelClickHandler = () => {
-        NavigationManager.closeToolEditor();
+        ToolActionCreator.save(this.props.componentId, this.state.tool);
     }
 
     private registerInput = (input) => {
         this.inputs[input.props.name] = input;
     }
     private setToolName = (event) => {
-        this.setState({
-            tool: {
-                id: this.state.tool.id,
-                name: event.target.value,
-                price: this.state.tool.price,
-            },
-            errorMessage: null,
-            isValid: true
+        this.onToolChange({
+            id: this.state.tool.id,
+            name: event.target.value,
+            price: this.state.tool.price
         });
     }
 
     private setToolPrice = (event) => {
-        this.setState({
-            tool: {
-                id: this.state.tool.id,
-                name: this.state.tool.name,
-                price: event.target.value
-            },
-            errorMessage: null,
-            isValid: true
+        this.onToolChange({
+            id: this.state.tool.id,
+            name: this.state.tool.name,
+            price: event.target.value
         });
     }
 
-    private closePanelHandler = () => {
+    private closePanelClickHandler = () => {
         PanelActions.close(this.props.componentId);
+    }
+
+    private undoClickHandler = () => {
+        ToolActionCreator.undo(this.props.componentId);
+    }
+
+    private redoClickHandler = () => {
+        ToolActionCreator.redo(this.props.componentId);
+    }
+
+    private onToolChange = (newTool: ITool) => {
+        console.log(newTool);
+        ToolActionCreator.change(this.props.componentId, newTool);
     }
 
     render(): React.ReactElement<IToolEditFormProps> {
         return (
-            <Panel title="Редактирование инструмента" size="inner" onClosePanel={this.closePanelHandler}>
+            <Panel title="Редактирование инструмента" size="inner" onClosePanel={this.closePanelClickHandler}>
                 <div className="panel-body" style={{ display: 'flex', flexDirection: 'column' }}>
                     <PendingAnimation>
                         <h4>Пожалуйста, подождите.</h4>
                         <h4>Идет сохранение.</h4>
                     </PendingAnimation>
-                    { this.state.errorMessage != null ?
-                        <div>
-                            <div className="form-group">
-                                <span>{this.state.errorMessage}</span>
-                            </div>
-                            <div className="form-group">
-                                <div className="btn-toolbar">
-                                    <button className="btn btn-default" type="button" onClick={this.cancelClickHandler}>Закрыть</button>
-                                </div>
+                    <form role="form" onSubmit={this.handleSubmit}>
+                        <div className="form-group">
+                            <label className="control-label">Наименование: </label>
+                            <TextInput name="toolName"
+                                text=""
+                                value={this.state.tool.name}
+                                required={true}
+                                onChange={this.setToolName}
+                                errorMessage="Данное наименование недействительно"
+                                emptyMessage="Наименование обязательно для ввода"
+                                register={this.registerInput}
+                                validate={this.nameValidate}
+                                minCharacters=''
+                                uniqueName=''/>
+                        </div>
+                        <div className="form-group">
+                            <label className="control-label">Цена: </label>
+                            <TextInput name="toolPrice"
+                                text=""
+                                value={String(this.state.tool.price) }
+                                required={true}
+                                onChange={this.setToolPrice}
+                                errorMessage="Данное значение недействительно"
+                                emptyMessage="Цена обязательна для ввода"
+                                register={this.registerInput}
+                                validate={this.priceValidate}
+                                minCharacters=''
+                                uniqueName=''/>
+                        </div>
+                        <div className="form-group">
+                            <div className="btn-toolbar">
+                                <input className="btn btn-primary" type="submit" value="Сохранить" />
+                                <button
+                                    className="btn btn-default"
+                                    type="button"
+                                    onClick={this.undoClickHandler}
+                                    disabled={!this.state.isUndoAvailable}>Отменить</button>
+                                <button
+                                    className="btn btn-default"
+                                    type="button"
+                                    onClick={this.redoClickHandler}
+                                    disabled={!this.state.isRedoAvailable}>Вернуть</button>
                             </div>
                         </div>
-                        : null}
-                    { this.state.tool == null ?
-                        this.state.errorMessage == null ?
-                            <p>Загрузка данных...</p>
-                            : null
-                        :
-                        <form role="form" onSubmit={this.handleSubmit}>
-                            <div className="form-group">
-                                <label className="control-label">Наименование: </label>
-                                <TextInput name="toolName"
-                                    text=""
-                                    value={this.state.tool.name}
-                                    required={true}
-                                    onChange={this.setToolName}
-                                    errorMessage="Данное наименование недействительно"
-                                    emptyMessage="Наименование обязательно для ввода"
-                                    register={this.registerInput}
-                                    validate={this.nameValidate}
-                                    minCharacters=''
-                                    uniqueName=''/>
-                            </div>
-                            <div className="form-group">
-                                <label className="control-label">Цена: </label>
-                                <TextInput name="toolPrice"
-                                    text=""
-                                    value={String(this.state.tool.price) }
-                                    required={true}
-                                    onChange={this.setToolPrice}
-                                    errorMessage="Данное значение недействительно"
-                                    emptyMessage="Цена обязательна для ввода"
-                                    register={this.registerInput}
-                                    validate={this.nameValidate}
-                                    minCharacters=''
-                                    uniqueName=''/>
-                            </div>
-                            <div className="form-group">
-                                <div className="btn-toolbar">
-                                    <input className="btn btn-primary" type="submit" value="Сохранить" />
-                                    <button className="btn btn-default" type="button" onClick={this.cancelClickHandler}>Закрыть</button>
-                                </div>
-                            </div>
-                        </form>
-                    }
+                    </form>
                 </div>
             </Panel>
         )

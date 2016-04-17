@@ -227,7 +227,7 @@ export default class ToolList extends React.Component<IToolListProps, IToolListS
 
     private handleToolsPerPageChange = (toolsPerPage: number) => {
         ToolActionCreator.load(this.props.componentId,
-            this.state.toolPage, toolsPerPage, this.state.toolSearchText);
+            0, toolsPerPage, this.state.toolSearchText);
     }
 
     private handleToolPageChange = (page: number) => {
@@ -262,60 +262,6 @@ export default class ToolList extends React.Component<IToolListProps, IToolListS
         return alerts;
     }
 
-    oldrender(): React.ReactElement<{}> {
-        return (
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
-                {this.getAlerts() }
-                <DialogContainer isShow={this.state.isConfirmDeleting}>
-                    <ConfirmationDialogPanel
-                        title={"Удаление инструмента"}
-                        onSuccess={this.handleDeleteSuccess}
-                        onCancel={this.handleDeleteCancel}>
-                        <span>
-                            Вы действительно хотите удалить данный инструмент?
-                        </span>
-                    </ConfirmationDialogPanel>
-                </DialogContainer>
-                <DialogContainer isShow={this.state.isDeleting}>
-                    <PendingPanel title={"Удаление инструмента"}>
-                        <PendingAnimation>
-                            <h4>Пожалуйста, подождите.</h4>
-                            <h4>Идет удаление.</h4>
-                        </PendingAnimation>
-                    </PendingPanel>
-                </DialogContainer>
-                <BlockingContainer isBlocked={this.state.isLoading}>
-                    <ItemListControlPanel
-                        onNewItem={this.newToolBtnClickHandler}
-                        onItemDelete={this.toolDeleteHandler}
-                        onRefresh={this.refreshBtnClickHandler}
-                        onSearchTextChange={function (text) { this.handleToolSearchTextChange(text) }.bind(this) }
-                        isDeleteEnable={this.props.selectedTools.length > 0}
-                        isUpdating={this.state.isLoading}
-                        />
-                    <ToolTable
-                        componentId={this.props.componentId}
-                        tools={this.state.tools}
-                        selectedTools={this.props.selectedTools}
-                        onSelectedToolsChange={this.props.onSelectedToolsChange}/>
-                    <div className="btn-toolbar">
-                        <ItemsPerPageSelector
-                            onChange={this.handleToolsPerPageChange}/>
-                        <Pagination
-                            itemAmount={this.state.totalAmount}
-                            itemsPerPage={this.state.toolsPerPage}
-                            currentPage={this.state.toolPage}
-                            firstSymbol='«'
-                            nextSymbol='›'
-                            prevSymbol='‹'
-                            lastSymbol='»'
-                            updatePage={this.handleToolPageChange}/>
-                    </div>
-                </BlockingContainer>
-            </div>
-        )
-    }
-
     render(): React.ReactElement<{}> {
         return (
             <div style={{ position: 'relative', display: 'flex', flexGrow: 2, flexBasis: 0 + '%', minHeight: 0, minWidth: 0 }}>
@@ -338,6 +284,7 @@ export default class ToolList extends React.Component<IToolListProps, IToolListS
                         </PendingAnimation>
                     </PendingPanel>
                 </DialogContainer>
+                <BlockingContainer isBlocked={this.state.isLoading} />
                 <div style={{ position: 'relative', display: 'flex', flexFlow: 'column', flexGrow: 2, flexBasis: 0 + '%', minHeight: 0, minWidth: 0 }}>
                     <div style={{ flexShrink: 0 }}>
                         <ItemListControlPanel

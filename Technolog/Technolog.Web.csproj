@@ -230,7 +230,9 @@
     <Content Include="Content\loaders\spin.gif" />
     <Content Include="Content\refresh-animate.css" />
     <Content Include="Content\spin.css" />
+    <Content Include="Scripts\react-dom.min.js" />
     <Content Include="Scripts\react-with-addons.js" />
+    <Content Include="Scripts\react.min.js" />
     <Content Include="Scripts\require-config.js" />
     <Content Include="Scripts\tests\toolEditFormTest.js" />
     <Content Include="Scripts\testUtils.js" />

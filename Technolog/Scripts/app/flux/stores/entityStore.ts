@@ -56,6 +56,20 @@ abstract class EntityStore extends EventEmitter {
 
     protected abstract updateEntitysPerPage(componentId: string, entitiesPerPage: number): void;
 
+    protected abstract deleteSelectedEntities(componentId: string, deletedTools: Array<ITool>): void;
+
+    protected initEntityState(componentId: string, entity: any) {
+        this.entityComponentStates[componentId] = {
+            entity: entity,
+            isRedoAvailable: false,
+            isUndoAvailable: false
+        };
+        this.entityComponentHistories[componentId] = {
+            entityUnDoes: [entity],
+            entityReDoes: []
+        };
+    }
+
     protected updateDeleteConfirmation(componentId: string): void {
         this.entityComponentStates[componentId].isConfirmDeleting =
             !this.entityComponentStates[componentId].isConfirmDeleting;
@@ -78,8 +92,15 @@ abstract class EntityStore extends EventEmitter {
 
     protected updateEntityComponentHistory(componentId: string, changedEntity: any): void {
         var entityComponentHistory = this.entityComponentHistories[componentId];
+        
         entityComponentHistory.entityUnDoes.push(changedEntity);
+
         entityComponentHistory.entityReDoes = [];
+        this.entityComponentStates[componentId] = {
+            entity: changedEntity,
+            isRedoAvailable: false,
+            isUndoAvailable: true
+        };
     }
 
     protected addAlert(componentId: string, message: string, alertType: string) {
@@ -102,14 +123,36 @@ abstract class EntityStore extends EventEmitter {
 
     protected unDoEntityComponentHistory(componentId: string): void {
         var entityComponentHistory = this.entityComponentHistories[componentId];
-        var entity = entityComponentHistory.entityUnDoes.pop();
-        entityComponentHistory.entityReDoes.push(entity);
+
+        var entity;
+
+        if (entityComponentHistory.entityUnDoes.length > 1) {
+            entity = entityComponentHistory.entityUnDoes.pop();
+            entityComponentHistory.entityReDoes.push(entity);
+            entity = entityComponentHistory.entityUnDoes[
+                entityComponentHistory.entityUnDoes.length - 1];
+        } else {
+            entity = entityComponentHistory.entityUnDoes[0];
+        }
+
+        this.entityComponentStates[componentId] = {
+            entity: entity,
+            isRedoAvailable: true,
+            isUndoAvailable: entityComponentHistory.entityUnDoes.length > 1
+        };
     }
 
     protected reDoEntityComponentHistory(componentId: string): void {
         var entityComponentHistory = this.entityComponentHistories[componentId];
+
         var entity = entityComponentHistory.entityReDoes.pop();
         entityComponentHistory.entityUnDoes.push(entity);
+
+        this.entityComponentStates[componentId] = {
+            entity: entity,
+            isRedoAvailable: entityComponentHistory.entityReDoes.length > 0,
+            isUndoAvailable: true
+        };
     }
 
     private register(): string {
@@ -118,6 +161,10 @@ abstract class EntityStore extends EventEmitter {
             if (payload.entityType != this.entityType) return;
 
             switch (payload.actionType) {
+                case EntityActionType.InitEntityState:
+                    this.initEntityState(payload.componentId, payload.entity);
+                    this.emitChange(payload.componentId);
+                    break;
                 case EntityActionType.LoadPending:
                     this.updateLoadPending(payload.componentId);
                     this.emitChange(payload.componentId);
@@ -143,7 +190,7 @@ abstract class EntityStore extends EventEmitter {
                     this.emitChange(payload.componentId);
                     break;
                 case EntityActionType.DeleteSucceed:
-                    console.log("delete succeed");
+                    this.deleteSelectedEntities(payload.componentId, payload.entities);
                     this.updateDeletePending(payload.componentId);
                     this.emitChange(payload.componentId);
                     break;
@@ -155,7 +202,18 @@ abstract class EntityStore extends EventEmitter {
                     this.updateDeleteConfirmation(payload.componentId);
                     this.emitChange(payload.componentId);
                     break;
-
+                case EntityActionType.Change:
+                    this.updateEntityComponentHistory(payload.componentId, payload.entity);
+                    this.emitChange(payload.componentId);
+                    break;
+                case EntityActionType.Undo:
+                    this.unDoEntityComponentHistory(payload.componentId);
+                    this.emitChange(payload.componentId);
+                    break;
+                case EntityActionType.Redo:
+                    this.reDoEntityComponentHistory(payload.componentId);
+                    this.emitChange(payload.componentId);
+                    break;
             }
         });
     }

@@ -20,6 +20,14 @@ class ToolStore extends EntityStore {
     protected updateEntitysPerPage(componentId: string, entitiesPerPage: number): void {
         this.entityComponentStates[componentId].toolsPerPage = entitiesPerPage;
     }
+
+    protected deleteSelectedEntities(componentId: string, deletedTools: Array<ITool>): void {
+        var tools = this.entityComponentStates[componentId].tools;
+                
+        deletedTools.forEach((tool) => {
+            tools.splice(tools.indexOf(tool), 1);
+        });
+    }
 }
 
 let toolStore: ToolStore = new ToolStore();

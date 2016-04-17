@@ -6,7 +6,7 @@ import EntityType from "./entityType";
 import EntityService from "../services/EntityService";
 import ActionSourceTypes from "./actionSourceTypes";
 
-export default class EntityActionCreator {
+abstract class EntityActionCreator {
     private entityType: EntityType;
     private entityService: EntityService;
 
@@ -15,9 +15,19 @@ export default class EntityActionCreator {
         this.entityService = entityService;
     }
 
+    public initEntityState(componentId: string, entity): void {
+        AppDispatcher.dispatch({
+            actionType: EntityActionType.InitEntityState,
+            actionSource: ActionSourceTypes.Entity,
+            entityType: this.entityType,
+            entity: entity,
+            componentId: componentId
+        });
+    }
+    
     public load(componentId: string,
         page: number, pageSize: number, searchText: string): void {
-
+        
         this.entityService.load(componentId,
             page, pageSize,
             searchText);
@@ -107,11 +117,12 @@ export default class EntityActionCreator {
         });
     }
 
-    public deleteSucceed(componentId: string): void {
+    public deleteSucceed(componentId: string, deletedEntities: Array<any>): void {
         AppDispatcher.dispatch({
             actionType: EntityActionType.DeleteSucceed,
             actionSource: ActionSourceTypes.Entity,
             entityType: this.entityType,
+            entities: deletedEntities,
             componentId: componentId
         });
     }
@@ -143,4 +154,34 @@ export default class EntityActionCreator {
             componentId: componentId
         });
     }
+
+    public change(componentId: string, entity: any): void {
+        AppDispatcher.dispatch({
+            actionType: EntityActionType.Change,
+            actionSource: ActionSourceTypes.Entity,
+            entityType: this.entityType,
+            entity: entity,
+            componentId: componentId
+        });
+    }
+
+    public undo(componentId: string): void {
+        AppDispatcher.dispatch({
+            actionType: EntityActionType.Undo,
+            actionSource: ActionSourceTypes.Entity,
+            entityType: this.entityType,
+            componentId: componentId
+        });
+    }
+
+    public redo(componentId: string): void {
+        AppDispatcher.dispatch({
+            actionType: EntityActionType.Redo,
+            actionSource: ActionSourceTypes.Entity,
+            entityType: this.entityType,
+            componentId: componentId
+        });
+    }
 }
+
+export default EntityActionCreator;

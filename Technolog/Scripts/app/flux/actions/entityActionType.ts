@@ -1,4 +1,5 @@
 ﻿enum EntityActionType {
+    InitEntityState,
     Load,
     LoadSucceed,
     LoadFailed,
@@ -12,7 +13,10 @@
     CloseDeleteConfirmation,
     DeleteSucceed,
     DeleteFailed,
-    DeletePending
+    DeletePending,
+    Change,
+    Redo,
+    Undo
 }
 
 export default EntityActionType;
