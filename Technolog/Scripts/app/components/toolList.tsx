@@ -125,27 +125,25 @@ class ToolTable
         }
 
         return (
-            <div style={{ marginBottom: 10 + 'px', display: 'flex', flexDirection: 'column' }}>
-                <div style={{ overflowY: 'auto' }}>
-                    <table className="table table-bordered" style={{ marginBottom: 1 + 'px' }}>
-                        <thead>
-                            <tr>
-                                <th  style={{ width: 5 + '%' }}>
-                                    <input
-                                        type='checkbox'
-                                        onChange={this.onAllToolSelect}
-                                        checked={isAllChecked}>
-                                    </input>
-                                </th>
-                                <th style={{ width: 15 + '%' }}>ID</th>
-                                <th style={{ width: 80 + '%' }}>Наименование</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {toolRows}
-                        </tbody>
-                    </table>
-                </div>
+            <div style={{ marginBottom: 10 + 'px', overflow: 'auto' }}>
+                <table className="table table-bordered" style={{ marginBottom: 1 + 'px' }}>
+                    <thead>
+                        <tr>
+                            <th  style={{ width: 5 + '%' }}>
+                                <input
+                                    type='checkbox'
+                                    onChange={this.onAllToolSelect}
+                                    checked={isAllChecked}>
+                                </input>
+                            </th>
+                            <th style={{ width: 15 + '%' }}>ID</th>
+                            <th style={{ width: 80 + '%' }}>Наименование</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {toolRows}
+                    </tbody>
+                </table>
             </div>    
         );
     }
@@ -264,7 +262,7 @@ export default class ToolList extends React.Component<IToolListProps, IToolListS
         return alerts;
     }
 
-    render(): React.ReactElement<{}> {
+    oldrender(): React.ReactElement<{}> {
         return (
             <div style={{ display: 'flex', flexDirection: 'column' }}>
                 {this.getAlerts() }
@@ -314,6 +312,62 @@ export default class ToolList extends React.Component<IToolListProps, IToolListS
                             updatePage={this.handleToolPageChange}/>
                     </div>
                 </BlockingContainer>
+            </div>
+        )
+    }
+
+    render(): React.ReactElement<{}> {
+        return (
+            <div style={{ position: 'relative', display: 'flex', flexGrow: 2, flexBasis: 0 + '%', minHeight: 0, minWidth: 0 }}>
+                {this.getAlerts() }
+                <DialogContainer isShow={this.state.isConfirmDeleting}>
+                    <ConfirmationDialogPanel
+                        title={"Удаление инструмента"}
+                        onSuccess={this.handleDeleteSuccess}
+                        onCancel={this.handleDeleteCancel}>
+                        <span>
+                            Вы действительно хотите удалить данный инструмент?
+                        </span>
+                    </ConfirmationDialogPanel>
+                </DialogContainer>
+                <DialogContainer isShow={this.state.isDeleting}>
+                    <PendingPanel title={"Удаление инструмента"}>
+                        <PendingAnimation>
+                            <h4>Пожалуйста, подождите.</h4>
+                            <h4>Идет удаление.</h4>
+                        </PendingAnimation>
+                    </PendingPanel>
+                </DialogContainer>
+                <div style={{ position: 'relative', display: 'flex', flexFlow: 'column', flexGrow: 2, flexBasis: 0 + '%', minHeight: 0, minWidth: 0 }}>
+                    <div style={{ flexShrink: 0 }}>
+                        <ItemListControlPanel
+                            onNewItem={this.newToolBtnClickHandler}
+                            onItemDelete={this.toolDeleteHandler}
+                            onRefresh={this.refreshBtnClickHandler}
+                            onSearchTextChange={function (text) { this.handleToolSearchTextChange(text) }.bind(this) }
+                            isDeleteEnable={this.props.selectedTools.length > 0}
+                            isUpdating={this.state.isLoading}
+                            />
+                    </div>
+                    <ToolTable
+                        componentId={this.props.componentId}
+                        tools={this.state.tools}
+                        selectedTools={this.props.selectedTools}
+                        onSelectedToolsChange={this.props.onSelectedToolsChange}/>
+                    <div className="btn-toolbar" style={{ flexShrink: 0 }}>
+                        <ItemsPerPageSelector
+                            onChange={this.handleToolsPerPageChange}/>
+                        <Pagination
+                            itemAmount={this.state.totalAmount}
+                            itemsPerPage={this.state.toolsPerPage}
+                            currentPage={this.state.toolPage}
+                            firstSymbol='«'
+                            nextSymbol='›'
+                            prevSymbol='‹'
+                            lastSymbol='»'
+                            updatePage={this.handleToolPageChange}/>
+                    </div>
+                </div>
             </div>
         )
     }

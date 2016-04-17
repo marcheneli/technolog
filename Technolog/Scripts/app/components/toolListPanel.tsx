@@ -66,7 +66,7 @@ export default class ToolListPanel extends React.Component<IToolListPanelProps, 
     render(): React.ReactElement<{}> {
         return (
             <Panel title="Инструменты" size="inner" onClosePanel={this.closePanelHandler}>
-                <div className="panel-body" style={{ display: 'flex', flexDirection: 'column' }}>
+                <div className="panel-body" style={{ position: 'relative', display: 'flex', flexGrow: 2, flexBasis: 0 + '%', minHeight: 0, minWidth: 0 }}>
                     <ToolList
                         componentId={this.props.componentId}
                         selectedTools={this.state.selectedTools}
