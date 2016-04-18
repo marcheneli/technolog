@@ -145,11 +145,12 @@ export default class PartEditForm extends React.Component<IPartEditFormProps, IP
                                     value={this.state.part.name}
                                     required={true}
                                     onChange={this.setPartName}
+                                    onError={() => { }}
                                     errorMessage="Данное наименование недействительно"
                                     emptyMessage="Наименование обязательно для ввода"
                                     register={this.registerInput}
                                     validate={this.nameValidate}
-                                    minCharacters=''
+                                    minCharacters={1}
                                     uniqueName=''/>
                             </div>
                             <div className="form-group">
@@ -159,11 +160,12 @@ export default class PartEditForm extends React.Component<IPartEditFormProps, IP
                                     value={String(this.state.part.price) }
                                     required={true}
                                     onChange={this.setPartPrice}
+                                    onError={() => { } }
                                     errorMessage="Данное значение недействительно"
                                     emptyMessage="Цена обязательна для ввода"
                                     register={this.registerInput}
                                     validate={this.nameValidate}
-                                    minCharacters=''
+                                    minCharacters={1}
                                     uniqueName=''/>
                             </div>
                             <div className="form-group">

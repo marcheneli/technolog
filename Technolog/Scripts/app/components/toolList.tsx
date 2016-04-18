@@ -196,7 +196,7 @@ export default class ToolList extends React.Component<IToolListProps, IToolListS
     }
 
     componentDidMount() {
-        ToolActionCreator.load(this.props.componentId,
+        ToolActionCreator.load(this.props.componentId, Utils.uuid(), 
             0, PageConstants.ITEMS_PER_PAGE_INIT, "");
     }
 
@@ -209,7 +209,7 @@ export default class ToolList extends React.Component<IToolListProps, IToolListS
     }
 
     private newToolBtnClickHandler = () => {
-
+        PanelActions.open(this.props.componentId, ComponentType.ToolEditPanel, { tool: { id: 0, name: "", price: 0 } });
     }
 
     private toolDeleteHandler = () => {
@@ -226,22 +226,22 @@ export default class ToolList extends React.Component<IToolListProps, IToolListS
     }
 
     private handleToolsPerPageChange = (toolsPerPage: number) => {
-        ToolActionCreator.load(this.props.componentId,
+        ToolActionCreator.load(this.props.componentId, Utils.uuid(),
             0, toolsPerPage, this.state.toolSearchText);
     }
 
     private handleToolPageChange = (page: number) => {
-        ToolActionCreator.load(this.props.componentId,
+        ToolActionCreator.load(this.props.componentId, Utils.uuid(),
             page, this.state.toolsPerPage, this.state.toolSearchText);
     }
 
     private handleToolSearchTextChange = (text: string) => {
-        ToolActionCreator.load(this.props.componentId,
+        ToolActionCreator.load(this.props.componentId, Utils.uuid(),
             this.state.toolPage, this.state.toolsPerPage, text);
     }
 
     private refreshBtnClickHandler = () => {
-        ToolActionCreator.load(this.props.componentId,
+        ToolActionCreator.load(this.props.componentId, Utils.uuid(),
             this.state.toolPage, this.state.toolsPerPage, this.state.toolSearchText);
     }
 
@@ -284,7 +284,6 @@ export default class ToolList extends React.Component<IToolListProps, IToolListS
                         </PendingAnimation>
                     </PendingPanel>
                 </DialogContainer>
-                <BlockingContainer isBlocked={this.state.isLoading} />
                 <div style={{ position: 'relative', display: 'flex', flexFlow: 'column', flexGrow: 2, flexBasis: 0 + '%', minHeight: 0, minWidth: 0 }}>
                     <div style={{ flexShrink: 0 }}>
                         <ItemListControlPanel

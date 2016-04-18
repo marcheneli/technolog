@@ -6,21 +6,20 @@ import InputError from "./inputError";
 interface ITextInputProps {
     name: string,
     onChange(e): void,
+    onError():void,
     register(input): void,
     validate(text: string): void,
     value: string,
     errorMessage: string,
     emptyMessage: string,
-    minCharacters: string,
+    minCharacters: number,
     required: boolean,
     text: string,
     uniqueName: string
 }
 
 interface ITextInputState {
-    isEmpty: boolean,
     errorVisible: boolean,
-    value: string,
     valid: boolean,
     errorMessage: string
 }
@@ -33,38 +32,26 @@ export default class TextInput extends React.Component<ITextInputProps, ITextInp
         this.props = props;
         this.context = context;
         this.state = {
-            isEmpty: true,
-            value: this.props.value,
             valid: false,
             errorMessage: "Input is invalid",
             errorVisible: false
         };
     }
 
-    componentWillReceiveProps(nextProps) {
-        this.setState({
-            isEmpty: true,
-            value: nextProps.value,
-            valid: false,
-            errorMessage: "Input is invalid",
-            errorVisible: false
-        });
-    }
-
     private handleChange = (event) => {
-        //validate the field locally
-        this.validation(event.target.value);
 
-        //Call onChange method on the parent component for updating it's state
-        //If saving this field for final form submission, it gets passed
-        // up to the top component for sending to the server
-        if (this.props.onChange) {
-            this.props.onChange(event);
-        }
+        this.validation(event.target.value, this.props.validate(event.target.value));
+
+        this.props.onChange(event);
     }
 
     componentDidMount() {
         this.props.register(this);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        console.log("receive");
+        this.validation(nextProps.value, this.props.validate(nextProps.value));
     }
 
     private validation(value, valid?) {
@@ -85,14 +72,14 @@ export default class TextInput extends React.Component<ITextInputProps, ITextInp
             valid = false;
             errorVisible = true;
         }
-        else if (this.props.required && jQuery.isEmptyObject(value)) {
+
+        if (this.props.required && jQuery.isEmptyObject(value)) {
             //this happens when we have a required field with no text entered
             //in this case, we want the "emptyMessage" error message
             message = this.props.emptyMessage;
             valid = false;
             errorVisible = true;
-        }
-        else if (value.length < this.props.minCharacters) {
+        } else if (value.length < this.props.minCharacters) {
             //This happens when the text entered is not the required length,
             //in which case we show the regular error message
             message = this.props.errorMessage;
@@ -103,13 +90,10 @@ export default class TextInput extends React.Component<ITextInputProps, ITextInp
         //setting the state will update the display,
         //causing the error message to display if there is one.
         this.setState({
-            value: value,
-            isEmpty: jQuery.isEmptyObject(value),
             valid: valid,
             errorMessage: message,
             errorVisible: errorVisible
         });
-
     }
 
     handleBlur = (event) => {
@@ -119,6 +103,7 @@ export default class TextInput extends React.Component<ITextInputProps, ITextInp
         this.validation(event.target.value, valid);
     }
     render(): React.ReactElement<ITextInputProps> {
+        console.log("render");
         return (
             <div className={this.props.uniqueName}>
                 <input className='form-control'

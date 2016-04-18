@@ -75,9 +75,8 @@ abstract class EntityStore extends EventEmitter {
             !this.entityComponentStates[componentId].isConfirmDeleting;
     }
 
-    protected updateLoadPending(componentId: string): void {
-        this.entityComponentStates[componentId].isLoading =
-            !this.entityComponentStates[componentId].isLoading;
+    protected updateLoadPending(componentId: string, isPending: boolean): void {
+        this.entityComponentStates[componentId].isLoading = isPending;
     }
 
     protected updateSavePending(componentId: string): void {
@@ -166,7 +165,7 @@ abstract class EntityStore extends EventEmitter {
                     this.emitChange(payload.componentId);
                     break;
                 case EntityActionType.LoadPending:
-                    this.updateLoadPending(payload.componentId);
+                    this.updateLoadPending(payload.componentId, true);
                     this.emitChange(payload.componentId);
                     break;
                 case EntityActionType.LoadSucceed:
@@ -174,7 +173,7 @@ abstract class EntityStore extends EventEmitter {
                     this.updateTotalAmount(payload.componentId, payload.totalAmount);
                     this.updateEntityPage(payload.componentId, payload.currentPage);
                     this.updateEntitysPerPage(payload.componentId, payload.pageSize);
-                    this.updateLoadPending(payload.componentId);
+                    this.updateLoadPending(payload.componentId, false);
                     this.emitChange(payload.componentId);
                     break;
                 case EntityActionType.SavePending:
@@ -203,7 +202,9 @@ abstract class EntityStore extends EventEmitter {
                     this.emitChange(payload.componentId);
                     break;
                 case EntityActionType.Change:
-                    this.updateEntityComponentHistory(payload.componentId, payload.entity);
+                    this.updateEntityComponentHistory(
+                        payload.componentId,
+                        payload.entity);
                     this.emitChange(payload.componentId);
                     break;
                 case EntityActionType.Undo:

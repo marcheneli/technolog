@@ -132,11 +132,12 @@ export default class TechOperationEditForm extends React.Component<ITechOperatio
                                     value={this.state.techOperation.name}
                                     required={true}
                                     onChange={this.setTechOperationName}
+                                    onError={() => { } }
                                     errorMessage="Данное наименование недействительно"
                                     emptyMessage="Наименование обязательно для ввода"
                                     register={this.registerInput}
                                     validate={this.nameValidate}
-                                    minCharacters=''
+                                    minCharacters={1}
                                     uniqueName=''/>
                             </div>
                             <div className="form-group">

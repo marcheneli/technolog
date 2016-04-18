@@ -23,6 +23,7 @@ interface AppPayload {
     entityType?: EntityType;
     entities?: Array<any>;
     entity?: any;
+    isValid?: boolean;
 }
 
 export default AppPayload;

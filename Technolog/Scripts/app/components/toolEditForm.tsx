@@ -9,6 +9,8 @@ import NavigationManager from "../managers/navigationManager";
 import TextInput from "./common/textInput";
 import PendingAnimation from "./common/pendingAnimation";
 import Panel from "./common/panel";
+import DialogContainer from "./common/dialogContainer";
+import PendingPanel from "./common/pendingPanel";
 
 interface IToolEditFormProps {
     params: any;
@@ -16,11 +18,17 @@ interface IToolEditFormProps {
 }
 
 interface IToolEditFormState {
-    tool: ITool,
+    tool: IToolViewModel,
     isRedoAvailable: boolean;
     isUndoAvailable: boolean;
-    errorMessage: string,
-    isValid: boolean
+    isValid: boolean;
+    isSaving: boolean;
+}
+
+interface IToolViewModel {
+    id: string;
+    name: string;
+    price: string;
 }
 
 export default class ToolEditForm extends React.Component<IToolEditFormProps, IToolEditFormState> {
@@ -33,10 +41,10 @@ export default class ToolEditForm extends React.Component<IToolEditFormProps, IT
         this.context = context;
         this.state = {
             tool: props.params.tool,
-            errorMessage: null,
             isRedoAvailable: false,
             isUndoAvailable: false,
-            isValid: true
+            isValid: this.toolValidate(props.params.tool),
+            isSaving: false,
         };
     }
 
@@ -49,35 +57,40 @@ export default class ToolEditForm extends React.Component<IToolEditFormProps, IT
         ToolStore.removeChangeListener(this.handleEditToolChange, this.props.componentId);
     }
 
-    componentWillReceiveProps(nextProps) {
-        //ToolActions.loadEditTool(nextProps.params.toolId);
-    }
-
     componentDidMount() {
-        ToolActionCreator.initEntityState(this.props.componentId, this.state.tool);
+        ToolActionCreator.initEntityState(
+            this.props.componentId,
+            this.state.tool);
     }
 
     private handleEditToolChange = () => {
-
-        console.log(ToolStore.getState(this.props.componentId));
+        var state = ToolStore.getState(this.props.componentId);
         this.setState({
-            tool: ToolStore.getState(this.props.componentId).entity,
-            errorMessage: null,
-            isRedoAvailable: ToolStore.getState(this.props.componentId).isRedoAvailable,
-            isUndoAvailable: ToolStore.getState(this.props.componentId).isUndoAvailable,
-            isValid: true
+            tool: state.entity,
+            isRedoAvailable: state.isRedoAvailable,
+            isUndoAvailable: state.isUndoAvailable,
+            isValid: this.toolValidate(state.entity),
+            isSaving: state.isSaving
         });
     }
 
-    private nameValidate = (value: string) => {
-        
+    private nameValidate = (value: string): boolean => {
+
+        if (value == "") return false;
+
         return true;
     }
 
-    private priceValidate = (value: string) => {
+    private priceValidate = (value: string): boolean => {
         var price = parseFloat(value);
+        return !isNaN(price);
+    }
 
-        return price !== undefined;
+    private toolValidate = (tool: IToolViewModel): boolean => {
+        if (!this.nameValidate(tool.name)) return false;
+        if (!this.priceValidate(tool.price)) return false;
+
+        return true;
     }
 
     private handleSubmit = (e) => {
@@ -89,20 +102,25 @@ export default class ToolEditForm extends React.Component<IToolEditFormProps, IT
     private registerInput = (input) => {
         this.inputs[input.props.name] = input;
     }
+
     private setToolName = (event) => {
-        this.onToolChange({
+        var tool = {
             id: this.state.tool.id,
             name: event.target.value,
             price: this.state.tool.price
-        });
+        };
+
+        this.onToolChange(tool);
     }
 
     private setToolPrice = (event) => {
-        this.onToolChange({
+        var tool = {
             id: this.state.tool.id,
             name: this.state.tool.name,
             price: event.target.value
-        });
+        };
+
+        this.onToolChange(tool);
     }
 
     private closePanelClickHandler = () => {
@@ -117,19 +135,25 @@ export default class ToolEditForm extends React.Component<IToolEditFormProps, IT
         ToolActionCreator.redo(this.props.componentId);
     }
 
-    private onToolChange = (newTool: ITool) => {
-        console.log(newTool);
+    private onToolChange = (newTool: IToolViewModel) => {
         ToolActionCreator.change(this.props.componentId, newTool);
+    }
+
+    private errorHandler = () => {
     }
 
     render(): React.ReactElement<IToolEditFormProps> {
         return (
             <Panel title="Редактирование инструмента" size="inner" onClosePanel={this.closePanelClickHandler}>
                 <div className="panel-body" style={{ display: 'flex', flexDirection: 'column' }}>
-                    <PendingAnimation>
-                        <h4>Пожалуйста, подождите.</h4>
-                        <h4>Идет сохранение.</h4>
-                    </PendingAnimation>
+                    <DialogContainer isShow={this.state.isSaving}>
+                        <PendingPanel title={"Сохранение инструмента"}>
+                            <PendingAnimation>
+                                <h4>Пожалуйста, подождите.</h4>
+                                <h4>Идет сохранение.</h4>
+                            </PendingAnimation>
+                        </PendingPanel>
+                    </DialogContainer>
                     <form role="form" onSubmit={this.handleSubmit}>
                         <div className="form-group">
                             <label className="control-label">Наименование: </label>
@@ -138,11 +162,12 @@ export default class ToolEditForm extends React.Component<IToolEditFormProps, IT
                                 value={this.state.tool.name}
                                 required={true}
                                 onChange={this.setToolName}
+                                onError={this.errorHandler}
                                 errorMessage="Данное наименование недействительно"
                                 emptyMessage="Наименование обязательно для ввода"
                                 register={this.registerInput}
                                 validate={this.nameValidate}
-                                minCharacters=''
+                                minCharacters={1}
                                 uniqueName=''/>
                         </div>
                         <div className="form-group">
@@ -152,16 +177,20 @@ export default class ToolEditForm extends React.Component<IToolEditFormProps, IT
                                 value={String(this.state.tool.price) }
                                 required={true}
                                 onChange={this.setToolPrice}
+                                onError={this.errorHandler}
                                 errorMessage="Данное значение недействительно"
                                 emptyMessage="Цена обязательна для ввода"
                                 register={this.registerInput}
                                 validate={this.priceValidate}
-                                minCharacters=''
+                                minCharacters={1}
                                 uniqueName=''/>
                         </div>
                         <div className="form-group">
                             <div className="btn-toolbar">
-                                <input className="btn btn-primary" type="submit" value="Сохранить" />
+                                <button
+                                    className="btn btn-primary"
+                                    type="submit"
+                                    disabled={!this.state.isValid}>Сохранить</button>
                                 <button
                                     className="btn btn-default"
                                     type="button"
@@ -177,6 +206,6 @@ export default class ToolEditForm extends React.Component<IToolEditFormProps, IT
                     </form>
                 </div>
             </Panel>
-        )
+        );
     }
 }

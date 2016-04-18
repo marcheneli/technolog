@@ -132,11 +132,12 @@ export default class TechProcessEditForm extends React.Component<ITechProcessEdi
                                     value={this.state.techProcess.name}
                                     required={true}
                                     onChange={this.setTechProcessName}
+                                    onError={() => { } }
                                     errorMessage="Данное наименование недействительно"
                                     emptyMessage="Наименование обязательно для ввода"
                                     register={this.registerInput}
                                     validate={this.nameValidate}
-                                    minCharacters=''
+                                    minCharacters={1}
                                     uniqueName=''/>
                             </div>
                             <div className="form-group">

@@ -14,10 +14,31 @@ interface ItemListControlPanelProps {
 }
 
 interface ItemListControlPanelState {
+    searchText: string;
 }
 
 export default class ItemListControlPanel
     extends React.Component<ItemListControlPanelProps, ItemListControlPanelState> {
+
+    constructor(props: ItemListControlPanelProps, context: any) {
+        super(props, context);
+
+        this.props = props;
+        this.context = context;
+        this.state = {
+            searchText: ""
+        };
+    }
+
+    private searchTextInputChangeHandler = (text: string) => {
+        this.setState({ searchText: text });
+
+        setTimeout(() => {
+            if (this.state.searchText == text) {
+                this.props.onSearchTextChange(text);
+            }
+        }, 1000);
+    }
     
     render(): React.ReactElement<ItemListControlPanelProps> {
         return (
@@ -54,7 +75,7 @@ export default class ItemListControlPanel
                     </div>
                     <SearchInput
                         text="Поиск..."
-                        onChange={this.props.onSearchTextChange} />
+                        onChange={this.searchTextInputChangeHandler} />
                 </div>
             </div>    
         );

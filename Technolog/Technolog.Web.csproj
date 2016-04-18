@@ -437,6 +437,7 @@
     <TypeScriptCompile Include="Scripts\app\flux\stores\techProcessStore.ts" />
     <TypeScriptCompile Include="Scripts\app\flux\stores\techStepStore.ts" />
     <TypeScriptCompile Include="Scripts\app\flux\stores\toolStore.ts" />
+    <TypeScriptCompile Include="Scripts\app\flux\validators\toolValidator.ts" />
     <TypeScriptCompile Include="Scripts\app\managers\navigationManager.ts" />
     <TypeScriptCompile Include="Scripts\app\managers\pageParamsManager.ts" />
     <TypeScriptCompile Include="Scripts\app\person.ts" />

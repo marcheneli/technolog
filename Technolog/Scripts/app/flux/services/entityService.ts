@@ -6,6 +6,7 @@ import assign = require('object-assign');
 abstract class EntityService {
     private controllerName: string;
     private actionCreator: EntityActionCreator;
+    private lastLoadIds: any = {};
 
     constructor(controllerName: string) {
         this.controllerName = controllerName;
@@ -21,9 +22,10 @@ abstract class EntityService {
         this.actionCreator = actionCreator;
     }
 
-    public load(componentId: string, page: number,
+    public load(componentId: string, loadId: string, page: number,
         entitiesPerPage: number, searchText: string): void {
         this.actionCreator.loadPending(componentId);
+        this.lastLoadIds[componentId] = loadId;
 
         $.ajax({
             url: (location.origin + "/api/"
@@ -34,6 +36,8 @@ abstract class EntityService {
             dataType: 'json',
             type: 'GET',
             success: (entityListModel) => {
+                if (this.lastLoadIds[componentId] != loadId) return;
+
                 var totalEntityAmount = this.getEntitiesAmount(entityListModel);
 
                 var entities = this.getEntities(entityListModel);
@@ -45,6 +49,8 @@ abstract class EntityService {
                     entitiesPerPage, page, searchText);
             },
             error: (xhr, status, err) => {
+                if (this.lastLoadIds[componentId] != loadId) return;
+
                 this.actionCreator.loadFailed(componentId, err);
             }
         });

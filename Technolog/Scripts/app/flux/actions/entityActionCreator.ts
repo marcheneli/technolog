@@ -15,7 +15,7 @@ abstract class EntityActionCreator {
         this.entityService = entityService;
     }
 
-    public initEntityState(componentId: string, entity): void {
+    public initEntityState(componentId: string, entity: any): void {
         AppDispatcher.dispatch({
             actionType: EntityActionType.InitEntityState,
             actionSource: ActionSourceTypes.Entity,
@@ -25,10 +25,11 @@ abstract class EntityActionCreator {
         });
     }
     
-    public load(componentId: string,
+    public load(componentId: string, loadId: string,
         page: number, pageSize: number, searchText: string): void {
         
         this.entityService.load(componentId,
+            loadId,
             page, pageSize,
             searchText);
     }
@@ -73,7 +74,7 @@ abstract class EntityActionCreator {
     }
 
     public save(componentId: string, entity: any): void {
-        this.entityService.save
+        this.entityService.save(componentId, entity);
     }
 
     public savePending(componentId: string): void {
