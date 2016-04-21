@@ -37,7 +37,7 @@ namespace Technolog.Web.Controllers.api
                 return ResponseMessage(
                     Request.CreateResponse(
                         HttpStatusCode.BadRequest,
-                        "Не установлен идентификатор инструмента"));
+                        "Не предоставлен идентификатор инструмента"));
 
             try
             {
@@ -47,10 +47,37 @@ namespace Technolog.Web.Controllers.api
             {
                 return ResponseMessage(
                     Request.CreateResponse(
-                        HttpStatusCode.BadRequest,
+                        HttpStatusCode.NotFound,
                         ex.Message));
             }
             
+            ToolModel toolModel = mapper.Map<ToolModel>(toolDTO);
+
+            return Ok(toolModel);
+        }
+
+        public IHttpActionResult Get(string name)
+        {
+            ToolDTO toolDTO = null;
+
+            if (name == null)
+                return ResponseMessage(
+                    Request.CreateResponse(
+                        HttpStatusCode.BadRequest,
+                        "Не предоставлено название инструмента"));
+
+            try
+            {
+                toolDTO = toolService.Get(name);
+            }
+            catch (ValidationException ex)
+            {
+                return ResponseMessage(
+                    Request.CreateResponse(
+                        HttpStatusCode.NotFound,
+                        ex.Message));
+            }
+
             ToolModel toolModel = mapper.Map<ToolModel>(toolDTO);
 
             return Ok(toolModel);

@@ -61,6 +61,18 @@ namespace Technolog.SL.Services
             return toolDTO;
         }
 
+        public ToolDTO Get(string name)
+        {
+            Tool tool = database.Tools.GetByName(name);
+
+            if (tool == null)
+                throw new ValidationException("Инструмент не найден", "");
+
+            ToolDTO toolDTO = mapper.Map<ToolDTO>(tool);
+
+            return toolDTO;
+        }
+
         public ToolListDTO GetPage(int page, int pageSize, string search)
         {
             PagedResult<Tool> pagedTools = database.Tools.GetPage(search, page, pageSize);

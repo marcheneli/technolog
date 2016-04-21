@@ -9,6 +9,6 @@ namespace Technolog.DAL.Interfaces
 {
     public interface IToolRepository : IRepository<Tool>
     {
-
+        Tool GetByName(string name);
     }
 }

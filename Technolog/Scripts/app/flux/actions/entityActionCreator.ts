@@ -7,8 +7,8 @@ import EntityService from "../services/EntityService";
 import ActionSourceTypes from "./actionSourceTypes";
 
 abstract class EntityActionCreator {
-    private entityType: EntityType;
-    private entityService: EntityService;
+    protected entityType: EntityType;
+    protected entityService: EntityService;
 
     constructor(entityType: EntityType, entityService: EntityService) {
         this.entityType = entityType;
