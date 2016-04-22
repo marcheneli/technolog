@@ -53,7 +53,7 @@
 	var ReactDOM = __webpack_require__(/*! react-dom */ 32);
 	var react_redux_1 = __webpack_require__(/*! react-redux */ 166);
 	var Technolog_1 = __webpack_require__(/*! ./components/Technolog */ 192);
-	var configureStore_1 = __webpack_require__(/*! ./store/configureStore */ 202);
+	var configureStore_1 = __webpack_require__(/*! ./store/configureStore */ 204);
 	var store = configureStore_1.default({
 	    panels: []
 	});
@@ -22302,14 +22302,15 @@
 	var React = __webpack_require__(/*! react */ 1);
 	var Sidebar_1 = __webpack_require__(/*! ./Sidebar */ 193);
 	var PanelStack_1 = __webpack_require__(/*! ../containers/PanelStack */ 198);
-	var tabList = [
-	    { id: 1, name: 'Технологические процессы', linkName: 'processes', mode: "" },
-	    { id: 2, name: 'Технологические операции', linkName: 'operations', mode: "" },
-	    { id: 3, name: 'Технологические шаги', linkName: 'steps', mode: "" },
-	    { id: 4, name: 'Инструменты', linkName: 'tools', mode: "" },
-	    { id: 5, name: 'Детали', linkName: 'parts', mode: "" }
+	var PanelType = __webpack_require__(/*! ./panelType */ 201);
+	var tabs = [
+	    { id: 1, name: 'Технологические процессы', type: PanelType.TECHPROCESS_LIST },
+	    { id: 2, name: 'Технологические операции', type: PanelType.TECHOPERATION_LIST },
+	    { id: 3, name: 'Технологические шаги', type: PanelType.TECHSTEP_LIST },
+	    { id: 4, name: 'Инструменты', type: PanelType.TOOL_LIST },
+	    { id: 5, name: 'Детали', type: PanelType.PART_LIST }
 	];
-	var Technolog = function () { return (React.createElement("div", {className: "row full-height"}, React.createElement(Sidebar_1.default, {tabs: tabList}), React.createElement(PanelStack_1.default, null))); };
+	var Technolog = function () { return (React.createElement("div", {className: "row full-height"}, React.createElement(Sidebar_1.default, {tabs: tabs}), React.createElement(PanelStack_1.default, null))); };
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.default = Technolog;
 	//# sourceMappingURL=Technolog.js.map
@@ -22437,10 +22438,10 @@
 
 	"use strict";
 	var React = __webpack_require__(/*! react */ 1);
-	var Panel_1 = __webpack_require__(/*! ../containers/Panel */ 200);
+	var panelFactory_1 = __webpack_require__(/*! ./panelFactory */ 200);
 	function PanelStack(props) {
 	    var panels = props.panels.map(function (panel) {
-	        return React.createElement("div", {key: panel.id, style: { display: 'inline-block', height: 100 + '%' }}, React.createElement(Panel_1.default, {id: panel.id, title: panel.title}));
+	        return React.createElement("div", {key: panel.id, style: { display: 'inline-block', height: 100 + '%' }}, panelFactory_1.default(panel));
 	    });
 	    return (React.createElement("div", {className: "col-lg-10 col-lg-offset-2 col-md-9 col-md-offset-3 col-sm-9 col-sm-offset-3 col-xs-8 col-xs-offset-4 full-height", id: 'infopanel', style: { overflowX: 'auto', whiteSpace: 'nowrap' }}, React.createElement("div", {className: "outer"}, panels)));
 	}
@@ -22450,6 +22451,71 @@
 
 /***/ },
 /* 200 */
+/*!****************************************!*\
+  !*** ./src/components/panelFactory.js ***!
+  \****************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var React = __webpack_require__(/*! react */ 1);
+	var PanelType = __webpack_require__(/*! ./panelType */ 201);
+	var Panel_1 = __webpack_require__(/*! ../containers/Panel */ 202);
+	function getContent(panelType) {
+	    switch (panelType) {
+	        case PanelType.TOOL_LIST:
+	            return (React.createElement("div", null));
+	        case PanelType.TOOL_EDIT_FORM:
+	            return (React.createElement("div", null));
+	        case PanelType.PART_LIST:
+	            return (React.createElement("div", null));
+	        case PanelType.PART_EDIT_FORM:
+	            return (React.createElement("div", null));
+	        case PanelType.TECHSTEP_LIST:
+	            return (React.createElement("div", null));
+	        case PanelType.TECHSTEP_EDIT_FORM:
+	            return (React.createElement("div", null));
+	        case PanelType.TECHOPERATION_LIST:
+	            return (React.createElement("div", null));
+	        case PanelType.TECHOPERATION_EDIT_FORM:
+	            return (React.createElement("div", null));
+	        case PanelType.TECHPROCESS_LIST:
+	            return (React.createElement("div", null));
+	        case PanelType.TECHOPROCESS_EDIT_FORM:
+	            return (React.createElement("div", null));
+	        default:
+	            return (React.createElement("div", null));
+	    }
+	}
+	function getPanel(panel) {
+	    var content = getContent(panel.type);
+	    return (React.createElement(Panel_1.default, {id: panel.id, title: panel.title}, content));
+	}
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = getPanel;
+	//# sourceMappingURL=panelFactory.js.map
+
+/***/ },
+/* 201 */
+/*!*************************************!*\
+  !*** ./src/components/panelType.js ***!
+  \*************************************/
+/***/ function(module, exports) {
+
+	"use strict";
+	exports.TOOL_LIST = 'TOOL_LIST';
+	exports.TOOL_EDIT_FORM = 'TOOL_EDIT_FORM';
+	exports.PART_LIST = 'PART_LIST';
+	exports.PART_EDIT_FORM = 'PART_EDIT_FORM';
+	exports.TECHSTEP_LIST = 'TECHSTEP_LIST';
+	exports.TECHSTEP_EDIT_FORM = 'TECHSTEP_EDIT_FORM';
+	exports.TECHOPERATION_LIST = 'TECHOPERATION_LIST';
+	exports.TECHOPERATION_EDIT_FORM = 'TECHOPERATION_EDIT_FORM';
+	exports.TECHPROCESS_LIST = 'TECHPROCESS_LIST';
+	exports.TECHOPROCESS_EDIT_FORM = 'TECHPROCESS_EDIT_FORM';
+	//# sourceMappingURL=panelType.js.map
+
+/***/ },
+/* 202 */
 /*!*********************************!*\
   !*** ./src/containers/Panel.js ***!
   \*********************************/
@@ -22458,7 +22524,7 @@
 	"use strict";
 	var react_redux_1 = __webpack_require__(/*! react-redux */ 166);
 	var PanelActionCreator = __webpack_require__(/*! ../actions/panelActionCreator */ 195);
-	var Panel_1 = __webpack_require__(/*! ../components/Panel */ 201);
+	var Panel_1 = __webpack_require__(/*! ../components/Panel */ 203);
 	var mapDispatchToPanelProps = function (dispatch, ownProps) {
 	    return {
 	        onCloseClick: function () {
@@ -22471,7 +22537,7 @@
 	//# sourceMappingURL=Panel.js.map
 
 /***/ },
-/* 201 */
+/* 203 */
 /*!*********************************!*\
   !*** ./src/components/Panel.js ***!
   \*********************************/
@@ -22487,7 +22553,7 @@
 	//# sourceMappingURL=Panel.js.map
 
 /***/ },
-/* 202 */
+/* 204 */
 /*!*************************************!*\
   !*** ./src/store/configureStore.js ***!
   \*************************************/
@@ -22495,7 +22561,7 @@
 
 	"use strict";
 	var redux_1 = __webpack_require__(/*! redux */ 173);
-	var main_1 = __webpack_require__(/*! ../reducers/main */ 203);
+	var main_1 = __webpack_require__(/*! ../reducers/main */ 205);
 	function configureStore(initialStore) {
 	    var store = redux_1.createStore(main_1.default, initialStore);
 	    return store;
@@ -22505,7 +22571,7 @@
 	//# sourceMappingURL=configureStore.js.map
 
 /***/ },
-/* 203 */
+/* 205 */
 /*!******************************!*\
   !*** ./src/reducers/main.js ***!
   \******************************/
@@ -22513,7 +22579,7 @@
 
 	"use strict";
 	var redux_1 = __webpack_require__(/*! redux */ 173);
-	var panels_1 = __webpack_require__(/*! ./panels */ 204);
+	var panels_1 = __webpack_require__(/*! ./panels */ 206);
 	var main = redux_1.combineReducers({
 	    panels: panels_1.default
 	});
@@ -22522,7 +22588,7 @@
 	//# sourceMappingURL=main.js.map
 
 /***/ },
-/* 204 */
+/* 206 */
 /*!********************************!*\
   !*** ./src/reducers/panels.js ***!
   \********************************/

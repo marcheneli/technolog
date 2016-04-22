@@ -1,0 +1,4 @@
+﻿export const TOOL_LOAD = 'TOOL_LOAD';
+export const TOOL_LOAD_PENDING = 'TOOL_LOAD_PENDING';
+export const TOOL_LOAD_SUCCEED = 'TOOL_LOAD_SUCCEED';
+export const TOOL_LOAD_FAILED = 'TOOL_LOAD_FAILED';

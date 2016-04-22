@@ -1,5 +1,4 @@
-﻿import * as PanelActionCreator from "../actions/panelActionCreator";
-import * as PanelActionType from "../actions/panelActionType";
+﻿import * as PanelActionType from "../actions/panelActionType";
 
 const initialState = [];
 
@@ -11,16 +10,15 @@ export default function panels(state = initialState, action) {
             return [
                 {
                     id: nextPanelId++,
-                    title: action.title
+                    type: action.panelType,
+                    contentId: action.contentId
                 },
                 ...state
             ];
-
         case PanelActionType.PANEL_CLOSE:
             return state.filter(panel =>
                 panel.id !== action.id
             );
-
         default:
             return state;
     }

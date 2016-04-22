@@ -34,7 +34,9 @@
     <TypeScriptCompile Include="src\actions\panelActionCreator.ts" />
     <TypeScriptCompile Include="src\actions\panelActionType.ts" />
     <TypeScriptCompile Include="src\components\Panel.tsx" />
+    <TypeScriptCompile Include="src\components\panelFactory.tsx" />
     <TypeScriptCompile Include="src\components\PanelStack.tsx" />
+    <TypeScriptCompile Include="src\components\panelType.ts" />
     <TypeScriptCompile Include="src\components\Sidebar.tsx" />
     <TypeScriptCompile Include="src\components\Tab.tsx" />
     <TypeScriptCompile Include="src\components\Technolog.tsx" />
@@ -46,6 +48,7 @@
     <TypeScriptCompile Include="src\reducers\main.ts" />
     <TypeScriptCompile Include="src\reducers\panels.ts" />
     <TypeScriptCompile Include="src\store\configureStore.ts" />
+    <TypeScriptCompile Include="src\utils\idGenerator.ts" />
     <TypeScriptCompile Include="typings\main.d.ts" />
     <TypeScriptCompile Include="typings\react-redux\react-redux.d.ts" />
     <TypeScriptCompile Include="typings\react\react-dom.d.ts" />

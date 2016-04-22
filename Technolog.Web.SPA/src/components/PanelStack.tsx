@@ -1,11 +1,11 @@
 ﻿import * as React from 'react';
 import Panel from '../containers/Panel';
+import PanelFactory from './panelFactory'
 
 export default function PanelStack(props: any) {
     const panels = props.panels.map(panel => 
         <div key={panel.id} style={{ display: 'inline-block', height: 100 + '%' }}>
-            <Panel id={panel.id} title={panel.title}>
-            </Panel>
+            { PanelFactory(panel) }
         </div>
     );
 
