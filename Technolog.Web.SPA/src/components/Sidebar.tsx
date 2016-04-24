@@ -3,7 +3,7 @@ import Tab from '../containers/Tab';
 
 export default function Sidebar(props: any) {
     const tabs = props.tabs.map(tab => 
-        <Tab key={tab.id} name={tab.name}>{tab.name}</Tab>
+        <Tab key={tab.id} type={tab.type}>{tab.name}</Tab>
     );
 
     return (

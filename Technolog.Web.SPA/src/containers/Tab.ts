@@ -5,7 +5,7 @@ import Tab from '../components/Tab';
 const mapDispatchToTabProps = (dispatch, ownProps) => {
     return {
         onTabClick: () => {
-            dispatch(PanelActionCreator.open(ownProps.name))
+            dispatch(PanelActionCreator.open(ownProps.type))
         }
     };
 }

@@ -17,6 +17,8 @@ namespace Technolog.Web
     {   
         public void Configuration(IAppBuilder app)
         {
+            app.UseCors(Microsoft.Owin.Cors.CorsOptions.AllowAll);
+
             HttpConfiguration httpConfiguration = new HttpConfiguration();
 
             WebApiConfig.Register(httpConfiguration);

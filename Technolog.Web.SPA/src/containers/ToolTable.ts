@@ -4,11 +4,12 @@ import * as PanelActionCreator from '../actions/panelActionCreator';
 import * as PanelType from '../components/panelType';
 
 const mapStateToToolTableProps = (state, ownProps) => {
+    console.log(ownProps);
     return {
-        tools: () => state.toolLists.filter(id => id === ownProps.id)[0]
-            .tools.map(toolId => state.entities.tools.filter(id => id === toolId)[0]),
-        selectedTools: () => state.toolLists.filter(id => id === ownProps.id)[0]
-            .selectedTools.map(toolId => state.entities.tools.filter(id => id === toolId)[0])
+        tools: (state.toolLists.filter(toolList => toolList.id === ownProps.id)[0]
+            .tools.map(toolId => state.entities.tools.filter(tool => tool.id === toolId)[0])),
+        selectedTools: (state.toolLists.filter(toolList => toolList.id === ownProps.id)[0]
+            .selectedTools.map(toolId => state.entities.tools.filter(tool => tool.id === toolId)[0]))
     };
 };
 

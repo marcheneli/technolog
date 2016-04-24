@@ -52,12 +52,11 @@ function getContent(panel) {
     }
 }
 
-export default function getPanel(panel) {
-
-    const content = getContent(panel.type);
+export function getPanel(panel) {
+    const content = getContent(panel);
 
     return (
-        <Panel id={panel.id} title={panel.title}>
+        <Panel id={panel.id} title={panel.name}>
             {content}
         </Panel>    
     );

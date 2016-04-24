@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import SearchInput from "./searchInput";
-import ItemsPerPageSelector from "./itemsPerPageSelector";
 
 interface ItemListControlPanelProps {
     onSearchTextChange(searchText: string): void;
