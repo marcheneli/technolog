@@ -1,5 +1,5 @@
 ﻿import * as React from "react";
-import SearchInput from "./SearchInput";
+import SearchInput from './SearchInput';
 
 interface ItemListControlPanelProps {
     onSearchTextChange(searchText: string): void;

@@ -22,11 +22,29 @@
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="css\bootstrap.css" />
+    <Content Include="Content\bootstrap-theme.css" />
+    <Content Include="Content\bootstrap-theme.min.css" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
     <Content Include="css\main.css" />
     <Content Include="css\refresh-animate.css" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="images\spin.gif" />
     <Content Include="index.html" />
+    <Content Include="packages.config" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\bootstrap.min.css.map" />
+    <Content Include="Content\bootstrap.css.map" />
+    <Content Include="Content\bootstrap-theme.min.css.map" />
+    <Content Include="Content\bootstrap-theme.css.map" />
+    <None Include="Scripts\jquery-1.9.1.intellisense.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\jquery-1.9.1.js" />
+    <Content Include="Scripts\jquery-1.9.1.min.js" />
     <Content Include="web.config" />
     <Content Include="webpack.config.js" />
   </ItemGroup>
@@ -35,9 +53,14 @@
     <TypeScriptCompile Include="src\actions\panelActionType.ts" />
     <TypeScriptCompile Include="src\actions\toolActionCreator.ts" />
     <TypeScriptCompile Include="src\actions\toolActionType.ts" />
+    <TypeScriptCompile Include="src\components\common\ConfirmationDialogPanel.tsx" />
+    <TypeScriptCompile Include="src\components\common\DialogBackground.tsx" />
+    <TypeScriptCompile Include="src\components\common\DialogPanel.tsx" />
     <TypeScriptCompile Include="src\components\common\ItemListControlPanel.tsx" />
     <TypeScriptCompile Include="src\components\common\ItemsPerPageSelector.tsx" />
     <TypeScriptCompile Include="src\components\common\Pagination.tsx" />
+    <TypeScriptCompile Include="src\components\common\PendingAnimation.tsx" />
+    <TypeScriptCompile Include="src\components\common\PendingPanel.tsx" />
     <TypeScriptCompile Include="src\components\common\SearchInput.tsx" />
     <TypeScriptCompile Include="src\components\common\TableRow.tsx" />
     <TypeScriptCompile Include="src\components\Panel.tsx" />
@@ -86,6 +109,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="package.json" />
+    <Content Include="Scripts\jquery-1.9.1.min.map" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>

@@ -15,7 +15,12 @@ export function load(toolListId: number, page: number, toolPerPage: number, sear
             dataType: 'json',
             type: 'GET',
             success: (toolListModel) => {
-                dispatch(loadSucceed(toolListId, toolListModel.tools, toolListModel.totalAmount));
+                dispatch(loadSucceed(toolListId,
+                    toolListModel.tools,
+                    toolListModel.toolAmount,
+                    page,
+                    toolPerPage,
+                    searchText));
             },
             error: (xhr, status, err) => {
                 dispatch(loadFailed(toolListId, err));
@@ -33,12 +38,15 @@ export function loadPending(toolListId) {
     };
 }
 
-export function loadSucceed(toolListId, tools, totalAmount) {
+export function loadSucceed(toolListId, tools, totalAmount, page, toolsPerPage, searchText) {
     return {
         type: ToolActionType.TOOL_LOAD_SUCCEED,
         toolListId: toolListId,
         tools: tools,
-        totalAmount: totalAmount
+        totalAmount: totalAmount,
+        toolPage: page,
+        toolsPerPage: toolsPerPage,
+        searchText: searchText
     };
 }
 
@@ -61,29 +69,57 @@ export function remove(toolListId: number, tools: Array<any>) {
                 __RequestVerificationToken: AntiForgeryToken.get()
             },
             success: (response) => {
+                dispatch(removeSucceed(toolListId));
             },
             error: (xhr, status, err) => {
+                dispatch(removeFailed(toolListId, err));
             }
         });
 
-        return dispatch(loadPending(toolListId));
+        return dispatch(removePending(toolListId));
     };
 }
 
-export function removePending() {
+export function removePending(toolListId: number) {
     return {
-        type: ToolActionType.TOOL_REMOVE_PENDING
+        type: ToolActionType.TOOL_REMOVE_PENDING,
+        toolListId: toolListId
     };
 }
 
-export function removeSucceed() {
+export function removeSucceed(toolListId) {
     return {
-        type: ToolActionType.TOOL_REMOVE_SUCCEED
+        type: ToolActionType.TOOL_REMOVE_SUCCEED,
+        toolListId: toolListId
     };
 }
 
-export function removeFailed() {
+export function removeFailed(toolListId, errorMessage) {
     return {
-        type: ToolActionType.TOOL_REMOVE_FAILED
+        type: ToolActionType.TOOL_REMOVE_FAILED,
+        toolListId: toolListId,
+        errorMessage: errorMessage
+    };
+}
+
+export function select(toolListId, selectedTools) {
+    return {
+        type: ToolActionType.TOOL_SELECT,
+        toolListId: toolListId,
+        selectedTools: selectedTools
+    };
+}
+
+export function confirmDelete(toolListId) {
+    return {
+        type: ToolActionType.TOOL_CONFIRM_DELETE,
+        toolListId: toolListId
+    };
+}
+
+export function cancelDelete(toolListId) {
+    return {
+        type: ToolActionType.TOOL_CANCEL_DELETE,
+        toolListId: toolListId
     };
 }

@@ -52,9 +52,10 @@
 	var ReactDOM = __webpack_require__(/*! react-dom */ 32);
 	var react_redux_1 = __webpack_require__(/*! react-redux */ 166);
 	var Technolog_1 = __webpack_require__(/*! ./components/Technolog */ 192);
-	var configureStore_1 = __webpack_require__(/*! ./store/configureStore */ 215);
-	var $ = __webpack_require__(/*! jquery */ 212);
-	var serviceDomain_1 = __webpack_require__(/*! ./constants/serviceDomain */ 223);
+	var configureStore_1 = __webpack_require__(/*! ./store/configureStore */ 225);
+	var $ = __webpack_require__(/*! jquery */ 211);
+	var serviceDomain_1 = __webpack_require__(/*! ./constants/serviceDomain */ 213);
+	var AntiForgeryToken = __webpack_require__(/*! ./utils/antiForgeryToken */ 214);
 	var store = configureStore_1.default({
 	    panels: []
 	});
@@ -63,9 +64,8 @@
 	        + 'antiforgerytoken' + '/'),
 	    dataType: 'json',
 	    type: 'GET',
-	    success: function (aft) {
-	        console.log(aft);
-	        antiForgeryToken = aft;
+	    success: function (antiForgeryToken) {
+	        AntiForgeryToken.set(antiForgeryToken);
 	    },
 	    error: function (xhr, status, err) {
 	    }
@@ -22617,7 +22617,7 @@
 	}
 	function getPanel(panel) {
 	    var content = getContent(panel);
-	    return (React.createElement(Panel_1.default, {id: panel.id, title: panel.name}, content));
+	    return (React.createElement(Panel_1.default, {id: panel.id, title: panel.name}, React.createElement("div", {className: "panel-body", style: { position: 'relative', display: 'flex', flexGrow: 2, flexBasis: 0 + '%', minHeight: 0, minWidth: 0 }}, content)));
 	}
 	exports.getPanel = getPanel;
 	//# sourceMappingURL=panelFactory.js.map
@@ -22670,17 +22670,44 @@
 	"use strict";
 	var react_redux_1 = __webpack_require__(/*! react-redux */ 166);
 	var ToolList_1 = __webpack_require__(/*! ../components/ToolList */ 206);
-	var ToolActionCreator = __webpack_require__(/*! ../actions/toolActionCreator */ 211);
-	var PagingParameter = __webpack_require__(/*! ../constants/pagingParameter */ 214);
+	var ToolActionCreator = __webpack_require__(/*! ../actions/toolActionCreator */ 210);
+	var PagingParameter = __webpack_require__(/*! ../constants/pagingParameter */ 218);
+	var mapStateToToolListProps = function (state, ownProps) {
+	    var toolListState = state.toolLists.filter(function (toolList) { return toolList.id === ownProps.id; })[0];
+	    return {
+	        tools: (toolListState.tools.map(function (toolId) { return state.entities.tools.filter(function (tool) { return tool.id === toolId; })[0]; })),
+	        selectedTools: toolListState.selectedTools,
+	        isPending: toolListState.isPending,
+	        isConfirmDeleting: toolListState.isConfirmDeleting,
+	        isDeleting: toolListState.isDeleting,
+	        totalAmount: toolListState.totalAmount,
+	        toolPage: toolListState.toolPage,
+	        toolsPerPage: toolListState.toolsPerPage,
+	        searchText: toolListState.searchText
+	    };
+	};
 	var mapDispatchToToolListProps = function (dispatch, ownProps) {
 	    return {
 	        onMount: function () {
 	            dispatch(ToolActionCreator.load(ownProps.id, PagingParameter.FIRST_PAGE, PagingParameter.ITEMS_PER_PAGE_INIT, PagingParameter.EMPTY_SEARCH_TEXT));
+	        },
+	        onDeleteBtnClick: function () {
+	            dispatch(ToolActionCreator.confirmDelete(ownProps.id));
+	        },
+	        onAddBtnClick: function () { },
+	        load: function (page, itemsPerPage, searchText) {
+	            dispatch(ToolActionCreator.load(ownProps.id, page, itemsPerPage, searchText));
+	        },
+	        onDeleteConfirm: function (tools) {
+	            dispatch(ToolActionCreator.remove(ownProps.id, tools));
+	        },
+	        onDeleteCancel: function () {
+	            dispatch(ToolActionCreator.cancelDelete(ownProps.id));
 	        }
 	    };
 	};
 	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.default = react_redux_1.connect(null, mapDispatchToToolListProps)(ToolList_1.default);
+	exports.default = react_redux_1.connect(mapStateToToolListProps, mapDispatchToToolListProps)(ToolList_1.default);
 	//# sourceMappingURL=ToolList.js.map
 
 /***/ },
@@ -22698,23 +22725,47 @@
 	};
 	var React = __webpack_require__(/*! react */ 1);
 	var ToolTable_1 = __webpack_require__(/*! ../containers/ToolTable */ 207);
-	var ItemListControlPanel_1 = __webpack_require__(/*! ./common/ItemListControlPanel */ 210);
+	var ItemListControlPanel_1 = __webpack_require__(/*! ./common/ItemListControlPanel */ 215);
+	var ItemsPerPageSelector_1 = __webpack_require__(/*! ./common/ItemsPerPageSelector */ 217);
+	var Pagination_1 = __webpack_require__(/*! ./common/Pagination */ 219);
+	var DialogBackground_1 = __webpack_require__(/*! ./common/DialogBackground */ 220);
+	var ConfirmationDialogPanel_1 = __webpack_require__(/*! ./common/ConfirmationDialogPanel */ 221);
+	var PendingPanel_1 = __webpack_require__(/*! ./common/PendingPanel */ 223);
+	var PendingAnimation_1 = __webpack_require__(/*! ./common/PendingAnimation */ 224);
 	var ToolList = (function (_super) {
 	    __extends(ToolList, _super);
 	    function ToolList(props) {
+	        var _this = this;
 	        _super.call(this, props);
+	        this.refreshBtnClickHandler = function () {
+	            _this.props.load(_this.props.toolPage, _this.props.toolsPerPage, _this.props.searchText);
+	        };
+	        this.toolPageChangeHandler = function (page) {
+	            _this.props.load(page, _this.props.toolsPerPage, _this.props.searchText);
+	        };
+	        this.toolsPerPageChangeHandler = function (itemsPerPage) {
+	            _this.props.load(_this.props.toolPage, itemsPerPage, _this.props.searchText);
+	        };
+	        this.searchTextChangeHandler = function (text) {
+	            _this.props.load(_this.props.toolPage, _this.props.toolsPerPage, text);
+	        };
+	        this.deleteConfirmClickHandler = function () {
+	            var toolsForDeleting = _this.props.selectedTools.map(function (id) { return { id: id }; });
+	            _this.props.onDeleteConfirm(toolsForDeleting);
+	        };
 	    }
 	    ToolList.prototype.componentDidMount = function () {
 	        this.props.onMount();
 	    };
 	    ToolList.prototype.render = function () {
-	        return (React.createElement("div", {style: {
+	        return (React.createElement("div", {style: { position: 'relative', display: 'flex', flexGrow: 2, flexBasis: 0 + '%', minHeight: 0, minWidth: 0 }}, React.createElement(DialogBackground_1.default, {isShow: this.props.isConfirmDeleting}, React.createElement(ConfirmationDialogPanel_1.default, {title: "Удаление инструмента", onConfirmClick: this.deleteConfirmClickHandler, onCancelClick: this.props.onDeleteCancel}, React.createElement("span", null, "Вы действительно хотите удалить данный инструмент?"))), React.createElement(DialogBackground_1.default, {isShow: this.props.isDeleting}, React.createElement(PendingPanel_1.default, {title: "Удаление инструмента"}, React.createElement(PendingAnimation_1.default, null, React.createElement("h4", null, "Пожалуйста, подождите."), React.createElement("h4", null, "Идет удаление.")))), React.createElement("div", {style: {
 	            position: 'relative',
 	            display: 'flex',
+	            flexFlow: 'column',
 	            flexGrow: 2,
 	            flexBasis: 0 + '%',
 	            minHeight: 0, minWidth: 0
-	        }}, React.createElement(ItemListControlPanel_1.default, {onItemDelete: this.props.onDeleteBtnClick, onNewItem: this.props.onAddBtnClick, onRefresh: this.props.onRefreshBtnClick, onSearchTextChange: this.props.onSearchTextChange, isDeleteEnable: this.props.selectedTools.length > 0, isUpdating: this.props.isUpdating}), React.createElement(ToolTable_1.default, {id: this.props.id})));
+	        }}, React.createElement("div", {style: { flexShrink: 0 }}, React.createElement(ItemListControlPanel_1.default, {onItemDelete: this.props.onDeleteBtnClick, onNewItem: this.props.onAddBtnClick, onRefresh: this.refreshBtnClickHandler, onSearchTextChange: this.searchTextChangeHandler, isDeleteEnable: this.props.selectedTools.length > 0, isUpdating: this.props.isPending})), React.createElement(ToolTable_1.default, {id: this.props.id, tools: this.props.tools, selectedTools: this.props.selectedTools}), React.createElement("div", {className: "btn-toolbar", style: { flexShrink: 0 }}, React.createElement(ItemsPerPageSelector_1.default, {onChange: this.toolsPerPageChangeHandler}), React.createElement(Pagination_1.default, {itemAmount: this.props.totalAmount, itemsPerPage: this.props.toolsPerPage, currentPage: this.props.toolPage, firstSymbol: '«', nextSymbol: '›', prevSymbol: '‹', lastSymbol: '»', onPageBtnClick: this.toolPageChangeHandler})))));
 	    };
 	    return ToolList;
 	}(React.Component));
@@ -22733,31 +22784,45 @@
 	var react_redux_1 = __webpack_require__(/*! react-redux */ 166);
 	var ToolTable_1 = __webpack_require__(/*! ../components/ToolTable */ 208);
 	var PanelActionCreator = __webpack_require__(/*! ../actions/panelActionCreator */ 195);
+	var ToolActionCreator = __webpack_require__(/*! ../actions/toolActionCreator */ 210);
 	var PanelType = __webpack_require__(/*! ../components/panelType */ 197);
-	var mapStateToToolTableProps = function (state, ownProps) {
-	    console.log(ownProps);
-	    return {
-	        tools: (state.toolLists.filter(function (toolList) { return toolList.id === ownProps.id; })[0]
-	            .tools.map(function (toolId) { return state.entities.tools.filter(function (tool) { return tool.id === toolId; })[0]; })),
-	        selectedTools: (state.toolLists.filter(function (toolList) { return toolList.id === ownProps.id; })[0]
-	            .selectedTools.map(function (toolId) { return state.entities.tools.filter(function (tool) { return tool.id === toolId; })[0]; }))
-	    };
-	};
 	var mapDispatchToToolTableProps = function (dispatch, ownProps) {
 	    return {
 	        onTableRowDoubleClick: function (toolId) {
 	            dispatch(PanelActionCreator.open(PanelType.TOOL_EDIT_FORM, { toolId: toolId }));
 	        },
-	        onToolSelect: function (toolId) {
-	            dispatch();
+	        onToolSelect: function (event) {
+	            var selectedTools = ownProps.selectedTools;
+	            var tools = ownProps.tools;
+	            if (event.target.checked) {
+	                var tool;
+	                for (var i = 0; i < tools.length; i++) {
+	                    if (tools[i].id == event.target.value) {
+	                        tool = tools[i];
+	                        break;
+	                    }
+	                }
+	                selectedTools = selectedTools.concat([
+	                    tool.id
+	                ]);
+	            }
+	            else {
+	                selectedTools = selectedTools.filter(function (id) { return id != event.target.value; });
+	            }
+	            dispatch(ToolActionCreator.select(ownProps.id, selectedTools));
 	        },
-	        onAllToolsSelect: function () {
-	            dispatch();
+	        onAllToolsSelect: function (event) {
+	            var selectedTools = [];
+	            var tools = ownProps.tools;
+	            if (event.target.checked) {
+	                selectedTools = tools.map(function (tool) { return tool.id; });
+	            }
+	            dispatch(ToolActionCreator.select(ownProps.id, selectedTools));
 	        }
 	    };
 	};
 	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.default = react_redux_1.connect(mapStateToToolTableProps, mapDispatchToToolTableProps)(ToolTable_1.default);
+	exports.default = react_redux_1.connect(null, mapDispatchToToolTableProps)(ToolTable_1.default);
 	//# sourceMappingURL=ToolTable.js.map
 
 /***/ },
@@ -22779,12 +22844,12 @@
 	        var tool = tools[i];
 	        var selectedTool = null;
 	        for (var j = 0; j < selectedTools.length; j++) {
-	            if (selectedTools[j].id == tool.id) {
+	            if (selectedTools[j] == tool.id) {
 	                selectedTool = selectedTools[j];
 	                break;
 	            }
 	        }
-	        toolRows.push(React.createElement(TableRow_1.default, {key: i, onTableRowDoubleClick: function () { props.onTableRowDoubleClick(tool.id); }}, React.createElement("td", {style: { width: 5 + '%' }}, React.createElement("input", {type: 'checkbox', value: tool.id, onChange: function () { props.onToolSelect(tool.id); }, checked: selectedTool})), React.createElement("td", {style: { width: 15 + '%' }}, tool.id), React.createElement("td", {style: { width: 80 + '%' }}, tool.name)));
+	        toolRows.push(React.createElement(TableRow_1.default, {key: i, onTableRowDoubleClick: function () { props.onTableRowDoubleClick(tool.id); }}, React.createElement("td", {style: { width: 5 + '%' }}, React.createElement("input", {type: 'checkbox', value: tool.id, onChange: props.onToolSelect, checked: selectedTool})), React.createElement("td", {style: { width: 15 + '%' }}, tool.id), React.createElement("td", {style: { width: 80 + '%' }}, tool.name)));
 	    }
 	    return (React.createElement("div", {style: { marginBottom: 10 + 'px', overflow: 'auto' }}, React.createElement("table", {className: "table table-bordered", style: { marginBottom: 1 + 'px' }}, React.createElement("thead", null, React.createElement("tr", null, React.createElement("th", {style: { width: 5 + '%' }}, React.createElement("input", {type: 'checkbox', onChange: props.onAllToolsSelect, checked: isAllChecked})), React.createElement("th", {style: { width: 15 + '%' }}, "ID"), React.createElement("th", {style: { width: 80 + '%' }}, "Наименование"))), React.createElement("tbody", null, toolRows))));
 	}
@@ -22810,27 +22875,20 @@
 
 /***/ },
 /* 210 */
-/*!*******************************************************!*\
-  !*** ./src/components/common/ItemListControlPanel.js ***!
-  \*******************************************************/
-/***/ function(module, exports) {
-
-	//# sourceMappingURL=ItemListControlPanel.js.map
-
-/***/ },
-/* 211 */
 /*!******************************************!*\
   !*** ./src/actions/toolActionCreator.js ***!
   \******************************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var $ = __webpack_require__(/*! jquery */ 212);
-	var ToolActionType = __webpack_require__(/*! ./toolActionType */ 213);
+	var $ = __webpack_require__(/*! jquery */ 211);
+	var ToolActionType = __webpack_require__(/*! ./toolActionType */ 212);
+	var serviceDomain_1 = __webpack_require__(/*! ../constants/serviceDomain */ 213);
+	var AntiForgeryToken = __webpack_require__(/*! ../utils/antiForgeryToken */ 214);
 	function load(toolListId, page, toolPerPage, searchText) {
 	    return function (dispatch) {
 	        $.ajax({
-	            url: ("http://localhost:49352" + "/api/"
+	            url: (serviceDomain_1.default + "/api/"
 	                + 'tools' + '/'
 	                + "?search=" + searchText
 	                + "&page=" + page + "&pageSize="
@@ -22838,7 +22896,7 @@
 	            dataType: 'json',
 	            type: 'GET',
 	            success: function (toolListModel) {
-	                dispatch(loadSucceed(toolListId, toolListModel.tools, toolListModel.totalAmount));
+	                dispatch(loadSucceed(toolListId, toolListModel.tools, toolListModel.toolAmount, page, toolPerPage, searchText));
 	            },
 	            error: function (xhr, status, err) {
 	                dispatch(loadFailed(toolListId, err));
@@ -22855,12 +22913,15 @@
 	    };
 	}
 	exports.loadPending = loadPending;
-	function loadSucceed(toolListId, tools, totalAmount) {
+	function loadSucceed(toolListId, tools, totalAmount, page, toolsPerPage, searchText) {
 	    return {
 	        type: ToolActionType.TOOL_LOAD_SUCCEED,
 	        toolListId: toolListId,
 	        tools: tools,
-	        totalAmount: totalAmount
+	        totalAmount: totalAmount,
+	        toolPage: page,
+	        toolsPerPage: toolsPerPage,
+	        searchText: searchText
 	    };
 	}
 	exports.loadSucceed = loadSucceed;
@@ -22872,10 +22933,75 @@
 	    };
 	}
 	exports.loadFailed = loadFailed;
+	function remove(toolListId, tools) {
+	    return function (dispatch) {
+	        $.ajax({
+	            url: serviceDomain_1.default + '/api/' + "tools" + "/",
+	            type: 'DELETE',
+	            dataType: "json",
+	            data: {
+	                tools: tools,
+	                __RequestVerificationToken: AntiForgeryToken.get()
+	            },
+	            success: function (response) {
+	                dispatch(removeSucceed(toolListId));
+	            },
+	            error: function (xhr, status, err) {
+	                dispatch(removeFailed(toolListId, err));
+	            }
+	        });
+	        return dispatch(removePending(toolListId));
+	    };
+	}
+	exports.remove = remove;
+	function removePending(toolListId) {
+	    return {
+	        type: ToolActionType.TOOL_REMOVE_PENDING,
+	        toolListId: toolListId
+	    };
+	}
+	exports.removePending = removePending;
+	function removeSucceed(toolListId) {
+	    return {
+	        type: ToolActionType.TOOL_REMOVE_SUCCEED,
+	        toolListId: toolListId
+	    };
+	}
+	exports.removeSucceed = removeSucceed;
+	function removeFailed(toolListId, errorMessage) {
+	    return {
+	        type: ToolActionType.TOOL_REMOVE_FAILED,
+	        toolListId: toolListId,
+	        errorMessage: errorMessage
+	    };
+	}
+	exports.removeFailed = removeFailed;
+	function select(toolListId, selectedTools) {
+	    return {
+	        type: ToolActionType.TOOL_SELECT,
+	        toolListId: toolListId,
+	        selectedTools: selectedTools
+	    };
+	}
+	exports.select = select;
+	function confirmDelete(toolListId) {
+	    return {
+	        type: ToolActionType.TOOL_CONFIRM_DELETE,
+	        toolListId: toolListId
+	    };
+	}
+	exports.confirmDelete = confirmDelete;
+	function cancelDelete(toolListId) {
+	    return {
+	        type: ToolActionType.TOOL_CANCEL_DELETE,
+	        toolListId: toolListId
+	    };
+	}
+	exports.cancelDelete = cancelDelete;
 	//# sourceMappingURL=toolActionCreator.js.map
 
 /***/ },
-/* 212 */
+/* 211 */
 /*!*********************************!*\
   !*** ./~/jquery/dist/jquery.js ***!
   \*********************************/
@@ -32726,7 +32852,7 @@
 
 
 /***/ },
-/* 213 */
+/* 212 */
 /*!***************************************!*\
   !*** ./src/actions/toolActionType.js ***!
   \***************************************/
@@ -32737,14 +32863,208 @@
 	exports.TOOL_LOAD_PENDING = 'TOOL_LOAD_PENDING';
 	exports.TOOL_LOAD_SUCCEED = 'TOOL_LOAD_SUCCEED';
 	exports.TOOL_LOAD_FAILED = 'TOOL_LOAD_FAILED';
-	exports.TOOL_DELETE = 'TOOL_DELETE';
-	exports.TOOL_DELETE_PENDING = 'TOOL_DELETE_PENDING';
-	exports.TOOL_DELETE_SUCCEED = 'TOOL_DELETE_SUCCEED';
-	exports.TOOL_DELETE_FAILED = 'TOOL_DELETE_FAILED';
+	exports.TOOL_REMOVE = 'TOOL_REMOVE';
+	exports.TOOL_REMOVE_PENDING = 'TOOL_REMOVE_PENDING';
+	exports.TOOL_REMOVE_SUCCEED = 'TOOL_REMOVE_SUCCEED';
+	exports.TOOL_REMOVE_FAILED = 'TOOL_REMOVE_FAILED';
+	exports.TOOL_SELECT = 'TOOL_SELECT';
+	exports.TOOL_CONFIRM_DELETE = 'TOOL_CONFIRM_DELETE';
+	exports.TOOL_CANCEL_DELETE = 'TOOL_CANCEL_DELETE';
 	//# sourceMappingURL=toolActionType.js.map
 
 /***/ },
+/* 213 */
+/*!****************************************!*\
+  !*** ./src/constants/serviceDomain.js ***!
+  \****************************************/
+/***/ function(module, exports) {
+
+	"use strict";
+	var domain = 'http://localhost:49352';
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = domain;
+	//# sourceMappingURL=serviceDomain.js.map
+
+/***/ },
 /* 214 */
+/*!***************************************!*\
+  !*** ./src/utils/antiForgeryToken.js ***!
+  \***************************************/
+/***/ function(module, exports) {
+
+	"use strict";
+	var antiForgeryToken;
+	function get() {
+	    return antiForgeryToken;
+	}
+	exports.get = get;
+	function set(value) {
+	    antiForgeryToken = value;
+	}
+	exports.set = set;
+	//# sourceMappingURL=antiForgeryToken.js.map
+
+/***/ },
+/* 215 */
+/*!*******************************************************!*\
+  !*** ./src/components/common/ItemListControlPanel.js ***!
+  \*******************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var React = __webpack_require__(/*! react */ 1);
+	var SearchInput_1 = __webpack_require__(/*! ./SearchInput */ 216);
+	var ItemListControlPanel = (function (_super) {
+	    __extends(ItemListControlPanel, _super);
+	    function ItemListControlPanel(props, context) {
+	        var _this = this;
+	        _super.call(this, props, context);
+	        this.searchTextInputChangeHandler = function (text) {
+	            _this.setState({ searchText: text });
+	            setTimeout(function () {
+	                if (_this.state.searchText == text) {
+	                    _this.props.onSearchTextChange(text);
+	                }
+	            }, 1000);
+	        };
+	        this.props = props;
+	        this.context = context;
+	        this.state = {
+	            searchText: ""
+	        };
+	    }
+	    ItemListControlPanel.prototype.render = function () {
+	        return (React.createElement("div", null, React.createElement("div", {className: "input-group"}, React.createElement("div", {className: "input-group-btn"}, React.createElement("button", {className: "btn btn-default", type: "button", onClick: this.props.onNewItem}, React.createElement("span", {className: "glyphicon glyphicon-plus"})), React.createElement("button", {className: "btn btn-default", type: "button", onClick: this.props.onItemDelete, disabled: !this.props.isDeleteEnable}, React.createElement("span", {className: "glyphicon glyphicon-trash"})), React.createElement("button", {className: "btn btn-default", type: "button", onClick: this.props.onRefresh}, React.createElement("span", {className: this.props.isUpdating ?
+	            "glyphicon glyphicon-refresh glyphicon-refresh-animate" :
+	            "glyphicon glyphicon-refresh"}))), React.createElement(SearchInput_1.default, {placeholder: "Поиск...", onChange: this.searchTextInputChangeHandler}))));
+	    };
+	    return ItemListControlPanel;
+	}(React.Component));
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = ItemListControlPanel;
+	//# sourceMappingURL=ItemListControlPanel.js.map
+
+/***/ },
+/* 216 */
+/*!**********************************************!*\
+  !*** ./src/components/common/SearchInput.js ***!
+  \**********************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var React = __webpack_require__(/*! react */ 1);
+	var SearchInput = (function (_super) {
+	    __extends(SearchInput, _super);
+	    function SearchInput() {
+	        var _this = this;
+	        _super.apply(this, arguments);
+	        this.handleChange = function (e) {
+	            _this.props.onChange(e.target.value);
+	        };
+	    }
+	    SearchInput.prototype.render = function () {
+	        return (React.createElement("input", {className: 'form-control', placeholder: this.props.placeholder, onChange: this.handleChange}));
+	    };
+	    return SearchInput;
+	}(React.Component));
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = SearchInput;
+	//# sourceMappingURL=SearchInput.js.map
+
+/***/ },
+/* 217 */
+/*!*******************************************************!*\
+  !*** ./src/components/common/ItemsPerPageSelector.js ***!
+  \*******************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var React = __webpack_require__(/*! react */ 1);
+	var PagingParameter = __webpack_require__(/*! ../../constants/pagingParameter */ 218);
+	var ItemsPerPageSelector = (function (_super) {
+	    __extends(ItemsPerPageSelector, _super);
+	    function ItemsPerPageSelector(props, context) {
+	        var _this = this;
+	        _super.call(this, props, context);
+	        this.pageClick = function (e) {
+	            if (_this.state.dropdowndisplay == 'none')
+	                return;
+	            if (_this.state.isButtonClicked) {
+	                _this.setState({
+	                    itemsPerPage: _this.state.itemsPerPage,
+	                    dropdowndisplay: 'block',
+	                    isButtonClicked: false
+	                });
+	                return;
+	            }
+	            _this.setState({
+	                itemsPerPage: _this.state.itemsPerPage,
+	                dropdowndisplay: 'none',
+	                isButtonClicked: false
+	            });
+	        };
+	        this.toggleDropDown = function (e) {
+	            if (_this.state.dropdowndisplay == 'none')
+	                _this.setState({
+	                    itemsPerPage: _this.state.itemsPerPage,
+	                    dropdowndisplay: 'block',
+	                    isButtonClicked: true
+	                });
+	            if (_this.state.dropdowndisplay == 'block')
+	                _this.setState({
+	                    itemsPerPage: _this.state.itemsPerPage,
+	                    dropdowndisplay: 'none',
+	                    isButtonClicked: false
+	                });
+	        };
+	        this.updateItemsPerPage = function (itemsPerPage) {
+	            _this.setState({
+	                itemsPerPage: itemsPerPage,
+	                dropdowndisplay: 'none',
+	                isButtonClicked: _this.state.isButtonClicked
+	            });
+	            _this.props.onChange(itemsPerPage);
+	        };
+	        this.props = props;
+	        this.context = context;
+	        this.state = {
+	            itemsPerPage: PagingParameter.ITEMS_PER_PAGE_INIT,
+	            dropdowndisplay: 'none',
+	            isButtonClicked: false
+	        };
+	    }
+	    ItemsPerPageSelector.prototype.componentWillMount = function () {
+	        document.addEventListener('click', this.pageClick, false);
+	    };
+	    ItemsPerPageSelector.prototype.componentWillUnmount = function () {
+	        document.removeEventListener('click', this.pageClick, false);
+	    };
+	    ItemsPerPageSelector.prototype.render = function () {
+	        return (React.createElement("div", {className: "btn-group dropup", style: { float: 'left' }}, React.createElement("button", {type: "button", className: "btn btn-default"}, this.state.itemsPerPage), React.createElement("button", {type: "button", className: "btn btn-default dropdown-toggle", dataToggle: "dropdown", onClick: this.toggleDropDown}, React.createElement("span", {className: "caret"}), React.createElement("span", {className: "sr-only"}, "Split button!")), React.createElement("ul", {className: "dropdown-menu", role: "menu", style: { display: this.state.dropdowndisplay }}, React.createElement("li", null, React.createElement("a", {href: "#", style: { cursor: 'pointer', paddingRight: 12 + 'px', paddingLeft: 12 + 'px' }, onClick: function () { this.updateItemsPerPage(10); }.bind(this)}, "10")), React.createElement("li", null, React.createElement("a", {href: "#", style: { cursor: 'pointer', paddingRight: 12 + 'px', paddingLeft: 12 + 'px' }, onClick: function () { this.updateItemsPerPage(20); }.bind(this)}, "20")), React.createElement("li", null, React.createElement("a", {href: "#", style: { cursor: 'pointer', paddingRight: 12 + 'px', paddingLeft: 12 + 'px' }, onClick: function () { this.updateItemsPerPage(30); }.bind(this)}, "30")), React.createElement("li", null, React.createElement("a", {href: "#", style: { cursor: 'pointer', paddingRight: 12 + 'px', paddingLeft: 12 + 'px' }, onClick: function () { this.updateItemsPerPage(40); }.bind(this)}, "40")), React.createElement("li", null, React.createElement("a", {href: "#", style: { cursor: 'pointer', paddingRight: 12 + 'px', paddingLeft: 12 + 'px' }, onClick: function () { this.updateItemsPerPage(50); }.bind(this)}, "50")))));
+	    };
+	    return ItemsPerPageSelector;
+	}(React.Component));
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = ItemsPerPageSelector;
+	//# sourceMappingURL=ItemsPerPageSelector.js.map
+
+/***/ },
+/* 218 */
 /*!******************************************!*\
   !*** ./src/constants/pagingParameter.js ***!
   \******************************************/
@@ -32757,7 +33077,189 @@
 	//# sourceMappingURL=pagingParameter.js.map
 
 /***/ },
-/* 215 */
+/* 219 */
+/*!*********************************************!*\
+  !*** ./src/components/common/Pagination.js ***!
+  \*********************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var React = __webpack_require__(/*! react */ 1);
+	var PageButton = (function (_super) {
+	    __extends(PageButton, _super);
+	    function PageButton() {
+	        var _this = this;
+	        _super.apply(this, arguments);
+	        this.handleClick = function () {
+	            _this.props.onClick(_this.props.pageNumber);
+	        };
+	    }
+	    PageButton.prototype.render = function () {
+	        return (React.createElement("li", {className: this.props.mode}, React.createElement("a", {href: "#", onClick: this.handleClick}, this.props.symbol)));
+	    };
+	    return PageButton;
+	}(React.Component));
+	var Pagination = (function (_super) {
+	    __extends(Pagination, _super);
+	    function Pagination(props, context) {
+	        var _this = this;
+	        _super.call(this, props, context);
+	        this.pageButtonClickHandler = function (pageNumber) {
+	            var totalPageAmount = Math.ceil(_this.props.itemAmount / _this.props.itemsPerPage);
+	            if (pageNumber == -1 && _this.props.currentPage != 0) {
+	                _this.props.onPageBtnClick(_this.props.currentPage - 1);
+	            }
+	            if (pageNumber == -2 && _this.props.currentPage != totalPageAmount - 1) {
+	                _this.props.onPageBtnClick(_this.props.currentPage + 1);
+	            }
+	            if (pageNumber >= 0 && pageNumber != _this.props.currentPage) {
+	                _this.props.onPageBtnClick(pageNumber);
+	            }
+	        };
+	        this.props = props;
+	        this.context = context;
+	        this.state = {};
+	    }
+	    Pagination.prototype.render = function () {
+	        var totalPageAmount = Math.ceil(this.props.itemAmount / this.props.itemsPerPage);
+	        var pageButtons = [];
+	        if (totalPageAmount > 0) {
+	            if (totalPageAmount != 1 && this.props.currentPage != 0) {
+	                pageButtons.push(React.createElement(PageButton, {key: 0, mode: '', onClick: this.pageButtonClickHandler, symbol: this.props.firstSymbol, pageNumber: 0}));
+	                pageButtons.push(React.createElement(PageButton, {key: 1, mode: '', onClick: this.pageButtonClickHandler, symbol: this.props.prevSymbol, pageNumber: -1}));
+	            }
+	            for (var i = 0; i < totalPageAmount; i++) {
+	                if (this.props.currentPage == i) {
+	                    pageButtons.push(React.createElement(PageButton, {key: i + 2, mode: 'active', onClick: function () { }, symbol: String(i + 1), pageNumber: i}));
+	                }
+	                else {
+	                    pageButtons.push(React.createElement(PageButton, {key: i + 2, mode: '', onClick: this.pageButtonClickHandler, symbol: String(i + 1), pageNumber: i}));
+	                }
+	            }
+	            if (totalPageAmount != 1 && this.props.currentPage != totalPageAmount - 1) {
+	                pageButtons.push(React.createElement(PageButton, {key: i + 3, mode: '', onClick: this.pageButtonClickHandler, symbol: this.props.nextSymbol, pageNumber: -2}));
+	                pageButtons.push(React.createElement(PageButton, {key: i + 4, mode: '', onClick: this.pageButtonClickHandler, symbol: this.props.lastSymbol, pageNumber: totalPageAmount - 1}));
+	            }
+	        }
+	        return (React.createElement("div", {style: { float: 'right' }}, React.createElement("ul", {className: "pagination", style: { marginTop: 0 + 'px', marginBottom: 0 + 'px', float: 'right' }}, pageButtons)));
+	    };
+	    return Pagination;
+	}(React.Component));
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = Pagination;
+	//# sourceMappingURL=Pagination.js.map
+
+/***/ },
+/* 220 */
+/*!***************************************************!*\
+  !*** ./src/components/common/DialogBackground.js ***!
+  \***************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var React = __webpack_require__(/*! react */ 1);
+	function DialogBackground(props) {
+	    return (props.isShow ?
+	        React.createElement("div", {style: {
+	            position: 'absolute',
+	            height: 100 + '%',
+	            width: 100 + '%',
+	            bottom: 0,
+	            left: 0,
+	            zIndex: 1030
+	        }}, React.createElement("div", {style: {
+	            position: 'absolute',
+	            height: 100 + '%',
+	            width: 100 + '%',
+	            bottom: 0,
+	            zIndex: 1040,
+	            backgroundColor: 'white', opacity: 0.3
+	        }}), React.createElement("div", {style: {
+	            position: 'relative',
+	            top: 200 + 'px',
+	            margin: 0 + ' auto',
+	            width: 400 + 'px',
+	            zIndex: 1050
+	        }}, props.children))
+	        :
+	            null);
+	}
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = DialogBackground;
+	//# sourceMappingURL=DialogBackground.js.map
+
+/***/ },
+/* 221 */
+/*!**********************************************************!*\
+  !*** ./src/components/common/ConfirmationDialogPanel.js ***!
+  \**********************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var React = __webpack_require__(/*! react */ 1);
+	var DialogPanel_1 = __webpack_require__(/*! ./DialogPanel */ 222);
+	function ConfirmationDialogPanel(props) {
+	    return (React.createElement(DialogPanel_1.default, {onCloseClick: props.onCancelClick, title: props.title}, React.createElement("div", {className: "panel-body"}, props.children), React.createElement("div", {className: "panel-footer clearfix"}, React.createElement("div", {className: "btn-toolbar pull-right"}, React.createElement("button", {type: "button", className: "btn btn-danger", onClick: props.onConfirmClick}, "Да"), React.createElement("button", {type: "button", className: "btn btn-default", onClick: props.onCancelClick}, "Нет")))));
+	}
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = ConfirmationDialogPanel;
+	//# sourceMappingURL=ConfirmationDialogPanel.js.map
+
+/***/ },
+/* 222 */
+/*!**********************************************!*\
+  !*** ./src/components/common/DialogPanel.js ***!
+  \**********************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var React = __webpack_require__(/*! react */ 1);
+	function DialogPanel(props) {
+	    return (React.createElement("div", {className: "panel panel-default"}, React.createElement("div", {className: "panel-heading table-style"}, React.createElement("h4", {className: "panel-title"}, props.title), React.createElement("div", {className: "button-wrap"}, React.createElement("div", {className: "btn btn-default btn-sm", onClick: props.onClosePanel}, React.createElement("div", {style: { display: 'table-cell', verticalAlign: 'middle' }}, React.createElement("span", null, '❌'))))), props.children));
+	}
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = DialogPanel;
+	//# sourceMappingURL=DialogPanel.js.map
+
+/***/ },
+/* 223 */
+/*!***********************************************!*\
+  !*** ./src/components/common/PendingPanel.js ***!
+  \***********************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var React = __webpack_require__(/*! react */ 1);
+	function PendingPanel(props) {
+	    return (React.createElement("div", {className: "panel panel-default"}, React.createElement("div", {className: "panel-heading"}, React.createElement("h2", {className: "panel-title"}, props.title)), React.createElement("div", {className: "panel-body"}, props.children)));
+	}
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = PendingPanel;
+	//# sourceMappingURL=PendingPanel.js.map
+
+/***/ },
+/* 224 */
+/*!***************************************************!*\
+  !*** ./src/components/common/PendingAnimation.js ***!
+  \***************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var React = __webpack_require__(/*! react */ 1);
+	function PendingAnimation(props) {
+	    return (React.createElement("div", {style: { position: 'relative', display: 'table', margin: 0 + ' auto' }}, React.createElement("div", {style: { display: 'table-cell', verticalAlign: 'middle', zIndex: 1050, position: 'relative' }}, React.createElement("img", {src: "images/spin.gif"})), React.createElement("div", {style: { display: 'table-cell', verticalAlign: 'middle', textAlign: 'center', zIndex: 1050 }}, props.children)));
+	}
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = PendingAnimation;
+	//# sourceMappingURL=PendingAnimation.js.map
+
+/***/ },
+/* 225 */
 /*!*************************************!*\
   !*** ./src/store/configureStore.js ***!
   \*************************************/
@@ -32765,8 +33267,8 @@
 
 	"use strict";
 	var redux_1 = __webpack_require__(/*! redux */ 173);
-	var main_1 = __webpack_require__(/*! ../reducers/main */ 216);
-	var redux_thunk_1 = __webpack_require__(/*! redux-thunk */ 222);
+	var main_1 = __webpack_require__(/*! ../reducers/main */ 226);
+	var redux_thunk_1 = __webpack_require__(/*! redux-thunk */ 232);
 	var logger = function (store) { return function (next) { return function (action) {
 	    console.group(action.type);
 	    console.info('dispatching', action);
@@ -32784,7 +33286,7 @@
 	//# sourceMappingURL=configureStore.js.map
 
 /***/ },
-/* 216 */
+/* 226 */
 /*!******************************!*\
   !*** ./src/reducers/main.js ***!
   \******************************/
@@ -32792,9 +33294,9 @@
 
 	"use strict";
 	var redux_1 = __webpack_require__(/*! redux */ 173);
-	var panels_1 = __webpack_require__(/*! ./panels */ 217);
-	var entities_1 = __webpack_require__(/*! ./entities */ 218);
-	var toolLists_1 = __webpack_require__(/*! ./toolLists */ 221);
+	var panels_1 = __webpack_require__(/*! ./panels */ 227);
+	var entities_1 = __webpack_require__(/*! ./entities */ 228);
+	var toolLists_1 = __webpack_require__(/*! ./toolLists */ 231);
 	var main = redux_1.combineReducers({
 	    panels: panels_1.default,
 	    entities: entities_1.default,
@@ -32805,7 +33307,7 @@
 	//# sourceMappingURL=main.js.map
 
 /***/ },
-/* 217 */
+/* 227 */
 /*!********************************!*\
   !*** ./src/reducers/panels.js ***!
   \********************************/
@@ -32839,15 +33341,15 @@
 	//# sourceMappingURL=panels.js.map
 
 /***/ },
-/* 218 */
+/* 228 */
 /*!**********************************!*\
   !*** ./src/reducers/entities.js ***!
   \**********************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var ToolActionType = __webpack_require__(/*! ../actions/toolActionType */ 213);
-	var _ = __webpack_require__(/*! lodash */ 219);
+	var ToolActionType = __webpack_require__(/*! ../actions/toolActionType */ 212);
+	var _ = __webpack_require__(/*! lodash */ 229);
 	var initialState = {
 	    tools: []
 	};
@@ -32866,7 +33368,7 @@
 	//# sourceMappingURL=entities.js.map
 
 /***/ },
-/* 219 */
+/* 229 */
 /*!****************************!*\
   !*** ./~/lodash/lodash.js ***!
   \****************************/
@@ -48900,10 +49402,10 @@
 	  }
 	}.call(this));
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./../webpack/buildin/module.js */ 220)(module), (function() { return this; }())))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./../webpack/buildin/module.js */ 230)(module), (function() { return this; }())))
 
 /***/ },
-/* 220 */
+/* 230 */
 /*!***********************************!*\
   !*** (webpack)/buildin/module.js ***!
   \***********************************/
@@ -48922,17 +49424,17 @@
 
 
 /***/ },
-/* 221 */
+/* 231 */
 /*!***********************************!*\
   !*** ./src/reducers/toolLists.js ***!
   \***********************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var ToolActionType = __webpack_require__(/*! ../actions/toolActionType */ 213);
+	var ToolActionType = __webpack_require__(/*! ../actions/toolActionType */ 212);
 	var PanelActionType = __webpack_require__(/*! ../actions/panelActionType */ 196);
 	var PanelType = __webpack_require__(/*! ../components/panelType */ 197);
-	var _ = __webpack_require__(/*! lodash */ 219);
+	var _ = __webpack_require__(/*! lodash */ 229);
 	var initialState = [];
 	function toolLists(state, action) {
 	    if (state === void 0) { state = initialState; }
@@ -48946,10 +49448,80 @@
 	                    return toolList;
 	                }
 	            });
+	        case ToolActionType.TOOL_SELECT:
+	            return state.map(function (toolList) {
+	                if (toolList.id === action.toolListId) {
+	                    return _.assign({}, toolList, { selectedTools: action.selectedTools });
+	                }
+	                else {
+	                    return toolList;
+	                }
+	            });
+	        case ToolActionType.TOOL_CONFIRM_DELETE:
+	            return state.map(function (toolList) {
+	                if (toolList.id === action.toolListId) {
+	                    return _.assign({}, toolList, { isConfirmDeleting: true });
+	                }
+	                else {
+	                    return toolList;
+	                }
+	            });
+	        case ToolActionType.TOOL_CANCEL_DELETE:
+	            return state.map(function (toolList) {
+	                if (toolList.id === action.toolListId) {
+	                    return _.assign({}, toolList, { isConfirmDeleting: false });
+	                }
+	                else {
+	                    return toolList;
+	                }
+	            });
+	        case ToolActionType.TOOL_REMOVE_PENDING:
+	            return state.map(function (toolList) {
+	                if (toolList.id === action.toolListId) {
+	                    return _.assign({}, toolList, {
+	                        isConfirmDeleting: false,
+	                        isDeleting: true
+	                    });
+	                }
+	                else {
+	                    return toolList;
+	                }
+	            });
+	        case ToolActionType.TOOL_REMOVE_SUCCEED:
+	            return state.map(function (toolList) {
+	                if (toolList.id === action.toolListId) {
+	                    return _.assign({}, toolList, {
+	                        tools: toolList.tools.filter(function (toolId) { return toolList.selectedTools.indexOf(toolId) < 0; }),
+	                        selectedTools: [],
+	                        isDeleting: false
+	                    });
+	                }
+	                else {
+	                    return toolList;
+	                }
+	            });
+	        case ToolActionType.TOOL_REMOVE_FAILED:
+	            return state.map(function (toolList) {
+	                if (toolList.id === action.toolListId) {
+	                    return _.assign({}, toolList, {
+	                        isDeleting: false
+	                    });
+	                }
+	                else {
+	                    return toolList;
+	                }
+	            });
 	        case ToolActionType.TOOL_LOAD_SUCCEED:
 	            return state.map(function (toolList) {
 	                if (toolList.id === action.toolListId) {
-	                    return _.assign({}, toolList, { isPending: false, tools: action.tools.map(function (tool) { return tool.id; }) });
+	                    return _.assign({}, toolList, {
+	                        isPending: false,
+	                        tools: action.tools.map(function (tool) { return tool.id; }),
+	                        totalAmount: action.totalAmount,
+	                        toolPage: action.toolPage,
+	                        toolsPerPage: action.toolsPerPage,
+	                        searchText: action.searchText
+	                    });
 	                }
 	                else {
 	                    return toolList;
@@ -48965,7 +49537,8 @@
 	                    tools: [],
 	                    selectedTools: [],
 	                    isPending: true,
-	                    isDeleting: false
+	                    isDeleting: false,
+	                    isConfirmDeleting: false
 	                }
 	            ]);
 	        default:
@@ -48977,7 +49550,7 @@
 	//# sourceMappingURL=toolLists.js.map
 
 /***/ },
-/* 222 */
+/* 232 */
 /*!************************************!*\
   !*** ./~/redux-thunk/lib/index.js ***!
   \************************************/
@@ -49001,19 +49574,6 @@
 	    };
 	  };
 	}
-
-/***/ },
-/* 223 */
-/*!****************************************!*\
-  !*** ./src/constants/serviceDomain.js ***!
-  \****************************************/
-/***/ function(module, exports) {
-
-	"use strict";
-	var domain = 'http://localhost:49352';
-	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.default = domain;
-	//# sourceMappingURL=serviceDomain.js.map
 
 /***/ }
 /******/ ]);

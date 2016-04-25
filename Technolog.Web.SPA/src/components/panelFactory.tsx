@@ -57,7 +57,9 @@ export function getPanel(panel) {
 
     return (
         <Panel id={panel.id} title={panel.name}>
-            {content}
+            <div className="panel-body" style={{ position: 'relative', display: 'flex', flexGrow: 2, flexBasis: 0 + '%', minHeight: 0, minWidth: 0 }}>
+                {content}
+            </div>
         </Panel>    
     );
 }

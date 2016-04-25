@@ -13,7 +13,7 @@ export default function TableList(props: any) {
         var selectedTool = null;
 
         for (var j = 0; j < selectedTools.length; j++) {
-            if (selectedTools[j].id == tool.id) {
+            if (selectedTools[j] == tool.id) {
                 selectedTool = selectedTools[j];
                 break;
             }
@@ -26,7 +26,7 @@ export default function TableList(props: any) {
                     <input
                         type='checkbox'
                         value={tool.id}
-                        onChange={() => { props.onToolSelect(tool.id) }}
+                        onChange={props.onToolSelect}
                         checked={selectedTool}>
                     </input>
                 </td>
