@@ -2,6 +2,7 @@
 import * as PanelType from './panelType';
 import Panel from '../containers/Panel';
 import ToolList from '../containers/ToolList';
+import ToolEditForm from '../containers/ToolEditForm';
 
 function getContent(panel) {
     switch (panel.type) {
@@ -11,7 +12,7 @@ function getContent(panel) {
             );
         case PanelType.TOOL_EDIT_FORM:
             return (
-                <div></div>
+                <ToolEditForm id={panel.contentId} toolId={panel.params.toolId}></ToolEditForm>
             );
         case PanelType.PART_LIST:
             return (

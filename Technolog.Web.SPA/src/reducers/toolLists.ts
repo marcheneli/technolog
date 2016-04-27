@@ -134,7 +134,7 @@ export default function toolLists(state = initialState, action) {
                     isDeleting: false,
                     isConfirmDeleting: false
                 }
-            ]
+            ];
         default:
             return state;
     }

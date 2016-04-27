@@ -3,6 +3,8 @@ import * as ToolActionType from './toolActionType';
 import { Schema, arrayOf, normalize } from 'normalizr';
 import serviceDomain from '../constants/serviceDomain';
 import * as AntiForgeryToken from '../utils/antiForgeryToken';
+import * as ToolValidator from '../validators/toolValidator';
+import * as ValidationMessageType from '../validators/validationMessageType';
 
 export function load(toolListId: number, page: number, toolPerPage: number, searchText: string) {
     return dispatch => {
@@ -121,5 +123,76 @@ export function cancelDelete(toolListId) {
     return {
         type: ToolActionType.TOOL_CANCEL_DELETE,
         toolListId: toolListId
+    };
+}
+
+export function toolNameChange(toolEditFormId, value): any {
+    const nameValidation = ToolValidator.validateName(value);
+
+    if (!nameValidation.isValid)
+        return {
+            type: ToolActionType.TOOL_NAME_CHANGE,
+            toolEditFormId: toolEditFormId,
+            name: value,
+            nameValidation: nameValidation
+        };
+
+    return dispatch => {
+        $.ajax({
+            url: location.origin + "/api/tools?name=" + value,
+            type: "GET",
+            success: (response) => {
+                console.log(response);
+            },
+            error: (xhr, status, err) => {
+                console.log(status);
+            }
+        });
+
+        toolNameValidationPending(toolEditFormId, value, nameValidation);
+    };
+}
+
+export function toolNameValidationPending(toolEditFormId, value, nameValidation) {
+    return {
+        type: ToolActionType.TOOL_NAME_VALIDATION_PENDING,
+        toolEditFormId: toolEditFormId,
+        name: value,
+        nameValidation: nameValidation
+    };
+}
+
+export function toolNameValidationSucceed(toolEditFormId, value) {
+    return {
+        type: ToolActionType.TOOL_NAME_VALIDATION_SUCCEED,
+        toolEditFormId: toolEditFormId,
+        name: value,
+        nameValidation: {
+            isValid: false,
+            errorMessage: "Инструмент с данным названием уже существует. Рекомендуется ввести другое название",
+            type: ValidationMessageType.WARNING
+        }
+    };
+}
+
+export function toolNameValidationFailed(toolEditFormId, value, errorMessage) {
+    return {
+        type: ToolActionType.TOOL_NAME_VALIDATION_FAILED,
+        toolEditFormId: toolEditFormId,
+        name: value,
+        nameValidation: {
+            isValid: false,
+            errorMessage: errorMessage,
+            type: ValidationMessageType.DANGER
+        }
+    };
+}
+
+export function toolPriceChange(toolEditFormId, value) {
+    return {
+        type: ToolActionType.TOOL_PRICE_CHANGE,
+        toolEditFormId: toolEditFormId,
+        price: value,
+        priceValidation: ToolValidator.validatePrice(value)
     };
 }

@@ -52,7 +52,7 @@
 	var ReactDOM = __webpack_require__(/*! react-dom */ 32);
 	var react_redux_1 = __webpack_require__(/*! react-redux */ 166);
 	var Technolog_1 = __webpack_require__(/*! ./components/Technolog */ 192);
-	var configureStore_1 = __webpack_require__(/*! ./store/configureStore */ 225);
+	var configureStore_1 = __webpack_require__(/*! ./store/configureStore */ 229);
 	var $ = __webpack_require__(/*! jquery */ 211);
 	var serviceDomain_1 = __webpack_require__(/*! ./constants/serviceDomain */ 213);
 	var AntiForgeryToken = __webpack_require__(/*! ./utils/antiForgeryToken */ 214);
@@ -22589,12 +22589,13 @@
 	var PanelType = __webpack_require__(/*! ./panelType */ 197);
 	var Panel_1 = __webpack_require__(/*! ../containers/Panel */ 203);
 	var ToolList_1 = __webpack_require__(/*! ../containers/ToolList */ 205);
+	var ToolEditForm_1 = __webpack_require__(/*! ../containers/ToolEditForm */ 227);
 	function getContent(panel) {
 	    switch (panel.type) {
 	        case PanelType.TOOL_LIST:
 	            return (React.createElement(ToolList_1.default, {id: panel.contentId}));
 	        case PanelType.TOOL_EDIT_FORM:
-	            return (React.createElement("div", null));
+	            return (React.createElement(ToolEditForm_1.default, {id: panel.contentId, toolId: panel.params.toolId}));
 	        case PanelType.PART_LIST:
 	            return (React.createElement("div", null));
 	        case PanelType.PART_EDIT_FORM:
@@ -22671,7 +22672,7 @@
 	var react_redux_1 = __webpack_require__(/*! react-redux */ 166);
 	var ToolList_1 = __webpack_require__(/*! ../components/ToolList */ 206);
 	var ToolActionCreator = __webpack_require__(/*! ../actions/toolActionCreator */ 210);
-	var PagingParameter = __webpack_require__(/*! ../constants/pagingParameter */ 218);
+	var PagingParameter = __webpack_require__(/*! ../constants/pagingParameter */ 220);
 	var mapStateToToolListProps = function (state, ownProps) {
 	    var toolListState = state.toolLists.filter(function (toolList) { return toolList.id === ownProps.id; })[0];
 	    return {
@@ -22725,13 +22726,13 @@
 	};
 	var React = __webpack_require__(/*! react */ 1);
 	var ToolTable_1 = __webpack_require__(/*! ../containers/ToolTable */ 207);
-	var ItemListControlPanel_1 = __webpack_require__(/*! ./common/ItemListControlPanel */ 215);
-	var ItemsPerPageSelector_1 = __webpack_require__(/*! ./common/ItemsPerPageSelector */ 217);
-	var Pagination_1 = __webpack_require__(/*! ./common/Pagination */ 219);
-	var DialogBackground_1 = __webpack_require__(/*! ./common/DialogBackground */ 220);
-	var ConfirmationDialogPanel_1 = __webpack_require__(/*! ./common/ConfirmationDialogPanel */ 221);
-	var PendingPanel_1 = __webpack_require__(/*! ./common/PendingPanel */ 223);
-	var PendingAnimation_1 = __webpack_require__(/*! ./common/PendingAnimation */ 224);
+	var ItemListControlPanel_1 = __webpack_require__(/*! ./common/ItemListControlPanel */ 217);
+	var ItemsPerPageSelector_1 = __webpack_require__(/*! ./common/ItemsPerPageSelector */ 219);
+	var Pagination_1 = __webpack_require__(/*! ./common/Pagination */ 221);
+	var DialogBackground_1 = __webpack_require__(/*! ./common/DialogBackground */ 222);
+	var ConfirmationDialogPanel_1 = __webpack_require__(/*! ./common/ConfirmationDialogPanel */ 223);
+	var PendingPanel_1 = __webpack_require__(/*! ./common/PendingPanel */ 225);
+	var PendingAnimation_1 = __webpack_require__(/*! ./common/PendingAnimation */ 226);
 	var ToolList = (function (_super) {
 	    __extends(ToolList, _super);
 	    function ToolList(props) {
@@ -22758,6 +22759,7 @@
 	        this.props.onMount();
 	    };
 	    ToolList.prototype.render = function () {
+	        console.log("toollistrender");
 	        return (React.createElement("div", {style: { position: 'relative', display: 'flex', flexGrow: 2, flexBasis: 0 + '%', minHeight: 0, minWidth: 0 }}, React.createElement(DialogBackground_1.default, {isShow: this.props.isConfirmDeleting}, React.createElement(ConfirmationDialogPanel_1.default, {title: "Удаление инструмента", onConfirmClick: this.deleteConfirmClickHandler, onCancelClick: this.props.onDeleteCancel}, React.createElement("span", null, "Вы действительно хотите удалить данный инструмент?"))), React.createElement(DialogBackground_1.default, {isShow: this.props.isDeleting}, React.createElement(PendingPanel_1.default, {title: "Удаление инструмента"}, React.createElement(PendingAnimation_1.default, null, React.createElement("h4", null, "Пожалуйста, подождите."), React.createElement("h4", null, "Идет удаление.")))), React.createElement("div", {style: {
 	            position: 'relative',
 	            display: 'flex',
@@ -22885,6 +22887,8 @@
 	var ToolActionType = __webpack_require__(/*! ./toolActionType */ 212);
 	var serviceDomain_1 = __webpack_require__(/*! ../constants/serviceDomain */ 213);
 	var AntiForgeryToken = __webpack_require__(/*! ../utils/antiForgeryToken */ 214);
+	var ToolValidator = __webpack_require__(/*! ../validators/toolValidator */ 215);
+	var ValidationMessageType = __webpack_require__(/*! ../validators/validationMessageType */ 216);
 	function load(toolListId, page, toolPerPage, searchText) {
 	    return function (dispatch) {
 	        $.ajax({
@@ -22998,6 +23002,74 @@
 	    };
 	}
 	exports.cancelDelete = cancelDelete;
+	function toolNameChange(toolEditFormId, value) {
+	    var nameValidation = ToolValidator.validateName(value);
+	    if (!nameValidation.isValid)
+	        return {
+	            type: ToolActionType.TOOL_NAME_CHANGE,
+	            toolEditFormId: toolEditFormId,
+	            name: value,
+	            nameValidation: nameValidation
+	        };
+	    return function (dispatch) {
+	        $.ajax({
+	            url: location.origin + "/api/tools?name=" + value,
+	            type: "GET",
+	            success: function (response) {
+	                console.log(response);
+	            },
+	            error: function (xhr, status, err) {
+	                console.log(status);
+	            }
+	        });
+	        toolNameValidationPending(toolEditFormId, value, nameValidation);
+	    };
+	}
+	exports.toolNameChange = toolNameChange;
+	function toolNameValidationPending(toolEditFormId, value, nameValidation) {
+	    return {
+	        type: ToolActionType.TOOL_NAME_VALIDATION_PENDING,
+	        toolEditFormId: toolEditFormId,
+	        name: value,
+	        nameValidation: nameValidation
+	    };
+	}
+	exports.toolNameValidationPending = toolNameValidationPending;
+	function toolNameValidationSucceed(toolEditFormId, value) {
+	    return {
+	        type: ToolActionType.TOOL_NAME_VALIDATION_SUCCEED,
+	        toolEditFormId: toolEditFormId,
+	        name: value,
+	        nameValidation: {
+	            isValid: false,
+	            errorMessage: "Инструмент с данным названием уже существует. Рекомендуется ввести другое название",
+	            type: ValidationMessageType.WARNING
+	        }
+	    };
+	}
+	exports.toolNameValidationSucceed = toolNameValidationSucceed;
+	function toolNameValidationFailed(toolEditFormId, value, errorMessage) {
+	    return {
+	        type: ToolActionType.TOOL_NAME_VALIDATION_FAILED,
+	        toolEditFormId: toolEditFormId,
+	        name: value,
+	        nameValidation: {
+	            isValid: false,
+	            errorMessage: errorMessage,
+	            type: ValidationMessageType.DANGER
+	        }
+	    };
+	}
+	exports.toolNameValidationFailed = toolNameValidationFailed;
+	function toolPriceChange(toolEditFormId, value) {
+	    return {
+	        type: ToolActionType.TOOL_PRICE_CHANGE,
+	        toolEditFormId: toolEditFormId,
+	        price: value,
+	        priceValidation: ToolValidator.validatePrice(value)
+	    };
+	}
+	exports.toolPriceChange = toolPriceChange;
 	//# sourceMappingURL=toolActionCreator.js.map
 
 /***/ },
@@ -32870,6 +32942,15 @@
 	exports.TOOL_SELECT = 'TOOL_SELECT';
 	exports.TOOL_CONFIRM_DELETE = 'TOOL_CONFIRM_DELETE';
 	exports.TOOL_CANCEL_DELETE = 'TOOL_CANCEL_DELETE';
+	exports.TOOL_NAME_CHANGE = 'TOOL_NAME_CHANGE';
+	exports.TOOL_PRICE_CHANGE = 'TOOL_PRICE_CHANGE';
+	exports.TOOL_NAME_VALIDATION_PENDING = 'TOOL_NAME_VALIDATION_PENDING';
+	exports.TOOL_NAME_VALIDATION_SUCCEED = 'TOOL_NAME_VALIDATION_SUCCEED';
+	exports.TOOL_NAME_VALIDATION_FAILED = 'TOOL_NAME_VALIDATION_FAILED';
+	exports.TOOL_SAVE = 'TOOL_SAVE';
+	exports.TOOL_SAVE_PENDING = 'TOOL_SAVE_PENDING';
+	exports.TOOL_SAVE_SUCCEED = 'TOOL_SAVE_SUCCEED';
+	exports.TOOL_SAVE_FAILED = 'TOOL_SAVE_FAILED';
 	//# sourceMappingURL=toolActionType.js.map
 
 /***/ },
@@ -32906,6 +32987,58 @@
 
 /***/ },
 /* 215 */
+/*!*****************************************!*\
+  !*** ./src/validators/toolValidator.js ***!
+  \*****************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var ValidationMessageType = __webpack_require__(/*! ./validationMessageType */ 216);
+	function validate(values) {
+	    var errors = {};
+	    return errors;
+	}
+	exports.validate = validate;
+	function validateName(value) {
+	    var isValid = true;
+	    var errorMessage = '';
+	    var type = ValidationMessageType.PENDING;
+	    return {
+	        isValid: true,
+	        errorMessage: errorMessage,
+	        type: type
+	    };
+	}
+	exports.validateName = validateName;
+	function validatePrice(value) {
+	    var isValid = true;
+	    var errorMessage = '';
+	    return {
+	        isValid: true,
+	        errorMessage: errorMessage
+	    };
+	}
+	exports.validatePrice = validatePrice;
+	//# sourceMappingURL=toolValidator.js.map
+
+/***/ },
+/* 216 */
+/*!*************************************************!*\
+  !*** ./src/validators/validationMessageType.js ***!
+  \*************************************************/
+/***/ function(module, exports) {
+
+	"use strict";
+	exports.NONE = 'NONE';
+	exports.DANGER = 'DANGER';
+	exports.WARNING = 'WARNING';
+	exports.INFO = 'INFO';
+	exports.PENDING = 'PENDING';
+	exports.FAILED = 'FAILED';
+	//# sourceMappingURL=validationMessageType.js.map
+
+/***/ },
+/* 217 */
 /*!*******************************************************!*\
   !*** ./src/components/common/ItemListControlPanel.js ***!
   \*******************************************************/
@@ -32918,7 +33051,7 @@
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var React = __webpack_require__(/*! react */ 1);
-	var SearchInput_1 = __webpack_require__(/*! ./SearchInput */ 216);
+	var SearchInput_1 = __webpack_require__(/*! ./SearchInput */ 218);
 	var ItemListControlPanel = (function (_super) {
 	    __extends(ItemListControlPanel, _super);
 	    function ItemListControlPanel(props, context) {
@@ -32950,7 +33083,7 @@
 	//# sourceMappingURL=ItemListControlPanel.js.map
 
 /***/ },
-/* 216 */
+/* 218 */
 /*!**********************************************!*\
   !*** ./src/components/common/SearchInput.js ***!
   \**********************************************/
@@ -32982,7 +33115,7 @@
 	//# sourceMappingURL=SearchInput.js.map
 
 /***/ },
-/* 217 */
+/* 219 */
 /*!*******************************************************!*\
   !*** ./src/components/common/ItemsPerPageSelector.js ***!
   \*******************************************************/
@@ -32995,7 +33128,7 @@
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var React = __webpack_require__(/*! react */ 1);
-	var PagingParameter = __webpack_require__(/*! ../../constants/pagingParameter */ 218);
+	var PagingParameter = __webpack_require__(/*! ../../constants/pagingParameter */ 220);
 	var ItemsPerPageSelector = (function (_super) {
 	    __extends(ItemsPerPageSelector, _super);
 	    function ItemsPerPageSelector(props, context) {
@@ -33064,7 +33197,7 @@
 	//# sourceMappingURL=ItemsPerPageSelector.js.map
 
 /***/ },
-/* 218 */
+/* 220 */
 /*!******************************************!*\
   !*** ./src/constants/pagingParameter.js ***!
   \******************************************/
@@ -33077,7 +33210,7 @@
 	//# sourceMappingURL=pagingParameter.js.map
 
 /***/ },
-/* 219 */
+/* 221 */
 /*!*********************************************!*\
   !*** ./src/components/common/Pagination.js ***!
   \*********************************************/
@@ -33155,7 +33288,7 @@
 	//# sourceMappingURL=Pagination.js.map
 
 /***/ },
-/* 220 */
+/* 222 */
 /*!***************************************************!*\
   !*** ./src/components/common/DialogBackground.js ***!
   \***************************************************/
@@ -33194,7 +33327,7 @@
 	//# sourceMappingURL=DialogBackground.js.map
 
 /***/ },
-/* 221 */
+/* 223 */
 /*!**********************************************************!*\
   !*** ./src/components/common/ConfirmationDialogPanel.js ***!
   \**********************************************************/
@@ -33202,7 +33335,7 @@
 
 	"use strict";
 	var React = __webpack_require__(/*! react */ 1);
-	var DialogPanel_1 = __webpack_require__(/*! ./DialogPanel */ 222);
+	var DialogPanel_1 = __webpack_require__(/*! ./DialogPanel */ 224);
 	function ConfirmationDialogPanel(props) {
 	    return (React.createElement(DialogPanel_1.default, {onCloseClick: props.onCancelClick, title: props.title}, React.createElement("div", {className: "panel-body"}, props.children), React.createElement("div", {className: "panel-footer clearfix"}, React.createElement("div", {className: "btn-toolbar pull-right"}, React.createElement("button", {type: "button", className: "btn btn-danger", onClick: props.onConfirmClick}, "Да"), React.createElement("button", {type: "button", className: "btn btn-default", onClick: props.onCancelClick}, "Нет")))));
 	}
@@ -33211,7 +33344,7 @@
 	//# sourceMappingURL=ConfirmationDialogPanel.js.map
 
 /***/ },
-/* 222 */
+/* 224 */
 /*!**********************************************!*\
   !*** ./src/components/common/DialogPanel.js ***!
   \**********************************************/
@@ -33227,7 +33360,7 @@
 	//# sourceMappingURL=DialogPanel.js.map
 
 /***/ },
-/* 223 */
+/* 225 */
 /*!***********************************************!*\
   !*** ./src/components/common/PendingPanel.js ***!
   \***********************************************/
@@ -33243,7 +33376,7 @@
 	//# sourceMappingURL=PendingPanel.js.map
 
 /***/ },
-/* 224 */
+/* 226 */
 /*!***************************************************!*\
   !*** ./src/components/common/PendingAnimation.js ***!
   \***************************************************/
@@ -33259,7 +33392,75 @@
 	//# sourceMappingURL=PendingAnimation.js.map
 
 /***/ },
-/* 225 */
+/* 227 */
+/*!****************************************!*\
+  !*** ./src/containers/ToolEditForm.js ***!
+  \****************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var react_redux_1 = __webpack_require__(/*! react-redux */ 166);
+	var ToolEditForm_1 = __webpack_require__(/*! ../components/ToolEditForm */ 228);
+	var ToolActionCreator = __webpack_require__(/*! ../actions/toolActionCreator */ 210);
+	var mapStateToToolEditFormProps = function (state, ownProps) {
+	    var toolEditFormState = state.toolEditForms.filter(function (toolEditForm) { return toolEditForm.id == ownProps.id; })[0];
+	    var tool = state.entities.tools.filter(function (tool) { return tool.id == toolEditFormState.toolId; })[0];
+	    var values = toolEditFormState.values;
+	    if (!values.name)
+	        values.name = tool.name;
+	    if (!values.price)
+	        values.price = tool.price;
+	    return {
+	        values: values,
+	        validationResults: toolEditFormState.validationResults,
+	        isSaving: false
+	    };
+	};
+	var mapDispatchToToolEditFormProps = function (dispatch, ownProps) {
+	    return {
+	        handleSubmit: function () { },
+	        onUndoClick: function () { },
+	        onRedoClick: function () { },
+	        onNameChange: function (event) {
+	            dispatch(ToolActionCreator.toolNameChange(ownProps.id, event.target.value));
+	        },
+	        onPriceChange: function (event) {
+	            dispatch(ToolActionCreator.toolPriceChange(ownProps.id, event.target.value));
+	        }
+	    };
+	};
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = react_redux_1.connect(mapStateToToolEditFormProps, mapDispatchToToolEditFormProps)(ToolEditForm_1.default);
+	//# sourceMappingURL=ToolEditForm.js.map
+
+/***/ },
+/* 228 */
+/*!****************************************!*\
+  !*** ./src/components/ToolEditForm.js ***!
+  \****************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var React = __webpack_require__(/*! react */ 1);
+	var DialogBackground_1 = __webpack_require__(/*! ./common/DialogBackground */ 222);
+	var PendingPanel_1 = __webpack_require__(/*! ./common/PendingPanel */ 225);
+	var PendingAnimation_1 = __webpack_require__(/*! ./common/PendingAnimation */ 226);
+	var ValidationMessageType = __webpack_require__(/*! ../validators/validationMessageType */ 216);
+	function ToolEditForm(props) {
+	    return (React.createElement("div", null, React.createElement(DialogBackground_1.default, {isShow: props.isSaving}, React.createElement(PendingPanel_1.default, {title: "Сохранение инструмента"}, React.createElement(PendingAnimation_1.default, null, React.createElement("h4", null, "Пожалуйста, подождите."), React.createElement("h4", null, "Идет сохранение.")))), React.createElement("form", {role: "form", onSubmit: props.handleSubmit}, React.createElement("div", {className: "form-group"}, React.createElement("label", {className: "control-label"}, "Наименование: "), React.createElement("input", {className: 'form-control', onChange: props.onNameChange, value: props.values.name}), props.validationResults.name.type == ValidationMessageType.WARNING ?
+	        React.createElement("div", null, React.createElement("span", {style: { color: 'yellow' }}, props.nameValidation.message))
+	        : null, props.validationResults.name.type == ValidationMessageType.PENDING ?
+	        React.createElement("div", null, React.createElement("span", {className: "glyphicon glyphicon-refresh glyphicon-refresh-animate"}))
+	        : null), React.createElement("div", {className: "form-group"}, React.createElement("label", {className: "control-label"}, "Цена: "), React.createElement("input", {className: 'form-control', onChange: props.onPriceChange, value: props.values.price}), props.validationResults.price.type == ValidationMessageType.DANGER ?
+	        React.createElement("div", null, React.createElement("span", {style: { color: 'red' }}, props.validationResults.price.message))
+	        : null), React.createElement("div", {className: "form-group"}, React.createElement("div", {className: "btn-toolbar"}, React.createElement("button", {className: "btn btn-primary", type: "submit", disabled: !props.isValid}, "Сохранить"), React.createElement("button", {className: "btn btn-default", type: "button", onClick: props.onUndoClick, disabled: !props.isUndoAvailable}, "Отменить"), React.createElement("button", {className: "btn btn-default", type: "button", onClick: props.onRedoClick, disabled: !props.isRedoAvailable}, "Вернуть"))))));
+	}
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = ToolEditForm;
+	//# sourceMappingURL=ToolEditForm.js.map
+
+/***/ },
+/* 229 */
 /*!*************************************!*\
   !*** ./src/store/configureStore.js ***!
   \*************************************/
@@ -33267,8 +33468,8 @@
 
 	"use strict";
 	var redux_1 = __webpack_require__(/*! redux */ 173);
-	var main_1 = __webpack_require__(/*! ../reducers/main */ 226);
-	var redux_thunk_1 = __webpack_require__(/*! redux-thunk */ 232);
+	var main_1 = __webpack_require__(/*! ../reducers/main */ 230);
+	var redux_thunk_1 = __webpack_require__(/*! redux-thunk */ 237);
 	var logger = function (store) { return function (next) { return function (action) {
 	    console.group(action.type);
 	    console.info('dispatching', action);
@@ -33286,7 +33487,7 @@
 	//# sourceMappingURL=configureStore.js.map
 
 /***/ },
-/* 226 */
+/* 230 */
 /*!******************************!*\
   !*** ./src/reducers/main.js ***!
   \******************************/
@@ -33294,20 +33495,22 @@
 
 	"use strict";
 	var redux_1 = __webpack_require__(/*! redux */ 173);
-	var panels_1 = __webpack_require__(/*! ./panels */ 227);
-	var entities_1 = __webpack_require__(/*! ./entities */ 228);
-	var toolLists_1 = __webpack_require__(/*! ./toolLists */ 231);
+	var panels_1 = __webpack_require__(/*! ./panels */ 231);
+	var entities_1 = __webpack_require__(/*! ./entities */ 232);
+	var toolLists_1 = __webpack_require__(/*! ./toolLists */ 235);
+	var toolEditForms_1 = __webpack_require__(/*! ./toolEditForms */ 236);
 	var main = redux_1.combineReducers({
 	    panels: panels_1.default,
 	    entities: entities_1.default,
-	    toolLists: toolLists_1.default
+	    toolLists: toolLists_1.default,
+	    toolEditForms: toolEditForms_1.default
 	});
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.default = main;
 	//# sourceMappingURL=main.js.map
 
 /***/ },
-/* 227 */
+/* 231 */
 /*!********************************!*\
   !*** ./src/reducers/panels.js ***!
   \********************************/
@@ -33325,7 +33528,8 @@
 	                {
 	                    id: nextPanelId++,
 	                    type: action.panelType,
-	                    contentId: action.contentId
+	                    contentId: action.contentId,
+	                    params: action.params
 	                }
 	            ].concat(state);
 	        case PanelActionType.PANEL_CLOSE:
@@ -33341,7 +33545,7 @@
 	//# sourceMappingURL=panels.js.map
 
 /***/ },
-/* 228 */
+/* 232 */
 /*!**********************************!*\
   !*** ./src/reducers/entities.js ***!
   \**********************************/
@@ -33349,7 +33553,7 @@
 
 	"use strict";
 	var ToolActionType = __webpack_require__(/*! ../actions/toolActionType */ 212);
-	var _ = __webpack_require__(/*! lodash */ 229);
+	var _ = __webpack_require__(/*! lodash */ 233);
 	var initialState = {
 	    tools: []
 	};
@@ -33368,7 +33572,7 @@
 	//# sourceMappingURL=entities.js.map
 
 /***/ },
-/* 229 */
+/* 233 */
 /*!****************************!*\
   !*** ./~/lodash/lodash.js ***!
   \****************************/
@@ -49402,10 +49606,10 @@
 	  }
 	}.call(this));
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./../webpack/buildin/module.js */ 230)(module), (function() { return this; }())))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./../webpack/buildin/module.js */ 234)(module), (function() { return this; }())))
 
 /***/ },
-/* 230 */
+/* 234 */
 /*!***********************************!*\
   !*** (webpack)/buildin/module.js ***!
   \***********************************/
@@ -49424,7 +49628,7 @@
 
 
 /***/ },
-/* 231 */
+/* 235 */
 /*!***********************************!*\
   !*** ./src/reducers/toolLists.js ***!
   \***********************************/
@@ -49434,7 +49638,7 @@
 	var ToolActionType = __webpack_require__(/*! ../actions/toolActionType */ 212);
 	var PanelActionType = __webpack_require__(/*! ../actions/panelActionType */ 196);
 	var PanelType = __webpack_require__(/*! ../components/panelType */ 197);
-	var _ = __webpack_require__(/*! lodash */ 229);
+	var _ = __webpack_require__(/*! lodash */ 233);
 	var initialState = [];
 	function toolLists(state, action) {
 	    if (state === void 0) { state = initialState; }
@@ -49550,7 +49754,64 @@
 	//# sourceMappingURL=toolLists.js.map
 
 /***/ },
-/* 232 */
+/* 236 */
+/*!***************************************!*\
+  !*** ./src/reducers/toolEditForms.js ***!
+  \***************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var ToolActionType = __webpack_require__(/*! ../actions/toolActionType */ 212);
+	var PanelActionType = __webpack_require__(/*! ../actions/panelActionType */ 196);
+	var PanelType = __webpack_require__(/*! ../components/panelType */ 197);
+	var ValidationMessageType = __webpack_require__(/*! ../validators/validationMessageType */ 216);
+	var initialState = [];
+	function toolEditForms(state, action) {
+	    if (state === void 0) { state = initialState; }
+	    switch (action.type) {
+	        case PanelActionType.PANEL_OPEN:
+	            if (action.panelType !== PanelType.TOOL_EDIT_FORM) {
+	                return state;
+	            }
+	            console.log(action);
+	            return state.concat([
+	                {
+	                    id: action.contentId,
+	                    toolId: action.params.toolId,
+	                    values: {},
+	                    validationResults: {
+	                        name: {
+	                            isValid: true,
+	                            errorMessage: "",
+	                            type: ValidationMessageType.NONE
+	                        },
+	                        price: {
+	                            isValid: true,
+	                            errorMessage: "",
+	                            type: ValidationMessageType.NONE
+	                        }
+	                    }
+	                }
+	            ]);
+	        case ToolActionType.TOOL_NAME_VALIDATION_PENDING:
+	            return state.map(function (toolEditForm) {
+	                if (toolEditForm.id === action.toolEditFormId) {
+	                    return _.assign({}, toolEditForm, {});
+	                }
+	                else {
+	                    return toolEditForm;
+	                }
+	            });
+	        default:
+	            return state;
+	    }
+	}
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = toolEditForms;
+	//# sourceMappingURL=toolEditForms.js.map
+
+/***/ },
+/* 237 */
 /*!************************************!*\
   !*** ./~/redux-thunk/lib/index.js ***!
   \************************************/

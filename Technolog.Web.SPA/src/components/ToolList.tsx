@@ -67,6 +67,7 @@ export default class ToolList extends React.Component<IToolListProps, {}> {
     }
 
     render() {
+        console.log("toollistrender");
         return (
             <div style={{ position: 'relative', display: 'flex', flexGrow: 2, flexBasis: 0 + '%', minHeight: 0, minWidth: 0 }}>
                 <DialogBackground isShow={this.props.isConfirmDeleting}>
