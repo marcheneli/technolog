@@ -210,3 +210,11 @@ FakesAssemblies/
 GeneratedArtifacts/
 _Pvt_Extensions/
 ModelManifest.xml
+
+# JS generated files from typescript
+**/Scripts/app/**/*.js
+**/Scripts/app/**/*.js.map
+**/Scripts/tests/**/*.js
+**/Scripts/tests/**/*.js.map
+**/src/**/*.js
+**/src/**/*.js.map

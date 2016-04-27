@@ -1,0 +1,31 @@
+﻿{
+  "TestHarnessReferenceMode": "AMD",
+  "TestHarnessLocationMode": "SettingsFileAdjacent",
+  "Compile": {
+    "Mode": "External",
+    "Extensions": [ ".ts" ],
+    "ExtensionsWithNoOutput": [ ".d.ts" ]
+  },
+  "References": [
+    {
+      "Path": "Scripts/react-with-addons.js",
+      "IsTestFrameworkFile": true
+    },
+    {
+      "Path": "Scripts/require.js",
+      "Includes": [ "*/Scripts/app/*.ts", "*/Scripts/app/*.js" ],
+      "Excludes": [ "*/Scripts/app/*.d.ts" ],
+      "IsTestFrameworkFile": true
+    },
+    {
+      "Path": "Scripts/require-config.js",
+      "IsTestFrameworkFile": true
+    }
+  ],
+  "Tests": [
+    {
+      "Includes": [ "*/Scripts/tests/*.js" ],
+      "Excludes": [ "*/Scripts/tests/*.d.ts" ]
+    }
+  ]
+}
