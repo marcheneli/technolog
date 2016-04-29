@@ -15,6 +15,7 @@ const mapStateToToolEditFormProps = (state, ownProps) => {
     if (!values.price) values.price = tool.price;
 
     return {
+        toolId: toolEditFormState.toolId,
         values: values,
         validationResults: toolEditFormState.validationResults,
         isSaving: false
@@ -26,8 +27,8 @@ const mapDispatchToToolEditFormProps = (dispatch, ownProps) => {
         handleSubmit: () => { },
         onUndoClick: () => { },
         onRedoClick: () => { },
-        onNameChange: (event) => {
-            dispatch(ToolActionCreator.toolNameChange(ownProps.id, event.target.value));
+        onNameChange: (name, toolId) => {
+            dispatch(ToolActionCreator.toolNameChange(ownProps.id, toolId, name));
         },
         onPriceChange: (event) => {
             dispatch(ToolActionCreator.toolPriceChange(ownProps.id, event.target.value));

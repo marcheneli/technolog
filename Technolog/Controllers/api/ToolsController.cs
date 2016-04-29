@@ -60,6 +60,8 @@ namespace Technolog.Web.Controllers.api
         {
             ToolDTO toolDTO = null;
 
+            ToolModel toolModel = null;
+
             if (name == null)
                 return ResponseMessage(
                     Request.CreateResponse(
@@ -72,13 +74,15 @@ namespace Technolog.Web.Controllers.api
             }
             catch (ValidationException ex)
             {
-                return ResponseMessage(
-                    Request.CreateResponse(
-                        HttpStatusCode.NotFound,
-                        ex.Message));
+
+                Thread.Sleep(3000);
+
+                return Ok(toolModel);
             }
 
-            ToolModel toolModel = mapper.Map<ToolModel>(toolDTO);
+            toolModel = mapper.Map<ToolModel>(toolDTO);
+
+            Thread.Sleep(3000);
 
             return Ok(toolModel);
         }

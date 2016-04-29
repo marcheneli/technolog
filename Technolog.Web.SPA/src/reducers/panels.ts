@@ -12,7 +12,8 @@ export default function panels(state = initialState, action) {
                     id: nextPanelId++,
                     type: action.panelType,
                     contentId: action.contentId,
-                    params: action.params
+                    params: action.params,
+                    name: action.name
                 },
                 ...state
             ];

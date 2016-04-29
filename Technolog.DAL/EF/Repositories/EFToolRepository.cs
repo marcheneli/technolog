@@ -47,7 +47,7 @@ namespace Technolog.DAL.EF
 
         public Tool GetByName(string name)
         {
-            return dbContext.Tools.First(t => t.Name == name);
+            return dbContext.Tools.FirstOrDefault(t => t.Name == name);
         }
 
         public async Task<Tool> GetByIdAsync(int id)

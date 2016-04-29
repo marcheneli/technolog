@@ -16,15 +16,17 @@ interface IToolListProps {
     onDeleteConfirm(tools);
     onDeleteCancel();
     load(page, itemsPerPage, searchText);
-    isConfirmDeleting: boolean;
-    isDeleting: boolean;
-    isPending: boolean;
     tools: Array<any>;
     selectedTools: Array<any>;
-    totalAmount: number;
-    toolPage: number;
-    toolsPerPage: number;
-    searchText: string;
+    params: {
+        isConfirmDeleting: boolean;
+        isDeleting: boolean;
+        isPending: boolean;
+        totalAmount: number;
+        toolPage: number;
+        toolsPerPage: number;
+        searchText: string;
+    }
 }
 
 export default class ToolList extends React.Component<IToolListProps, {}> {
@@ -37,26 +39,26 @@ export default class ToolList extends React.Component<IToolListProps, {}> {
     }
 
     refreshBtnClickHandler = () => {
-        this.props.load(this.props.toolPage,
-            this.props.toolsPerPage,
-            this.props.searchText);
+        this.props.load(this.props.params.toolPage,
+            this.props.params.toolsPerPage,
+            this.props.params.searchText);
     }
 
     toolPageChangeHandler = (page) => {
         this.props.load(page,
-            this.props.toolsPerPage,
-            this.props.searchText);
+            this.props.params.toolsPerPage,
+            this.props.params.searchText);
     }
 
     toolsPerPageChangeHandler = (itemsPerPage) => {
-        this.props.load(this.props.toolPage,
+        this.props.load(this.props.params.toolPage,
             itemsPerPage,
-            this.props.searchText);
+            this.props.params.searchText);
     }
 
     searchTextChangeHandler = (text) => {
-        this.props.load(this.props.toolPage,
-            this.props.toolsPerPage,
+        this.props.load(this.props.params.toolPage,
+            this.props.params.toolsPerPage,
             text);
     }
 
@@ -65,12 +67,20 @@ export default class ToolList extends React.Component<IToolListProps, {}> {
 
         this.props.onDeleteConfirm(toolsForDeleting);
     }
+    
+    componentWillReceiveProps(nextProps) {
+        //console.log(this.props);
+        //console.log(nextProps);
+        //for (var key in this.props) {
+        //    console.log(this.props[key]);
+        //    console.log(this.props[key] == nextProps[key]);
+        //}
+    }
 
     render() {
-        console.log("toollistrender");
         return (
             <div style={{ position: 'relative', display: 'flex', flexGrow: 2, flexBasis: 0 + '%', minHeight: 0, minWidth: 0 }}>
-                <DialogBackground isShow={this.props.isConfirmDeleting}>
+                <DialogBackground isShow={this.props.params.isConfirmDeleting}>
                     <ConfirmationDialogPanel
                         title={"Удаление инструмента"}
                         onConfirmClick={this.deleteConfirmClickHandler}
@@ -80,7 +90,7 @@ export default class ToolList extends React.Component<IToolListProps, {}> {
                         </span>
                     </ConfirmationDialogPanel>
                 </DialogBackground>
-                <DialogBackground isShow={this.props.isDeleting}>
+                <DialogBackground isShow={this.props.params.isDeleting}>
                     <PendingPanel title={"Удаление инструмента"}>
                         <PendingAnimation>
                             <h4>Пожалуйста, подождите.</h4>
@@ -103,7 +113,7 @@ export default class ToolList extends React.Component<IToolListProps, {}> {
                             onRefresh={this.refreshBtnClickHandler}
                             onSearchTextChange={this.searchTextChangeHandler}
                             isDeleteEnable={this.props.selectedTools.length > 0}
-                            isUpdating={this.props.isPending}
+                            isUpdating={this.props.params.isPending}
                             />
                     </div>
                     <ToolTable
@@ -114,9 +124,9 @@ export default class ToolList extends React.Component<IToolListProps, {}> {
                         <ItemsPerPageSelector
                             onChange={this.toolsPerPageChangeHandler}/>
                         <Pagination
-                            itemAmount={this.props.totalAmount}
-                            itemsPerPage={this.props.toolsPerPage}
-                            currentPage={this.props.toolPage}
+                            itemAmount={this.props.params.totalAmount}
+                            itemsPerPage={this.props.params.toolsPerPage}
+                            currentPage={this.props.params.toolPage}
                             firstSymbol='«'
                             nextSymbol='›'
                             prevSymbol='‹'

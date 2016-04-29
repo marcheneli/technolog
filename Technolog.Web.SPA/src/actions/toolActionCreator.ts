@@ -126,7 +126,7 @@ export function cancelDelete(toolListId) {
     };
 }
 
-export function toolNameChange(toolEditFormId, value): any {
+export function toolNameChange(toolEditFormId, toolId, value): any {
     const nameValidation = ToolValidator.validateName(value);
 
     if (!nameValidation.isValid)
@@ -137,19 +137,31 @@ export function toolNameChange(toolEditFormId, value): any {
             nameValidation: nameValidation
         };
 
-    return dispatch => {
-        $.ajax({
-            url: location.origin + "/api/tools?name=" + value,
-            type: "GET",
-            success: (response) => {
-                console.log(response);
-            },
-            error: (xhr, status, err) => {
-                console.log(status);
-            }
-        });
+    return (dispatch, getState) => {
+        setTimeout(() => {
+            const state = getState();
 
-        toolNameValidationPending(toolEditFormId, value, nameValidation);
+            const newName = state.toolEditForms.filter(tef => tef.id == toolEditFormId)[0].values.name;
+
+            if (newName == value) {
+                $.ajax({
+                    url: serviceDomain + "/api/tools?name=" + value,
+                    type: "GET",
+                    success: (tool) => {
+                        if (tool == null || tool.id == toolId) {
+                            dispatch(toolNameUnique(toolEditFormId, value));
+                        } else {
+                            dispatch(toolNameNotUnique(toolEditFormId, value));
+                        }
+                    },
+                    error: (xhr, status, err) => {
+                        dispatch(toolNameValidationFailed(toolEditFormId, value, err));
+                    }
+                });
+            }
+        }, 2000);
+        
+        dispatch(toolNameValidationPending(toolEditFormId, value, nameValidation));
     };
 }
 
@@ -162,7 +174,7 @@ export function toolNameValidationPending(toolEditFormId, value, nameValidation)
     };
 }
 
-export function toolNameValidationSucceed(toolEditFormId, value) {
+export function toolNameNotUnique(toolEditFormId, value) {
     return {
         type: ToolActionType.TOOL_NAME_VALIDATION_SUCCEED,
         toolEditFormId: toolEditFormId,
@@ -171,6 +183,19 @@ export function toolNameValidationSucceed(toolEditFormId, value) {
             isValid: false,
             errorMessage: "Инструмент с данным названием уже существует. Рекомендуется ввести другое название",
             type: ValidationMessageType.WARNING
+        }
+    };
+}
+
+export function toolNameUnique(toolEditFormId, value) {
+    return {
+        type: ToolActionType.TOOL_NAME_VALIDATION_SUCCEED,
+        toolEditFormId: toolEditFormId,
+        name: value,
+        nameValidation: {
+            isValid: true,
+            errorMessage: "",
+            type: ValidationMessageType.SUCCESS
         }
     };
 }

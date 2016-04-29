@@ -22,12 +22,12 @@ export default function toolEditForms(state = initialState, action) {
                         name: {
                             isValid: true,
                             errorMessage: "",
-                            type: ValidationMessageType.NONE
+                            type: ValidationMessageType.SUCCESS
                         },
                         price: {
                             isValid: true,
                             errorMessage: "",
-                            type: ValidationMessageType.NONE
+                            type: ValidationMessageType.SUCCESS
                         }
                     }
                 }
@@ -39,7 +39,22 @@ export default function toolEditForms(state = initialState, action) {
                         {},
                         toolEditForm,
                         {
-
+                            values: _.assign({}, toolEditForm.values, { name: action.name }),
+                            validationResults: _.assign({}, toolEditForm.validationResults, { name: action.nameValidation})
+                        }
+                    );
+                } else {
+                    return toolEditForm;
+                }
+            });
+        case ToolActionType.TOOL_NAME_VALIDATION_SUCCEED:
+            return state.map(toolEditForm => {
+                if (toolEditForm.id === action.toolEditFormId) {
+                    return _.assign(
+                        {},
+                        toolEditForm,
+                        {
+                            validationResults: _.assign({}, toolEditForm.validationResults, { name: action.nameValidation })
                         }
                     );
                 } else {

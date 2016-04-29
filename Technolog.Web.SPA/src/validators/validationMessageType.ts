@@ -1,4 +1,4 @@
-﻿export const NONE = 'NONE';
+﻿export const SUCCESS = 'SUCCESS';
 export const DANGER = 'DANGER';
 export const WARNING = 'WARNING';
 export const INFO = 'INFO';
