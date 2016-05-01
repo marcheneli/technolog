@@ -29,12 +29,13 @@ const getContentId = (panelType) => {
     }
 };
 
-export function open(panelType, params?) {
+export function open(panelType, name, params?) {
     return {
         type: PanelActionType.PANEL_OPEN,
         panelType: panelType,
         params: params,
-        contentId: getContentId(panelType)
+        contentId: getContentId(panelType),
+        name: name
     };
 }
 

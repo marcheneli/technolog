@@ -7,8 +7,12 @@ import TextInput from './common/TextInput';
 import * as ValidationMessageType from '../validators/validationMessageType';
 
 export default function ToolEditForm(props: any) {
+    const onToolNameChange = (event) => {
+        props.onNameChange(event.target.value, props.toolId);
+    };
+
     return (
-        <div>
+        <div style={{ width: '100%' }}>
             <DialogBackground isShow={props.isSaving}>
                 <PendingPanel title={"Сохранение инструмента"}>
                     <PendingAnimation>
@@ -18,20 +22,22 @@ export default function ToolEditForm(props: any) {
                 </PendingPanel>
             </DialogBackground>
             <form role="form" onSubmit={props.handleSubmit}>
-                <div className="form-group">
+                <div
+                    className={ props.validationResults.name.type == ValidationMessageType.WARNING ?
+                        "form-group has-warning has-feedback" : "form-group has-feedback"}>
                     <label className="control-label">Наименование: </label>
                     <input className='form-control'
-                        onChange={props.onNameChange}
+                        onChange={onToolNameChange}
                         value={props.values.name} />
-                    { props.validationResults.name.type == ValidationMessageType.WARNING ?
-                        <div>
-                            <span style={{ color: 'yellow' }}>{props.nameValidation.message}</span>
-                        </div>
+                    { props.validationResults.name.type == ValidationMessageType.PENDING ?
+
+                        <span
+                            className="glyphicon glyphicon-refresh form-control-feedback glyphicon-refresh-animate"></span>
                         : null
                     }
-                    { props.validationResults.name.type == ValidationMessageType.PENDING ?
-                        <div>
-                            <span className="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>
+                    { props.validationResults.name.type == ValidationMessageType.WARNING ?
+                        <div className="help-block" style={{ wordWrap: 'break-all', whiteSpace: 'normal' }}>
+                            {props.validationResults.name.errorMessage}
                         </div>
                         : null
                     }

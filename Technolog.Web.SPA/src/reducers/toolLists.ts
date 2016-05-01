@@ -13,7 +13,11 @@ export default function toolLists(state = initialState, action) {
                     return _.assign(
                         {},
                         toolList,
-                        { isPending: true }
+                        {
+                            params: _.assign({}, toolList.params, {
+                                isPending: true
+                            })
+                        }
                     );
                 } else {
                     return toolList
@@ -37,7 +41,11 @@ export default function toolLists(state = initialState, action) {
                     return _.assign(
                         {},
                         toolList,
-                        { isConfirmDeleting: true }
+                        {
+                            params: _.assign({}, toolList.params, {
+                                isConfirmDeleting: true
+                            })
+                        }
                     );
                 } else {
                     return toolList
@@ -49,7 +57,11 @@ export default function toolLists(state = initialState, action) {
                     return _.assign(
                         {},
                         toolList,
-                        { isConfirmDeleting: false }
+                        {
+                            params: _.assign({}, toolList.params, {
+                                isConfirmDeleting: false
+                            })
+                        }
                     );
                 } else {
                     return toolList
@@ -62,8 +74,10 @@ export default function toolLists(state = initialState, action) {
                         {},
                         toolList,
                         {
-                            isConfirmDeleting: false,
-                            isDeleting: true
+                            params: _.assign({}, toolList.params, {
+                                isConfirmDeleting: false,
+                                isDeleting: true
+                            })
                         }
                     );
                 } else {
@@ -79,7 +93,11 @@ export default function toolLists(state = initialState, action) {
                         {
                             tools: toolList.tools.filter(toolId => toolList.selectedTools.indexOf(toolId) < 0),
                             selectedTools: [],
-                            isDeleting: false
+                        },
+                        {
+                            params: _.assign({}, toolList.params, {
+                                isDeleting: false
+                            })
                         }
                     );
                 } else {
@@ -93,7 +111,9 @@ export default function toolLists(state = initialState, action) {
                         {},
                         toolList,
                         {
-                            isDeleting: false
+                            params: _.assign({}, toolList.params, {
+                                isDeleting: false
+                            })
                         }
                     );
                 } else {
@@ -107,12 +127,17 @@ export default function toolLists(state = initialState, action) {
                         {},
                         toolList,
                         {
-                            isPending: false,
+                            params: _.assign({}, toolList.params, {
+                                isPending: false,
+                                totalAmount: action.totalAmount,
+                                toolPage: action.toolPage,
+                                toolsPerPage: action.toolsPerPage,
+                                searchText: action.searchText
+                            })
+                        },
+                        {
                             tools: action.tools.map(tool => tool.id),
-                            totalAmount: action.totalAmount,
-                            toolPage: action.toolPage,
-                            toolsPerPage: action.toolsPerPage,
-                            searchText: action.searchText
+                            selectedTools: []
                         }
                     );
                 } else {
@@ -130,9 +155,11 @@ export default function toolLists(state = initialState, action) {
                     id: action.contentId,
                     tools: [],
                     selectedTools: [],
-                    isPending: true,
-                    isDeleting: false,
-                    isConfirmDeleting: false
+                    params: {
+                        isPending: true,
+                        isDeleting: false,
+                        isConfirmDeleting: false
+                    }
                 }
             ];
         default:

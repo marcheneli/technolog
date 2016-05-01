@@ -22340,7 +22340,7 @@
 	var Tab_1 = __webpack_require__(/*! ../containers/Tab */ 194);
 	function Sidebar(props) {
 	    var tabs = props.tabs.map(function (tab) {
-	        return React.createElement(Tab_1.default, {key: tab.id, type: tab.type}, tab.name);
+	        return React.createElement(Tab_1.default, {key: tab.id, type: tab.type, title: tab.name}, tab.name);
 	    });
 	    return (React.createElement("div", {className: "col-lg-2 col-md-3 col-sm-3 col-xs-4 sidebar"}, React.createElement("ul", {className: "nav nav-sidebar"}, tabs)));
 	}
@@ -22362,7 +22362,7 @@
 	var mapDispatchToTabProps = function (dispatch, ownProps) {
 	    return {
 	        onTabClick: function () {
-	            dispatch(PanelActionCreator.open(ownProps.type));
+	            dispatch(PanelActionCreator.open(ownProps.type, ownProps.title));
 	        }
 	    };
 	};
@@ -22407,12 +22407,13 @@
 	            return 0;
 	    }
 	};
-	function open(panelType, params) {
+	function open(panelType, name, params) {
 	    return {
 	        type: PanelActionType.PANEL_OPEN,
 	        panelType: panelType,
 	        params: params,
-	        contentId: getContentId(panelType)
+	        contentId: getContentId(panelType),
+	        name: name
 	    };
 	}
 	exports.open = open;
@@ -22678,13 +22679,7 @@
 	    return {
 	        tools: (toolListState.tools.map(function (toolId) { return state.entities.tools.filter(function (tool) { return tool.id === toolId; })[0]; })),
 	        selectedTools: toolListState.selectedTools,
-	        isPending: toolListState.isPending,
-	        isConfirmDeleting: toolListState.isConfirmDeleting,
-	        isDeleting: toolListState.isDeleting,
-	        totalAmount: toolListState.totalAmount,
-	        toolPage: toolListState.toolPage,
-	        toolsPerPage: toolListState.toolsPerPage,
-	        searchText: toolListState.searchText
+	        params: toolListState.params
 	    };
 	};
 	var mapDispatchToToolListProps = function (dispatch, ownProps) {
@@ -22739,16 +22734,16 @@
 	        var _this = this;
 	        _super.call(this, props);
 	        this.refreshBtnClickHandler = function () {
-	            _this.props.load(_this.props.toolPage, _this.props.toolsPerPage, _this.props.searchText);
+	            _this.props.load(_this.props.params.toolPage, _this.props.params.toolsPerPage, _this.props.params.searchText);
 	        };
 	        this.toolPageChangeHandler = function (page) {
-	            _this.props.load(page, _this.props.toolsPerPage, _this.props.searchText);
+	            _this.props.load(page, _this.props.params.toolsPerPage, _this.props.params.searchText);
 	        };
 	        this.toolsPerPageChangeHandler = function (itemsPerPage) {
-	            _this.props.load(_this.props.toolPage, itemsPerPage, _this.props.searchText);
+	            _this.props.load(_this.props.params.toolPage, itemsPerPage, _this.props.params.searchText);
 	        };
 	        this.searchTextChangeHandler = function (text) {
-	            _this.props.load(_this.props.toolPage, _this.props.toolsPerPage, text);
+	            _this.props.load(_this.props.params.toolPage, _this.props.params.toolsPerPage, text);
 	        };
 	        this.deleteConfirmClickHandler = function () {
 	            var toolsForDeleting = _this.props.selectedTools.map(function (id) { return { id: id }; });
@@ -22758,16 +22753,23 @@
 	    ToolList.prototype.componentDidMount = function () {
 	        this.props.onMount();
 	    };
+	    ToolList.prototype.componentWillReceiveProps = function (nextProps) {
+	        //console.log(this.props);
+	        //console.log(nextProps);
+	        //for (var key in this.props) {
+	        //    console.log(this.props[key]);
+	        //    console.log(this.props[key] == nextProps[key]);
+	        //}
+	    };
 	    ToolList.prototype.render = function () {
-	        console.log("toollistrender");
-	        return (React.createElement("div", {style: { position: 'relative', display: 'flex', flexGrow: 2, flexBasis: 0 + '%', minHeight: 0, minWidth: 0 }}, React.createElement(DialogBackground_1.default, {isShow: this.props.isConfirmDeleting}, React.createElement(ConfirmationDialogPanel_1.default, {title: "Удаление инструмента", onConfirmClick: this.deleteConfirmClickHandler, onCancelClick: this.props.onDeleteCancel}, React.createElement("span", null, "Вы действительно хотите удалить данный инструмент?"))), React.createElement(DialogBackground_1.default, {isShow: this.props.isDeleting}, React.createElement(PendingPanel_1.default, {title: "Удаление инструмента"}, React.createElement(PendingAnimation_1.default, null, React.createElement("h4", null, "Пожалуйста, подождите."), React.createElement("h4", null, "Идет удаление.")))), React.createElement("div", {style: {
+	        return (React.createElement("div", {style: { position: 'relative', display: 'flex', flexGrow: 2, flexBasis: 0 + '%', minHeight: 0, minWidth: 0 }}, React.createElement(DialogBackground_1.default, {isShow: this.props.params.isConfirmDeleting}, React.createElement(ConfirmationDialogPanel_1.default, {title: "Удаление инструмента", onConfirmClick: this.deleteConfirmClickHandler, onCancelClick: this.props.onDeleteCancel}, React.createElement("span", null, "Вы действительно хотите удалить данный инструмент?"))), React.createElement(DialogBackground_1.default, {isShow: this.props.params.isDeleting}, React.createElement(PendingPanel_1.default, {title: "Удаление инструмента"}, React.createElement(PendingAnimation_1.default, null, React.createElement("h4", null, "Пожалуйста, подождите."), React.createElement("h4", null, "Идет удаление.")))), React.createElement("div", {style: {
 	            position: 'relative',
 	            display: 'flex',
 	            flexFlow: 'column',
 	            flexGrow: 2,
 	            flexBasis: 0 + '%',
 	            minHeight: 0, minWidth: 0
-	        }}, React.createElement("div", {style: { flexShrink: 0 }}, React.createElement(ItemListControlPanel_1.default, {onItemDelete: this.props.onDeleteBtnClick, onNewItem: this.props.onAddBtnClick, onRefresh: this.refreshBtnClickHandler, onSearchTextChange: this.searchTextChangeHandler, isDeleteEnable: this.props.selectedTools.length > 0, isUpdating: this.props.isPending})), React.createElement(ToolTable_1.default, {id: this.props.id, tools: this.props.tools, selectedTools: this.props.selectedTools}), React.createElement("div", {className: "btn-toolbar", style: { flexShrink: 0 }}, React.createElement(ItemsPerPageSelector_1.default, {onChange: this.toolsPerPageChangeHandler}), React.createElement(Pagination_1.default, {itemAmount: this.props.totalAmount, itemsPerPage: this.props.toolsPerPage, currentPage: this.props.toolPage, firstSymbol: '«', nextSymbol: '›', prevSymbol: '‹', lastSymbol: '»', onPageBtnClick: this.toolPageChangeHandler})))));
+	        }}, React.createElement("div", {style: { flexShrink: 0 }}, React.createElement(ItemListControlPanel_1.default, {onItemDelete: this.props.onDeleteBtnClick, onNewItem: this.props.onAddBtnClick, onRefresh: this.refreshBtnClickHandler, onSearchTextChange: this.searchTextChangeHandler, isDeleteEnable: this.props.selectedTools.length > 0, isUpdating: this.props.params.isPending})), React.createElement(ToolTable_1.default, {id: this.props.id, tools: this.props.tools, selectedTools: this.props.selectedTools}), React.createElement("div", {className: "btn-toolbar", style: { flexShrink: 0 }}, React.createElement(ItemsPerPageSelector_1.default, {onChange: this.toolsPerPageChangeHandler}), React.createElement(Pagination_1.default, {itemAmount: this.props.params.totalAmount, itemsPerPage: this.props.params.toolsPerPage, currentPage: this.props.params.toolPage, firstSymbol: '«', nextSymbol: '›', prevSymbol: '‹', lastSymbol: '»', onPageBtnClick: this.toolPageChangeHandler})))));
 	    };
 	    return ToolList;
 	}(React.Component));
@@ -22791,7 +22793,7 @@
 	var mapDispatchToToolTableProps = function (dispatch, ownProps) {
 	    return {
 	        onTableRowDoubleClick: function (toolId) {
-	            dispatch(PanelActionCreator.open(PanelType.TOOL_EDIT_FORM, { toolId: toolId }));
+	            dispatch(PanelActionCreator.open(PanelType.TOOL_EDIT_FORM, "Редактирование инструмента", { toolId: toolId }));
 	        },
 	        onToolSelect: function (event) {
 	            var selectedTools = ownProps.selectedTools;
@@ -23002,7 +23004,7 @@
 	    };
 	}
 	exports.cancelDelete = cancelDelete;
-	function toolNameChange(toolEditFormId, value) {
+	function toolNameChange(toolEditFormId, toolId, value) {
 	    var nameValidation = ToolValidator.validateName(value);
 	    if (!nameValidation.isValid)
 	        return {
@@ -23011,18 +23013,39 @@
 	            name: value,
 	            nameValidation: nameValidation
 	        };
-	    return function (dispatch) {
-	        $.ajax({
-	            url: location.origin + "/api/tools?name=" + value,
-	            type: "GET",
-	            success: function (response) {
-	                console.log(response);
-	            },
-	            error: function (xhr, status, err) {
-	                console.log(status);
+	    return function (dispatch, getState) {
+	        setTimeout(function () {
+	            var state = getState();
+	            var newName = state.toolEditForms.filter(function (tef) { return tef.id == toolEditFormId; })[0].values.name;
+	            if (newName == value) {
+	                $.ajax({
+	                    url: serviceDomain_1.default + "/api/tools?name=" + value,
+	                    type: "GET",
+	                    success: function (tool) {
+	                        if (tool == null || tool.id == toolId) {
+	                            dispatch(toolNameUnique(toolEditFormId, value));
+	                        }
+	                        else {
+	                            dispatch(toolNameNotUnique(toolEditFormId, value));
+	                        }
+	                    },
+	                    error: function (xhr, status, err) {
+	                        dispatch(toolNameValidationFailed(toolEditFormId, value, err));
+	                    }
+	                });
+	                dispatch(toolNameValidationPending(toolEditFormId, value, nameValidation));
+	            }
+	        }, 500);
+	        dispatch({
+	            type: ToolActionType.TOOL_NAME_CHANGE,
+	            toolEditFormId: toolEditFormId,
+	            name: value,
+	            nameValidation: {
+	                type: ValidationMessageType.EMPTY,
+	                errorMessage: "",
+	                isValid: false
 	            }
 	        });
-	        toolNameValidationPending(toolEditFormId, value, nameValidation);
 	    };
 	}
 	exports.toolNameChange = toolNameChange;
@@ -23035,7 +23058,7 @@
 	    };
 	}
 	exports.toolNameValidationPending = toolNameValidationPending;
-	function toolNameValidationSucceed(toolEditFormId, value) {
+	function toolNameNotUnique(toolEditFormId, value) {
 	    return {
 	        type: ToolActionType.TOOL_NAME_VALIDATION_SUCCEED,
 	        toolEditFormId: toolEditFormId,
@@ -23047,7 +23070,20 @@
 	        }
 	    };
 	}
-	exports.toolNameValidationSucceed = toolNameValidationSucceed;
+	exports.toolNameNotUnique = toolNameNotUnique;
+	function toolNameUnique(toolEditFormId, value) {
+	    return {
+	        type: ToolActionType.TOOL_NAME_VALIDATION_SUCCEED,
+	        toolEditFormId: toolEditFormId,
+	        name: value,
+	        nameValidation: {
+	            isValid: true,
+	            errorMessage: "",
+	            type: ValidationMessageType.SUCCESS
+	        }
+	    };
+	}
+	exports.toolNameUnique = toolNameUnique;
 	function toolNameValidationFailed(toolEditFormId, value, errorMessage) {
 	    return {
 	        type: ToolActionType.TOOL_NAME_VALIDATION_FAILED,
@@ -33029,12 +33065,13 @@
 /***/ function(module, exports) {
 
 	"use strict";
-	exports.NONE = 'NONE';
+	exports.SUCCESS = 'SUCCESS';
 	exports.DANGER = 'DANGER';
 	exports.WARNING = 'WARNING';
 	exports.INFO = 'INFO';
 	exports.PENDING = 'PENDING';
 	exports.FAILED = 'FAILED';
+	exports.EMPTY = 'EMPTY';
 	//# sourceMappingURL=validationMessageType.js.map
 
 /***/ },
@@ -33411,6 +33448,7 @@
 	    if (!values.price)
 	        values.price = tool.price;
 	    return {
+	        toolId: toolEditFormState.toolId,
 	        values: values,
 	        validationResults: toolEditFormState.validationResults,
 	        isSaving: false
@@ -33421,8 +33459,8 @@
 	        handleSubmit: function () { },
 	        onUndoClick: function () { },
 	        onRedoClick: function () { },
-	        onNameChange: function (event) {
-	            dispatch(ToolActionCreator.toolNameChange(ownProps.id, event.target.value));
+	        onNameChange: function (name, toolId) {
+	            dispatch(ToolActionCreator.toolNameChange(ownProps.id, toolId, name));
 	        },
 	        onPriceChange: function (event) {
 	            dispatch(ToolActionCreator.toolPriceChange(ownProps.id, event.target.value));
@@ -33447,10 +33485,14 @@
 	var PendingAnimation_1 = __webpack_require__(/*! ./common/PendingAnimation */ 226);
 	var ValidationMessageType = __webpack_require__(/*! ../validators/validationMessageType */ 216);
 	function ToolEditForm(props) {
-	    return (React.createElement("div", null, React.createElement(DialogBackground_1.default, {isShow: props.isSaving}, React.createElement(PendingPanel_1.default, {title: "Сохранение инструмента"}, React.createElement(PendingAnimation_1.default, null, React.createElement("h4", null, "Пожалуйста, подождите."), React.createElement("h4", null, "Идет сохранение.")))), React.createElement("form", {role: "form", onSubmit: props.handleSubmit}, React.createElement("div", {className: "form-group"}, React.createElement("label", {className: "control-label"}, "Наименование: "), React.createElement("input", {className: 'form-control', onChange: props.onNameChange, value: props.values.name}), props.validationResults.name.type == ValidationMessageType.WARNING ?
-	        React.createElement("div", null, React.createElement("span", {style: { color: 'yellow' }}, props.nameValidation.message))
-	        : null, props.validationResults.name.type == ValidationMessageType.PENDING ?
-	        React.createElement("div", null, React.createElement("span", {className: "glyphicon glyphicon-refresh glyphicon-refresh-animate"}))
+	    var onToolNameChange = function (event) {
+	        props.onNameChange(event.target.value, props.toolId);
+	    };
+	    return (React.createElement("div", {style: { width: '100%' }}, React.createElement(DialogBackground_1.default, {isShow: props.isSaving}, React.createElement(PendingPanel_1.default, {title: "Сохранение инструмента"}, React.createElement(PendingAnimation_1.default, null, React.createElement("h4", null, "Пожалуйста, подождите."), React.createElement("h4", null, "Идет сохранение.")))), React.createElement("form", {role: "form", onSubmit: props.handleSubmit}, React.createElement("div", {className: props.validationResults.name.type == ValidationMessageType.WARNING ?
+	        "form-group has-warning has-feedback" : "form-group has-feedback"}, React.createElement("label", {className: "control-label"}, "Наименование: "), React.createElement("input", {className: 'form-control', onChange: onToolNameChange, value: props.values.name}), props.validationResults.name.type == ValidationMessageType.PENDING ?
+	        React.createElement("span", {className: "glyphicon glyphicon-refresh form-control-feedback glyphicon-refresh-animate"})
+	        : null, props.validationResults.name.type == ValidationMessageType.WARNING ?
+	        React.createElement("div", {className: "help-block", style: { wordWrap: 'break-all', whiteSpace: 'normal' }}, props.validationResults.name.errorMessage)
 	        : null), React.createElement("div", {className: "form-group"}, React.createElement("label", {className: "control-label"}, "Цена: "), React.createElement("input", {className: 'form-control', onChange: props.onPriceChange, value: props.values.price}), props.validationResults.price.type == ValidationMessageType.DANGER ?
 	        React.createElement("div", null, React.createElement("span", {style: { color: 'red' }}, props.validationResults.price.message))
 	        : null), React.createElement("div", {className: "form-group"}, React.createElement("div", {className: "btn-toolbar"}, React.createElement("button", {className: "btn btn-primary", type: "submit", disabled: !props.isValid}, "Сохранить"), React.createElement("button", {className: "btn btn-default", type: "button", onClick: props.onUndoClick, disabled: !props.isUndoAvailable}, "Отменить"), React.createElement("button", {className: "btn btn-default", type: "button", onClick: props.onRedoClick, disabled: !props.isRedoAvailable}, "Вернуть"))))));
@@ -33529,7 +33571,8 @@
 	                    id: nextPanelId++,
 	                    type: action.panelType,
 	                    contentId: action.contentId,
-	                    params: action.params
+	                    params: action.params,
+	                    name: action.name
 	                }
 	            ].concat(state);
 	        case PanelActionType.PANEL_CLOSE:
@@ -49646,7 +49689,11 @@
 	        case ToolActionType.TOOL_LOAD_PENDING:
 	            return state.map(function (toolList) {
 	                if (toolList.id === action.toolListId) {
-	                    return _.assign({}, toolList, { isPending: true });
+	                    return _.assign({}, toolList, {
+	                        params: _.assign({}, toolList.params, {
+	                            isPending: true
+	                        })
+	                    });
 	                }
 	                else {
 	                    return toolList;
@@ -49664,7 +49711,11 @@
 	        case ToolActionType.TOOL_CONFIRM_DELETE:
 	            return state.map(function (toolList) {
 	                if (toolList.id === action.toolListId) {
-	                    return _.assign({}, toolList, { isConfirmDeleting: true });
+	                    return _.assign({}, toolList, {
+	                        params: _.assign({}, toolList.params, {
+	                            isConfirmDeleting: true
+	                        })
+	                    });
 	                }
 	                else {
 	                    return toolList;
@@ -49673,7 +49724,11 @@
 	        case ToolActionType.TOOL_CANCEL_DELETE:
 	            return state.map(function (toolList) {
 	                if (toolList.id === action.toolListId) {
-	                    return _.assign({}, toolList, { isConfirmDeleting: false });
+	                    return _.assign({}, toolList, {
+	                        params: _.assign({}, toolList.params, {
+	                            isConfirmDeleting: false
+	                        })
+	                    });
 	                }
 	                else {
 	                    return toolList;
@@ -49683,8 +49738,10 @@
 	            return state.map(function (toolList) {
 	                if (toolList.id === action.toolListId) {
 	                    return _.assign({}, toolList, {
-	                        isConfirmDeleting: false,
-	                        isDeleting: true
+	                        params: _.assign({}, toolList.params, {
+	                            isConfirmDeleting: false,
+	                            isDeleting: true
+	                        })
 	                    });
 	                }
 	                else {
@@ -49697,7 +49754,10 @@
 	                    return _.assign({}, toolList, {
 	                        tools: toolList.tools.filter(function (toolId) { return toolList.selectedTools.indexOf(toolId) < 0; }),
 	                        selectedTools: [],
-	                        isDeleting: false
+	                    }, {
+	                        params: _.assign({}, toolList.params, {
+	                            isDeleting: false
+	                        })
 	                    });
 	                }
 	                else {
@@ -49708,7 +49768,9 @@
 	            return state.map(function (toolList) {
 	                if (toolList.id === action.toolListId) {
 	                    return _.assign({}, toolList, {
-	                        isDeleting: false
+	                        params: _.assign({}, toolList.params, {
+	                            isDeleting: false
+	                        })
 	                    });
 	                }
 	                else {
@@ -49719,12 +49781,16 @@
 	            return state.map(function (toolList) {
 	                if (toolList.id === action.toolListId) {
 	                    return _.assign({}, toolList, {
-	                        isPending: false,
+	                        params: _.assign({}, toolList.params, {
+	                            isPending: false,
+	                            totalAmount: action.totalAmount,
+	                            toolPage: action.toolPage,
+	                            toolsPerPage: action.toolsPerPage,
+	                            searchText: action.searchText
+	                        })
+	                    }, {
 	                        tools: action.tools.map(function (tool) { return tool.id; }),
-	                        totalAmount: action.totalAmount,
-	                        toolPage: action.toolPage,
-	                        toolsPerPage: action.toolsPerPage,
-	                        searchText: action.searchText
+	                        selectedTools: []
 	                    });
 	                }
 	                else {
@@ -49740,9 +49806,11 @@
 	                    id: action.contentId,
 	                    tools: [],
 	                    selectedTools: [],
-	                    isPending: true,
-	                    isDeleting: false,
-	                    isConfirmDeleting: false
+	                    params: {
+	                        isPending: true,
+	                        isDeleting: false,
+	                        isConfirmDeleting: false
+	                    }
 	                }
 	            ]);
 	        default:
@@ -49783,12 +49851,12 @@
 	                        name: {
 	                            isValid: true,
 	                            errorMessage: "",
-	                            type: ValidationMessageType.NONE
+	                            type: ValidationMessageType.SUCCESS
 	                        },
 	                        price: {
 	                            isValid: true,
 	                            errorMessage: "",
-	                            type: ValidationMessageType.NONE
+	                            type: ValidationMessageType.SUCCESS
 	                        }
 	                    }
 	                }
@@ -49796,7 +49864,32 @@
 	        case ToolActionType.TOOL_NAME_VALIDATION_PENDING:
 	            return state.map(function (toolEditForm) {
 	                if (toolEditForm.id === action.toolEditFormId) {
-	                    return _.assign({}, toolEditForm, {});
+	                    return _.assign({}, toolEditForm, {
+	                        validationResults: _.assign({}, toolEditForm.validationResults, { name: action.nameValidation })
+	                    });
+	                }
+	                else {
+	                    return toolEditForm;
+	                }
+	            });
+	        case ToolActionType.TOOL_NAME_VALIDATION_SUCCEED:
+	            return state.map(function (toolEditForm) {
+	                if (toolEditForm.id === action.toolEditFormId) {
+	                    return _.assign({}, toolEditForm, {
+	                        validationResults: _.assign({}, toolEditForm.validationResults, { name: action.nameValidation })
+	                    });
+	                }
+	                else {
+	                    return toolEditForm;
+	                }
+	            });
+	        case ToolActionType.TOOL_NAME_CHANGE:
+	            return state.map(function (toolEditForm) {
+	                if (toolEditForm.id === action.toolEditFormId) {
+	                    return _.assign({}, toolEditForm, {
+	                        values: _.assign({}, toolEditForm.values, { name: action.name }),
+	                        validationResults: _.assign({}, toolEditForm.validationResults, { name: action.nameValidation })
+	                    });
 	                }
 	                else {
 	                    return toolEditForm;

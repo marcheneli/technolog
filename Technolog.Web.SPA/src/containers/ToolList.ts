@@ -7,19 +7,18 @@ const mapStateToToolListProps = (state, ownProps) => {
     const toolListState = state.toolLists.filter(toolList => toolList.id === ownProps.id)[0];
 
     return {
-        tools: (toolListState.tools.map(toolId => state.entities.tools.filter(tool => tool.id === toolId)[0])),
+        tools: (toolListState.tools.map(
+            toolId => state.entities.tools.filter(
+                tool => tool.id === toolId)[0]
+            )
+        ),
         selectedTools: toolListState.selectedTools,
-        isPending: toolListState.isPending,
-        isConfirmDeleting: toolListState.isConfirmDeleting,
-        isDeleting: toolListState.isDeleting,
-        totalAmount: toolListState.totalAmount,
-        toolPage: toolListState.toolPage,
-        toolsPerPage: toolListState.toolsPerPage,
-        searchText: toolListState.searchText
+        params: toolListState.params
     };
 };
 
 const mapDispatchToToolListProps = (dispatch, ownProps) => {
+
     return {
         onMount: () => {
             dispatch(ToolActionCreator.load(ownProps.id,
