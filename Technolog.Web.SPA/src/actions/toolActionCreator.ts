@@ -158,10 +158,21 @@ export function toolNameChange(toolEditFormId, toolId, value): any {
                         dispatch(toolNameValidationFailed(toolEditFormId, value, err));
                     }
                 });
+                
+                dispatch(toolNameValidationPending(toolEditFormId, value, nameValidation));
             }
-        }, 2000);
-        
-        dispatch(toolNameValidationPending(toolEditFormId, value, nameValidation));
+        }, 500);
+
+        dispatch({
+            type: ToolActionType.TOOL_NAME_CHANGE,
+            toolEditFormId: toolEditFormId,
+            name: value,
+            nameValidation: {
+                type: ValidationMessageType.EMPTY,
+                errorMessage: "",
+                isValid: false
+            }
+        });
     };
 }
 
@@ -211,6 +222,46 @@ export function toolNameValidationFailed(toolEditFormId, value, errorMessage) {
             type: ValidationMessageType.DANGER
         }
     };
+}
+
+export function toolUndo(toolEditFormId) {
+    return (dispatch, getState) => {
+        const state = getState();
+
+        const toolEditForm = state.toolEditForms.filter(tef => tef.id == toolEditFormId)[0];
+
+        const undoAction = toolEditForm.undoes[toolEditForm.undoes.length - 1];
+
+        switch (undoAction.type) {
+            case ToolActionType.TOOL_NAME_CHANGE:
+                $.ajax({
+                    url: serviceDomain + "/api/tools?name=" + undoAction.value,
+                    type: "GET",
+                    success: (tool) => {
+                        if (tool == null || tool.id == toolEditForm.toolId) {
+                            dispatch(toolNameUnique(toolEditFormId, undoAction.value));
+                        } else {
+                            dispatch(toolNameNotUnique(toolEditFormId, undoAction.value));
+                        }
+                    },
+                    error: (xhr, status, err) => {
+                        dispatch(toolNameValidationFailed(toolEditFormId, undoAction.value, err));
+                    }
+                });
+
+                dispatch({
+                    type: ToolActionType.TOOL_NAME_UNDO,
+                    value: undoAction.value
+                });
+                break;
+            case ToolActionType.TOOL_PRICE_CHANGE:
+                dispatch({
+                    type: ToolActionType.TOOL_PRICE_UNDO,
+                    value: undoAction.value
+                });
+                break;
+        }
+    }
 }
 
 export function toolPriceChange(toolEditFormId, value) {

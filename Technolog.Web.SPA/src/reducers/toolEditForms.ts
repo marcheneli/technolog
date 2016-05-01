@@ -29,7 +29,9 @@ export default function toolEditForms(state = initialState, action) {
                             errorMessage: "",
                             type: ValidationMessageType.SUCCESS
                         }
-                    }
+                    },
+                    undoes: [],
+                    redoes: []
                 }
             ];
         case ToolActionType.TOOL_NAME_VALIDATION_PENDING:
@@ -39,7 +41,6 @@ export default function toolEditForms(state = initialState, action) {
                         {},
                         toolEditForm,
                         {
-                            values: _.assign({}, toolEditForm.values, { name: action.name }),
                             validationResults: _.assign({}, toolEditForm.validationResults, { name: action.nameValidation})
                         }
                     );
@@ -55,6 +56,29 @@ export default function toolEditForms(state = initialState, action) {
                         toolEditForm,
                         {
                             validationResults: _.assign({}, toolEditForm.validationResults, { name: action.nameValidation })
+                        }
+                    );
+                } else {
+                    return toolEditForm;
+                }
+            });
+        case ToolActionType.TOOL_NAME_CHANGE:
+            return state.map(toolEditForm => {
+                if (toolEditForm.id === action.toolEditFormId) {
+                    return _.assign(
+                        {},
+                        toolEditForm,
+                        {
+                            values: _.assign({}, toolEditForm.values, { name: action.name }),
+                            validationResults: _.assign({}, toolEditForm.validationResults, { name: action.nameValidation }),
+                            undoes: [
+                                ...toolEditForm.undoes,
+                                {
+                                    type: action.type,
+                                    value: action.name
+                                }
+                            ],
+                            redoes: []
                         }
                     );
                 } else {

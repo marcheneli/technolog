@@ -23033,9 +23033,19 @@
 	                        dispatch(toolNameValidationFailed(toolEditFormId, value, err));
 	                    }
 	                });
+	                dispatch(toolNameValidationPending(toolEditFormId, value, nameValidation));
 	            }
-	        }, 2000);
-	        dispatch(toolNameValidationPending(toolEditFormId, value, nameValidation));
+	        }, 500);
+	        dispatch({
+	            type: ToolActionType.TOOL_NAME_CHANGE,
+	            toolEditFormId: toolEditFormId,
+	            name: value,
+	            nameValidation: {
+	                type: ValidationMessageType.EMPTY,
+	                errorMessage: "",
+	                isValid: false
+	            }
+	        });
 	    };
 	}
 	exports.toolNameChange = toolNameChange;
@@ -33061,6 +33071,7 @@
 	exports.INFO = 'INFO';
 	exports.PENDING = 'PENDING';
 	exports.FAILED = 'FAILED';
+	exports.EMPTY = 'EMPTY';
 	//# sourceMappingURL=validationMessageType.js.map
 
 /***/ },
@@ -49854,7 +49865,6 @@
 	            return state.map(function (toolEditForm) {
 	                if (toolEditForm.id === action.toolEditFormId) {
 	                    return _.assign({}, toolEditForm, {
-	                        values: _.assign({}, toolEditForm.values, { name: action.name }),
 	                        validationResults: _.assign({}, toolEditForm.validationResults, { name: action.nameValidation })
 	                    });
 	                }
@@ -49866,6 +49876,18 @@
 	            return state.map(function (toolEditForm) {
 	                if (toolEditForm.id === action.toolEditFormId) {
 	                    return _.assign({}, toolEditForm, {
+	                        validationResults: _.assign({}, toolEditForm.validationResults, { name: action.nameValidation })
+	                    });
+	                }
+	                else {
+	                    return toolEditForm;
+	                }
+	            });
+	        case ToolActionType.TOOL_NAME_CHANGE:
+	            return state.map(function (toolEditForm) {
+	                if (toolEditForm.id === action.toolEditFormId) {
+	                    return _.assign({}, toolEditForm, {
+	                        values: _.assign({}, toolEditForm.values, { name: action.name }),
 	                        validationResults: _.assign({}, toolEditForm.validationResults, { name: action.nameValidation })
 	                    });
 	                }
