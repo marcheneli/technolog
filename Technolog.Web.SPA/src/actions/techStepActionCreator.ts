@@ -4,11 +4,6 @@ import { Schema, arrayOf, normalize } from 'normalizr';
 import serviceDomain from '../constants/serviceDomain';
 import * as AntiForgeryToken from '../utils/antiForgeryToken';
 
-const techStepSchema = new Schema("techStep", null);
-techStepSchema.define({
-    
-});
-
 export function load(techStepListId: number, page: number, techStepPerPage: number, searchText: string) {
     return dispatch => {
         $.ajax({

@@ -21,7 +21,7 @@ export default function entities(state = initialState, action) {
             return _.assign({}, state, { parts: _.unionBy(action.parts, state.parts, 'id') });
         case TechStepActionType.TECHSTEP_LOAD_SUCCEED:
             return _.assign({}, state, {
-                techSteps: _.unionBy(action.techStep, state.techSteps, 'id'),
+                techSteps: _.unionBy(action.techSteps, state.techSteps, 'id'),
                 tools: _.unionBy(action.tools, state.tools, 'id'),
                 parts: _.unionBy(action.parts, state.parts, 'id')
             });

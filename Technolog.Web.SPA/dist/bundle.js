@@ -52,7 +52,7 @@
 	var ReactDOM = __webpack_require__(/*! react-dom */ 32);
 	var react_redux_1 = __webpack_require__(/*! react-redux */ 166);
 	var Technolog_1 = __webpack_require__(/*! ./components/Technolog */ 192);
-	var configureStore_1 = __webpack_require__(/*! ./store/configureStore */ 228);
+	var configureStore_1 = __webpack_require__(/*! ./store/configureStore */ 260);
 	var $ = __webpack_require__(/*! jquery */ 211);
 	var serviceDomain_1 = __webpack_require__(/*! ./constants/serviceDomain */ 213);
 	var AntiForgeryToken = __webpack_require__(/*! ./utils/antiForgeryToken */ 214);
@@ -22591,6 +22591,14 @@
 	var Panel_1 = __webpack_require__(/*! ../containers/Panel */ 203);
 	var ToolList_1 = __webpack_require__(/*! ../containers/ToolList */ 205);
 	var ToolEditForm_1 = __webpack_require__(/*! ../containers/ToolEditForm */ 226);
+	var PartList_1 = __webpack_require__(/*! ../containers/part/PartList */ 228);
+	var PartEditForm_1 = __webpack_require__(/*! ../containers/part/PartEditForm */ 234);
+	var TechStepList_1 = __webpack_require__(/*! ../containers/techStep/TechStepList */ 236);
+	var TechStepEditForm_1 = __webpack_require__(/*! ../containers/techStep/TechStepEditForm */ 242);
+	var TechOperationList_1 = __webpack_require__(/*! ../containers/techOperation/TechOperationList */ 244);
+	var TechOperationEditForm_1 = __webpack_require__(/*! ../containers/techOperation/TechOperationEditForm */ 250);
+	var TechProcessList_1 = __webpack_require__(/*! ../containers/techProcess/TechProcessList */ 252);
+	var TechProcessEditForm_1 = __webpack_require__(/*! ../containers/techProcess/TechProcessEditForm */ 258);
 	function getContent(panel) {
 	    switch (panel.type) {
 	        case PanelType.TOOL_LIST:
@@ -22598,21 +22606,21 @@
 	        case PanelType.TOOL_EDIT_FORM:
 	            return (React.createElement(ToolEditForm_1.default, {id: panel.contentId, toolId: panel.params.toolId}));
 	        case PanelType.PART_LIST:
-	            return (React.createElement("div", null));
+	            return (React.createElement(PartList_1.default, {id: panel.contentId}));
 	        case PanelType.PART_EDIT_FORM:
-	            return (React.createElement("div", null));
+	            return (React.createElement(PartEditForm_1.default, {id: panel.contentId, toolId: panel.params.toolId}));
 	        case PanelType.TECHSTEP_LIST:
-	            return (React.createElement("div", null));
+	            return (React.createElement(TechStepList_1.default, {id: panel.contentId}));
 	        case PanelType.TECHSTEP_EDIT_FORM:
-	            return (React.createElement("div", null));
+	            return (React.createElement(TechStepEditForm_1.default, {id: panel.contentId, toolId: panel.params.toolId}));
 	        case PanelType.TECHOPERATION_LIST:
-	            return (React.createElement("div", null));
+	            return (React.createElement(TechOperationList_1.default, {id: panel.contentId}));
 	        case PanelType.TECHOPERATION_EDIT_FORM:
-	            return (React.createElement("div", null));
+	            return (React.createElement(TechOperationEditForm_1.default, {id: panel.contentId, toolId: panel.params.toolId}));
 	        case PanelType.TECHPROCESS_LIST:
-	            return (React.createElement("div", null));
+	            return (React.createElement(TechProcessList_1.default, {id: panel.contentId}));
 	        case PanelType.TECHPROCESS_EDIT_FORM:
-	            return (React.createElement("div", null));
+	            return (React.createElement(TechProcessEditForm_1.default, {id: panel.contentId, toolId: panel.params.toolId}));
 	        default:
 	            return (React.createElement("div", null));
 	    }
@@ -33503,6 +33511,1897 @@
 
 /***/ },
 /* 228 */
+/*!*****************************************!*\
+  !*** ./src/containers/part/PartList.js ***!
+  \*****************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var react_redux_1 = __webpack_require__(/*! react-redux */ 166);
+	var PartList_1 = __webpack_require__(/*! ../../components/part/PartList */ 229);
+	var PartActionCreator = __webpack_require__(/*! ../../actions/partActionCreator */ 232);
+	var PanelActionCreator = __webpack_require__(/*! ../../actions/panelActionCreator */ 195);
+	var PanelType = __webpack_require__(/*! ../../components/panelType */ 197);
+	var PagingParameter = __webpack_require__(/*! ../../constants/pagingParameter */ 219);
+	var mapStateToPartListProps = function (state, ownProps) {
+	    var partListState = state.partLists.filter(function (partList) { return partList.id === ownProps.id; })[0];
+	    return {
+	        parts: (partListState.parts.map(function (partId) { return state.entities.parts.filter(function (part) { return part.id === partId; })[0]; })),
+	        selectedParts: partListState.selectedParts,
+	        params: partListState.params
+	    };
+	};
+	var mapDispatchToPartListProps = function (dispatch, ownProps) {
+	    return {
+	        onMount: function () {
+	            dispatch(PartActionCreator.load(ownProps.id, PagingParameter.FIRST_PAGE, PagingParameter.ITEMS_PER_PAGE_INIT, PagingParameter.EMPTY_SEARCH_TEXT));
+	        },
+	        onDeleteBtnClick: function () {
+	            dispatch(PartActionCreator.confirmDelete(ownProps.id));
+	        },
+	        onAddBtnClick: function () {
+	            dispatch(PanelActionCreator.open(PanelType.TOOL_EDIT_FORM, "Редактирование инструмента", { part: { id: 0, name: null, price: null } }));
+	        },
+	        load: function (page, itemsPerPage, searchText) {
+	            dispatch(PartActionCreator.load(ownProps.id, page, itemsPerPage, searchText));
+	        },
+	        onDeleteConfirm: function (parts) {
+	            dispatch(PartActionCreator.remove(ownProps.id, parts));
+	        },
+	        onDeleteCancel: function () {
+	            dispatch(PartActionCreator.cancelDelete(ownProps.id));
+	        }
+	    };
+	};
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = react_redux_1.connect(mapStateToPartListProps, mapDispatchToPartListProps)(PartList_1.default);
+	//# sourceMappingURL=PartList.js.map
+
+/***/ },
+/* 229 */
+/*!*****************************************!*\
+  !*** ./src/components/part/PartList.js ***!
+  \*****************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var React = __webpack_require__(/*! react */ 1);
+	var PartTable_1 = __webpack_require__(/*! ../../containers/part/PartTable */ 230);
+	var ItemListControlPanel_1 = __webpack_require__(/*! ../common/ItemListControlPanel */ 216);
+	var ItemsPerPageSelector_1 = __webpack_require__(/*! ../common/ItemsPerPageSelector */ 218);
+	var Pagination_1 = __webpack_require__(/*! ../common/Pagination */ 220);
+	var DialogBackground_1 = __webpack_require__(/*! ../common/DialogBackground */ 221);
+	var ConfirmationDialogPanel_1 = __webpack_require__(/*! ../common/ConfirmationDialogPanel */ 222);
+	var PendingPanel_1 = __webpack_require__(/*! ../common/PendingPanel */ 224);
+	var PendingAnimation_1 = __webpack_require__(/*! ../common/PendingAnimation */ 225);
+	var PartList = (function (_super) {
+	    __extends(PartList, _super);
+	    function PartList(props) {
+	        var _this = this;
+	        _super.call(this, props);
+	        this.refreshBtnClickHandler = function () {
+	            _this.props.load(_this.props.params.partPage, _this.props.params.partsPerPage, _this.props.params.searchText);
+	        };
+	        this.partPageChangeHandler = function (page) {
+	            _this.props.load(page, _this.props.params.partsPerPage, _this.props.params.searchText);
+	        };
+	        this.partsPerPageChangeHandler = function (itemsPerPage) {
+	            _this.props.load(_this.props.params.partPage, itemsPerPage, _this.props.params.searchText);
+	        };
+	        this.searchTextChangeHandler = function (text) {
+	            _this.props.load(_this.props.params.partPage, _this.props.params.partsPerPage, text);
+	        };
+	        this.deleteConfirmClickHandler = function () {
+	            var partsForDeleting = _this.props.selectedParts.map(function (id) { return { id: id }; });
+	            _this.props.onDeleteConfirm(partsForDeleting);
+	        };
+	    }
+	    PartList.prototype.componentDidMount = function () {
+	        this.props.onMount();
+	    };
+	    PartList.prototype.render = function () {
+	        return (React.createElement("div", {style: { position: 'relative', display: 'flex', flexGrow: 2, flexBasis: 0 + '%', minHeight: 0, minWidth: 0 }}, React.createElement(DialogBackground_1.default, {isShow: this.props.params.isConfirmDeleting}, React.createElement(ConfirmationDialogPanel_1.default, {title: "Удаление инструмента", onConfirmClick: this.deleteConfirmClickHandler, onCancelClick: this.props.onDeleteCancel}, React.createElement("span", null, "Вы действительно хотите удалить данный инструмент?"))), React.createElement(DialogBackground_1.default, {isShow: this.props.params.isDeleting}, React.createElement(PendingPanel_1.default, {title: "Удаление инструмента"}, React.createElement(PendingAnimation_1.default, null, React.createElement("h4", null, "Пожалуйста, подождите."), React.createElement("h4", null, "Идет удаление.")))), React.createElement("div", {style: {
+	            position: 'relative',
+	            display: 'flex',
+	            flexFlow: 'column',
+	            flexGrow: 2,
+	            flexBasis: 0 + '%',
+	            minHeight: 0, minWidth: 0
+	        }}, React.createElement("div", {style: { flexShrink: 0 }}, React.createElement(ItemListControlPanel_1.default, {onItemDelete: this.props.onDeleteBtnClick, onNewItem: this.props.onAddBtnClick, onRefresh: this.refreshBtnClickHandler, onSearchTextChange: this.searchTextChangeHandler, isDeleteEnable: this.props.selectedParts.length > 0, isUpdating: this.props.params.isPending})), React.createElement(PartTable_1.default, {id: this.props.id, parts: this.props.parts, selectedParts: this.props.selectedParts}), React.createElement("div", {className: "btn-partbar", style: { flexShrink: 0 }}, React.createElement(ItemsPerPageSelector_1.default, {onChange: this.partsPerPageChangeHandler}), React.createElement(Pagination_1.default, {itemAmount: this.props.params.totalAmount, itemsPerPage: this.props.params.partsPerPage, currentPage: this.props.params.partPage, firstSymbol: '«', nextSymbol: '›', prevSymbol: '‹', lastSymbol: '»', onPageBtnClick: this.partPageChangeHandler})))));
+	    };
+	    return PartList;
+	}(React.Component));
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = PartList;
+	//# sourceMappingURL=PartList.js.map
+
+/***/ },
+/* 230 */
+/*!******************************************!*\
+  !*** ./src/containers/part/PartTable.js ***!
+  \******************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var react_redux_1 = __webpack_require__(/*! react-redux */ 166);
+	var PartTable_1 = __webpack_require__(/*! ../../components/part/PartTable */ 231);
+	var PanelActionCreator = __webpack_require__(/*! ../../actions/panelActionCreator */ 195);
+	var PartActionCreator = __webpack_require__(/*! ../../actions/partActionCreator */ 232);
+	var PanelType = __webpack_require__(/*! ../../components/panelType */ 197);
+	var mapDispatchToPartTableProps = function (dispatch, ownProps) {
+	    return {
+	        onTableRowDoubleClick: function (part) {
+	            dispatch(PanelActionCreator.open(PanelType.PART_EDIT_FORM, "Редактирование детали", { part: part }));
+	        },
+	        onPartSelect: function (event) {
+	            var selectedParts = ownProps.selectedParts;
+	            var parts = ownProps.parts;
+	            if (event.target.checked) {
+	                var part;
+	                for (var i = 0; i < parts.length; i++) {
+	                    if (parts[i].id == event.target.value) {
+	                        part = parts[i];
+	                        break;
+	                    }
+	                }
+	                selectedParts = selectedParts.concat([
+	                    part.id
+	                ]);
+	            }
+	            else {
+	                selectedParts = selectedParts.filter(function (id) { return id != event.target.value; });
+	            }
+	            dispatch(PartActionCreator.select(ownProps.id, selectedParts));
+	        },
+	        onAllPartsSelect: function (event) {
+	            var selectedParts = [];
+	            var parts = ownProps.parts;
+	            if (event.target.checked) {
+	                selectedParts = parts.map(function (part) { return part.id; });
+	            }
+	            dispatch(PartActionCreator.select(ownProps.id, selectedParts));
+	        }
+	    };
+	};
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = react_redux_1.connect(null, mapDispatchToPartTableProps)(PartTable_1.default);
+	//# sourceMappingURL=PartTable.js.map
+
+/***/ },
+/* 231 */
+/*!******************************************!*\
+  !*** ./src/components/part/PartTable.js ***!
+  \******************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var React = __webpack_require__(/*! react */ 1);
+	var TableRow_1 = __webpack_require__(/*! ../common/TableRow */ 209);
+	function TableList(props) {
+	    var partRows = [];
+	    var parts = props.parts;
+	    var selectedParts = props.selectedParts;
+	    var isAllChecked = parts.length == selectedParts.length && parts.length != 0;
+	    partRows = parts.map(function (part, index) {
+	        var selectedPart = null;
+	        for (var j = 0; j < selectedParts.length; j++) {
+	            if (selectedParts[j] == part.id) {
+	                selectedPart = selectedParts[j];
+	                break;
+	            }
+	        }
+	        return (React.createElement(TableRow_1.default, {key: index, onTableRowDoubleClick: function () { props.onTableRowDoubleClick(part); }}, React.createElement("td", {style: { width: 5 + '%' }}, React.createElement("input", {type: 'checkbox', value: part.id, onChange: props.onPartSelect, checked: selectedPart})), React.createElement("td", {style: { width: 15 + '%' }}, part.id), React.createElement("td", {style: { width: 80 + '%' }}, part.name)));
+	    });
+	    return (React.createElement("div", {style: { marginBottom: 10 + 'px', overflow: 'auto' }}, React.createElement("table", {className: "table table-bordered", style: { marginBottom: 1 + 'px' }}, React.createElement("thead", null, React.createElement("tr", null, React.createElement("th", {style: { width: 5 + '%' }}, React.createElement("input", {type: 'checkbox', onChange: props.onAllPartsSelect, checked: isAllChecked})), React.createElement("th", {style: { width: 15 + '%' }}, "ID"), React.createElement("th", {style: { width: 80 + '%' }}, "Наименование"))), React.createElement("tbody", null, partRows))));
+	}
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = TableList;
+	//# sourceMappingURL=PartTable.js.map
+
+/***/ },
+/* 232 */
+/*!******************************************!*\
+  !*** ./src/actions/partActionCreator.js ***!
+  \******************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var $ = __webpack_require__(/*! jquery */ 211);
+	var PartActionType = __webpack_require__(/*! ./partActionType */ 233);
+	var serviceDomain_1 = __webpack_require__(/*! ../constants/serviceDomain */ 213);
+	var AntiForgeryToken = __webpack_require__(/*! ../utils/antiForgeryToken */ 214);
+	function load(partListId, page, partPerPage, searchText) {
+	    return function (dispatch) {
+	        $.ajax({
+	            url: (serviceDomain_1.default + "/api/"
+	                + 'parts' + '/'
+	                + "?search=" + searchText
+	                + "&page=" + page + "&pageSize="
+	                + partPerPage),
+	            dataType: 'json',
+	            type: 'GET',
+	            success: function (partListModel) {
+	                dispatch(loadSucceed(partListId, partListModel.parts, partListModel.partAmount, page, partPerPage, searchText));
+	            },
+	            error: function (xhr, status, err) {
+	                dispatch(loadFailed(partListId, err));
+	            }
+	        });
+	        return dispatch(loadPending(partListId));
+	    };
+	}
+	exports.load = load;
+	function loadPending(partListId) {
+	    return {
+	        type: PartActionType.PART_LOAD_PENDING,
+	        partListId: partListId,
+	    };
+	}
+	exports.loadPending = loadPending;
+	function loadSucceed(partListId, parts, totalAmount, page, partsPerPage, searchText) {
+	    return {
+	        type: PartActionType.PART_LOAD_SUCCEED,
+	        partListId: partListId,
+	        parts: parts,
+	        totalAmount: totalAmount,
+	        partPage: page,
+	        partsPerPage: partsPerPage,
+	        searchText: searchText
+	    };
+	}
+	exports.loadSucceed = loadSucceed;
+	function loadFailed(partListId, errorMessage) {
+	    return {
+	        type: PartActionType.PART_LOAD_FAILED,
+	        partListId: partListId,
+	        errorMessage: errorMessage
+	    };
+	}
+	exports.loadFailed = loadFailed;
+	function remove(partListId, parts) {
+	    return function (dispatch) {
+	        $.ajax({
+	            url: serviceDomain_1.default + '/api/' + "parts" + "/",
+	            type: 'DELETE',
+	            dataType: "json",
+	            data: {
+	                parts: parts,
+	                __RequestVerificationToken: AntiForgeryToken.get()
+	            },
+	            success: function (response) {
+	                dispatch(removeSucceed(partListId));
+	            },
+	            error: function (xhr, status, err) {
+	                dispatch(removeFailed(partListId, err));
+	            }
+	        });
+	        return dispatch(removePending(partListId));
+	    };
+	}
+	exports.remove = remove;
+	function removePending(partListId) {
+	    return {
+	        type: PartActionType.PART_REMOVE_PENDING,
+	        partListId: partListId
+	    };
+	}
+	exports.removePending = removePending;
+	function removeSucceed(partListId) {
+	    return {
+	        type: PartActionType.PART_REMOVE_SUCCEED,
+	        partListId: partListId
+	    };
+	}
+	exports.removeSucceed = removeSucceed;
+	function removeFailed(partListId, errorMessage) {
+	    return {
+	        type: PartActionType.PART_REMOVE_FAILED,
+	        partListId: partListId,
+	        errorMessage: errorMessage
+	    };
+	}
+	exports.removeFailed = removeFailed;
+	function select(partListId, selectedParts) {
+	    return {
+	        type: PartActionType.PART_SELECT,
+	        partListId: partListId,
+	        selectedParts: selectedParts
+	    };
+	}
+	exports.select = select;
+	function confirmDelete(partListId) {
+	    return {
+	        type: PartActionType.PART_CONFIRM_DELETE,
+	        partListId: partListId
+	    };
+	}
+	exports.confirmDelete = confirmDelete;
+	function cancelDelete(partListId) {
+	    return {
+	        type: PartActionType.PART_CANCEL_DELETE,
+	        partListId: partListId
+	    };
+	}
+	exports.cancelDelete = cancelDelete;
+	function partNameChange(partEditFormId, value) {
+	    return {
+	        type: PartActionType.PART_NAME_CHANGE,
+	        partEditFormId: partEditFormId,
+	        name: value
+	    };
+	}
+	exports.partNameChange = partNameChange;
+	function partNameValidationPending(partEditFormId, value, nameValidation) {
+	    return {
+	        type: PartActionType.PART_NAME_VALIDATION_PENDING,
+	        partEditFormId: partEditFormId,
+	        name: value,
+	        nameValidation: nameValidation
+	    };
+	}
+	exports.partNameValidationPending = partNameValidationPending;
+	function partPriceChange(partEditFormId, value) {
+	    return {
+	        type: PartActionType.PART_PRICE_CHANGE,
+	        partEditFormId: partEditFormId,
+	        price: value
+	    };
+	}
+	exports.partPriceChange = partPriceChange;
+	function save(partEditFormId) {
+	    return function (dispatch, getState) {
+	        var partEditForm = getState().partEditForms.filter(function (tef) { return tef.id == partEditFormId; })[0];
+	        var type = partEditForm.partId == 0 ? 'PUT' : 'POST';
+	        var part = {
+	            id: partEditForm.partId,
+	            name: partEditForm.values.name,
+	            price: parseFloat(partEditForm.values.price)
+	        };
+	        $.ajax({
+	            url: serviceDomain_1.default + '/api/' + "parts" + "/",
+	            type: type,
+	            dataType: "json",
+	            data: _.assign({}, part, { __RequestVerificationToken: AntiForgeryToken.get() }),
+	            success: function (response) {
+	                dispatch(saveSucceed(partEditFormId));
+	            },
+	            error: function (xhr, status, err) {
+	                dispatch(saveFailed(partEditFormId, err));
+	            }
+	        });
+	        return dispatch(savePending(partEditFormId));
+	    };
+	}
+	exports.save = save;
+	function savePending(partEditFormId) {
+	    return {
+	        type: PartActionType.PART_SAVE_PENDING,
+	        partEditFormId: partEditFormId
+	    };
+	}
+	exports.savePending = savePending;
+	function saveSucceed(partEditFormId) {
+	    return {
+	        type: PartActionType.PART_SAVE_SUCCEED,
+	        partEditFormId: partEditFormId
+	    };
+	}
+	exports.saveSucceed = saveSucceed;
+	function saveFailed(partEditFormId, errorMessage) {
+	    return {
+	        type: PartActionType.PART_SAVE_FAILED,
+	        partEditFormId: partEditFormId,
+	        errorMessage: errorMessage
+	    };
+	}
+	exports.saveFailed = saveFailed;
+	//# sourceMappingURL=partActionCreator.js.map
+
+/***/ },
+/* 233 */
+/*!***************************************!*\
+  !*** ./src/actions/partActionType.js ***!
+  \***************************************/
+/***/ function(module, exports) {
+
+	"use strict";
+	exports.PART_LOAD = 'PART_LOAD';
+	exports.PART_LOAD_PENDING = 'PART_LOAD_PENDING';
+	exports.PART_LOAD_SUCCEED = 'PART_LOAD_SUCCEED';
+	exports.PART_LOAD_FAILED = 'PART_LOAD_FAILED';
+	exports.PART_REMOVE = 'PART_REMOVE';
+	exports.PART_REMOVE_PENDING = 'PART_REMOVE_PENDING';
+	exports.PART_REMOVE_SUCCEED = 'PART_REMOVE_SUCCEED';
+	exports.PART_REMOVE_FAILED = 'PART_REMOVE_FAILED';
+	exports.PART_SELECT = 'PART_SELECT';
+	exports.PART_CONFIRM_DELETE = 'PART_CONFIRM_DELETE';
+	exports.PART_CANCEL_DELETE = 'PART_CANCEL_DELETE';
+	exports.PART_NAME_CHANGE = 'PART_NAME_CHANGE';
+	exports.PART_PRICE_CHANGE = 'PART_PRICE_CHANGE';
+	exports.PART_NAME_VALIDATION_PENDING = 'PART_NAME_VALIDATION_PENDING';
+	exports.PART_NAME_VALIDATION_SUCCEED = 'PART_NAME_VALIDATION_SUCCEED';
+	exports.PART_NAME_VALIDATION_FAILED = 'PART_NAME_VALIDATION_FAILED';
+	exports.PART_SAVE = 'PART_SAVE';
+	exports.PART_SAVE_PENDING = 'PART_SAVE_PENDING';
+	exports.PART_SAVE_SUCCEED = 'PART_SAVE_SUCCEED';
+	exports.PART_SAVE_FAILED = 'PART_SAVE_FAILED';
+	exports.PART_NAME_UNDO = 'PART_NAME_UNDO';
+	exports.PART_NAME_REDO = 'PART_NAME_REDO';
+	exports.PART_PRICE_UNDO = 'PART_PRICE_UNDO';
+	exports.PART_PRICE_REDO = 'PART_PRICE_REDO';
+	//# sourceMappingURL=partActionType.js.map
+
+/***/ },
+/* 234 */
+/*!*********************************************!*\
+  !*** ./src/containers/part/PartEditForm.js ***!
+  \*********************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var react_redux_1 = __webpack_require__(/*! react-redux */ 166);
+	var PartEditForm_1 = __webpack_require__(/*! ../../components/part/PartEditForm */ 235);
+	var PartActionCreator = __webpack_require__(/*! ../../actions/partActionCreator */ 232);
+	var mapStateToPartEditFormProps = function (state, ownProps) {
+	    var partEditFormState = state.partEditForms.filter(function (partEditForm) { return partEditForm.id == ownProps.id; })[0];
+	    var values = partEditFormState.values;
+	    return {
+	        partId: partEditFormState.partId,
+	        values: values,
+	        isSaving: partEditFormState.isSaving
+	    };
+	};
+	var mapDispatchToPartEditFormProps = function (dispatch, ownProps) {
+	    return {
+	        handleSubmit: function (event) {
+	            event.preventDefault();
+	            dispatch(PartActionCreator.save(ownProps.id));
+	        },
+	        onNameChange: function (event) {
+	            dispatch(PartActionCreator.partNameChange(ownProps.id, event.target.value));
+	        },
+	        onPriceChange: function (event) {
+	            dispatch(PartActionCreator.partPriceChange(ownProps.id, event.target.value));
+	        }
+	    };
+	};
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = react_redux_1.connect(mapStateToPartEditFormProps, mapDispatchToPartEditFormProps)(PartEditForm_1.default);
+	//# sourceMappingURL=PartEditForm.js.map
+
+/***/ },
+/* 235 */
+/*!*********************************************!*\
+  !*** ./src/components/part/PartEditForm.js ***!
+  \*********************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var React = __webpack_require__(/*! react */ 1);
+	var DialogBackground_1 = __webpack_require__(/*! ../common/DialogBackground */ 221);
+	var PendingPanel_1 = __webpack_require__(/*! ../common/PendingPanel */ 224);
+	var PendingAnimation_1 = __webpack_require__(/*! ../common/PendingAnimation */ 225);
+	function PartEditForm(props) {
+	    return (React.createElement("div", {style: { width: '100%' }}, React.createElement(DialogBackground_1.default, {isShow: props.isSaving}, React.createElement(PendingPanel_1.default, {title: "Сохранение инструмента"}, React.createElement(PendingAnimation_1.default, null, React.createElement("h4", null, "Пожалуйста, подождите."), React.createElement("h4", null, "Идет сохранение.")))), React.createElement("form", {role: "form", onSubmit: props.handleSubmit}, React.createElement("div", {className: "form-group"}, React.createElement("label", {className: "control-label"}, "Наименование: "), React.createElement("input", {className: 'form-control', onChange: props.onNameChange, value: props.values.name})), React.createElement("div", {className: "form-group"}, React.createElement("label", {className: "control-label"}, "Цена: "), React.createElement("input", {className: 'form-control', onChange: props.onPriceChange, value: props.values.price})), React.createElement("div", {className: "form-group"}, React.createElement("div", {className: "btn-toolbar"}, React.createElement("button", {className: "btn btn-primary", type: "submit", disabled: false}, "Сохранить"))))));
+	}
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = PartEditForm;
+	//# sourceMappingURL=PartEditForm.js.map
+
+/***/ },
+/* 236 */
+/*!*************************************************!*\
+  !*** ./src/containers/techStep/TechStepList.js ***!
+  \*************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var react_redux_1 = __webpack_require__(/*! react-redux */ 166);
+	var TechStepList_1 = __webpack_require__(/*! ../../components/techStep/TechStepList */ 237);
+	var TechStepActionCreator = __webpack_require__(/*! ../../actions/techStepActionCreator */ 240);
+	var PanelActionCreator = __webpack_require__(/*! ../../actions/panelActionCreator */ 195);
+	var PanelType = __webpack_require__(/*! ../../components/panelType */ 197);
+	var PagingParameter = __webpack_require__(/*! ../../constants/pagingParameter */ 219);
+	var mapStateToTechStepListProps = function (state, ownProps) {
+	    var techStepListState = state.techStepLists.filter(function (techStepList) { return techStepList.id === ownProps.id; })[0];
+	    return {
+	        techSteps: (techStepListState.techSteps.map(function (techStepId) { return state.entities.techSteps.filter(function (techStep) { return techStep.id === techStepId; })[0]; })),
+	        selectedTechSteps: techStepListState.selectedTechSteps,
+	        params: techStepListState.params
+	    };
+	};
+	var mapDispatchToTechStepListProps = function (dispatch, ownProps) {
+	    return {
+	        onMount: function () {
+	            dispatch(TechStepActionCreator.load(ownProps.id, PagingParameter.FIRST_PAGE, PagingParameter.ITEMS_PER_PAGE_INIT, PagingParameter.EMPTY_SEARCH_TEXT));
+	        },
+	        onDeleteBtnClick: function () {
+	            dispatch(TechStepActionCreator.confirmDelete(ownProps.id));
+	        },
+	        onAddBtnClick: function () {
+	            dispatch(PanelActionCreator.open(PanelType.TOOL_EDIT_FORM, "Редактирование инструмента", { techStep: { id: 0, name: null, price: null } }));
+	        },
+	        load: function (page, itemsPerPage, searchText) {
+	            dispatch(TechStepActionCreator.load(ownProps.id, page, itemsPerPage, searchText));
+	        },
+	        onDeleteConfirm: function (techSteps) {
+	            dispatch(TechStepActionCreator.remove(ownProps.id, techSteps));
+	        },
+	        onDeleteCancel: function () {
+	            dispatch(TechStepActionCreator.cancelDelete(ownProps.id));
+	        }
+	    };
+	};
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = react_redux_1.connect(mapStateToTechStepListProps, mapDispatchToTechStepListProps)(TechStepList_1.default);
+	//# sourceMappingURL=TechStepList.js.map
+
+/***/ },
+/* 237 */
+/*!*************************************************!*\
+  !*** ./src/components/techStep/TechStepList.js ***!
+  \*************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var React = __webpack_require__(/*! react */ 1);
+	var TechStepTable_1 = __webpack_require__(/*! ../../containers/techStep/TechStepTable */ 238);
+	var ItemListControlPanel_1 = __webpack_require__(/*! ../common/ItemListControlPanel */ 216);
+	var ItemsPerPageSelector_1 = __webpack_require__(/*! ../common/ItemsPerPageSelector */ 218);
+	var Pagination_1 = __webpack_require__(/*! ../common/Pagination */ 220);
+	var DialogBackground_1 = __webpack_require__(/*! ../common/DialogBackground */ 221);
+	var ConfirmationDialogPanel_1 = __webpack_require__(/*! ../common/ConfirmationDialogPanel */ 222);
+	var PendingPanel_1 = __webpack_require__(/*! ../common/PendingPanel */ 224);
+	var PendingAnimation_1 = __webpack_require__(/*! ../common/PendingAnimation */ 225);
+	var TechStepList = (function (_super) {
+	    __extends(TechStepList, _super);
+	    function TechStepList(props) {
+	        var _this = this;
+	        _super.call(this, props);
+	        this.refreshBtnClickHandler = function () {
+	            _this.props.load(_this.props.params.techStepPage, _this.props.params.techStepsPerPage, _this.props.params.searchText);
+	        };
+	        this.techStepPageChangeHandler = function (page) {
+	            _this.props.load(page, _this.props.params.techStepsPerPage, _this.props.params.searchText);
+	        };
+	        this.techStepsPerPageChangeHandler = function (itemsPerPage) {
+	            _this.props.load(_this.props.params.techStepPage, itemsPerPage, _this.props.params.searchText);
+	        };
+	        this.searchTextChangeHandler = function (text) {
+	            _this.props.load(_this.props.params.techStepPage, _this.props.params.techStepsPerPage, text);
+	        };
+	        this.deleteConfirmClickHandler = function () {
+	            var techStepsForDeleting = _this.props.selectedTechSteps.map(function (id) { return { id: id }; });
+	            _this.props.onDeleteConfirm(techStepsForDeleting);
+	        };
+	    }
+	    TechStepList.prototype.componentDidMount = function () {
+	        this.props.onMount();
+	    };
+	    TechStepList.prototype.render = function () {
+	        return (React.createElement("div", {style: { position: 'relative', display: 'flex', flexGrow: 2, flexBasis: 0 + '%', minHeight: 0, minWidth: 0 }}, React.createElement(DialogBackground_1.default, {isShow: this.props.params.isConfirmDeleting}, React.createElement(ConfirmationDialogPanel_1.default, {title: "Удаление инструмента", onConfirmClick: this.deleteConfirmClickHandler, onCancelClick: this.props.onDeleteCancel}, React.createElement("span", null, "Вы действительно хотите удалить данный инструмент?"))), React.createElement(DialogBackground_1.default, {isShow: this.props.params.isDeleting}, React.createElement(PendingPanel_1.default, {title: "Удаление инструмента"}, React.createElement(PendingAnimation_1.default, null, React.createElement("h4", null, "Пожалуйста, подождите."), React.createElement("h4", null, "Идет удаление.")))), React.createElement("div", {style: {
+	            position: 'relative',
+	            display: 'flex',
+	            flexFlow: 'column',
+	            flexGrow: 2,
+	            flexBasis: 0 + '%',
+	            minHeight: 0, minWidth: 0
+	        }}, React.createElement("div", {style: { flexShrink: 0 }}, React.createElement(ItemListControlPanel_1.default, {onItemDelete: this.props.onDeleteBtnClick, onNewItem: this.props.onAddBtnClick, onRefresh: this.refreshBtnClickHandler, onSearchTextChange: this.searchTextChangeHandler, isDeleteEnable: this.props.selectedTechSteps.length > 0, isUpdating: this.props.params.isPending})), React.createElement(TechStepTable_1.default, {id: this.props.id, techSteps: this.props.techSteps, selectedTechSteps: this.props.selectedTechSteps}), React.createElement("div", {className: "btn-techStepbar", style: { flexShrink: 0 }}, React.createElement(ItemsPerPageSelector_1.default, {onChange: this.techStepsPerPageChangeHandler}), React.createElement(Pagination_1.default, {itemAmount: this.props.params.totalAmount, itemsPerPage: this.props.params.techStepsPerPage, currentPage: this.props.params.techStepPage, firstSymbol: '«', nextSymbol: '›', prevSymbol: '‹', lastSymbol: '»', onPageBtnClick: this.techStepPageChangeHandler})))));
+	    };
+	    return TechStepList;
+	}(React.Component));
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = TechStepList;
+	//# sourceMappingURL=TechStepList.js.map
+
+/***/ },
+/* 238 */
+/*!**************************************************!*\
+  !*** ./src/containers/techStep/TechStepTable.js ***!
+  \**************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var react_redux_1 = __webpack_require__(/*! react-redux */ 166);
+	var TechStepTable_1 = __webpack_require__(/*! ../../components/techStep/TechStepTable */ 239);
+	var PanelActionCreator = __webpack_require__(/*! ../../actions/panelActionCreator */ 195);
+	var TechStepActionCreator = __webpack_require__(/*! ../../actions/techStepActionCreator */ 240);
+	var PanelType = __webpack_require__(/*! ../../components/panelType */ 197);
+	var mapDispatchToTechStepTableProps = function (dispatch, ownProps) {
+	    return {
+	        onTableRowDoubleClick: function (techStep) {
+	            dispatch(PanelActionCreator.open(PanelType.PART_EDIT_FORM, "Редактирование детали", { techStep: techStep }));
+	        },
+	        onTechStepSelect: function (event) {
+	            var selectedTechSteps = ownProps.selectedTechSteps;
+	            var techSteps = ownProps.techSteps;
+	            if (event.target.checked) {
+	                var techStep;
+	                for (var i = 0; i < techSteps.length; i++) {
+	                    if (techSteps[i].id == event.target.value) {
+	                        techStep = techSteps[i];
+	                        break;
+	                    }
+	                }
+	                selectedTechSteps = selectedTechSteps.concat([
+	                    techStep.id
+	                ]);
+	            }
+	            else {
+	                selectedTechSteps = selectedTechSteps.filter(function (id) { return id != event.target.value; });
+	            }
+	            dispatch(TechStepActionCreator.select(ownProps.id, selectedTechSteps));
+	        },
+	        onAllTechStepsSelect: function (event) {
+	            var selectedTechSteps = [];
+	            var techSteps = ownProps.techSteps;
+	            if (event.target.checked) {
+	                selectedTechSteps = techSteps.map(function (techStep) { return techStep.id; });
+	            }
+	            dispatch(TechStepActionCreator.select(ownProps.id, selectedTechSteps));
+	        }
+	    };
+	};
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = react_redux_1.connect(null, mapDispatchToTechStepTableProps)(TechStepTable_1.default);
+	//# sourceMappingURL=TechStepTable.js.map
+
+/***/ },
+/* 239 */
+/*!**************************************************!*\
+  !*** ./src/components/techStep/TechStepTable.js ***!
+  \**************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var React = __webpack_require__(/*! react */ 1);
+	var TableRow_1 = __webpack_require__(/*! ../common/TableRow */ 209);
+	function TableList(props) {
+	    var techStepRows = [];
+	    var techSteps = props.techSteps;
+	    var selectedTechSteps = props.selectedTechSteps;
+	    var isAllChecked = techSteps.length == selectedTechSteps.length && techSteps.length != 0;
+	    techStepRows = techSteps.map(function (techStep, index) {
+	        var selectedTechStep = null;
+	        for (var j = 0; j < selectedTechSteps.length; j++) {
+	            if (selectedTechSteps[j] == techStep.id) {
+	                selectedTechStep = selectedTechSteps[j];
+	                break;
+	            }
+	        }
+	        return (React.createElement(TableRow_1.default, {key: index, onTableRowDoubleClick: function () { props.onTableRowDoubleClick(techStep); }}, React.createElement("td", {style: { width: 5 + '%' }}, React.createElement("input", {type: 'checkbox', value: techStep.id, onChange: props.onTechStepSelect, checked: selectedTechStep})), React.createElement("td", {style: { width: 15 + '%' }}, techStep.id), React.createElement("td", {style: { width: 80 + '%' }}, techStep.name)));
+	    });
+	    return (React.createElement("div", {style: { marginBottom: 10 + 'px', overflow: 'auto' }}, React.createElement("table", {className: "table table-bordered", style: { marginBottom: 1 + 'px' }}, React.createElement("thead", null, React.createElement("tr", null, React.createElement("th", {style: { width: 5 + '%' }}, React.createElement("input", {type: 'checkbox', onChange: props.onAllTechStepsSelect, checked: isAllChecked})), React.createElement("th", {style: { width: 15 + '%' }}, "ID"), React.createElement("th", {style: { width: 80 + '%' }}, "Наименование"))), React.createElement("tbody", null, techStepRows))));
+	}
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = TableList;
+	//# sourceMappingURL=TechStepTable.js.map
+
+/***/ },
+/* 240 */
+/*!**********************************************!*\
+  !*** ./src/actions/techStepActionCreator.js ***!
+  \**********************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var $ = __webpack_require__(/*! jquery */ 211);
+	var TechStepActionType = __webpack_require__(/*! ./techStepActionType */ 241);
+	var serviceDomain_1 = __webpack_require__(/*! ../constants/serviceDomain */ 213);
+	var AntiForgeryToken = __webpack_require__(/*! ../utils/antiForgeryToken */ 214);
+	function load(techStepListId, page, techStepPerPage, searchText) {
+	    return function (dispatch) {
+	        $.ajax({
+	            url: (serviceDomain_1.default + "/api/"
+	                + 'techSteps' + '/'
+	                + "?search=" + searchText
+	                + "&page=" + page + "&pageSize="
+	                + techStepPerPage),
+	            dataType: 'json',
+	            type: 'GET',
+	            success: function (techStepListModel) {
+	                dispatch(loadSucceed(techStepListId, techStepListModel.techSteps, techStepListModel.techStepAmount, page, techStepPerPage, searchText));
+	            },
+	            error: function (xhr, status, err) {
+	                dispatch(loadFailed(techStepListId, err));
+	            }
+	        });
+	        return dispatch(loadPending(techStepListId));
+	    };
+	}
+	exports.load = load;
+	function loadPending(techStepListId) {
+	    return {
+	        type: TechStepActionType.TECHSTEP_LOAD_PENDING,
+	        techStepListId: techStepListId,
+	    };
+	}
+	exports.loadPending = loadPending;
+	function loadSucceed(techStepListId, techSteps, totalAmount, page, techStepsPerPage, searchText) {
+	    return {
+	        type: TechStepActionType.TECHSTEP_LOAD_SUCCEED,
+	        techStepListId: techStepListId,
+	        techSteps: techSteps,
+	        totalAmount: totalAmount,
+	        techStepPage: page,
+	        techStepsPerPage: techStepsPerPage,
+	        searchText: searchText
+	    };
+	}
+	exports.loadSucceed = loadSucceed;
+	function loadFailed(techStepListId, errorMessage) {
+	    return {
+	        type: TechStepActionType.TECHSTEP_LOAD_FAILED,
+	        techStepListId: techStepListId,
+	        errorMessage: errorMessage
+	    };
+	}
+	exports.loadFailed = loadFailed;
+	function remove(techStepListId, techSteps) {
+	    return function (dispatch) {
+	        $.ajax({
+	            url: serviceDomain_1.default + '/api/' + "techSteps" + "/",
+	            type: 'DELETE',
+	            dataType: "json",
+	            data: {
+	                techSteps: techSteps,
+	                __RequestVerificationToken: AntiForgeryToken.get()
+	            },
+	            success: function (response) {
+	                dispatch(removeSucceed(techStepListId));
+	            },
+	            error: function (xhr, status, err) {
+	                dispatch(removeFailed(techStepListId, err));
+	            }
+	        });
+	        return dispatch(removePending(techStepListId));
+	    };
+	}
+	exports.remove = remove;
+	function removePending(techStepListId) {
+	    return {
+	        type: TechStepActionType.TECHSTEP_REMOVE_PENDING,
+	        techStepListId: techStepListId
+	    };
+	}
+	exports.removePending = removePending;
+	function removeSucceed(techStepListId) {
+	    return {
+	        type: TechStepActionType.TECHSTEP_REMOVE_SUCCEED,
+	        techStepListId: techStepListId
+	    };
+	}
+	exports.removeSucceed = removeSucceed;
+	function removeFailed(techStepListId, errorMessage) {
+	    return {
+	        type: TechStepActionType.TECHSTEP_REMOVE_FAILED,
+	        techStepListId: techStepListId,
+	        errorMessage: errorMessage
+	    };
+	}
+	exports.removeFailed = removeFailed;
+	function select(techStepListId, selectedTechSteps) {
+	    return {
+	        type: TechStepActionType.TECHSTEP_SELECT,
+	        techStepListId: techStepListId,
+	        selectedTechSteps: selectedTechSteps
+	    };
+	}
+	exports.select = select;
+	function confirmDelete(techStepListId) {
+	    return {
+	        type: TechStepActionType.TECHSTEP_CONFIRM_DELETE,
+	        techStepListId: techStepListId
+	    };
+	}
+	exports.confirmDelete = confirmDelete;
+	function cancelDelete(techStepListId) {
+	    return {
+	        type: TechStepActionType.TECHSTEP_CANCEL_DELETE,
+	        techStepListId: techStepListId
+	    };
+	}
+	exports.cancelDelete = cancelDelete;
+	function techStepNameChange(techStepEditFormId, value) {
+	    return {
+	        type: TechStepActionType.TECHSTEP_NAME_CHANGE,
+	        techStepEditFormId: techStepEditFormId,
+	        name: value
+	    };
+	}
+	exports.techStepNameChange = techStepNameChange;
+	function techStepNameValidationPending(techStepEditFormId, value, nameValidation) {
+	    return {
+	        type: TechStepActionType.TECHSTEP_NAME_VALIDATION_PENDING,
+	        techStepEditFormId: techStepEditFormId,
+	        name: value,
+	        nameValidation: nameValidation
+	    };
+	}
+	exports.techStepNameValidationPending = techStepNameValidationPending;
+	function save(techStepEditFormId) {
+	    return function (dispatch, getState) {
+	        var techStepEditForm = getState().techStepEditForms.filter(function (tef) { return tef.id == techStepEditFormId; })[0];
+	        var type = techStepEditForm.techStepId == 0 ? 'PUT' : 'POST';
+	        var techStep = {
+	            id: techStepEditForm.techStepId,
+	            name: techStepEditForm.values.name
+	        };
+	        $.ajax({
+	            url: serviceDomain_1.default + '/api/' + "techSteps" + "/",
+	            type: type,
+	            dataType: "json",
+	            data: _.assign({}, techStep, { __RequestVerificationToken: AntiForgeryToken.get() }),
+	            success: function (response) {
+	                dispatch(saveSucceed(techStepEditFormId));
+	            },
+	            error: function (xhr, status, err) {
+	                dispatch(saveFailed(techStepEditFormId, err));
+	            }
+	        });
+	        return dispatch(savePending(techStepEditFormId));
+	    };
+	}
+	exports.save = save;
+	function savePending(techStepEditFormId) {
+	    return {
+	        type: TechStepActionType.TECHSTEP_SAVE_PENDING,
+	        techStepEditFormId: techStepEditFormId
+	    };
+	}
+	exports.savePending = savePending;
+	function saveSucceed(techStepEditFormId) {
+	    return {
+	        type: TechStepActionType.TECHSTEP_SAVE_SUCCEED,
+	        techStepEditFormId: techStepEditFormId
+	    };
+	}
+	exports.saveSucceed = saveSucceed;
+	function saveFailed(techStepEditFormId, errorMessage) {
+	    return {
+	        type: TechStepActionType.TECHSTEP_SAVE_FAILED,
+	        techStepEditFormId: techStepEditFormId,
+	        errorMessage: errorMessage
+	    };
+	}
+	exports.saveFailed = saveFailed;
+	//# sourceMappingURL=techStepActionCreator.js.map
+
+/***/ },
+/* 241 */
+/*!*******************************************!*\
+  !*** ./src/actions/techStepActionType.js ***!
+  \*******************************************/
+/***/ function(module, exports) {
+
+	"use strict";
+	exports.TECHSTEP_LOAD = 'TECHSTEP_LOAD';
+	exports.TECHSTEP_LOAD_PENDING = 'TECHSTEP_LOAD_PENDING';
+	exports.TECHSTEP_LOAD_SUCCEED = 'TECHSTEP_LOAD_SUCCEED';
+	exports.TECHSTEP_LOAD_FAILED = 'TECHSTEP_LOAD_FAILED';
+	exports.TECHSTEP_REMOVE = 'TECHSTEP_REMOVE';
+	exports.TECHSTEP_REMOVE_PENDING = 'TECHSTEP_REMOVE_PENDING';
+	exports.TECHSTEP_REMOVE_SUCCEED = 'TECHSTEP_REMOVE_SUCCEED';
+	exports.TECHSTEP_REMOVE_FAILED = 'TECHSTEP_REMOVE_FAILED';
+	exports.TECHSTEP_SELECT = 'TECHSTEP_SELECT';
+	exports.TECHSTEP_CONFIRM_DELETE = 'TECHSTEP_CONFIRM_DELETE';
+	exports.TECHSTEP_CANCEL_DELETE = 'TECHSTEP_CANCEL_DELETE';
+	exports.TECHSTEP_NAME_CHANGE = 'TECHSTEP_NAME_CHANGE';
+	exports.TECHSTEP_NAME_VALIDATION_PENDING = 'TECHSTEP_NAME_VALIDATION_PENDING';
+	exports.TECHSTEP_NAME_VALIDATION_SUCCEED = 'TECHSTEP_NAME_VALIDATION_SUCCEED';
+	exports.TECHSTEP_NAME_VALIDATION_FAILED = 'TECHSTEP_NAME_VALIDATION_FAILED';
+	exports.TECHSTEP_SAVE = 'TECHSTEP_SAVE';
+	exports.TECHSTEP_SAVE_PENDING = 'TECHSTEP_SAVE_PENDING';
+	exports.TECHSTEP_SAVE_SUCCEED = 'TECHSTEP_SAVE_SUCCEED';
+	exports.TECHSTEP_SAVE_FAILED = 'TECHSTEP_SAVE_FAILED';
+	exports.TECHSTEP_NAME_UNDO = 'TECHSTEP_NAME_UNDO';
+	exports.TECHSTEP_NAME_REDO = 'TECHSTEP_NAME_REDO';
+	//# sourceMappingURL=techStepActionType.js.map
+
+/***/ },
+/* 242 */
+/*!*****************************************************!*\
+  !*** ./src/containers/techStep/TechStepEditForm.js ***!
+  \*****************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var react_redux_1 = __webpack_require__(/*! react-redux */ 166);
+	var TechStepEditForm_1 = __webpack_require__(/*! ../../components/techStep/TechStepEditForm */ 243);
+	var TechStepActionCreator = __webpack_require__(/*! ../../actions/techStepActionCreator */ 240);
+	var mapStateToTechStepEditFormProps = function (state, ownProps) {
+	    var techStepEditFormState = state.techStepEditForms.filter(function (techStepEditForm) { return techStepEditForm.id == ownProps.id; })[0];
+	    var values = techStepEditFormState.values;
+	    return {
+	        techStepId: techStepEditFormState.techStepId,
+	        values: values,
+	        isSaving: techStepEditFormState.isSaving
+	    };
+	};
+	var mapDispatchToTechStepEditFormProps = function (dispatch, ownProps) {
+	    return {
+	        handleSubmit: function (event) {
+	            event.preventDefault();
+	            dispatch(TechStepActionCreator.save(ownProps.id));
+	        },
+	        onNameChange: function (event) {
+	            dispatch(TechStepActionCreator.techStepNameChange(ownProps.id, event.target.value));
+	        }
+	    };
+	};
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = react_redux_1.connect(mapStateToTechStepEditFormProps, mapDispatchToTechStepEditFormProps)(TechStepEditForm_1.default);
+	//# sourceMappingURL=TechStepEditForm.js.map
+
+/***/ },
+/* 243 */
+/*!*****************************************************!*\
+  !*** ./src/components/techStep/TechStepEditForm.js ***!
+  \*****************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var React = __webpack_require__(/*! react */ 1);
+	var DialogBackground_1 = __webpack_require__(/*! ../common/DialogBackground */ 221);
+	var PendingPanel_1 = __webpack_require__(/*! ../common/PendingPanel */ 224);
+	var PendingAnimation_1 = __webpack_require__(/*! ../common/PendingAnimation */ 225);
+	function TechStepEditForm(props) {
+	    return (React.createElement("div", {style: { width: '100%' }}, React.createElement(DialogBackground_1.default, {isShow: props.isSaving}, React.createElement(PendingPanel_1.default, {title: "Сохранение инструмента"}, React.createElement(PendingAnimation_1.default, null, React.createElement("h4", null, "Пожалуйста, подождите."), React.createElement("h4", null, "Идет сохранение.")))), React.createElement("form", {role: "form", onSubmit: props.handleSubmit}, React.createElement("div", {className: "form-group"}, React.createElement("label", {className: "control-label"}, "Наименование: "), React.createElement("input", {className: 'form-control', onChange: props.onNameChange, value: props.values.name})), React.createElement("div", {className: "form-group"}, React.createElement("div", {className: "btn-toolbar"}, React.createElement("button", {className: "btn btn-primary", type: "submit", disabled: false}, "Сохранить"))))));
+	}
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = TechStepEditForm;
+	//# sourceMappingURL=TechStepEditForm.js.map
+
+/***/ },
+/* 244 */
+/*!***********************************************************!*\
+  !*** ./src/containers/techOperation/TechOperationList.js ***!
+  \***********************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var react_redux_1 = __webpack_require__(/*! react-redux */ 166);
+	var TechOperationList_1 = __webpack_require__(/*! ../../components/techOperation/TechOperationList */ 245);
+	var TechOperationActionCreator = __webpack_require__(/*! ../../actions/techOperationActionCreator */ 248);
+	var PanelActionCreator = __webpack_require__(/*! ../../actions/panelActionCreator */ 195);
+	var PanelType = __webpack_require__(/*! ../../components/panelType */ 197);
+	var PagingParameter = __webpack_require__(/*! ../../constants/pagingParameter */ 219);
+	var mapStateToTechOperationListProps = function (state, ownProps) {
+	    var techOperationListState = state.techOperationLists.filter(function (techOperationList) { return techOperationList.id === ownProps.id; })[0];
+	    return {
+	        techOperations: (techOperationListState.techOperations.map(function (techOperationId) { return state.entities.techOperations.filter(function (techOperation) { return techOperation.id === techOperationId; })[0]; })),
+	        selectedTechOperations: techOperationListState.selectedTechOperations,
+	        params: techOperationListState.params
+	    };
+	};
+	var mapDispatchToTechOperationListProps = function (dispatch, ownProps) {
+	    return {
+	        onMount: function () {
+	            dispatch(TechOperationActionCreator.load(ownProps.id, PagingParameter.FIRST_PAGE, PagingParameter.ITEMS_PER_PAGE_INIT, PagingParameter.EMPTY_SEARCH_TEXT));
+	        },
+	        onDeleteBtnClick: function () {
+	            dispatch(TechOperationActionCreator.confirmDelete(ownProps.id));
+	        },
+	        onAddBtnClick: function () {
+	            dispatch(PanelActionCreator.open(PanelType.TECHOPERATION_EDIT_FORM, "Редактирование инструмента", { techOperation: { id: 0, name: null, price: null } }));
+	        },
+	        load: function (page, itemsPerPage, searchText) {
+	            dispatch(TechOperationActionCreator.load(ownProps.id, page, itemsPerPage, searchText));
+	        },
+	        onDeleteConfirm: function (techOperations) {
+	            dispatch(TechOperationActionCreator.remove(ownProps.id, techOperations));
+	        },
+	        onDeleteCancel: function () {
+	            dispatch(TechOperationActionCreator.cancelDelete(ownProps.id));
+	        }
+	    };
+	};
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = react_redux_1.connect(mapStateToTechOperationListProps, mapDispatchToTechOperationListProps)(TechOperationList_1.default);
+	//# sourceMappingURL=TechOperationList.js.map
+
+/***/ },
+/* 245 */
+/*!***********************************************************!*\
+  !*** ./src/components/techOperation/TechOperationList.js ***!
+  \***********************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var React = __webpack_require__(/*! react */ 1);
+	var TechOperationTable_1 = __webpack_require__(/*! ../../containers/techOperation/TechOperationTable */ 246);
+	var ItemListControlPanel_1 = __webpack_require__(/*! ../common/ItemListControlPanel */ 216);
+	var ItemsPerPageSelector_1 = __webpack_require__(/*! ../common/ItemsPerPageSelector */ 218);
+	var Pagination_1 = __webpack_require__(/*! ../common/Pagination */ 220);
+	var DialogBackground_1 = __webpack_require__(/*! ../common/DialogBackground */ 221);
+	var ConfirmationDialogPanel_1 = __webpack_require__(/*! ../common/ConfirmationDialogPanel */ 222);
+	var PendingPanel_1 = __webpack_require__(/*! ../common/PendingPanel */ 224);
+	var PendingAnimation_1 = __webpack_require__(/*! ../common/PendingAnimation */ 225);
+	var TechOperationList = (function (_super) {
+	    __extends(TechOperationList, _super);
+	    function TechOperationList(props) {
+	        var _this = this;
+	        _super.call(this, props);
+	        this.refreshBtnClickHandler = function () {
+	            _this.props.load(_this.props.params.techOperationPage, _this.props.params.techOperationsPerPage, _this.props.params.searchText);
+	        };
+	        this.techOperationPageChangeHandler = function (page) {
+	            _this.props.load(page, _this.props.params.techOperationsPerPage, _this.props.params.searchText);
+	        };
+	        this.techOperationsPerPageChangeHandler = function (itemsPerPage) {
+	            _this.props.load(_this.props.params.techOperationPage, itemsPerPage, _this.props.params.searchText);
+	        };
+	        this.searchTextChangeHandler = function (text) {
+	            _this.props.load(_this.props.params.techOperationPage, _this.props.params.techOperationsPerPage, text);
+	        };
+	        this.deleteConfirmClickHandler = function () {
+	            var techOperationsForDeleting = _this.props.selectedTechOperations.map(function (id) { return { id: id }; });
+	            _this.props.onDeleteConfirm(techOperationsForDeleting);
+	        };
+	    }
+	    TechOperationList.prototype.componentDidMount = function () {
+	        this.props.onMount();
+	    };
+	    TechOperationList.prototype.render = function () {
+	        return (React.createElement("div", {style: { position: 'relative', display: 'flex', flexGrow: 2, flexBasis: 0 + '%', minHeight: 0, minWidth: 0 }}, React.createElement(DialogBackground_1.default, {isShow: this.props.params.isConfirmDeleting}, React.createElement(ConfirmationDialogPanel_1.default, {title: "Удаление инструмента", onConfirmClick: this.deleteConfirmClickHandler, onCancelClick: this.props.onDeleteCancel}, React.createElement("span", null, "Вы действительно хотите удалить данный инструмент?"))), React.createElement(DialogBackground_1.default, {isShow: this.props.params.isDeleting}, React.createElement(PendingPanel_1.default, {title: "Удаление инструмента"}, React.createElement(PendingAnimation_1.default, null, React.createElement("h4", null, "Пожалуйста, подождите."), React.createElement("h4", null, "Идет удаление.")))), React.createElement("div", {style: {
+	            position: 'relative',
+	            display: 'flex',
+	            flexFlow: 'column',
+	            flexGrow: 2,
+	            flexBasis: 0 + '%',
+	            minHeight: 0, minWidth: 0
+	        }}, React.createElement("div", {style: { flexShrink: 0 }}, React.createElement(ItemListControlPanel_1.default, {onItemDelete: this.props.onDeleteBtnClick, onNewItem: this.props.onAddBtnClick, onRefresh: this.refreshBtnClickHandler, onSearchTextChange: this.searchTextChangeHandler, isDeleteEnable: this.props.selectedTechOperations.length > 0, isUpdating: this.props.params.isPending})), React.createElement(TechOperationTable_1.default, {id: this.props.id, techOperations: this.props.techOperations, selectedTechOperations: this.props.selectedTechOperations}), React.createElement("div", {className: "btn-techOperationbar", style: { flexShrink: 0 }}, React.createElement(ItemsPerPageSelector_1.default, {onChange: this.techOperationsPerPageChangeHandler}), React.createElement(Pagination_1.default, {itemAmount: this.props.params.totalAmount, itemsPerPage: this.props.params.techOperationsPerPage, currentPage: this.props.params.techOperationPage, firstSymbol: '«', nextSymbol: '›', prevSymbol: '‹', lastSymbol: '»', onPageBtnClick: this.techOperationPageChangeHandler})))));
+	    };
+	    return TechOperationList;
+	}(React.Component));
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = TechOperationList;
+	//# sourceMappingURL=TechOperationList.js.map
+
+/***/ },
+/* 246 */
+/*!************************************************************!*\
+  !*** ./src/containers/techOperation/TechOperationTable.js ***!
+  \************************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var react_redux_1 = __webpack_require__(/*! react-redux */ 166);
+	var TechOperationTable_1 = __webpack_require__(/*! ../../components/techOperation/TechOperationTable */ 247);
+	var PanelActionCreator = __webpack_require__(/*! ../../actions/panelActionCreator */ 195);
+	var TechOperationActionCreator = __webpack_require__(/*! ../../actions/techOperationActionCreator */ 248);
+	var PanelType = __webpack_require__(/*! ../../components/panelType */ 197);
+	var mapDispatchToTechOperationTableProps = function (dispatch, ownProps) {
+	    return {
+	        onTableRowDoubleClick: function (techOperation) {
+	            dispatch(PanelActionCreator.open(PanelType.TECHOPERATION_EDIT_FORM, "Редактирование детали", { techOperation: techOperation }));
+	        },
+	        onTechOperationSelect: function (event) {
+	            var selectedTechOperations = ownProps.selectedTechOperations;
+	            var techOperations = ownProps.techOperations;
+	            if (event.target.checked) {
+	                var techOperation;
+	                for (var i = 0; i < techOperations.length; i++) {
+	                    if (techOperations[i].id == event.target.value) {
+	                        techOperation = techOperations[i];
+	                        break;
+	                    }
+	                }
+	                selectedTechOperations = selectedTechOperations.concat([
+	                    techOperation.id
+	                ]);
+	            }
+	            else {
+	                selectedTechOperations = selectedTechOperations.filter(function (id) { return id != event.target.value; });
+	            }
+	            dispatch(TechOperationActionCreator.select(ownProps.id, selectedTechOperations));
+	        },
+	        onAllTechOperationsSelect: function (event) {
+	            var selectedTechOperations = [];
+	            var techOperations = ownProps.techOperations;
+	            if (event.target.checked) {
+	                selectedTechOperations = techOperations.map(function (techOperation) { return techOperation.id; });
+	            }
+	            dispatch(TechOperationActionCreator.select(ownProps.id, selectedTechOperations));
+	        }
+	    };
+	};
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = react_redux_1.connect(null, mapDispatchToTechOperationTableProps)(TechOperationTable_1.default);
+	//# sourceMappingURL=TechOperationTable.js.map
+
+/***/ },
+/* 247 */
+/*!************************************************************!*\
+  !*** ./src/components/techOperation/TechOperationTable.js ***!
+  \************************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var React = __webpack_require__(/*! react */ 1);
+	var TableRow_1 = __webpack_require__(/*! ../common/TableRow */ 209);
+	function TableList(props) {
+	    var techOperationRows = [];
+	    var techOperations = props.techOperations;
+	    var selectedTechOperations = props.selectedTechOperations;
+	    var isAllChecked = techOperations.length == selectedTechOperations.length && techOperations.length != 0;
+	    techOperationRows = techOperations.map(function (techOperation, index) {
+	        var selectedTechOperation = null;
+	        for (var j = 0; j < selectedTechOperations.length; j++) {
+	            if (selectedTechOperations[j] == techOperation.id) {
+	                selectedTechOperation = selectedTechOperations[j];
+	                break;
+	            }
+	        }
+	        return (React.createElement(TableRow_1.default, {key: index, onTableRowDoubleClick: function () { props.onTableRowDoubleClick(techOperation); }}, React.createElement("td", {style: { width: 5 + '%' }}, React.createElement("input", {type: 'checkbox', value: techOperation.id, onChange: props.onTechOperationSelect, checked: selectedTechOperation})), React.createElement("td", {style: { width: 15 + '%' }}, techOperation.id), React.createElement("td", {style: { width: 80 + '%' }}, techOperation.name)));
+	    });
+	    return (React.createElement("div", {style: { marginBottom: 10 + 'px', overflow: 'auto' }}, React.createElement("table", {className: "table table-bordered", style: { marginBottom: 1 + 'px' }}, React.createElement("thead", null, React.createElement("tr", null, React.createElement("th", {style: { width: 5 + '%' }}, React.createElement("input", {type: 'checkbox', onChange: props.onAllTechOperationsSelect, checked: isAllChecked})), React.createElement("th", {style: { width: 15 + '%' }}, "ID"), React.createElement("th", {style: { width: 80 + '%' }}, "Наименование"))), React.createElement("tbody", null, techOperationRows))));
+	}
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = TableList;
+	//# sourceMappingURL=TechOperationTable.js.map
+
+/***/ },
+/* 248 */
+/*!***************************************************!*\
+  !*** ./src/actions/techOperationActionCreator.js ***!
+  \***************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var $ = __webpack_require__(/*! jquery */ 211);
+	var TechOperationActionType = __webpack_require__(/*! ./techOperationActionType */ 249);
+	var serviceDomain_1 = __webpack_require__(/*! ../constants/serviceDomain */ 213);
+	var AntiForgeryToken = __webpack_require__(/*! ../utils/antiForgeryToken */ 214);
+	function load(techOperationListId, page, techOperationPerPage, searchText) {
+	    return function (dispatch) {
+	        $.ajax({
+	            url: (serviceDomain_1.default + "/api/"
+	                + 'techOperations' + '/'
+	                + "?search=" + searchText
+	                + "&page=" + page + "&pageSize="
+	                + techOperationPerPage),
+	            dataType: 'json',
+	            type: 'GET',
+	            success: function (techOperationListModel) {
+	                dispatch(loadSucceed(techOperationListId, techOperationListModel.techOperations, techOperationListModel.techOperationAmount, page, techOperationPerPage, searchText));
+	            },
+	            error: function (xhr, status, err) {
+	                dispatch(loadFailed(techOperationListId, err));
+	            }
+	        });
+	        return dispatch(loadPending(techOperationListId));
+	    };
+	}
+	exports.load = load;
+	function loadPending(techOperationListId) {
+	    return {
+	        type: TechOperationActionType.TECHOPERATION_LOAD_PENDING,
+	        techOperationListId: techOperationListId,
+	    };
+	}
+	exports.loadPending = loadPending;
+	function loadSucceed(techOperationListId, techOperations, totalAmount, page, techOperationsPerPage, searchText) {
+	    return {
+	        type: TechOperationActionType.TECHOPERATION_LOAD_SUCCEED,
+	        techOperationListId: techOperationListId,
+	        techOperations: techOperations,
+	        totalAmount: totalAmount,
+	        techOperationPage: page,
+	        techOperationsPerPage: techOperationsPerPage,
+	        searchText: searchText
+	    };
+	}
+	exports.loadSucceed = loadSucceed;
+	function loadFailed(techOperationListId, errorMessage) {
+	    return {
+	        type: TechOperationActionType.TECHOPERATION_LOAD_FAILED,
+	        techOperationListId: techOperationListId,
+	        errorMessage: errorMessage
+	    };
+	}
+	exports.loadFailed = loadFailed;
+	function remove(techOperationListId, techOperations) {
+	    return function (dispatch) {
+	        $.ajax({
+	            url: serviceDomain_1.default + '/api/' + "techOperations" + "/",
+	            type: 'DELETE',
+	            dataType: "json",
+	            data: {
+	                techOperations: techOperations,
+	                __RequestVerificationToken: AntiForgeryToken.get()
+	            },
+	            success: function (response) {
+	                dispatch(removeSucceed(techOperationListId));
+	            },
+	            error: function (xhr, status, err) {
+	                dispatch(removeFailed(techOperationListId, err));
+	            }
+	        });
+	        return dispatch(removePending(techOperationListId));
+	    };
+	}
+	exports.remove = remove;
+	function removePending(techOperationListId) {
+	    return {
+	        type: TechOperationActionType.TECHOPERATION_REMOVE_PENDING,
+	        techOperationListId: techOperationListId
+	    };
+	}
+	exports.removePending = removePending;
+	function removeSucceed(techOperationListId) {
+	    return {
+	        type: TechOperationActionType.TECHOPERATION_REMOVE_SUCCEED,
+	        techOperationListId: techOperationListId
+	    };
+	}
+	exports.removeSucceed = removeSucceed;
+	function removeFailed(techOperationListId, errorMessage) {
+	    return {
+	        type: TechOperationActionType.TECHOPERATION_REMOVE_FAILED,
+	        techOperationListId: techOperationListId,
+	        errorMessage: errorMessage
+	    };
+	}
+	exports.removeFailed = removeFailed;
+	function select(techOperationListId, selectedTechOperations) {
+	    return {
+	        type: TechOperationActionType.TECHOPERATION_SELECT,
+	        techOperationListId: techOperationListId,
+	        selectedTechOperations: selectedTechOperations
+	    };
+	}
+	exports.select = select;
+	function confirmDelete(techOperationListId) {
+	    return {
+	        type: TechOperationActionType.TECHOPERATION_CONFIRM_DELETE,
+	        techOperationListId: techOperationListId
+	    };
+	}
+	exports.confirmDelete = confirmDelete;
+	function cancelDelete(techOperationListId) {
+	    return {
+	        type: TechOperationActionType.TECHOPERATION_CANCEL_DELETE,
+	        techOperationListId: techOperationListId
+	    };
+	}
+	exports.cancelDelete = cancelDelete;
+	function techOperationNameChange(techOperationEditFormId, value) {
+	    return {
+	        type: TechOperationActionType.TECHOPERATION_NAME_CHANGE,
+	        techOperationEditFormId: techOperationEditFormId,
+	        name: value
+	    };
+	}
+	exports.techOperationNameChange = techOperationNameChange;
+	function techOperationNameValidationPending(techOperationEditFormId, value, nameValidation) {
+	    return {
+	        type: TechOperationActionType.TECHOPERATION_NAME_VALIDATION_PENDING,
+	        techOperationEditFormId: techOperationEditFormId,
+	        name: value,
+	        nameValidation: nameValidation
+	    };
+	}
+	exports.techOperationNameValidationPending = techOperationNameValidationPending;
+	function save(techOperationEditFormId) {
+	    return function (dispatch, getState) {
+	        var techOperationEditForm = getState().techOperationEditForms.filter(function (tef) { return tef.id == techOperationEditFormId; })[0];
+	        var type = techOperationEditForm.techOperationId == 0 ? 'PUT' : 'POST';
+	        var techOperation = {
+	            id: techOperationEditForm.techOperationId,
+	            name: techOperationEditForm.values.name
+	        };
+	        $.ajax({
+	            url: serviceDomain_1.default + '/api/' + "techOperations" + "/",
+	            type: type,
+	            dataType: "json",
+	            data: _.assign({}, techOperation, { __RequestVerificationToken: AntiForgeryToken.get() }),
+	            success: function (response) {
+	                dispatch(saveSucceed(techOperationEditFormId));
+	            },
+	            error: function (xhr, status, err) {
+	                dispatch(saveFailed(techOperationEditFormId, err));
+	            }
+	        });
+	        return dispatch(savePending(techOperationEditFormId));
+	    };
+	}
+	exports.save = save;
+	function savePending(techOperationEditFormId) {
+	    return {
+	        type: TechOperationActionType.TECHOPERATION_SAVE_PENDING,
+	        techOperationEditFormId: techOperationEditFormId
+	    };
+	}
+	exports.savePending = savePending;
+	function saveSucceed(techOperationEditFormId) {
+	    return {
+	        type: TechOperationActionType.TECHOPERATION_SAVE_SUCCEED,
+	        techOperationEditFormId: techOperationEditFormId
+	    };
+	}
+	exports.saveSucceed = saveSucceed;
+	function saveFailed(techOperationEditFormId, errorMessage) {
+	    return {
+	        type: TechOperationActionType.TECHOPERATION_SAVE_FAILED,
+	        techOperationEditFormId: techOperationEditFormId,
+	        errorMessage: errorMessage
+	    };
+	}
+	exports.saveFailed = saveFailed;
+	//# sourceMappingURL=techOperationActionCreator.js.map
+
+/***/ },
+/* 249 */
+/*!************************************************!*\
+  !*** ./src/actions/techOperationActionType.js ***!
+  \************************************************/
+/***/ function(module, exports) {
+
+	"use strict";
+	exports.TECHOPERATION_LOAD = 'TECHOPERATION_LOAD';
+	exports.TECHOPERATION_LOAD_PENDING = 'TECHOPERATION_LOAD_PENDING';
+	exports.TECHOPERATION_LOAD_SUCCEED = 'TECHOPERATION_LOAD_SUCCEED';
+	exports.TECHOPERATION_LOAD_FAILED = 'TECHOPERATION_LOAD_FAILED';
+	exports.TECHOPERATION_REMOVE = 'TECHOPERATION_REMOVE';
+	exports.TECHOPERATION_REMOVE_PENDING = 'TECHOPERATION_REMOVE_PENDING';
+	exports.TECHOPERATION_REMOVE_SUCCEED = 'TECHOPERATION_REMOVE_SUCCEED';
+	exports.TECHOPERATION_REMOVE_FAILED = 'TECHOPERATION_REMOVE_FAILED';
+	exports.TECHOPERATION_SELECT = 'TECHOPERATION_SELECT';
+	exports.TECHOPERATION_CONFIRM_DELETE = 'TECHOPERATION_CONFIRM_DELETE';
+	exports.TECHOPERATION_CANCEL_DELETE = 'TECHOPERATION_CANCEL_DELETE';
+	exports.TECHOPERATION_NAME_CHANGE = 'TECHOPERATION_NAME_CHANGE';
+	exports.TECHOPERATION_NAME_VALIDATION_PENDING = 'TECHOPERATION_NAME_VALIDATION_PENDING';
+	exports.TECHOPERATION_NAME_VALIDATION_SUCCEED = 'TECHOPERATION_NAME_VALIDATION_SUCCEED';
+	exports.TECHOPERATION_NAME_VALIDATION_FAILED = 'TECHOPERATION_NAME_VALIDATION_FAILED';
+	exports.TECHOPERATION_SAVE = 'TECHOPERATION_SAVE';
+	exports.TECHOPERATION_SAVE_PENDING = 'TECHOPERATION_SAVE_PENDING';
+	exports.TECHOPERATION_SAVE_SUCCEED = 'TECHOPERATION_SAVE_SUCCEED';
+	exports.TECHOPERATION_SAVE_FAILED = 'TECHOPERATION_SAVE_FAILED';
+	exports.TECHOPERATION_NAME_UNDO = 'TECHOPERATION_NAME_UNDO';
+	exports.TECHOPERATION_NAME_REDO = 'TECHOPERATION_NAME_REDO';
+	//# sourceMappingURL=techOperationActionType.js.map
+
+/***/ },
+/* 250 */
+/*!***************************************************************!*\
+  !*** ./src/containers/techOperation/TechOperationEditForm.js ***!
+  \***************************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var react_redux_1 = __webpack_require__(/*! react-redux */ 166);
+	var TechOperationEditForm_1 = __webpack_require__(/*! ../../components/techOperation/TechOperationEditForm */ 251);
+	var TechOperationActionCreator = __webpack_require__(/*! ../../actions/techOperationActionCreator */ 248);
+	var mapStateToTechOperationEditFormProps = function (state, ownProps) {
+	    var techOperationEditFormState = state.techOperationEditForms.filter(function (techOperationEditForm) { return techOperationEditForm.id == ownProps.id; })[0];
+	    var values = techOperationEditFormState.values;
+	    return {
+	        techOperationId: techOperationEditFormState.techOperationId,
+	        values: values,
+	        isSaving: techOperationEditFormState.isSaving
+	    };
+	};
+	var mapDispatchToTechOperationEditFormProps = function (dispatch, ownProps) {
+	    return {
+	        handleSubmit: function (event) {
+	            event.preventDefault();
+	            dispatch(TechOperationActionCreator.save(ownProps.id));
+	        },
+	        onNameChange: function (event) {
+	            dispatch(TechOperationActionCreator.techOperationNameChange(ownProps.id, event.target.value));
+	        }
+	    };
+	};
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = react_redux_1.connect(mapStateToTechOperationEditFormProps, mapDispatchToTechOperationEditFormProps)(TechOperationEditForm_1.default);
+	//# sourceMappingURL=TechOperationEditForm.js.map
+
+/***/ },
+/* 251 */
+/*!***************************************************************!*\
+  !*** ./src/components/techOperation/TechOperationEditForm.js ***!
+  \***************************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var React = __webpack_require__(/*! react */ 1);
+	var DialogBackground_1 = __webpack_require__(/*! ../common/DialogBackground */ 221);
+	var PendingPanel_1 = __webpack_require__(/*! ../common/PendingPanel */ 224);
+	var PendingAnimation_1 = __webpack_require__(/*! ../common/PendingAnimation */ 225);
+	function TechOperationEditForm(props) {
+	    return (React.createElement("div", {style: { width: '100%' }}, React.createElement(DialogBackground_1.default, {isShow: props.isSaving}, React.createElement(PendingPanel_1.default, {title: "Сохранение инструмента"}, React.createElement(PendingAnimation_1.default, null, React.createElement("h4", null, "Пожалуйста, подождите."), React.createElement("h4", null, "Идет сохранение.")))), React.createElement("form", {role: "form", onSubmit: props.handleSubmit}, React.createElement("div", {className: "form-group"}, React.createElement("label", {className: "control-label"}, "Наименование: "), React.createElement("input", {className: 'form-control', onChange: props.onNameChange, value: props.values.name})), React.createElement("div", {className: "form-group"}, React.createElement("div", {className: "btn-toolbar"}, React.createElement("button", {className: "btn btn-primary", type: "submit", disabled: false}, "Сохранить"))))));
+	}
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = TechOperationEditForm;
+	//# sourceMappingURL=TechOperationEditForm.js.map
+
+/***/ },
+/* 252 */
+/*!*******************************************************!*\
+  !*** ./src/containers/techProcess/TechProcessList.js ***!
+  \*******************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var react_redux_1 = __webpack_require__(/*! react-redux */ 166);
+	var TechProcessList_1 = __webpack_require__(/*! ../../components/techProcess/TechProcessList */ 253);
+	var TechProcessActionCreator = __webpack_require__(/*! ../../actions/techProcessActionCreator */ 256);
+	var PanelActionCreator = __webpack_require__(/*! ../../actions/panelActionCreator */ 195);
+	var PanelType = __webpack_require__(/*! ../../components/panelType */ 197);
+	var PagingParameter = __webpack_require__(/*! ../../constants/pagingParameter */ 219);
+	var mapStateToTechProcessListProps = function (state, ownProps) {
+	    var techProcessListState = state.techProcessLists.filter(function (techProcessList) { return techProcessList.id === ownProps.id; })[0];
+	    return {
+	        techProcesses: (techProcessListState.techProcesses.map(function (techProcessId) { return state.entities.techProcesses.filter(function (techProcess) { return techProcess.id === techProcessId; })[0]; })),
+	        selectedTechProcesses: techProcessListState.selectedTechProcesses,
+	        params: techProcessListState.params
+	    };
+	};
+	var mapDispatchToTechProcessListProps = function (dispatch, ownProps) {
+	    return {
+	        onMount: function () {
+	            dispatch(TechProcessActionCreator.load(ownProps.id, PagingParameter.FIRST_PAGE, PagingParameter.ITEMS_PER_PAGE_INIT, PagingParameter.EMPTY_SEARCH_TEXT));
+	        },
+	        onDeleteBtnClick: function () {
+	            dispatch(TechProcessActionCreator.confirmDelete(ownProps.id));
+	        },
+	        onAddBtnClick: function () {
+	            dispatch(PanelActionCreator.open(PanelType.TECHPROCESS_EDIT_FORM, "Редактирование инструмента", { techProcess: { id: 0, name: null, price: null } }));
+	        },
+	        load: function (page, itemsPerPage, searchText) {
+	            dispatch(TechProcessActionCreator.load(ownProps.id, page, itemsPerPage, searchText));
+	        },
+	        onDeleteConfirm: function (techProcesses) {
+	            dispatch(TechProcessActionCreator.remove(ownProps.id, techProcesses));
+	        },
+	        onDeleteCancel: function () {
+	            dispatch(TechProcessActionCreator.cancelDelete(ownProps.id));
+	        }
+	    };
+	};
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = react_redux_1.connect(mapStateToTechProcessListProps, mapDispatchToTechProcessListProps)(TechProcessList_1.default);
+	//# sourceMappingURL=TechProcessList.js.map
+
+/***/ },
+/* 253 */
+/*!*******************************************************!*\
+  !*** ./src/components/techProcess/TechProcessList.js ***!
+  \*******************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var React = __webpack_require__(/*! react */ 1);
+	var TechProcessTable_1 = __webpack_require__(/*! ../../containers/techProcess/TechProcessTable */ 254);
+	var ItemListControlPanel_1 = __webpack_require__(/*! ../common/ItemListControlPanel */ 216);
+	var ItemsPerPageSelector_1 = __webpack_require__(/*! ../common/ItemsPerPageSelector */ 218);
+	var Pagination_1 = __webpack_require__(/*! ../common/Pagination */ 220);
+	var DialogBackground_1 = __webpack_require__(/*! ../common/DialogBackground */ 221);
+	var ConfirmationDialogPanel_1 = __webpack_require__(/*! ../common/ConfirmationDialogPanel */ 222);
+	var PendingPanel_1 = __webpack_require__(/*! ../common/PendingPanel */ 224);
+	var PendingAnimation_1 = __webpack_require__(/*! ../common/PendingAnimation */ 225);
+	var TechProcessList = (function (_super) {
+	    __extends(TechProcessList, _super);
+	    function TechProcessList(props) {
+	        var _this = this;
+	        _super.call(this, props);
+	        this.refreshBtnClickHandler = function () {
+	            _this.props.load(_this.props.params.techProcessPage, _this.props.params.techProcessesPerPage, _this.props.params.searchText);
+	        };
+	        this.techProcessPageChangeHandler = function (page) {
+	            _this.props.load(page, _this.props.params.techProcessesPerPage, _this.props.params.searchText);
+	        };
+	        this.techProcessesPerPageChangeHandler = function (itemsPerPage) {
+	            _this.props.load(_this.props.params.techProcessPage, itemsPerPage, _this.props.params.searchText);
+	        };
+	        this.searchTextChangeHandler = function (text) {
+	            _this.props.load(_this.props.params.techProcessPage, _this.props.params.techProcessesPerPage, text);
+	        };
+	        this.deleteConfirmClickHandler = function () {
+	            var techProcessesForDeleting = _this.props.selectedTechProcesses.map(function (id) { return { id: id }; });
+	            _this.props.onDeleteConfirm(techProcessesForDeleting);
+	        };
+	    }
+	    TechProcessList.prototype.componentDidMount = function () {
+	        this.props.onMount();
+	    };
+	    TechProcessList.prototype.render = function () {
+	        return (React.createElement("div", {style: { position: 'relative', display: 'flex', flexGrow: 2, flexBasis: 0 + '%', minHeight: 0, minWidth: 0 }}, React.createElement(DialogBackground_1.default, {isShow: this.props.params.isConfirmDeleting}, React.createElement(ConfirmationDialogPanel_1.default, {title: "Удаление инструмента", onConfirmClick: this.deleteConfirmClickHandler, onCancelClick: this.props.onDeleteCancel}, React.createElement("span", null, "Вы действительно хотите удалить данный инструмент?"))), React.createElement(DialogBackground_1.default, {isShow: this.props.params.isDeleting}, React.createElement(PendingPanel_1.default, {title: "Удаление инструмента"}, React.createElement(PendingAnimation_1.default, null, React.createElement("h4", null, "Пожалуйста, подождите."), React.createElement("h4", null, "Идет удаление.")))), React.createElement("div", {style: {
+	            position: 'relative',
+	            display: 'flex',
+	            flexFlow: 'column',
+	            flexGrow: 2,
+	            flexBasis: 0 + '%',
+	            minHeight: 0, minWidth: 0
+	        }}, React.createElement("div", {style: { flexShrink: 0 }}, React.createElement(ItemListControlPanel_1.default, {onItemDelete: this.props.onDeleteBtnClick, onNewItem: this.props.onAddBtnClick, onRefresh: this.refreshBtnClickHandler, onSearchTextChange: this.searchTextChangeHandler, isDeleteEnable: this.props.selectedTechProcesses.length > 0, isUpdating: this.props.params.isPending})), React.createElement(TechProcessTable_1.default, {id: this.props.id, techProcesses: this.props.techProcesses, selectedTechProcesses: this.props.selectedTechProcesses}), React.createElement("div", {className: "btn-techProcessbar", style: { flexShrink: 0 }}, React.createElement(ItemsPerPageSelector_1.default, {onChange: this.techProcessesPerPageChangeHandler}), React.createElement(Pagination_1.default, {itemAmount: this.props.params.totalAmount, itemsPerPage: this.props.params.techProcessesPerPage, currentPage: this.props.params.techProcessPage, firstSymbol: '«', nextSymbol: '›', prevSymbol: '‹', lastSymbol: '»', onPageBtnClick: this.techProcessPageChangeHandler})))));
+	    };
+	    return TechProcessList;
+	}(React.Component));
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = TechProcessList;
+	//# sourceMappingURL=TechProcessList.js.map
+
+/***/ },
+/* 254 */
+/*!********************************************************!*\
+  !*** ./src/containers/techProcess/TechProcessTable.js ***!
+  \********************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var react_redux_1 = __webpack_require__(/*! react-redux */ 166);
+	var TechProcessTable_1 = __webpack_require__(/*! ../../components/techProcess/TechProcessTable */ 255);
+	var PanelActionCreator = __webpack_require__(/*! ../../actions/panelActionCreator */ 195);
+	var TechProcessActionCreator = __webpack_require__(/*! ../../actions/techProcessActionCreator */ 256);
+	var PanelType = __webpack_require__(/*! ../../components/panelType */ 197);
+	var mapDispatchToTechProcessTableProps = function (dispatch, ownProps) {
+	    return {
+	        onTableRowDoubleClick: function (techProcess) {
+	            dispatch(PanelActionCreator.open(PanelType.TECHPROCESS_EDIT_FORM, "Редактирование детали", { techProcess: techProcess }));
+	        },
+	        onTechProcessSelect: function (event) {
+	            var selectedTechProcesses = ownProps.selectedTechProcesses;
+	            var techProcesses = ownProps.techProcesses;
+	            if (event.target.checked) {
+	                var techProcess;
+	                for (var i = 0; i < techProcesses.length; i++) {
+	                    if (techProcesses[i].id == event.target.value) {
+	                        techProcess = techProcesses[i];
+	                        break;
+	                    }
+	                }
+	                selectedTechProcesses = selectedTechProcesses.concat([
+	                    techProcess.id
+	                ]);
+	            }
+	            else {
+	                selectedTechProcesses = selectedTechProcesses.filter(function (id) { return id != event.target.value; });
+	            }
+	            dispatch(TechProcessActionCreator.select(ownProps.id, selectedTechProcesses));
+	        },
+	        onAllTechProcessesSelect: function (event) {
+	            var selectedTechProcesses = [];
+	            var techProcesses = ownProps.techProcesses;
+	            if (event.target.checked) {
+	                selectedTechProcesses = techProcesses.map(function (techProcess) { return techProcess.id; });
+	            }
+	            dispatch(TechProcessActionCreator.select(ownProps.id, selectedTechProcesses));
+	        }
+	    };
+	};
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = react_redux_1.connect(null, mapDispatchToTechProcessTableProps)(TechProcessTable_1.default);
+	//# sourceMappingURL=TechProcessTable.js.map
+
+/***/ },
+/* 255 */
+/*!********************************************************!*\
+  !*** ./src/components/techProcess/TechProcessTable.js ***!
+  \********************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var React = __webpack_require__(/*! react */ 1);
+	var TableRow_1 = __webpack_require__(/*! ../common/TableRow */ 209);
+	function TableList(props) {
+	    var techProcessRows = [];
+	    var techProcesses = props.techProcesses;
+	    var selectedTechProcesses = props.selectedTechProcesses;
+	    var isAllChecked = techProcesses.length == selectedTechProcesses.length && techProcesses.length != 0;
+	    techProcessRows = techProcesses.map(function (techProcess, index) {
+	        var selectedTechProcess = null;
+	        for (var j = 0; j < selectedTechProcesses.length; j++) {
+	            if (selectedTechProcesses[j] == techProcess.id) {
+	                selectedTechProcess = selectedTechProcesses[j];
+	                break;
+	            }
+	        }
+	        return (React.createElement(TableRow_1.default, {key: index, onTableRowDoubleClick: function () { props.onTableRowDoubleClick(techProcess); }}, React.createElement("td", {style: { width: 5 + '%' }}, React.createElement("input", {type: 'checkbox', value: techProcess.id, onChange: props.onTechProcessSelect, checked: selectedTechProcess})), React.createElement("td", {style: { width: 15 + '%' }}, techProcess.id), React.createElement("td", {style: { width: 80 + '%' }}, techProcess.name)));
+	    });
+	    return (React.createElement("div", {style: { marginBottom: 10 + 'px', overflow: 'auto' }}, React.createElement("table", {className: "table table-bordered", style: { marginBottom: 1 + 'px' }}, React.createElement("thead", null, React.createElement("tr", null, React.createElement("th", {style: { width: 5 + '%' }}, React.createElement("input", {type: 'checkbox', onChange: props.onAllTechProcessesSelect, checked: isAllChecked})), React.createElement("th", {style: { width: 15 + '%' }}, "ID"), React.createElement("th", {style: { width: 80 + '%' }}, "Наименование"))), React.createElement("tbody", null, techProcessRows))));
+	}
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = TableList;
+	//# sourceMappingURL=TechProcessTable.js.map
+
+/***/ },
+/* 256 */
+/*!*************************************************!*\
+  !*** ./src/actions/techProcessActionCreator.js ***!
+  \*************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var $ = __webpack_require__(/*! jquery */ 211);
+	var TechProcessActionType = __webpack_require__(/*! ./techProcessActionType */ 257);
+	var serviceDomain_1 = __webpack_require__(/*! ../constants/serviceDomain */ 213);
+	var AntiForgeryToken = __webpack_require__(/*! ../utils/antiForgeryToken */ 214);
+	function load(techProcessListId, page, techProcessPerPage, searchText) {
+	    return function (dispatch) {
+	        $.ajax({
+	            url: (serviceDomain_1.default + "/api/"
+	                + 'techProcesses' + '/'
+	                + "?search=" + searchText
+	                + "&page=" + page + "&pageSize="
+	                + techProcessPerPage),
+	            dataType: 'json',
+	            type: 'GET',
+	            success: function (techProcessListModel) {
+	                dispatch(loadSucceed(techProcessListId, techProcessListModel.techProcesses, techProcessListModel.techProcessAmount, page, techProcessPerPage, searchText));
+	            },
+	            error: function (xhr, status, err) {
+	                dispatch(loadFailed(techProcessListId, err));
+	            }
+	        });
+	        return dispatch(loadPending(techProcessListId));
+	    };
+	}
+	exports.load = load;
+	function loadPending(techProcessListId) {
+	    return {
+	        type: TechProcessActionType.TECHPROCESS_LOAD_PENDING,
+	        techProcessListId: techProcessListId,
+	    };
+	}
+	exports.loadPending = loadPending;
+	function loadSucceed(techProcessListId, techProcesses, totalAmount, page, techProcessesPerPage, searchText) {
+	    return {
+	        type: TechProcessActionType.TECHPROCESS_LOAD_SUCCEED,
+	        techProcessListId: techProcessListId,
+	        techProcesses: techProcesses,
+	        totalAmount: totalAmount,
+	        techProcessPage: page,
+	        techProcessesPerPage: techProcessesPerPage,
+	        searchText: searchText
+	    };
+	}
+	exports.loadSucceed = loadSucceed;
+	function loadFailed(techProcessListId, errorMessage) {
+	    return {
+	        type: TechProcessActionType.TECHPROCESS_LOAD_FAILED,
+	        techProcessListId: techProcessListId,
+	        errorMessage: errorMessage
+	    };
+	}
+	exports.loadFailed = loadFailed;
+	function remove(techProcessListId, techProcesses) {
+	    return function (dispatch) {
+	        $.ajax({
+	            url: serviceDomain_1.default + '/api/' + "techProcesses" + "/",
+	            type: 'DELETE',
+	            dataType: "json",
+	            data: {
+	                techProcesses: techProcesses,
+	                __RequestVerificationToken: AntiForgeryToken.get()
+	            },
+	            success: function (response) {
+	                dispatch(removeSucceed(techProcessListId));
+	            },
+	            error: function (xhr, status, err) {
+	                dispatch(removeFailed(techProcessListId, err));
+	            }
+	        });
+	        return dispatch(removePending(techProcessListId));
+	    };
+	}
+	exports.remove = remove;
+	function removePending(techProcessListId) {
+	    return {
+	        type: TechProcessActionType.TECHPROCESS_REMOVE_PENDING,
+	        techProcessListId: techProcessListId
+	    };
+	}
+	exports.removePending = removePending;
+	function removeSucceed(techProcessListId) {
+	    return {
+	        type: TechProcessActionType.TECHPROCESS_REMOVE_SUCCEED,
+	        techProcessListId: techProcessListId
+	    };
+	}
+	exports.removeSucceed = removeSucceed;
+	function removeFailed(techProcessListId, errorMessage) {
+	    return {
+	        type: TechProcessActionType.TECHPROCESS_REMOVE_FAILED,
+	        techProcessListId: techProcessListId,
+	        errorMessage: errorMessage
+	    };
+	}
+	exports.removeFailed = removeFailed;
+	function select(techProcessListId, selectedTechProcesses) {
+	    return {
+	        type: TechProcessActionType.TECHPROCESS_SELECT,
+	        techProcessListId: techProcessListId,
+	        selectedTechProcesses: selectedTechProcesses
+	    };
+	}
+	exports.select = select;
+	function confirmDelete(techProcessListId) {
+	    return {
+	        type: TechProcessActionType.TECHPROCESS_CONFIRM_DELETE,
+	        techProcessListId: techProcessListId
+	    };
+	}
+	exports.confirmDelete = confirmDelete;
+	function cancelDelete(techProcessListId) {
+	    return {
+	        type: TechProcessActionType.TECHPROCESS_CANCEL_DELETE,
+	        techProcessListId: techProcessListId
+	    };
+	}
+	exports.cancelDelete = cancelDelete;
+	function techProcessNameChange(techProcessEditFormId, value) {
+	    return {
+	        type: TechProcessActionType.TECHPROCESS_NAME_CHANGE,
+	        techProcessEditFormId: techProcessEditFormId,
+	        name: value
+	    };
+	}
+	exports.techProcessNameChange = techProcessNameChange;
+	function techProcessNameValidationPending(techProcessEditFormId, value, nameValidation) {
+	    return {
+	        type: TechProcessActionType.TECHPROCESS_NAME_VALIDATION_PENDING,
+	        techProcessEditFormId: techProcessEditFormId,
+	        name: value,
+	        nameValidation: nameValidation
+	    };
+	}
+	exports.techProcessNameValidationPending = techProcessNameValidationPending;
+	function save(techProcessEditFormId) {
+	    return function (dispatch, getState) {
+	        var techProcessEditForm = getState().techProcessEditForms.filter(function (tef) { return tef.id == techProcessEditFormId; })[0];
+	        var type = techProcessEditForm.techProcessId == 0 ? 'PUT' : 'POST';
+	        var techProcess = {
+	            id: techProcessEditForm.techProcessId,
+	            name: techProcessEditForm.values.name
+	        };
+	        $.ajax({
+	            url: serviceDomain_1.default + '/api/' + "techProcesses" + "/",
+	            type: type,
+	            dataType: "json",
+	            data: _.assign({}, techProcess, { __RequestVerificationToken: AntiForgeryToken.get() }),
+	            success: function (response) {
+	                dispatch(saveSucceed(techProcessEditFormId));
+	            },
+	            error: function (xhr, status, err) {
+	                dispatch(saveFailed(techProcessEditFormId, err));
+	            }
+	        });
+	        return dispatch(savePending(techProcessEditFormId));
+	    };
+	}
+	exports.save = save;
+	function savePending(techProcessEditFormId) {
+	    return {
+	        type: TechProcessActionType.TECHPROCESS_SAVE_PENDING,
+	        techProcessEditFormId: techProcessEditFormId
+	    };
+	}
+	exports.savePending = savePending;
+	function saveSucceed(techProcessEditFormId) {
+	    return {
+	        type: TechProcessActionType.TECHPROCESS_SAVE_SUCCEED,
+	        techProcessEditFormId: techProcessEditFormId
+	    };
+	}
+	exports.saveSucceed = saveSucceed;
+	function saveFailed(techProcessEditFormId, errorMessage) {
+	    return {
+	        type: TechProcessActionType.TECHPROCESS_SAVE_FAILED,
+	        techProcessEditFormId: techProcessEditFormId,
+	        errorMessage: errorMessage
+	    };
+	}
+	exports.saveFailed = saveFailed;
+	//# sourceMappingURL=techProcessActionCreator.js.map
+
+/***/ },
+/* 257 */
+/*!**********************************************!*\
+  !*** ./src/actions/techProcessActionType.js ***!
+  \**********************************************/
+/***/ function(module, exports) {
+
+	"use strict";
+	exports.TECHPROCESS_LOAD = 'TECHPROCESS_LOAD';
+	exports.TECHPROCESS_LOAD_PENDING = 'TECHPROCESS_LOAD_PENDING';
+	exports.TECHPROCESS_LOAD_SUCCEED = 'TECHPROCESS_LOAD_SUCCEED';
+	exports.TECHPROCESS_LOAD_FAILED = 'TECHPROCESS_LOAD_FAILED';
+	exports.TECHPROCESS_REMOVE = 'TECHPROCESS_REMOVE';
+	exports.TECHPROCESS_REMOVE_PENDING = 'TECHPROCESS_REMOVE_PENDING';
+	exports.TECHPROCESS_REMOVE_SUCCEED = 'TECHPROCESS_REMOVE_SUCCEED';
+	exports.TECHPROCESS_REMOVE_FAILED = 'TECHPROCESS_REMOVE_FAILED';
+	exports.TECHPROCESS_SELECT = 'TECHPROCESS_SELECT';
+	exports.TECHPROCESS_CONFIRM_DELETE = 'TECHPROCESS_CONFIRM_DELETE';
+	exports.TECHPROCESS_CANCEL_DELETE = 'TECHPROCESS_CANCEL_DELETE';
+	exports.TECHPROCESS_NAME_CHANGE = 'TECHPROCESS_NAME_CHANGE';
+	exports.TECHPROCESS_NAME_VALIDATION_PENDING = 'TECHPROCESS_NAME_VALIDATION_PENDING';
+	exports.TECHPROCESS_NAME_VALIDATION_SUCCEED = 'TECHPROCESS_NAME_VALIDATION_SUCCEED';
+	exports.TECHPROCESS_NAME_VALIDATION_FAILED = 'TECHPROCESS_NAME_VALIDATION_FAILED';
+	exports.TECHPROCESS_SAVE = 'TECHPROCESS_SAVE';
+	exports.TECHPROCESS_SAVE_PENDING = 'TECHPROCESS_SAVE_PENDING';
+	exports.TECHPROCESS_SAVE_SUCCEED = 'TECHPROCESS_SAVE_SUCCEED';
+	exports.TECHPROCESS_SAVE_FAILED = 'TECHPROCESS_SAVE_FAILED';
+	exports.TECHPROCESS_NAME_UNDO = 'TECHPROCESS_NAME_UNDO';
+	exports.TECHPROCESS_NAME_REDO = 'TECHPROCESS_NAME_REDO';
+	//# sourceMappingURL=techProcessActionType.js.map
+
+/***/ },
+/* 258 */
+/*!***********************************************************!*\
+  !*** ./src/containers/techProcess/TechProcessEditForm.js ***!
+  \***********************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var react_redux_1 = __webpack_require__(/*! react-redux */ 166);
+	var TechProcessEditForm_1 = __webpack_require__(/*! ../../components/techProcess/TechProcessEditForm */ 259);
+	var TechProcessActionCreator = __webpack_require__(/*! ../../actions/techProcessActionCreator */ 256);
+	var mapStateToTechProcessEditFormProps = function (state, ownProps) {
+	    var techProcessEditFormState = state.techProcessEditForms.filter(function (techProcessEditForm) { return techProcessEditForm.id == ownProps.id; })[0];
+	    var values = techProcessEditFormState.values;
+	    return {
+	        techProcessId: techProcessEditFormState.techProcessId,
+	        values: values,
+	        isSaving: techProcessEditFormState.isSaving
+	    };
+	};
+	var mapDispatchToTechProcessEditFormProps = function (dispatch, ownProps) {
+	    return {
+	        handleSubmit: function (event) {
+	            event.preventDefault();
+	            dispatch(TechProcessActionCreator.save(ownProps.id));
+	        },
+	        onNameChange: function (event) {
+	            dispatch(TechProcessActionCreator.techProcessNameChange(ownProps.id, event.target.value));
+	        }
+	    };
+	};
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = react_redux_1.connect(mapStateToTechProcessEditFormProps, mapDispatchToTechProcessEditFormProps)(TechProcessEditForm_1.default);
+	//# sourceMappingURL=TechProcessEditForm.js.map
+
+/***/ },
+/* 259 */
+/*!***********************************************************!*\
+  !*** ./src/components/techProcess/TechProcessEditForm.js ***!
+  \***********************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var React = __webpack_require__(/*! react */ 1);
+	var DialogBackground_1 = __webpack_require__(/*! ../common/DialogBackground */ 221);
+	var PendingPanel_1 = __webpack_require__(/*! ../common/PendingPanel */ 224);
+	var PendingAnimation_1 = __webpack_require__(/*! ../common/PendingAnimation */ 225);
+	function TechProcessEditForm(props) {
+	    return (React.createElement("div", {style: { width: '100%' }}, React.createElement(DialogBackground_1.default, {isShow: props.isSaving}, React.createElement(PendingPanel_1.default, {title: "Сохранение инструмента"}, React.createElement(PendingAnimation_1.default, null, React.createElement("h4", null, "Пожалуйста, подождите."), React.createElement("h4", null, "Идет сохранение.")))), React.createElement("form", {role: "form", onSubmit: props.handleSubmit}, React.createElement("div", {className: "form-group"}, React.createElement("label", {className: "control-label"}, "Наименование: "), React.createElement("input", {className: 'form-control', onChange: props.onNameChange, value: props.values.name})), React.createElement("div", {className: "form-group"}, React.createElement("div", {className: "btn-toolbar"}, React.createElement("button", {className: "btn btn-primary", type: "submit", disabled: false}, "Сохранить"))))));
+	}
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = TechProcessEditForm;
+	//# sourceMappingURL=TechProcessEditForm.js.map
+
+/***/ },
+/* 260 */
 /*!*************************************!*\
   !*** ./src/store/configureStore.js ***!
   \*************************************/
@@ -33510,8 +35409,8 @@
 
 	"use strict";
 	var redux_1 = __webpack_require__(/*! redux */ 173);
-	var main_1 = __webpack_require__(/*! ../reducers/main */ 229);
-	var redux_thunk_1 = __webpack_require__(/*! redux-thunk */ 236);
+	var main_1 = __webpack_require__(/*! ../reducers/main */ 261);
+	var redux_thunk_1 = __webpack_require__(/*! redux-thunk */ 276);
 	var logger = function (store) { return function (next) { return function (action) {
 	    console.group(action.type);
 	    console.info('dispatching', action);
@@ -33529,7 +35428,7 @@
 	//# sourceMappingURL=configureStore.js.map
 
 /***/ },
-/* 229 */
+/* 261 */
 /*!******************************!*\
   !*** ./src/reducers/main.js ***!
   \******************************/
@@ -33537,22 +35436,38 @@
 
 	"use strict";
 	var redux_1 = __webpack_require__(/*! redux */ 173);
-	var panels_1 = __webpack_require__(/*! ./panels */ 230);
-	var entities_1 = __webpack_require__(/*! ./entities */ 231);
-	var toolLists_1 = __webpack_require__(/*! ./toolLists */ 234);
-	var toolEditForms_1 = __webpack_require__(/*! ./toolEditForms */ 235);
+	var panels_1 = __webpack_require__(/*! ./panels */ 262);
+	var entities_1 = __webpack_require__(/*! ./entities */ 263);
+	var toolLists_1 = __webpack_require__(/*! ./toolLists */ 266);
+	var toolEditForms_1 = __webpack_require__(/*! ./toolEditForms */ 267);
+	var partLists_1 = __webpack_require__(/*! ./partLists */ 268);
+	var partEditForms_1 = __webpack_require__(/*! ./partEditForms */ 269);
+	var techStepLists_1 = __webpack_require__(/*! ./techStepLists */ 270);
+	var techStepEditForms_1 = __webpack_require__(/*! ./techStepEditForms */ 271);
+	var techOperationLists_1 = __webpack_require__(/*! ./techOperationLists */ 272);
+	var techOperationEditForms_1 = __webpack_require__(/*! ./techOperationEditForms */ 273);
+	var techProcessLists_1 = __webpack_require__(/*! ./techProcessLists */ 274);
+	var techProcessEditForms_1 = __webpack_require__(/*! ./techProcessEditForms */ 275);
 	var main = redux_1.combineReducers({
 	    panels: panels_1.default,
 	    entities: entities_1.default,
 	    toolLists: toolLists_1.default,
-	    toolEditForms: toolEditForms_1.default
+	    toolEditForms: toolEditForms_1.default,
+	    partLists: partLists_1.default,
+	    partEditForms: partEditForms_1.default,
+	    techStepLists: techStepLists_1.default,
+	    techStepEditForms: techStepEditForms_1.default,
+	    techOperationLists: techOperationLists_1.default,
+	    techOperationEditForms: techOperationEditForms_1.default,
+	    techProcessLists: techProcessLists_1.default,
+	    techProcessEditForms: techProcessEditForms_1.default
 	});
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.default = main;
 	//# sourceMappingURL=main.js.map
 
 /***/ },
-/* 230 */
+/* 262 */
 /*!********************************!*\
   !*** ./src/reducers/panels.js ***!
   \********************************/
@@ -33588,7 +35503,7 @@
 	//# sourceMappingURL=panels.js.map
 
 /***/ },
-/* 231 */
+/* 263 */
 /*!**********************************!*\
   !*** ./src/reducers/entities.js ***!
   \**********************************/
@@ -33596,15 +35511,41 @@
 
 	"use strict";
 	var ToolActionType = __webpack_require__(/*! ../actions/toolActionType */ 212);
-	var _ = __webpack_require__(/*! lodash */ 232);
+	var PartActionType = __webpack_require__(/*! ../actions/partActionType */ 233);
+	var TechStepActionType = __webpack_require__(/*! ../actions/techStepActionType */ 241);
+	var TechOperationActionType = __webpack_require__(/*! ../actions/techOperationActionType */ 249);
+	var TechProcessActionType = __webpack_require__(/*! ../actions/techProcessActionType */ 257);
+	var _ = __webpack_require__(/*! lodash */ 264);
 	var initialState = {
-	    tools: []
+	    tools: [],
+	    parts: [],
+	    techSteps: [],
+	    techOperations: [],
+	    techProcesses: []
 	};
 	function entities(state, action) {
 	    if (state === void 0) { state = initialState; }
 	    switch (action.type) {
 	        case ToolActionType.TOOL_LOAD_SUCCEED:
 	            return _.assign({}, state, { tools: _.unionBy(action.tools, state.tools, 'id') });
+	        case PartActionType.PART_LOAD_SUCCEED:
+	            return _.assign({}, state, { parts: _.unionBy(action.parts, state.parts, 'id') });
+	        case TechStepActionType.TECHSTEP_LOAD_SUCCEED:
+	            return _.assign({}, state, {
+	                techSteps: _.unionBy(action.techSteps, state.techSteps, 'id'),
+	                tools: _.unionBy(action.tools, state.tools, 'id'),
+	                parts: _.unionBy(action.parts, state.parts, 'id')
+	            });
+	        case TechOperationActionType.TECHOPERATION_LOAD_SUCCEED:
+	            return _.assign({}, state, {
+	                techOperations: _.unionBy(action.techOperations, state.techOperations, 'id'),
+	                techSteps: _.unionBy(action.techStep, state.techSteps, 'id')
+	            });
+	        case TechProcessActionType.TECHPROCESS_LOAD_SUCCEED:
+	            return _.assign({}, state, {
+	                techProcesses: _.unionBy(action.techProcesses, state.techProcesses, 'id'),
+	                techOperations: _.unionBy(action.techOperations, state.techOperations, 'id')
+	            });
 	        default:
 	            return state;
 	    }
@@ -33615,7 +35556,7 @@
 	//# sourceMappingURL=entities.js.map
 
 /***/ },
-/* 232 */
+/* 264 */
 /*!****************************!*\
   !*** ./~/lodash/lodash.js ***!
   \****************************/
@@ -49649,10 +51590,10 @@
 	  }
 	}.call(this));
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./../webpack/buildin/module.js */ 233)(module), (function() { return this; }())))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./../webpack/buildin/module.js */ 265)(module), (function() { return this; }())))
 
 /***/ },
-/* 233 */
+/* 265 */
 /*!***********************************!*\
   !*** (webpack)/buildin/module.js ***!
   \***********************************/
@@ -49671,7 +51612,7 @@
 
 
 /***/ },
-/* 234 */
+/* 266 */
 /*!***********************************!*\
   !*** ./src/reducers/toolLists.js ***!
   \***********************************/
@@ -49681,7 +51622,7 @@
 	var ToolActionType = __webpack_require__(/*! ../actions/toolActionType */ 212);
 	var PanelActionType = __webpack_require__(/*! ../actions/panelActionType */ 196);
 	var PanelType = __webpack_require__(/*! ../components/panelType */ 197);
-	var _ = __webpack_require__(/*! lodash */ 232);
+	var _ = __webpack_require__(/*! lodash */ 264);
 	var initialState = [];
 	function toolLists(state, action) {
 	    if (state === void 0) { state = initialState; }
@@ -49822,7 +51763,7 @@
 	//# sourceMappingURL=toolLists.js.map
 
 /***/ },
-/* 235 */
+/* 267 */
 /*!***************************************!*\
   !*** ./src/reducers/toolEditForms.js ***!
   \***************************************/
@@ -49916,7 +51857,951 @@
 	//# sourceMappingURL=toolEditForms.js.map
 
 /***/ },
-/* 236 */
+/* 268 */
+/*!***********************************!*\
+  !*** ./src/reducers/partLists.js ***!
+  \***********************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var PartActionType = __webpack_require__(/*! ../actions/partActionType */ 233);
+	var PanelActionType = __webpack_require__(/*! ../actions/panelActionType */ 196);
+	var PanelType = __webpack_require__(/*! ../components/panelType */ 197);
+	var _ = __webpack_require__(/*! lodash */ 264);
+	var initialState = [];
+	function partLists(state, action) {
+	    if (state === void 0) { state = initialState; }
+	    switch (action.type) {
+	        case PartActionType.PART_LOAD_PENDING:
+	            return state.map(function (partList) {
+	                if (partList.id === action.partListId) {
+	                    return _.assign({}, partList, {
+	                        params: _.assign({}, partList.params, {
+	                            isPending: true
+	                        })
+	                    });
+	                }
+	                else {
+	                    return partList;
+	                }
+	            });
+	        case PartActionType.PART_SELECT:
+	            return state.map(function (partList) {
+	                if (partList.id === action.partListId) {
+	                    return _.assign({}, partList, { selectedParts: action.selectedParts });
+	                }
+	                else {
+	                    return partList;
+	                }
+	            });
+	        case PartActionType.PART_CONFIRM_DELETE:
+	            return state.map(function (partList) {
+	                if (partList.id === action.partListId) {
+	                    return _.assign({}, partList, {
+	                        params: _.assign({}, partList.params, {
+	                            isConfirmDeleting: true
+	                        })
+	                    });
+	                }
+	                else {
+	                    return partList;
+	                }
+	            });
+	        case PartActionType.PART_CANCEL_DELETE:
+	            return state.map(function (partList) {
+	                if (partList.id === action.partListId) {
+	                    return _.assign({}, partList, {
+	                        params: _.assign({}, partList.params, {
+	                            isConfirmDeleting: false
+	                        })
+	                    });
+	                }
+	                else {
+	                    return partList;
+	                }
+	            });
+	        case PartActionType.PART_REMOVE_PENDING:
+	            return state.map(function (partList) {
+	                if (partList.id === action.partListId) {
+	                    return _.assign({}, partList, {
+	                        params: _.assign({}, partList.params, {
+	                            isConfirmDeleting: false,
+	                            isDeleting: true
+	                        })
+	                    });
+	                }
+	                else {
+	                    return partList;
+	                }
+	            });
+	        case PartActionType.PART_REMOVE_SUCCEED:
+	            return state.map(function (partList) {
+	                if (partList.id === action.partListId) {
+	                    return _.assign({}, partList, {
+	                        parts: partList.parts.filter(function (partId) { return partList.selectedParts.indexOf(partId) < 0; }),
+	                        selectedParts: [],
+	                    }, {
+	                        params: _.assign({}, partList.params, {
+	                            isDeleting: false
+	                        })
+	                    });
+	                }
+	                else {
+	                    return partList;
+	                }
+	            });
+	        case PartActionType.PART_REMOVE_FAILED:
+	            return state.map(function (partList) {
+	                if (partList.id === action.partListId) {
+	                    return _.assign({}, partList, {
+	                        params: _.assign({}, partList.params, {
+	                            isDeleting: false
+	                        })
+	                    });
+	                }
+	                else {
+	                    return partList;
+	                }
+	            });
+	        case PartActionType.PART_LOAD_SUCCEED:
+	            return state.map(function (partList) {
+	                if (partList.id === action.partListId) {
+	                    return _.assign({}, partList, {
+	                        params: _.assign({}, partList.params, {
+	                            isPending: false,
+	                            totalAmount: action.totalAmount,
+	                            partPage: action.partPage,
+	                            partsPerPage: action.partsPerPage,
+	                            searchText: action.searchText
+	                        })
+	                    }, {
+	                        parts: action.parts.map(function (part) { return part.id; }),
+	                        selectedParts: []
+	                    });
+	                }
+	                else {
+	                    return partList;
+	                }
+	            });
+	        case PanelActionType.PANEL_OPEN:
+	            if (action.panelType !== PanelType.PART_LIST) {
+	                return state;
+	            }
+	            return state.concat([
+	                {
+	                    id: action.contentId,
+	                    parts: [],
+	                    selectedParts: [],
+	                    params: {
+	                        isPending: true,
+	                        isDeleting: false,
+	                        isConfirmDeleting: false
+	                    }
+	                }
+	            ]);
+	        default:
+	            return state;
+	    }
+	}
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = partLists;
+	//# sourceMappingURL=partLists.js.map
+
+/***/ },
+/* 269 */
+/*!***************************************!*\
+  !*** ./src/reducers/partEditForms.js ***!
+  \***************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var PartActionType = __webpack_require__(/*! ../actions/partActionType */ 233);
+	var PanelActionType = __webpack_require__(/*! ../actions/panelActionType */ 196);
+	var PanelType = __webpack_require__(/*! ../components/panelType */ 197);
+	var initialState = [];
+	function partEditForms(state, action) {
+	    if (state === void 0) { state = initialState; }
+	    switch (action.type) {
+	        case PanelActionType.PANEL_OPEN:
+	            if (action.panelType !== PanelType.PART_EDIT_FORM) {
+	                return state;
+	            }
+	            console.log(action);
+	            return state.concat([
+	                {
+	                    id: action.contentId,
+	                    partId: action.params.part.id,
+	                    values: {
+	                        name: action.params.part.name,
+	                        price: action.params.part.price
+	                    },
+	                    isSaving: false
+	                }
+	            ]);
+	        case PartActionType.PART_NAME_CHANGE:
+	            return state.map(function (partEditForm) {
+	                if (partEditForm.id === action.partEditFormId) {
+	                    return _.assign({}, partEditForm, {
+	                        values: _.assign({}, partEditForm.values, { name: action.name }),
+	                    });
+	                }
+	                else {
+	                    return partEditForm;
+	                }
+	            });
+	        case PartActionType.PART_PRICE_CHANGE:
+	            return state.map(function (partEditForm) {
+	                if (partEditForm.id === action.partEditFormId) {
+	                    return _.assign({}, partEditForm, {
+	                        values: _.assign({}, partEditForm.values, { price: action.price }),
+	                    });
+	                }
+	                else {
+	                    return partEditForm;
+	                }
+	            });
+	        case PartActionType.PART_SAVE_PENDING:
+	            return state.map(function (partEditForm) {
+	                if (partEditForm.id === action.partEditFormId) {
+	                    return _.assign({}, partEditForm, {
+	                        isSaving: true,
+	                    });
+	                }
+	                else {
+	                    return partEditForm;
+	                }
+	            });
+	        case PartActionType.PART_SAVE_SUCCEED:
+	            return state.map(function (partEditForm) {
+	                if (partEditForm.id === action.partEditFormId) {
+	                    return _.assign({}, partEditForm, {
+	                        isSaving: false,
+	                    });
+	                }
+	                else {
+	                    return partEditForm;
+	                }
+	            });
+	        case PartActionType.PART_SAVE_FAILED:
+	            return state.map(function (partEditForm) {
+	                if (partEditForm.id === action.partEditFormId) {
+	                    return _.assign({}, partEditForm, {
+	                        isSaving: false,
+	                    });
+	                }
+	                else {
+	                    return partEditForm;
+	                }
+	            });
+	        default:
+	            return state;
+	    }
+	}
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = partEditForms;
+	//# sourceMappingURL=partEditForms.js.map
+
+/***/ },
+/* 270 */
+/*!***************************************!*\
+  !*** ./src/reducers/techStepLists.js ***!
+  \***************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var TechStepActionType = __webpack_require__(/*! ../actions/techStepActionType */ 241);
+	var PanelActionType = __webpack_require__(/*! ../actions/panelActionType */ 196);
+	var PanelType = __webpack_require__(/*! ../components/panelType */ 197);
+	var _ = __webpack_require__(/*! lodash */ 264);
+	var initialState = [];
+	function techStepLists(state, action) {
+	    if (state === void 0) { state = initialState; }
+	    switch (action.type) {
+	        case TechStepActionType.TECHSTEP_LOAD_PENDING:
+	            return state.map(function (techStepList) {
+	                if (techStepList.id === action.techStepListId) {
+	                    return _.assign({}, techStepList, {
+	                        params: _.assign({}, techStepList.params, {
+	                            isPending: true
+	                        })
+	                    });
+	                }
+	                else {
+	                    return techStepList;
+	                }
+	            });
+	        case TechStepActionType.TECHSTEP_SELECT:
+	            return state.map(function (techStepList) {
+	                if (techStepList.id === action.techStepListId) {
+	                    return _.assign({}, techStepList, { selectedTechSteps: action.selectedTechSteps });
+	                }
+	                else {
+	                    return techStepList;
+	                }
+	            });
+	        case TechStepActionType.TECHSTEP_CONFIRM_DELETE:
+	            return state.map(function (techStepList) {
+	                if (techStepList.id === action.techStepListId) {
+	                    return _.assign({}, techStepList, {
+	                        params: _.assign({}, techStepList.params, {
+	                            isConfirmDeleting: true
+	                        })
+	                    });
+	                }
+	                else {
+	                    return techStepList;
+	                }
+	            });
+	        case TechStepActionType.TECHSTEP_CANCEL_DELETE:
+	            return state.map(function (techStepList) {
+	                if (techStepList.id === action.techStepListId) {
+	                    return _.assign({}, techStepList, {
+	                        params: _.assign({}, techStepList.params, {
+	                            isConfirmDeleting: false
+	                        })
+	                    });
+	                }
+	                else {
+	                    return techStepList;
+	                }
+	            });
+	        case TechStepActionType.TECHSTEP_REMOVE_PENDING:
+	            return state.map(function (techStepList) {
+	                if (techStepList.id === action.techStepListId) {
+	                    return _.assign({}, techStepList, {
+	                        params: _.assign({}, techStepList.params, {
+	                            isConfirmDeleting: false,
+	                            isDeleting: true
+	                        })
+	                    });
+	                }
+	                else {
+	                    return techStepList;
+	                }
+	            });
+	        case TechStepActionType.TECHSTEP_REMOVE_SUCCEED:
+	            return state.map(function (techStepList) {
+	                if (techStepList.id === action.techStepListId) {
+	                    return _.assign({}, techStepList, {
+	                        techSteps: techStepList.techSteps.filter(function (techStepId) { return techStepList.selectedTechSteps.indexOf(techStepId) < 0; }),
+	                        selectedTechSteps: [],
+	                    }, {
+	                        params: _.assign({}, techStepList.params, {
+	                            isDeleting: false
+	                        })
+	                    });
+	                }
+	                else {
+	                    return techStepList;
+	                }
+	            });
+	        case TechStepActionType.TECHSTEP_REMOVE_FAILED:
+	            return state.map(function (techStepList) {
+	                if (techStepList.id === action.techStepListId) {
+	                    return _.assign({}, techStepList, {
+	                        params: _.assign({}, techStepList.params, {
+	                            isDeleting: false
+	                        })
+	                    });
+	                }
+	                else {
+	                    return techStepList;
+	                }
+	            });
+	        case TechStepActionType.TECHSTEP_LOAD_SUCCEED:
+	            return state.map(function (techStepList) {
+	                if (techStepList.id === action.techStepListId) {
+	                    return _.assign({}, techStepList, {
+	                        params: _.assign({}, techStepList.params, {
+	                            isPending: false,
+	                            totalAmount: action.totalAmount,
+	                            techStepPage: action.techStepPage,
+	                            techStepsPerPage: action.techStepsPerPage,
+	                            searchText: action.searchText
+	                        })
+	                    }, {
+	                        techSteps: action.techSteps.map(function (techStep) { return techStep.id; }),
+	                        selectedTechSteps: []
+	                    });
+	                }
+	                else {
+	                    return techStepList;
+	                }
+	            });
+	        case PanelActionType.PANEL_OPEN:
+	            if (action.panelType !== PanelType.TECHSTEP_LIST) {
+	                return state;
+	            }
+	            return state.concat([
+	                {
+	                    id: action.contentId,
+	                    techSteps: [],
+	                    selectedTechSteps: [],
+	                    params: {
+	                        isPending: true,
+	                        isDeleting: false,
+	                        isConfirmDeleting: false
+	                    }
+	                }
+	            ]);
+	        default:
+	            return state;
+	    }
+	}
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = techStepLists;
+	//# sourceMappingURL=techStepLists.js.map
+
+/***/ },
+/* 271 */
+/*!*******************************************!*\
+  !*** ./src/reducers/techStepEditForms.js ***!
+  \*******************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var TechStepActionType = __webpack_require__(/*! ../actions/techStepActionType */ 241);
+	var PanelActionType = __webpack_require__(/*! ../actions/panelActionType */ 196);
+	var PanelType = __webpack_require__(/*! ../components/panelType */ 197);
+	var initialState = [];
+	function techStepEditForms(state, action) {
+	    if (state === void 0) { state = initialState; }
+	    switch (action.type) {
+	        case PanelActionType.PANEL_OPEN:
+	            if (action.panelType !== PanelType.TECHSTEP_EDIT_FORM) {
+	                return state;
+	            }
+	            console.log(action);
+	            return state.concat([
+	                {
+	                    id: action.contentId,
+	                    techStepId: action.params.techStep.id,
+	                    values: {
+	                        name: action.params.techStep.name
+	                    },
+	                    isSaving: false
+	                }
+	            ]);
+	        case TechStepActionType.TECHSTEP_NAME_CHANGE:
+	            return state.map(function (techStepEditForm) {
+	                if (techStepEditForm.id === action.techStepEditFormId) {
+	                    return _.assign({}, techStepEditForm, {
+	                        values: _.assign({}, techStepEditForm.values, { name: action.name }),
+	                    });
+	                }
+	                else {
+	                    return techStepEditForm;
+	                }
+	            });
+	        case TechStepActionType.TECHSTEP_SAVE_PENDING:
+	            return state.map(function (techStepEditForm) {
+	                if (techStepEditForm.id === action.techStepEditFormId) {
+	                    return _.assign({}, techStepEditForm, {
+	                        isSaving: true,
+	                    });
+	                }
+	                else {
+	                    return techStepEditForm;
+	                }
+	            });
+	        case TechStepActionType.TECHSTEP_SAVE_SUCCEED:
+	            return state.map(function (techStepEditForm) {
+	                if (techStepEditForm.id === action.techStepEditFormId) {
+	                    return _.assign({}, techStepEditForm, {
+	                        isSaving: false,
+	                    });
+	                }
+	                else {
+	                    return techStepEditForm;
+	                }
+	            });
+	        case TechStepActionType.TECHSTEP_SAVE_FAILED:
+	            return state.map(function (techStepEditForm) {
+	                if (techStepEditForm.id === action.techStepEditFormId) {
+	                    return _.assign({}, techStepEditForm, {
+	                        isSaving: false,
+	                    });
+	                }
+	                else {
+	                    return techStepEditForm;
+	                }
+	            });
+	        default:
+	            return state;
+	    }
+	}
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = techStepEditForms;
+	//# sourceMappingURL=techStepEditForms.js.map
+
+/***/ },
+/* 272 */
+/*!********************************************!*\
+  !*** ./src/reducers/techOperationLists.js ***!
+  \********************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var TechOperationActionType = __webpack_require__(/*! ../actions/techOperationActionType */ 249);
+	var PanelActionType = __webpack_require__(/*! ../actions/panelActionType */ 196);
+	var PanelType = __webpack_require__(/*! ../components/panelType */ 197);
+	var _ = __webpack_require__(/*! lodash */ 264);
+	var initialState = [];
+	function techOperationLists(state, action) {
+	    if (state === void 0) { state = initialState; }
+	    switch (action.type) {
+	        case TechOperationActionType.TECHOPERATION_LOAD_PENDING:
+	            return state.map(function (techOperationList) {
+	                if (techOperationList.id === action.techOperationListId) {
+	                    return _.assign({}, techOperationList, {
+	                        params: _.assign({}, techOperationList.params, {
+	                            isPending: true
+	                        })
+	                    });
+	                }
+	                else {
+	                    return techOperationList;
+	                }
+	            });
+	        case TechOperationActionType.TECHOPERATION_SELECT:
+	            return state.map(function (techOperationList) {
+	                if (techOperationList.id === action.techOperationListId) {
+	                    return _.assign({}, techOperationList, { selectedTechOperations: action.selectedTechOperations });
+	                }
+	                else {
+	                    return techOperationList;
+	                }
+	            });
+	        case TechOperationActionType.TECHOPERATION_CONFIRM_DELETE:
+	            return state.map(function (techOperationList) {
+	                if (techOperationList.id === action.techOperationListId) {
+	                    return _.assign({}, techOperationList, {
+	                        params: _.assign({}, techOperationList.params, {
+	                            isConfirmDeleting: true
+	                        })
+	                    });
+	                }
+	                else {
+	                    return techOperationList;
+	                }
+	            });
+	        case TechOperationActionType.TECHOPERATION_CANCEL_DELETE:
+	            return state.map(function (techOperationList) {
+	                if (techOperationList.id === action.techOperationListId) {
+	                    return _.assign({}, techOperationList, {
+	                        params: _.assign({}, techOperationList.params, {
+	                            isConfirmDeleting: false
+	                        })
+	                    });
+	                }
+	                else {
+	                    return techOperationList;
+	                }
+	            });
+	        case TechOperationActionType.TECHOPERATION_REMOVE_PENDING:
+	            return state.map(function (techOperationList) {
+	                if (techOperationList.id === action.techOperationListId) {
+	                    return _.assign({}, techOperationList, {
+	                        params: _.assign({}, techOperationList.params, {
+	                            isConfirmDeleting: false,
+	                            isDeleting: true
+	                        })
+	                    });
+	                }
+	                else {
+	                    return techOperationList;
+	                }
+	            });
+	        case TechOperationActionType.TECHOPERATION_REMOVE_SUCCEED:
+	            return state.map(function (techOperationList) {
+	                if (techOperationList.id === action.techOperationListId) {
+	                    return _.assign({}, techOperationList, {
+	                        techOperations: techOperationList.techOperations.filter(function (techOperationId) { return techOperationList.selectedTechOperations.indexOf(techOperationId) < 0; }),
+	                        selectedTechOperations: [],
+	                    }, {
+	                        params: _.assign({}, techOperationList.params, {
+	                            isDeleting: false
+	                        })
+	                    });
+	                }
+	                else {
+	                    return techOperationList;
+	                }
+	            });
+	        case TechOperationActionType.TECHOPERATION_REMOVE_FAILED:
+	            return state.map(function (techOperationList) {
+	                if (techOperationList.id === action.techOperationListId) {
+	                    return _.assign({}, techOperationList, {
+	                        params: _.assign({}, techOperationList.params, {
+	                            isDeleting: false
+	                        })
+	                    });
+	                }
+	                else {
+	                    return techOperationList;
+	                }
+	            });
+	        case TechOperationActionType.TECHOPERATION_LOAD_SUCCEED:
+	            return state.map(function (techOperationList) {
+	                if (techOperationList.id === action.techOperationListId) {
+	                    return _.assign({}, techOperationList, {
+	                        params: _.assign({}, techOperationList.params, {
+	                            isPending: false,
+	                            totalAmount: action.totalAmount,
+	                            techOperationPage: action.techOperationPage,
+	                            techOperationsPerPage: action.techOperationsPerPage,
+	                            searchText: action.searchText
+	                        })
+	                    }, {
+	                        techOperations: action.techOperations.map(function (techOperation) { return techOperation.id; }),
+	                        selectedTechOperations: []
+	                    });
+	                }
+	                else {
+	                    return techOperationList;
+	                }
+	            });
+	        case PanelActionType.PANEL_OPEN:
+	            if (action.panelType !== PanelType.TECHOPERATION_LIST) {
+	                return state;
+	            }
+	            return state.concat([
+	                {
+	                    id: action.contentId,
+	                    techOperations: [],
+	                    selectedTechOperations: [],
+	                    params: {
+	                        isPending: true,
+	                        isDeleting: false,
+	                        isConfirmDeleting: false
+	                    }
+	                }
+	            ]);
+	        default:
+	            return state;
+	    }
+	}
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = techOperationLists;
+	//# sourceMappingURL=techOperationLists.js.map
+
+/***/ },
+/* 273 */
+/*!************************************************!*\
+  !*** ./src/reducers/techOperationEditForms.js ***!
+  \************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var TechOperationActionType = __webpack_require__(/*! ../actions/techOperationActionType */ 249);
+	var PanelActionType = __webpack_require__(/*! ../actions/panelActionType */ 196);
+	var PanelType = __webpack_require__(/*! ../components/panelType */ 197);
+	var initialState = [];
+	function techOperationEditForms(state, action) {
+	    if (state === void 0) { state = initialState; }
+	    switch (action.type) {
+	        case PanelActionType.PANEL_OPEN:
+	            if (action.panelType !== PanelType.TECHOPERATION_EDIT_FORM) {
+	                return state;
+	            }
+	            console.log(action);
+	            return state.concat([
+	                {
+	                    id: action.contentId,
+	                    techOperationId: action.params.techOperation.id,
+	                    values: {
+	                        name: action.params.techOperation.name
+	                    },
+	                    isSaving: false
+	                }
+	            ]);
+	        case TechOperationActionType.TECHOPERATION_NAME_CHANGE:
+	            return state.map(function (techOperationEditForm) {
+	                if (techOperationEditForm.id === action.techOperationEditFormId) {
+	                    return _.assign({}, techOperationEditForm, {
+	                        values: _.assign({}, techOperationEditForm.values, { name: action.name }),
+	                    });
+	                }
+	                else {
+	                    return techOperationEditForm;
+	                }
+	            });
+	        case TechOperationActionType.TECHOPERATION_SAVE_PENDING:
+	            return state.map(function (techOperationEditForm) {
+	                if (techOperationEditForm.id === action.techOperationEditFormId) {
+	                    return _.assign({}, techOperationEditForm, {
+	                        isSaving: true,
+	                    });
+	                }
+	                else {
+	                    return techOperationEditForm;
+	                }
+	            });
+	        case TechOperationActionType.TECHOPERATION_SAVE_SUCCEED:
+	            return state.map(function (techOperationEditForm) {
+	                if (techOperationEditForm.id === action.techOperationEditFormId) {
+	                    return _.assign({}, techOperationEditForm, {
+	                        isSaving: false,
+	                    });
+	                }
+	                else {
+	                    return techOperationEditForm;
+	                }
+	            });
+	        case TechOperationActionType.TECHOPERATION_SAVE_FAILED:
+	            return state.map(function (techOperationEditForm) {
+	                if (techOperationEditForm.id === action.techOperationEditFormId) {
+	                    return _.assign({}, techOperationEditForm, {
+	                        isSaving: false,
+	                    });
+	                }
+	                else {
+	                    return techOperationEditForm;
+	                }
+	            });
+	        default:
+	            return state;
+	    }
+	}
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = techOperationEditForms;
+	//# sourceMappingURL=techOperationEditForms.js.map
+
+/***/ },
+/* 274 */
+/*!******************************************!*\
+  !*** ./src/reducers/techProcessLists.js ***!
+  \******************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var TechProcessActionType = __webpack_require__(/*! ../actions/techProcessActionType */ 257);
+	var PanelActionType = __webpack_require__(/*! ../actions/panelActionType */ 196);
+	var PanelType = __webpack_require__(/*! ../components/panelType */ 197);
+	var _ = __webpack_require__(/*! lodash */ 264);
+	var initialState = [];
+	function techProcessLists(state, action) {
+	    if (state === void 0) { state = initialState; }
+	    switch (action.type) {
+	        case TechProcessActionType.TECHPROCESS_LOAD_PENDING:
+	            return state.map(function (techProcessList) {
+	                if (techProcessList.id === action.techProcessListId) {
+	                    return _.assign({}, techProcessList, {
+	                        params: _.assign({}, techProcessList.params, {
+	                            isPending: true
+	                        })
+	                    });
+	                }
+	                else {
+	                    return techProcessList;
+	                }
+	            });
+	        case TechProcessActionType.TECHPROCESS_SELECT:
+	            return state.map(function (techProcessList) {
+	                if (techProcessList.id === action.techProcessListId) {
+	                    return _.assign({}, techProcessList, { selectedTechProcesses: action.selectedTechProcesses });
+	                }
+	                else {
+	                    return techProcessList;
+	                }
+	            });
+	        case TechProcessActionType.TECHPROCESS_CONFIRM_DELETE:
+	            return state.map(function (techProcessList) {
+	                if (techProcessList.id === action.techProcessListId) {
+	                    return _.assign({}, techProcessList, {
+	                        params: _.assign({}, techProcessList.params, {
+	                            isConfirmDeleting: true
+	                        })
+	                    });
+	                }
+	                else {
+	                    return techProcessList;
+	                }
+	            });
+	        case TechProcessActionType.TECHPROCESS_CANCEL_DELETE:
+	            return state.map(function (techProcessList) {
+	                if (techProcessList.id === action.techProcessListId) {
+	                    return _.assign({}, techProcessList, {
+	                        params: _.assign({}, techProcessList.params, {
+	                            isConfirmDeleting: false
+	                        })
+	                    });
+	                }
+	                else {
+	                    return techProcessList;
+	                }
+	            });
+	        case TechProcessActionType.TECHPROCESS_REMOVE_PENDING:
+	            return state.map(function (techProcessList) {
+	                if (techProcessList.id === action.techProcessListId) {
+	                    return _.assign({}, techProcessList, {
+	                        params: _.assign({}, techProcessList.params, {
+	                            isConfirmDeleting: false,
+	                            isDeleting: true
+	                        })
+	                    });
+	                }
+	                else {
+	                    return techProcessList;
+	                }
+	            });
+	        case TechProcessActionType.TECHPROCESS_REMOVE_SUCCEED:
+	            return state.map(function (techProcessList) {
+	                if (techProcessList.id === action.techProcessListId) {
+	                    return _.assign({}, techProcessList, {
+	                        techProcesses: techProcessList.techProcesses.filter(function (techProcessId) { return techProcessList.selectedTechProcesses.indexOf(techProcessId) < 0; }),
+	                        selectedTechProcesses: [],
+	                    }, {
+	                        params: _.assign({}, techProcessList.params, {
+	                            isDeleting: false
+	                        })
+	                    });
+	                }
+	                else {
+	                    return techProcessList;
+	                }
+	            });
+	        case TechProcessActionType.TECHPROCESS_REMOVE_FAILED:
+	            return state.map(function (techProcessList) {
+	                if (techProcessList.id === action.techProcessListId) {
+	                    return _.assign({}, techProcessList, {
+	                        params: _.assign({}, techProcessList.params, {
+	                            isDeleting: false
+	                        })
+	                    });
+	                }
+	                else {
+	                    return techProcessList;
+	                }
+	            });
+	        case TechProcessActionType.TECHPROCESS_LOAD_SUCCEED:
+	            return state.map(function (techProcessList) {
+	                if (techProcessList.id === action.techProcessListId) {
+	                    return _.assign({}, techProcessList, {
+	                        params: _.assign({}, techProcessList.params, {
+	                            isPending: false,
+	                            totalAmount: action.totalAmount,
+	                            techProcessPage: action.techProcessPage,
+	                            techProcessesPerPage: action.techProcessesPerPage,
+	                            searchText: action.searchText
+	                        })
+	                    }, {
+	                        techProcesses: action.techProcesses.map(function (techProcess) { return techProcess.id; }),
+	                        selectedTechProcesses: []
+	                    });
+	                }
+	                else {
+	                    return techProcessList;
+	                }
+	            });
+	        case PanelActionType.PANEL_OPEN:
+	            if (action.panelType !== PanelType.TECHPROCESS_LIST) {
+	                return state;
+	            }
+	            return state.concat([
+	                {
+	                    id: action.contentId,
+	                    techProcesses: [],
+	                    selectedTechProcesses: [],
+	                    params: {
+	                        isPending: true,
+	                        isDeleting: false,
+	                        isConfirmDeleting: false
+	                    }
+	                }
+	            ]);
+	        default:
+	            return state;
+	    }
+	}
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = techProcessLists;
+	//# sourceMappingURL=techProcessLists.js.map
+
+/***/ },
+/* 275 */
+/*!**********************************************!*\
+  !*** ./src/reducers/techProcessEditForms.js ***!
+  \**********************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var TechProcessActionType = __webpack_require__(/*! ../actions/techProcessActionType */ 257);
+	var PanelActionType = __webpack_require__(/*! ../actions/panelActionType */ 196);
+	var PanelType = __webpack_require__(/*! ../components/panelType */ 197);
+	var initialState = [];
+	function techProcessEditForms(state, action) {
+	    if (state === void 0) { state = initialState; }
+	    switch (action.type) {
+	        case PanelActionType.PANEL_OPEN:
+	            if (action.panelType !== PanelType.TECHPROCESS_EDIT_FORM) {
+	                return state;
+	            }
+	            console.log(action);
+	            return state.concat([
+	                {
+	                    id: action.contentId,
+	                    techProcessId: action.params.techProcess.id,
+	                    values: {
+	                        name: action.params.techProcess.name
+	                    },
+	                    isSaving: false
+	                }
+	            ]);
+	        case TechProcessActionType.TECHPROCESS_NAME_CHANGE:
+	            return state.map(function (techProcessEditForm) {
+	                if (techProcessEditForm.id === action.techProcessEditFormId) {
+	                    return _.assign({}, techProcessEditForm, {
+	                        values: _.assign({}, techProcessEditForm.values, { name: action.name }),
+	                    });
+	                }
+	                else {
+	                    return techProcessEditForm;
+	                }
+	            });
+	        case TechProcessActionType.TECHPROCESS_SAVE_PENDING:
+	            return state.map(function (techProcessEditForm) {
+	                if (techProcessEditForm.id === action.techProcessEditFormId) {
+	                    return _.assign({}, techProcessEditForm, {
+	                        isSaving: true,
+	                    });
+	                }
+	                else {
+	                    return techProcessEditForm;
+	                }
+	            });
+	        case TechProcessActionType.TECHPROCESS_SAVE_SUCCEED:
+	            return state.map(function (techProcessEditForm) {
+	                if (techProcessEditForm.id === action.techProcessEditFormId) {
+	                    return _.assign({}, techProcessEditForm, {
+	                        isSaving: false,
+	                    });
+	                }
+	                else {
+	                    return techProcessEditForm;
+	                }
+	            });
+	        case TechProcessActionType.TECHPROCESS_SAVE_FAILED:
+	            return state.map(function (techProcessEditForm) {
+	                if (techProcessEditForm.id === action.techProcessEditFormId) {
+	                    return _.assign({}, techProcessEditForm, {
+	                        isSaving: false,
+	                    });
+	                }
+	                else {
+	                    return techProcessEditForm;
+	                }
+	            });
+	        default:
+	            return state;
+	    }
+	}
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = techProcessEditForms;
+	//# sourceMappingURL=techProcessEditForms.js.map
+
+/***/ },
+/* 276 */
 /*!************************************!*\
   !*** ./~/redux-thunk/lib/index.js ***!
   \************************************/

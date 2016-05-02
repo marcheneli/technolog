@@ -3,6 +3,14 @@ import * as PanelType from './panelType';
 import Panel from '../containers/Panel';
 import ToolList from '../containers/ToolList';
 import ToolEditForm from '../containers/ToolEditForm';
+import PartList from '../containers/part/PartList';
+import PartEditForm from '../containers/part/PartEditForm';
+import TechStepList from '../containers/techStep/TechStepList';
+import TechStepEditForm from '../containers/techStep/TechStepEditForm';
+import TechOperationList from '../containers/techOperation/TechOperationList';
+import TechOperationEditForm from '../containers/techOperation/TechOperationEditForm';
+import TechProcessList from '../containers/techProcess/TechProcessList';
+import TechProcessEditForm from '../containers/techProcess/TechProcessEditForm';
 
 function getContent(panel) {
     switch (panel.type) {
@@ -16,35 +24,35 @@ function getContent(panel) {
             );
         case PanelType.PART_LIST:
             return (
-                <div></div>
+                <PartList id={panel.contentId}></PartList>
             );
         case PanelType.PART_EDIT_FORM:
             return (
-                <div></div>
+                <PartEditForm id={panel.contentId} toolId={panel.params.toolId}></PartEditForm>
             );
         case PanelType.TECHSTEP_LIST:
             return (
-                <div></div>
+                <TechStepList id={panel.contentId}></TechStepList>
             );
         case PanelType.TECHSTEP_EDIT_FORM:
             return (
-                <div></div>
+                <TechStepEditForm id={panel.contentId} toolId={panel.params.toolId}></TechStepEditForm>
             );
         case PanelType.TECHOPERATION_LIST:
             return (
-                <div></div>
+                <TechOperationList id={panel.contentId}></TechOperationList>
             );
         case PanelType.TECHOPERATION_EDIT_FORM:
             return (
-                <div></div>
+                <TechOperationEditForm id={panel.contentId} toolId={panel.params.toolId}></TechOperationEditForm>
             );
         case PanelType.TECHPROCESS_LIST:
             return (
-                <div></div>
+                <TechProcessList id={panel.contentId}></TechProcessList>
             );
         case PanelType.TECHPROCESS_EDIT_FORM:
             return (
-                <div></div>
+                <TechProcessEditForm id={panel.contentId} toolId={panel.params.toolId}></TechProcessEditForm>
             );
         default:
             return (
