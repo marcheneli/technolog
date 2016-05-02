@@ -124,6 +124,11 @@
     <TypeScriptCompile Include="src\reducers\techStepLists.ts" />
     <TypeScriptCompile Include="src\reducers\toolEditForms.ts" />
     <TypeScriptCompile Include="src\reducers\toolLists.ts" />
+    <TypeScriptCompile Include="src\schemas\partSchema.ts" />
+    <TypeScriptCompile Include="src\schemas\techOperationSchema.ts" />
+    <TypeScriptCompile Include="src\schemas\techProcessSchema.ts" />
+    <TypeScriptCompile Include="src\schemas\techStepSchema.ts" />
+    <TypeScriptCompile Include="src\schemas\toolSchema.ts" />
     <TypeScriptCompile Include="src\store\configureStore.ts" />
     <TypeScriptCompile Include="src\utils\antiForgeryToken.ts" />
     <TypeScriptCompile Include="src\utils\idGenerator.ts" />
