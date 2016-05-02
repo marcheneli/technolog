@@ -1,36 +1,36 @@
 ﻿import * as React from 'react';
-import TableRow from './common/TableRow';
+import TableRow from '../common/TableRow';
 
 export default function TableList(props: any) {
-    var toolRows = [];
-    var tools = props.tools;
-    var selectedTools = props.selectedTools;
+    var techProcessRows = [];
+    var techProcesses = props.techProcesses;
+    var selectedTechProcesses = props.selectedTechProcesses;
 
-    var isAllChecked = tools.length == selectedTools.length && tools.length != 0;
+    var isAllChecked = techProcesses.length == selectedTechProcesses.length && techProcesses.length != 0;
     
-    toolRows = tools.map((tool, index) => {
-        var selectedTool = null;
+    techProcessRows = techProcesses.map((techProcess, index) => {
+        var selectedTechProcess = null;
 
-        for (var j = 0; j < selectedTools.length; j++) {
-            if (selectedTools[j] == tool.id) {
-                selectedTool = selectedTools[j];
+        for (var j = 0; j < selectedTechProcesses.length; j++) {
+            if (selectedTechProcesses[j] == techProcess.id) {
+                selectedTechProcess = selectedTechProcesses[j];
                 break;
             }
         }
 
         return (
             <TableRow key={index}
-                onTableRowDoubleClick={() => { props.onTableRowDoubleClick(tool) } }>
+                onTableRowDoubleClick={() => { props.onTableRowDoubleClick(techProcess) } }>
                 <td  style={{ width: 5 + '%' }}>
                     <input
                         type='checkbox'
-                        value={tool.id}
-                        onChange={props.onToolSelect}
-                        checked={selectedTool}>
+                        value={techProcess.id}
+                        onChange={props.onTechProcessSelect}
+                        checked={selectedTechProcess}>
                     </input>
                 </td>
-                <td  style={{ width: 15 + '%' }}>{tool.id}</td>
-                <td  style={{ width: 80 + '%' }}>{tool.name}</td>
+                <td  style={{ width: 15 + '%' }}>{techProcess.id}</td>
+                <td  style={{ width: 80 + '%' }}>{techProcess.name}</td>
             </TableRow>);
     });
 
@@ -42,7 +42,7 @@ export default function TableList(props: any) {
                         <th  style={{ width: 5 + '%' }}>
                             <input
                                 type='checkbox'
-                                onChange={props.onAllToolsSelect}
+                                onChange={props.onAllTechProcessesSelect}
                                 checked={isAllChecked}>
                             </input>
                         </th>
@@ -51,7 +51,7 @@ export default function TableList(props: any) {
                     </tr>
                 </thead>
                 <tbody>
-                    {toolRows}
+                    {techProcessRows}
                 </tbody>
             </table>
         </div>    

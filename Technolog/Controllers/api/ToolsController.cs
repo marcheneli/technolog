@@ -118,6 +118,8 @@ namespace Technolog.Web.Controllers.api
                         ex.Message));
             }
 
+            Thread.Sleep(3000);
+
             return Ok(toolModel);
         }
 
@@ -140,6 +142,8 @@ namespace Technolog.Web.Controllers.api
                         HttpStatusCode.BadRequest,
                         ex.Message));
             }
+
+            Thread.Sleep(3000);
 
             return Ok(toolModel);
         }

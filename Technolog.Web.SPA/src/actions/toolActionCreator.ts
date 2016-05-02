@@ -126,54 +126,12 @@ export function cancelDelete(toolListId) {
     };
 }
 
-export function toolNameChange(toolEditFormId, toolId, value): any {
-    const nameValidation = ToolValidator.validateName(value);
-
-    if (!nameValidation.isValid)
-        return {
-            type: ToolActionType.TOOL_NAME_CHANGE,
-            toolEditFormId: toolEditFormId,
-            name: value,
-            nameValidation: nameValidation
-        };
-
-    return (dispatch, getState) => {
-        setTimeout(() => {
-            const state = getState();
-
-            const newName = state.toolEditForms.filter(tef => tef.id == toolEditFormId)[0].values.name;
-
-            if (newName == value) {
-                $.ajax({
-                    url: serviceDomain + "/api/tools?name=" + value,
-                    type: "GET",
-                    success: (tool) => {
-                        if (tool == null || tool.id == toolId) {
-                            dispatch(toolNameUnique(toolEditFormId, value));
-                        } else {
-                            dispatch(toolNameNotUnique(toolEditFormId, value));
-                        }
-                    },
-                    error: (xhr, status, err) => {
-                        dispatch(toolNameValidationFailed(toolEditFormId, value, err));
-                    }
-                });
-                
-                dispatch(toolNameValidationPending(toolEditFormId, value, nameValidation));
-            }
-        }, 500);
-
-        dispatch({
-            type: ToolActionType.TOOL_NAME_CHANGE,
-            toolEditFormId: toolEditFormId,
-            name: value,
-            nameValidation: {
-                type: ValidationMessageType.EMPTY,
-                errorMessage: "",
-                isValid: false
-            }
-        });
-    };
+export function toolNameChange(toolEditFormId, value): any {
+    return {
+        type: ToolActionType.TOOL_NAME_CHANGE,
+        toolEditFormId: toolEditFormId,
+        name: value
+    };   
 }
 
 export function toolNameValidationPending(toolEditFormId, value, nameValidation) {
@@ -268,7 +226,58 @@ export function toolPriceChange(toolEditFormId, value) {
     return {
         type: ToolActionType.TOOL_PRICE_CHANGE,
         toolEditFormId: toolEditFormId,
-        price: value,
-        priceValidation: ToolValidator.validatePrice(value)
+        price: value
+    };
+}
+
+
+export function save(toolEditFormId: number) {
+    return (dispatch, getState) => {
+        const toolEditForm = getState().toolEditForms.filter(tef => tef.id == toolEditFormId)[0];
+        
+        const type = toolEditForm.toolId == 0 ? 'PUT' : 'POST';
+
+        const tool = {
+            id: toolEditForm.toolId,
+            name: toolEditForm.values.name,
+            price: parseFloat(toolEditForm.values.price)
+        };
+
+        $.ajax({
+            url: serviceDomain + '/api/' + "tools" + "/",
+            type: type,
+            dataType: "json",
+            data: _.assign({}, tool, { __RequestVerificationToken: AntiForgeryToken.get() }),
+            success: (response) => {
+                dispatch(saveSucceed(toolEditFormId));
+            },
+            error: (xhr, status, err) => {
+                dispatch(saveFailed(toolEditFormId, err));
+            }
+        });
+
+        return dispatch(savePending(toolEditFormId));
+    };
+}
+
+export function savePending(toolEditFormId: number) {
+    return {
+        type: ToolActionType.TOOL_SAVE_PENDING,
+        toolEditFormId: toolEditFormId
+    };
+}
+
+export function saveSucceed(toolEditFormId) {
+    return {
+        type: ToolActionType.TOOL_SAVE_SUCCEED,
+        toolEditFormId: toolEditFormId
+    };
+}
+
+export function saveFailed(toolEditFormId, errorMessage) {
+    return {
+        type: ToolActionType.TOOL_SAVE_FAILED,
+        toolEditFormId: toolEditFormId,
+        errorMessage: errorMessage
     };
 }

@@ -1,6 +1,8 @@
 ﻿import { connect } from 'react-redux';
 import ToolList from '../components/ToolList';
 import * as ToolActionCreator from '../actions/toolActionCreator';
+import * as PanelActionCreator from '../actions/panelActionCreator';
+import * as PanelType from '../components/panelType';
 import * as PagingParameter from '../constants/pagingParameter';
 
 const mapStateToToolListProps = (state, ownProps) => {
@@ -30,7 +32,9 @@ const mapDispatchToToolListProps = (dispatch, ownProps) => {
         onDeleteBtnClick: () => {
             dispatch(ToolActionCreator.confirmDelete(ownProps.id));
         },
-        onAddBtnClick: () => { },
+        onAddBtnClick: () => {
+            dispatch(PanelActionCreator.open(PanelType.TOOL_EDIT_FORM, "Редактирование инструмента", { tool: { id: 0, name: null, price: null} }));
+        },
         load: (page, itemsPerPage, searchText) => {
             dispatch(ToolActionCreator.load(ownProps.id,
                 page,

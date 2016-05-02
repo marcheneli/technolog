@@ -6,8 +6,8 @@ import * as PanelType from '../components/panelType';
 
 const mapDispatchToToolTableProps = (dispatch, ownProps) => {
     return {
-        onTableRowDoubleClick: (toolId) => {
-            dispatch(PanelActionCreator.open(PanelType.TOOL_EDIT_FORM, "Редактирование инструмента", { toolId: toolId }));
+        onTableRowDoubleClick: (tool) => {
+            dispatch(PanelActionCreator.open(PanelType.TOOL_EDIT_FORM, "Редактирование инструмента", { tool: tool }));
         },
         onToolSelect: (event) => {
             var selectedTools = ownProps.selectedTools;

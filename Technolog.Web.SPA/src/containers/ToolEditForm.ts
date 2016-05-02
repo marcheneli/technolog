@@ -6,29 +6,23 @@ const mapStateToToolEditFormProps = (state, ownProps) => {
     const toolEditFormState = state.toolEditForms.filter(
         toolEditForm => toolEditForm.id == ownProps.id)[0];
 
-    const tool = state.entities.tools.filter(
-        tool => tool.id == toolEditFormState.toolId)[0];
-
     const values = toolEditFormState.values;
-
-    if (!values.name) values.name = tool.name;
-    if (!values.price) values.price = tool.price;
 
     return {
         toolId: toolEditFormState.toolId,
         values: values,
-        validationResults: toolEditFormState.validationResults,
-        isSaving: false
+        isSaving: toolEditFormState.isSaving
     };
 };
 
 const mapDispatchToToolEditFormProps = (dispatch, ownProps) => {
     return {
-        handleSubmit: () => { },
-        onUndoClick: () => { },
-        onRedoClick: () => { },
-        onNameChange: (name, toolId) => {
-            dispatch(ToolActionCreator.toolNameChange(ownProps.id, toolId, name));
+        handleSubmit: (event) => {
+            event.preventDefault();
+            dispatch(ToolActionCreator.save(ownProps.id));
+        },
+        onNameChange: (event) => {
+            dispatch(ToolActionCreator.toolNameChange(ownProps.id, event.target.value));
         },
         onPriceChange: (event) => {
             dispatch(ToolActionCreator.toolPriceChange(ownProps.id, event.target.value));

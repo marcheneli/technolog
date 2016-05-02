@@ -1,12 +1,10 @@
 ﻿import * as React from 'react';
-import DialogBackground from './common/DialogBackground';
-import ConfirmationDialogPanel from './common/ConfirmationDialogPanel';
-import PendingPanel from './common/PendingPanel';
-import PendingAnimation from './common/PendingAnimation';
-import TextInput from './common/TextInput';
-import * as ValidationMessageType from '../validators/validationMessageType';
+import DialogBackground from '../common/DialogBackground';
+import ConfirmationDialogPanel from '../common/ConfirmationDialogPanel';
+import PendingPanel from '../common/PendingPanel';
+import PendingAnimation from '../common/PendingAnimation';
 
-export default function ToolEditForm(props: any) {
+export default function TechOperationEditForm(props: any) {
     return (
         <div style={{ width: '100%' }}>
             <DialogBackground isShow={props.isSaving}>
@@ -24,12 +22,6 @@ export default function ToolEditForm(props: any) {
                     <input className='form-control'
                         onChange={props.onNameChange}
                         value={props.values.name} />
-                </div>
-                <div className="form-group">
-                    <label className="control-label">Цена: </label>
-                    <input className='form-control'
-                        onChange={props.onPriceChange}
-                        value={props.values.price} />
                 </div>
                 <div className="form-group">
                     <div className="btn-toolbar">

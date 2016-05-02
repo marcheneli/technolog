@@ -16,52 +16,14 @@ export default function toolEditForms(state = initialState, action) {
                 ...state,
                 {
                     id: action.contentId,
-                    toolId: action.params.toolId,
-                    values: {},
-                    validationResults: {
-                        name: {
-                            isValid: true,
-                            errorMessage: "",
-                            type: ValidationMessageType.SUCCESS
-                        },
-                        price: {
-                            isValid: true,
-                            errorMessage: "",
-                            type: ValidationMessageType.SUCCESS
-                        }
+                    toolId: action.params.tool.id,
+                    values: {
+                        name: action.params.tool.name,
+                        price: action.params.tool.price
                     },
-                    undoes: [],
-                    redoes: []
+                    isSaving: false
                 }
             ];
-        case ToolActionType.TOOL_NAME_VALIDATION_PENDING:
-            return state.map(toolEditForm => {
-                if (toolEditForm.id === action.toolEditFormId) {
-                    return _.assign(
-                        {},
-                        toolEditForm,
-                        {
-                            validationResults: _.assign({}, toolEditForm.validationResults, { name: action.nameValidation})
-                        }
-                    );
-                } else {
-                    return toolEditForm;
-                }
-            });
-        case ToolActionType.TOOL_NAME_VALIDATION_SUCCEED:
-            return state.map(toolEditForm => {
-                if (toolEditForm.id === action.toolEditFormId) {
-                    return _.assign(
-                        {},
-                        toolEditForm,
-                        {
-                            validationResults: _.assign({}, toolEditForm.validationResults, { name: action.nameValidation })
-                        }
-                    );
-                } else {
-                    return toolEditForm;
-                }
-            });
         case ToolActionType.TOOL_NAME_CHANGE:
             return state.map(toolEditForm => {
                 if (toolEditForm.id === action.toolEditFormId) {
@@ -70,15 +32,62 @@ export default function toolEditForms(state = initialState, action) {
                         toolEditForm,
                         {
                             values: _.assign({}, toolEditForm.values, { name: action.name }),
-                            validationResults: _.assign({}, toolEditForm.validationResults, { name: action.nameValidation }),
-                            undoes: [
-                                ...toolEditForm.undoes,
-                                {
-                                    type: action.type,
-                                    value: action.name
-                                }
-                            ],
-                            redoes: []
+                        }
+                    );
+                } else {
+                    return toolEditForm;
+                }
+            });
+        case ToolActionType.TOOL_PRICE_CHANGE:
+            return state.map(toolEditForm => {
+                if (toolEditForm.id === action.toolEditFormId) {
+                    return _.assign(
+                        {},
+                        toolEditForm,
+                        {
+                            values: _.assign({}, toolEditForm.values, { price: action.price }),
+                        }
+                    );
+                } else {
+                    return toolEditForm;
+                }
+            });
+        case ToolActionType.TOOL_SAVE_PENDING:
+            return state.map(toolEditForm => {
+                if (toolEditForm.id === action.toolEditFormId) {
+                    return _.assign(
+                        {},
+                        toolEditForm,
+                        {
+                            isSaving: true,
+                        }
+                    );
+                } else {
+                    return toolEditForm;
+                }
+            });
+        case ToolActionType.TOOL_SAVE_SUCCEED:
+            return state.map(toolEditForm => {
+                if (toolEditForm.id === action.toolEditFormId) {
+                    return _.assign(
+                        {},
+                        toolEditForm,
+                        {
+                            isSaving: false,
+                        }
+                    );
+                } else {
+                    return toolEditForm;
+                }
+            });
+        case ToolActionType.TOOL_SAVE_FAILED:
+            return state.map(toolEditForm => {
+                if (toolEditForm.id === action.toolEditFormId) {
+                    return _.assign(
+                        {},
+                        toolEditForm,
+                        {
+                            isSaving: false,
                         }
                     );
                 } else {

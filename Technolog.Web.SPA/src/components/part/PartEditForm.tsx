@@ -1,12 +1,10 @@
 ﻿import * as React from 'react';
-import DialogBackground from './common/DialogBackground';
-import ConfirmationDialogPanel from './common/ConfirmationDialogPanel';
-import PendingPanel from './common/PendingPanel';
-import PendingAnimation from './common/PendingAnimation';
-import TextInput from './common/TextInput';
-import * as ValidationMessageType from '../validators/validationMessageType';
+import DialogBackground from '../common/DialogBackground';
+import ConfirmationDialogPanel from '../common/ConfirmationDialogPanel';
+import PendingPanel from '../common/PendingPanel';
+import PendingAnimation from '../common/PendingAnimation';
 
-export default function ToolEditForm(props: any) {
+export default function PartEditForm(props: any) {
     return (
         <div style={{ width: '100%' }}>
             <DialogBackground isShow={props.isSaving}>
