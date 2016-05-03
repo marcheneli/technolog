@@ -3,6 +3,7 @@ import * as TechStepActionType from './techStepActionType';
 import { Schema, arrayOf, normalize } from 'normalizr';
 import serviceDomain from '../constants/serviceDomain';
 import * as AntiForgeryToken from '../utils/antiForgeryToken';
+import techStepSchema from '../schemas/techStepSchema';
 
 export function load(techStepListId: number, page: number, techStepPerPage: number, searchText: string) {
     return dispatch => {
@@ -15,8 +16,10 @@ export function load(techStepListId: number, page: number, techStepPerPage: numb
             dataType: 'json',
             type: 'GET',
             success: (techStepListModel) => {
+                const normalizedResponse = normalize(techStepListModel.techSteps, arrayOf(techStepSchema));
+
                 dispatch(loadSucceed(techStepListId,
-                    techStepListModel.techSteps,
+                    normalizedResponse,
                     techStepListModel.techStepAmount,
                     page,
                     techStepPerPage,
@@ -38,11 +41,11 @@ export function loadPending(techStepListId) {
     };
 }
 
-export function loadSucceed(techStepListId, techSteps, totalAmount, page, techStepsPerPage, searchText) {
+export function loadSucceed(techStepListId, response, totalAmount, page, techStepsPerPage, searchText) {
     return {
         type: TechStepActionType.TECHSTEP_LOAD_SUCCEED,
         techStepListId: techStepListId,
-        techSteps: techSteps,
+        response: response,
         totalAmount: totalAmount,
         techStepPage: page,
         techStepsPerPage: techStepsPerPage,
@@ -189,4 +192,22 @@ export function saveFailed(techStepEditFormId, errorMessage) {
         techStepEditFormId: techStepEditFormId,
         errorMessage: errorMessage
     };
+}
+
+export function changeToolUsage(techStepEditFormId, toolId, quantityValue) {
+    return {
+        type: TechStepActionType.TECHSTEP_TOOLUSAGE_CHANGE,
+        techStepEditFormId: techStepEditFormId,
+        toolId: toolId,
+        quantityValue: quantityValue
+    }
+}
+
+export function changePartUsage(techStepEditFormId, partId, quantityValue) {
+    return {
+        type: TechStepActionType.TECHSTEP_PARTUSAGE_CHANGE,
+        techStepEditFormId: techStepEditFormId,
+        partId: partId,
+        quantityValue: quantityValue
+    }
 }

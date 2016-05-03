@@ -11,7 +11,6 @@ export default function techProcessEditForms(state = initialState, action) {
             if (action.panelType !== PanelType.TECHPROCESS_EDIT_FORM) {
                 return state;
             }
-            console.log(action);
             return [
                 ...state,
                 {

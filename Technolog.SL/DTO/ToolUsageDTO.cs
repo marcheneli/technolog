@@ -10,6 +10,7 @@ namespace Technolog.SL.DTO
     public class ToolUsageDTO
     {
         public int ToolId { get; set; }
+        public int TechStepId { get; set; }
         public ToolDTO Tool { get; set; }
         public int Quantity { get; set; }
     }

@@ -39,6 +39,34 @@ export function open(panelType, name, params?) {
     };
 }
 
+export function openTechStepEditor(techStepId) {
+    return (dispatch, getState) => {
+        const state = getState();
+
+        const techStep = state.entities.techSteps[techStepId];
+
+        const toolUsages = techStep.toolUsages.map(id => {
+            const toolUsage = state.entities.toolUsages[id];
+
+            return _.assign({}, toolUsage, { tool: state.entities.tools[toolUsage.tool] });
+        });
+
+        const partUsages = techStep.partUsages.map(id => {
+            const partUsage = state.entities.partUsages[id];
+
+            return _.assign({}, partUsage, { part: state.entities.parts[partUsage.part] });
+        });
+
+        const params = {
+            techStep: techStep,
+            toolUsages: toolUsages,
+            partUsages: partUsages
+        };
+
+        dispatch(open(PanelType.TECHSTEP_EDIT_FORM, "Редактирование технологического шага", params));
+    };
+}
+
 export function close(id) {
     return {
         type: PanelActionType.PANEL_CLOSE,

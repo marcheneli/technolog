@@ -11,7 +11,6 @@ export default function partEditForms(state = initialState, action) {
             if (action.panelType !== PanelType.PART_EDIT_FORM) {
                 return state;
             }
-            console.log(action);
             return [
                 ...state,
                 {

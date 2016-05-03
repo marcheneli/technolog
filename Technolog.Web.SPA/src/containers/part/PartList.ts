@@ -9,11 +9,7 @@ const mapStateToPartListProps = (state, ownProps) => {
     const partListState = state.partLists.filter(partList => partList.id === ownProps.id)[0];
 
     return {
-        parts: (partListState.parts.map(
-            partId => state.entities.parts.filter(
-                part => part.id === partId)[0]
-            )
-        ),
+        parts: partListState.parts.map(partId => state.entities.parts[partId]),
         selectedParts: partListState.selectedParts,
         params: partListState.params
     };

@@ -9,11 +9,7 @@ const mapStateToToolListProps = (state, ownProps) => {
     const toolListState = state.toolLists.filter(toolList => toolList.id === ownProps.id)[0];
 
     return {
-        tools: (toolListState.tools.map(
-            toolId => state.entities.tools.filter(
-                tool => tool.id === toolId)[0]
-            )
-        ),
+        tools: toolListState.tools.map(toolId => state.entities.tools[toolId]),
         selectedTools: toolListState.selectedTools,
         params: toolListState.params
     };

@@ -136,7 +136,7 @@ export default function techOperationLists(state = initialState, action) {
                             })
                         },
                         {
-                            techOperations: action.techOperations.map(techOperation => techOperation.id),
+                            techOperations: action.response.result,
                             selectedTechOperations: []
                         }
                     );

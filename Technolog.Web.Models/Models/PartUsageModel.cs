@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace Technolog.Web.Models
 {
-    public class ToolUsageModel
+    public class PartUsageModel
     {
-        public int ToolId { get; set; }
+        public int PartId { get; set; }
         public int TechStepId { get; set; }
-        public ToolModel Tool { get; set; }
+        public PartModel Part { get; set; }
         public int Quantity { get; set; }
     }
 }

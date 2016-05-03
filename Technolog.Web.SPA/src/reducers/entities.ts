@@ -6,34 +6,47 @@ import * as TechProcessActionType from '../actions/techProcessActionType';
 import * as _ from 'lodash';
 
 const initialState = {
-    tools: [],
-    parts: [],
-    techSteps: [],
-    techOperations: [],
-    techProcesses: []
+    tools: {},
+    parts: {},
+    toolUsages: {},
+    partUsages: {},
+    techSteps: {},
+    techOperations: {},
+    techProcesses: {}
 };
 
 export default function entities(state = initialState, action) {
     switch (action.type) {
         case ToolActionType.TOOL_LOAD_SUCCEED:
-            return _.assign({}, state, { tools: _.unionBy(action.tools, state.tools, 'id') });
+            return _.assign({}, state, { tools: _.assign({}, state.tools, action.response.entities.tools) });
         case PartActionType.PART_LOAD_SUCCEED:
-            return _.assign({}, state, { parts: _.unionBy(action.parts, state.parts, 'id') });
+            return _.assign({}, state, { parts: _.assign({}, state.parts, action.response.entities.parts) });
         case TechStepActionType.TECHSTEP_LOAD_SUCCEED:
             return _.assign({}, state, {
-                techSteps: _.unionBy(action.techSteps, state.techSteps, 'id'),
-                tools: _.unionBy(action.tools, state.tools, 'id'),
-                parts: _.unionBy(action.parts, state.parts, 'id')
+                techSteps: _.assign({}, state.techSteps, action.response.entities.techSteps),
+                toolUsages: _.assign({}, state.toolUsages, action.response.entities.toolUsages),
+                partUsages: _.assign({}, state.partUsages, action.response.entities.partUsages),
+                tools: _.assign({}, state.tools, action.response.entities.tools),
+                parts: _.assign({}, state.parts, action.response.entities.parts)
             });
         case TechOperationActionType.TECHOPERATION_LOAD_SUCCEED:
             return _.assign({}, state, {
-                techOperations: _.unionBy(action.techOperations, state.techOperations, 'id'),
-                techSteps: _.unionBy(action.techStep, state.techSteps, 'id')
+                techOperations: _.assign({}, state.techOperations, action.response.entities.techOperations),
+                techSteps: _.assign({}, state.techSteps, action.response.entities.techSteps),
+                toolUsages: _.assign({}, state.toolUsages, action.response.entities.toolUsages),
+                partUsages: _.assign({}, state.partUsages, action.response.entities.partUsages),
+                tools: _.assign({}, state.tools, action.response.entities.tools),
+                parts: _.assign({}, state.parts, action.response.entities.parts)
             });
         case TechProcessActionType.TECHPROCESS_LOAD_SUCCEED:
             return _.assign({}, state, {
-                techProcesses: _.unionBy(action.techProcesses, state.techProcesses, 'id'),
-                techOperations: _.unionBy(action.techOperations, state.techOperations, 'id')
+                techProcesses: _.assign({}, state.techProcesses, action.response.entities.techProcesses),
+                techOperations: _.assign({}, state.techOperations, action.response.entities.techOperations),
+                techSteps: _.assign({}, state.techSteps, action.response.entities.techSteps),
+                toolUsages: _.assign({}, state.toolUsages, action.response.entities.toolUsages),
+                partUsages: _.assign({}, state.partUsages, action.response.entities.partUsages),
+                tools: _.assign({}, state.tools, action.response.entities.tools),
+                parts: _.assign({}, state.parts, action.response.entities.parts)
             });
         default:
             return state;

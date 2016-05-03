@@ -9,11 +9,7 @@ const mapStateToTechStepListProps = (state, ownProps) => {
     const techStepListState = state.techStepLists.filter(techStepList => techStepList.id === ownProps.id)[0];
 
     return {
-        techSteps: (techStepListState.techSteps.map(
-            techStepId => state.entities.techSteps.filter(
-                techStep => techStep.id === techStepId)[0]
-            )
-        ),
+        techSteps: techStepListState.techSteps.map(techStepId => state.entities.techSteps[techStepId]),
         selectedTechSteps: techStepListState.selectedTechSteps,
         params: techStepListState.params
     };
@@ -33,7 +29,7 @@ const mapDispatchToTechStepListProps = (dispatch, ownProps) => {
             dispatch(TechStepActionCreator.confirmDelete(ownProps.id));
         },
         onAddBtnClick: () => {
-            dispatch(PanelActionCreator.open(PanelType.TOOL_EDIT_FORM, "Редактирование инструмента", { techStep: { id: 0, name: null, price: null} }));
+            dispatch(PanelActionCreator.open(PanelType.TOOL_EDIT_FORM, "Редактирование технологического шага", { techStep: { id: 0, name: null } }));
         },
         load: (page, itemsPerPage, searchText) => {
             dispatch(TechStepActionCreator.load(ownProps.id,

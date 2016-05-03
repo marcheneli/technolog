@@ -136,7 +136,7 @@ export default function partLists(state = initialState, action) {
                             })
                         },
                         {
-                            parts: action.parts.map(part => part.id),
+                            parts: action.response.result,
                             selectedParts: []
                         }
                     );

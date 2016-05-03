@@ -3,6 +3,7 @@ import * as PartActionType from './partActionType';
 import { Schema, arrayOf, normalize } from 'normalizr';
 import serviceDomain from '../constants/serviceDomain';
 import * as AntiForgeryToken from '../utils/antiForgeryToken';
+import partSchema from '../schemas/partSchema';
 
 export function load(partListId: number, page: number, partPerPage: number, searchText: string) {
     return dispatch => {
@@ -15,8 +16,10 @@ export function load(partListId: number, page: number, partPerPage: number, sear
             dataType: 'json',
             type: 'GET',
             success: (partListModel) => {
+                const normalizedResponse = normalize(partListModel.parts, arrayOf(partSchema));
+
                 dispatch(loadSucceed(partListId,
-                    partListModel.parts,
+                    normalizedResponse,
                     partListModel.partAmount,
                     page,
                     partPerPage,
@@ -38,11 +41,11 @@ export function loadPending(partListId) {
     };
 }
 
-export function loadSucceed(partListId, parts, totalAmount, page, partsPerPage, searchText) {
+export function loadSucceed(partListId, response, totalAmount, page, partsPerPage, searchText) {
     return {
         type: PartActionType.PART_LOAD_SUCCEED,
         partListId: partListId,
-        parts: parts,
+        response: response,
         totalAmount: totalAmount,
         partPage: page,
         partsPerPage: partsPerPage,

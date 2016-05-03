@@ -12,5 +12,6 @@ namespace Technolog.SL.DTO
         public string Description { get; set; }
 
         public IEnumerable<ToolUsageDTO> ToolUsages { get; set; }
+        public IEnumerable<PartUsageDTO> PartUsages { get; set; }
     }
 }

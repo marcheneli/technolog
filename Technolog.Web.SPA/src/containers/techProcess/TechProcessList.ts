@@ -9,11 +9,7 @@ const mapStateToTechProcessListProps = (state, ownProps) => {
     const techProcessListState = state.techProcessLists.filter(techProcessList => techProcessList.id === ownProps.id)[0];
 
     return {
-        techProcesses: (techProcessListState.techProcesses.map(
-            techProcessId => state.entities.techProcesses.filter(
-                techProcess => techProcess.id === techProcessId)[0]
-            )
-        ),
+        techProcesses: techProcessListState.techProcesses.map(techProcessId => state.entities.techProcesses[techProcessId]),
         selectedTechProcesses: techProcessListState.selectedTechProcesses,
         params: techProcessListState.params
     };

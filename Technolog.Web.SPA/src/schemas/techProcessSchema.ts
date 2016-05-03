@@ -1,7 +1,7 @@
 ﻿import { Schema, arrayOf } from 'normalizr';
 import techOperationSchema from './techOperationSchema';
 
-const techProcessSchema = new Schema('techProcess', null);
+const techProcessSchema = new Schema('techProcesses', { idAttribute: 'id' });
 
 techProcessSchema.define({
     techOperations: arrayOf(techOperationSchema)

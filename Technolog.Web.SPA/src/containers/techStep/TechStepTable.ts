@@ -7,7 +7,7 @@ import * as PanelType from '../../components/panelType';
 const mapDispatchToTechStepTableProps = (dispatch, ownProps) => {
     return {
         onTableRowDoubleClick: (techStep) => {
-            dispatch(PanelActionCreator.open(PanelType.PART_EDIT_FORM, "Редактирование детали", { techStep: techStep }));
+            dispatch(PanelActionCreator.openTechStepEditor(techStep.id));
         },
         onTechStepSelect: (event) => {
             var selectedTechSteps = ownProps.selectedTechSteps;

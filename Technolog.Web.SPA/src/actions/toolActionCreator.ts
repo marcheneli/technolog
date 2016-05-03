@@ -1,10 +1,11 @@
 ﻿import * as $ from 'jquery';
 import * as ToolActionType from './toolActionType';
-import { Schema, arrayOf, normalize } from 'normalizr';
+import { arrayOf, normalize } from 'normalizr';
 import serviceDomain from '../constants/serviceDomain';
 import * as AntiForgeryToken from '../utils/antiForgeryToken';
 import * as ToolValidator from '../validators/toolValidator';
 import * as ValidationMessageType from '../validators/validationMessageType';
+import toolSchema from '../schemas/toolSchema';
 
 export function load(toolListId: number, page: number, toolPerPage: number, searchText: string) {
     return dispatch => {
@@ -17,8 +18,10 @@ export function load(toolListId: number, page: number, toolPerPage: number, sear
             dataType: 'json',
             type: 'GET',
             success: (toolListModel) => {
+                const normalizedResponse = normalize(toolListModel.tools, arrayOf(toolSchema));
+
                 dispatch(loadSucceed(toolListId,
-                    toolListModel.tools,
+                    normalizedResponse,
                     toolListModel.toolAmount,
                     page,
                     toolPerPage,
@@ -40,11 +43,11 @@ export function loadPending(toolListId) {
     };
 }
 
-export function loadSucceed(toolListId, tools, totalAmount, page, toolsPerPage, searchText) {
+export function loadSucceed(toolListId, response, totalAmount, page, toolsPerPage, searchText) {
     return {
         type: ToolActionType.TOOL_LOAD_SUCCEED,
         toolListId: toolListId,
-        tools: tools,
+        response: response,
         totalAmount: totalAmount,
         toolPage: page,
         toolsPerPage: toolsPerPage,

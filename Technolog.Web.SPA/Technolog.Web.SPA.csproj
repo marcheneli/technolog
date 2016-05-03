@@ -66,6 +66,7 @@
     <TypeScriptCompile Include="src\components\common\PendingPanel.tsx" />
     <TypeScriptCompile Include="src\components\common\SearchInput.tsx" />
     <TypeScriptCompile Include="src\components\common\TableRow.tsx" />
+    <TypeScriptCompile Include="src\components\common\TextAreaInput.tsx" />
     <TypeScriptCompile Include="src\components\common\TextInput.tsx" />
     <TypeScriptCompile Include="src\components\Panel.tsx" />
     <TypeScriptCompile Include="src\components\panelFactory.tsx" />

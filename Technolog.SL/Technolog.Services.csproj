@@ -50,6 +50,7 @@
     <Compile Include="DTO\TechStepListDTO.cs" />
     <Compile Include="DTO\ToolDTO.cs" />
     <Compile Include="DTO\ToolListDTO.cs" />
+    <Compile Include="DTO\PartUsageDTO.cs" />
     <Compile Include="DTO\ToolUsageDTO.cs" />
     <Compile Include="Infrastructure\AutoMapperConfig.cs" />
     <Compile Include="Infrastructure\ValidationException.cs" />

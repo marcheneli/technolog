@@ -136,7 +136,7 @@ export default function techStepLists(state = initialState, action) {
                             })
                         },
                         {
-                            techSteps: action.techSteps.map(techStep => techStep.id),
+                            techSteps: action.response.result,
                             selectedTechSteps: []
                         }
                     );

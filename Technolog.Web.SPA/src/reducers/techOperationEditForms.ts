@@ -11,7 +11,6 @@ export default function techOperationEditForms(state = initialState, action) {
             if (action.panelType !== PanelType.TECHOPERATION_EDIT_FORM) {
                 return state;
             }
-            console.log(action);
             return [
                 ...state,
                 {

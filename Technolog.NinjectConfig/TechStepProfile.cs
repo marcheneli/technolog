@@ -22,6 +22,9 @@ namespace Technolog.NinjectConfig
             CreateMap<ToolTechStep, ToolUsageDTO>();
             CreateMap<ToolUsageDTO, ToolUsageModel>();
             CreateMap<ToolUsageModel, ToolUsageDTO>();
+            CreateMap<PartTechStep, PartUsageDTO>();
+            CreateMap<PartUsageDTO, PartUsageModel>();
+            CreateMap<PartUsageModel, PartUsageDTO>();
         }
     }
 }

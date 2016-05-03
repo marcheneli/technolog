@@ -11,7 +11,6 @@ export default function toolEditForms(state = initialState, action) {
             if (action.panelType !== PanelType.TOOL_EDIT_FORM) {
                 return state;
             }
-            console.log(action);
             return [
                 ...state,
                 {

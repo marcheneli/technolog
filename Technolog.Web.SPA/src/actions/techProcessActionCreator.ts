@@ -3,6 +3,7 @@ import * as TechProcessActionType from './techProcessActionType';
 import { Schema, arrayOf, normalize } from 'normalizr';
 import serviceDomain from '../constants/serviceDomain';
 import * as AntiForgeryToken from '../utils/antiForgeryToken';
+import techProcessSchema from '../schemas/techProcessSchema';
 
 export function load(techProcessListId: number, page: number, techProcessPerPage: number, searchText: string) {
     return dispatch => {
@@ -15,8 +16,10 @@ export function load(techProcessListId: number, page: number, techProcessPerPage
             dataType: 'json',
             type: 'GET',
             success: (techProcessListModel) => {
+                const normalizedResponse = normalize(techProcessListModel.techProcesses, arrayOf(techProcessSchema));
+
                 dispatch(loadSucceed(techProcessListId,
-                    techProcessListModel.techProcesses,
+                    normalizedResponse,
                     techProcessListModel.techProcessAmount,
                     page,
                     techProcessPerPage,
@@ -38,11 +41,11 @@ export function loadPending(techProcessListId) {
     };
 }
 
-export function loadSucceed(techProcessListId, techProcesses, totalAmount, page, techProcessesPerPage, searchText) {
+export function loadSucceed(techProcessListId, response, totalAmount, page, techProcessesPerPage, searchText) {
     return {
         type: TechProcessActionType.TECHPROCESS_LOAD_SUCCEED,
         techProcessListId: techProcessListId,
-        techProcesses: techProcesses,
+        response: response,
         totalAmount: totalAmount,
         techProcessPage: page,
         techProcessesPerPage: techProcessesPerPage,

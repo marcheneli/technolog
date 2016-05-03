@@ -12,5 +12,6 @@ namespace Technolog.Web.Models
         public string Description { get; set; }
 
         public IEnumerable<ToolUsageModel> ToolUsages { get; set; }
+        public IEnumerable<PartUsageModel> PartUsages { get; set; }
     }
 }

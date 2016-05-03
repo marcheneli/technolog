@@ -136,7 +136,7 @@ export default function toolLists(state = initialState, action) {
                             })
                         },
                         {
-                            tools: action.tools.map(tool => tool.id),
+                            tools: action.response.result,
                             selectedTools: []
                         }
                     );

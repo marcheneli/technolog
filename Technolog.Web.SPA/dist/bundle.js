@@ -52,10 +52,10 @@
 	var ReactDOM = __webpack_require__(/*! react-dom */ 32);
 	var react_redux_1 = __webpack_require__(/*! react-redux */ 166);
 	var Technolog_1 = __webpack_require__(/*! ./components/Technolog */ 192);
-	var configureStore_1 = __webpack_require__(/*! ./store/configureStore */ 260);
+	var configureStore_1 = __webpack_require__(/*! ./store/configureStore */ 338);
 	var $ = __webpack_require__(/*! jquery */ 211);
-	var serviceDomain_1 = __webpack_require__(/*! ./constants/serviceDomain */ 213);
-	var AntiForgeryToken = __webpack_require__(/*! ./utils/antiForgeryToken */ 214);
+	var serviceDomain_1 = __webpack_require__(/*! ./constants/serviceDomain */ 286);
+	var AntiForgeryToken = __webpack_require__(/*! ./utils/antiForgeryToken */ 287);
 	var store = configureStore_1.default({
 	    panels: []
 	});
@@ -22417,6 +22417,27 @@
 	    };
 	}
 	exports.open = open;
+	function openTechStepEditor(techStepId) {
+	    return function (dispatch, getState) {
+	        var state = getState();
+	        var techStep = state.entities.techSteps[techStepId];
+	        var toolUsages = techStep.toolUsages.map(function (id) {
+	            var toolUsage = state.entities.toolUsages[id];
+	            return _.assign({}, toolUsage, { tool: state.entities.tools[toolUsage.tool] });
+	        });
+	        var partUsages = techStep.partUsages.map(function (id) {
+	            var partUsage = state.entities.partUsages[id];
+	            return _.assign({}, partUsage, { part: state.entities.parts[partUsage.part] });
+	        });
+	        var params = {
+	            techStep: techStep,
+	            toolUsages: toolUsages,
+	            partUsages: partUsages
+	        };
+	        dispatch(open(PanelType.TECHSTEP_EDIT_FORM, "Редактирование технологического шага", params));
+	    };
+	}
+	exports.openTechStepEditor = openTechStepEditor;
 	function close(id) {
 	    return {
 	        type: PanelActionType.PANEL_CLOSE,
@@ -22590,15 +22611,15 @@
 	var PanelType = __webpack_require__(/*! ./panelType */ 197);
 	var Panel_1 = __webpack_require__(/*! ../containers/Panel */ 203);
 	var ToolList_1 = __webpack_require__(/*! ../containers/ToolList */ 205);
-	var ToolEditForm_1 = __webpack_require__(/*! ../containers/ToolEditForm */ 226);
-	var PartList_1 = __webpack_require__(/*! ../containers/part/PartList */ 228);
-	var PartEditForm_1 = __webpack_require__(/*! ../containers/part/PartEditForm */ 234);
-	var TechStepList_1 = __webpack_require__(/*! ../containers/techStep/TechStepList */ 236);
-	var TechStepEditForm_1 = __webpack_require__(/*! ../containers/techStep/TechStepEditForm */ 242);
-	var TechOperationList_1 = __webpack_require__(/*! ../containers/techOperation/TechOperationList */ 244);
-	var TechOperationEditForm_1 = __webpack_require__(/*! ../containers/techOperation/TechOperationEditForm */ 250);
-	var TechProcessList_1 = __webpack_require__(/*! ../containers/techProcess/TechProcessList */ 252);
-	var TechProcessEditForm_1 = __webpack_require__(/*! ../containers/techProcess/TechProcessEditForm */ 258);
+	var ToolEditForm_1 = __webpack_require__(/*! ../containers/ToolEditForm */ 300);
+	var PartList_1 = __webpack_require__(/*! ../containers/part/PartList */ 302);
+	var PartEditForm_1 = __webpack_require__(/*! ../containers/part/PartEditForm */ 309);
+	var TechStepList_1 = __webpack_require__(/*! ../containers/techStep/TechStepList */ 311);
+	var TechStepEditForm_1 = __webpack_require__(/*! ../containers/techStep/TechStepEditForm */ 318);
+	var TechOperationList_1 = __webpack_require__(/*! ../containers/techOperation/TechOperationList */ 320);
+	var TechOperationEditForm_1 = __webpack_require__(/*! ../containers/techOperation/TechOperationEditForm */ 327);
+	var TechProcessList_1 = __webpack_require__(/*! ../containers/techProcess/TechProcessList */ 329);
+	var TechProcessEditForm_1 = __webpack_require__(/*! ../containers/techProcess/TechProcessEditForm */ 336);
 	function getContent(panel) {
 	    switch (panel.type) {
 	        case PanelType.TOOL_LIST:
@@ -22683,11 +22704,11 @@
 	var ToolActionCreator = __webpack_require__(/*! ../actions/toolActionCreator */ 210);
 	var PanelActionCreator = __webpack_require__(/*! ../actions/panelActionCreator */ 195);
 	var PanelType = __webpack_require__(/*! ../components/panelType */ 197);
-	var PagingParameter = __webpack_require__(/*! ../constants/pagingParameter */ 219);
+	var PagingParameter = __webpack_require__(/*! ../constants/pagingParameter */ 293);
 	var mapStateToToolListProps = function (state, ownProps) {
 	    var toolListState = state.toolLists.filter(function (toolList) { return toolList.id === ownProps.id; })[0];
 	    return {
-	        tools: (toolListState.tools.map(function (toolId) { return state.entities.tools.filter(function (tool) { return tool.id === toolId; })[0]; })),
+	        tools: toolListState.tools.map(function (toolId) { return state.entities.tools[toolId]; }),
 	        selectedTools: toolListState.selectedTools,
 	        params: toolListState.params
 	    };
@@ -22733,13 +22754,13 @@
 	};
 	var React = __webpack_require__(/*! react */ 1);
 	var ToolTable_1 = __webpack_require__(/*! ../containers/ToolTable */ 207);
-	var ItemListControlPanel_1 = __webpack_require__(/*! ./common/ItemListControlPanel */ 216);
-	var ItemsPerPageSelector_1 = __webpack_require__(/*! ./common/ItemsPerPageSelector */ 218);
-	var Pagination_1 = __webpack_require__(/*! ./common/Pagination */ 220);
-	var DialogBackground_1 = __webpack_require__(/*! ./common/DialogBackground */ 221);
-	var ConfirmationDialogPanel_1 = __webpack_require__(/*! ./common/ConfirmationDialogPanel */ 222);
-	var PendingPanel_1 = __webpack_require__(/*! ./common/PendingPanel */ 224);
-	var PendingAnimation_1 = __webpack_require__(/*! ./common/PendingAnimation */ 225);
+	var ItemListControlPanel_1 = __webpack_require__(/*! ./common/ItemListControlPanel */ 290);
+	var ItemsPerPageSelector_1 = __webpack_require__(/*! ./common/ItemsPerPageSelector */ 292);
+	var Pagination_1 = __webpack_require__(/*! ./common/Pagination */ 294);
+	var DialogBackground_1 = __webpack_require__(/*! ./common/DialogBackground */ 295);
+	var ConfirmationDialogPanel_1 = __webpack_require__(/*! ./common/ConfirmationDialogPanel */ 296);
+	var PendingPanel_1 = __webpack_require__(/*! ./common/PendingPanel */ 298);
+	var PendingAnimation_1 = __webpack_require__(/*! ./common/PendingAnimation */ 299);
 	var ToolList = (function (_super) {
 	    __extends(ToolList, _super);
 	    function ToolList(props) {
@@ -22898,9 +22919,11 @@
 	"use strict";
 	var $ = __webpack_require__(/*! jquery */ 211);
 	var ToolActionType = __webpack_require__(/*! ./toolActionType */ 212);
-	var serviceDomain_1 = __webpack_require__(/*! ../constants/serviceDomain */ 213);
-	var AntiForgeryToken = __webpack_require__(/*! ../utils/antiForgeryToken */ 214);
-	var ValidationMessageType = __webpack_require__(/*! ../validators/validationMessageType */ 215);
+	var normalizr_1 = __webpack_require__(/*! normalizr */ 213);
+	var serviceDomain_1 = __webpack_require__(/*! ../constants/serviceDomain */ 286);
+	var AntiForgeryToken = __webpack_require__(/*! ../utils/antiForgeryToken */ 287);
+	var ValidationMessageType = __webpack_require__(/*! ../validators/validationMessageType */ 288);
+	var toolSchema_1 = __webpack_require__(/*! ../schemas/toolSchema */ 289);
 	function load(toolListId, page, toolPerPage, searchText) {
 	    return function (dispatch) {
 	        $.ajax({
@@ -22912,7 +22935,8 @@
 	            dataType: 'json',
 	            type: 'GET',
 	            success: function (toolListModel) {
-	                dispatch(loadSucceed(toolListId, toolListModel.tools, toolListModel.toolAmount, page, toolPerPage, searchText));
+	                var normalizedResponse = normalizr_1.normalize(toolListModel.tools, normalizr_1.arrayOf(toolSchema_1.default));
+	                dispatch(loadSucceed(toolListId, normalizedResponse, toolListModel.toolAmount, page, toolPerPage, searchText));
 	            },
 	            error: function (xhr, status, err) {
 	                dispatch(loadFailed(toolListId, err));
@@ -22929,11 +22953,11 @@
 	    };
 	}
 	exports.loadPending = loadPending;
-	function loadSucceed(toolListId, tools, totalAmount, page, toolsPerPage, searchText) {
+	function loadSucceed(toolListId, response, totalAmount, page, toolsPerPage, searchText) {
 	    return {
 	        type: ToolActionType.TOOL_LOAD_SUCCEED,
 	        toolListId: toolListId,
-	        tools: tools,
+	        response: response,
 	        totalAmount: totalAmount,
 	        toolPage: page,
 	        toolsPerPage: toolsPerPage,
@@ -33051,6 +33075,2911 @@
 
 /***/ },
 /* 213 */
+/*!**********************************!*\
+  !*** ./~/normalizr/lib/index.js ***!
+  \**********************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	exports.__esModule = true;
+	exports.arrayOf = arrayOf;
+	exports.valuesOf = valuesOf;
+	exports.unionOf = unionOf;
+	exports.normalize = normalize;
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	var _EntitySchema = __webpack_require__(/*! ./EntitySchema */ 214);
+	
+	var _EntitySchema2 = _interopRequireDefault(_EntitySchema);
+	
+	var _IterableSchema = __webpack_require__(/*! ./IterableSchema */ 215);
+	
+	var _IterableSchema2 = _interopRequireDefault(_IterableSchema);
+	
+	var _UnionSchema = __webpack_require__(/*! ./UnionSchema */ 217);
+	
+	var _UnionSchema2 = _interopRequireDefault(_UnionSchema);
+	
+	var _lodashIsEqual = __webpack_require__(/*! lodash/isEqual */ 218);
+	
+	var _lodashIsEqual2 = _interopRequireDefault(_lodashIsEqual);
+	
+	var _lodashIsObject = __webpack_require__(/*! lodash/isObject */ 216);
+	
+	var _lodashIsObject2 = _interopRequireDefault(_lodashIsObject);
+	
+	function defaultAssignEntity(normalized, key, entity) {
+	  normalized[key] = entity;
+	}
+	
+	function visitObject(obj, schema, bag, options) {
+	  var _options$assignEntity = options.assignEntity;
+	  var assignEntity = _options$assignEntity === undefined ? defaultAssignEntity : _options$assignEntity;
+	
+	  var normalized = {};
+	  for (var key in obj) {
+	    if (obj.hasOwnProperty(key)) {
+	      var entity = visit(obj[key], schema[key], bag, options);
+	      assignEntity.call(null, normalized, key, entity, obj);
+	    }
+	  }
+	  return normalized;
+	}
+	
+	function defaultMapper(iterableSchema, itemSchema, bag, options) {
+	  return function (obj) {
+	    return visit(obj, itemSchema, bag, options);
+	  };
+	}
+	
+	function polymorphicMapper(iterableSchema, itemSchema, bag, options) {
+	  return function (obj) {
+	    var schemaKey = iterableSchema.getSchemaKey(obj);
+	    var result = visit(obj, itemSchema[schemaKey], bag, options);
+	    return { id: result, schema: schemaKey };
+	  };
+	}
+	
+	function visitIterable(obj, iterableSchema, bag, options) {
+	  var itemSchema = iterableSchema.getItemSchema();
+	  var curriedItemMapper = defaultMapper(iterableSchema, itemSchema, bag, options);
+	
+	  if (Array.isArray(obj)) {
+	    return obj.map(curriedItemMapper);
+	  } else {
+	    return Object.keys(obj).reduce(function (objMap, key) {
+	      objMap[key] = curriedItemMapper(obj[key]);
+	      return objMap;
+	    }, {});
+	  }
+	}
+	
+	function visitUnion(obj, unionSchema, bag, options) {
+	  var itemSchema = unionSchema.getItemSchema();
+	  return polymorphicMapper(unionSchema, itemSchema, bag, options)(obj);
+	}
+	
+	function defaultMergeIntoEntity(entityA, entityB, entityKey) {
+	  for (var key in entityB) {
+	    if (!entityB.hasOwnProperty(key)) {
+	      continue;
+	    }
+	
+	    if (!entityA.hasOwnProperty(key) || _lodashIsEqual2['default'](entityA[key], entityB[key])) {
+	      entityA[key] = entityB[key];
+	      continue;
+	    }
+	
+	    console.warn('When merging two ' + entityKey + ', found unequal data in their "' + key + '" values. Using the earlier value.', entityA[key], entityB[key]);
+	  }
+	}
+	
+	function visitEntity(entity, entitySchema, bag, options) {
+	  var _options$mergeIntoEntity = options.mergeIntoEntity;
+	  var mergeIntoEntity = _options$mergeIntoEntity === undefined ? defaultMergeIntoEntity : _options$mergeIntoEntity;
+	
+	  var entityKey = entitySchema.getKey();
+	  var id = entitySchema.getId(entity);
+	
+	  if (!bag.hasOwnProperty(entityKey)) {
+	    bag[entityKey] = {};
+	  }
+	
+	  if (!bag[entityKey].hasOwnProperty(id)) {
+	    bag[entityKey][id] = {};
+	  }
+	
+	  var stored = bag[entityKey][id];
+	  var normalized = visitObject(entity, entitySchema, bag, options);
+	  mergeIntoEntity(stored, normalized, entityKey);
+	
+	  return id;
+	}
+	
+	function visit(obj, schema, bag, options) {
+	  if (!_lodashIsObject2['default'](obj) || !_lodashIsObject2['default'](schema)) {
+	    return obj;
+	  }
+	
+	  if (schema instanceof _EntitySchema2['default']) {
+	    return visitEntity(obj, schema, bag, options);
+	  } else if (schema instanceof _IterableSchema2['default']) {
+	    return visitIterable(obj, schema, bag, options);
+	  } else if (schema instanceof _UnionSchema2['default']) {
+	    return visitUnion(obj, schema, bag, options);
+	  } else {
+	    return visitObject(obj, schema, bag, options);
+	  }
+	}
+	
+	function arrayOf(schema, options) {
+	  return new _IterableSchema2['default'](schema, options);
+	}
+	
+	function valuesOf(schema, options) {
+	  return new _IterableSchema2['default'](schema, options);
+	}
+	
+	function unionOf(schema, options) {
+	  return new _UnionSchema2['default'](schema, options);
+	}
+	
+	exports.Schema = _EntitySchema2['default'];
+	
+	function normalize(obj, schema) {
+	  var options = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+	
+	  if (!_lodashIsObject2['default'](obj) && !Array.isArray(obj)) {
+	    throw new Error('Normalize accepts an object or an array as its input.');
+	  }
+	
+	  if (!_lodashIsObject2['default'](schema) || Array.isArray(schema)) {
+	    throw new Error('Normalize accepts an object for schema.');
+	  }
+	
+	  var bag = {};
+	  var result = visit(obj, schema, bag, options);
+	
+	  return {
+	    entities: bag,
+	    result: result
+	  };
+	}
+
+/***/ },
+/* 214 */
+/*!*****************************************!*\
+  !*** ./~/normalizr/lib/EntitySchema.js ***!
+  \*****************************************/
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	exports.__esModule = true;
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+	
+	var EntitySchema = (function () {
+	  function EntitySchema(key) {
+	    var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+	
+	    _classCallCheck(this, EntitySchema);
+	
+	    if (!key || typeof key !== 'string') {
+	      throw new Error('A string non-empty key is required');
+	    }
+	
+	    this._key = key;
+	
+	    var idAttribute = options.idAttribute || 'id';
+	    this._getId = typeof idAttribute === 'function' ? idAttribute : function (x) {
+	      return x[idAttribute];
+	    };
+	    this._idAttribute = idAttribute;
+	  }
+	
+	  EntitySchema.prototype.getKey = function getKey() {
+	    return this._key;
+	  };
+	
+	  EntitySchema.prototype.getId = function getId(entity) {
+	    return this._getId(entity);
+	  };
+	
+	  EntitySchema.prototype.getIdAttribute = function getIdAttribute() {
+	    return this._idAttribute;
+	  };
+	
+	  EntitySchema.prototype.define = function define(nestedSchema) {
+	    for (var key in nestedSchema) {
+	      if (nestedSchema.hasOwnProperty(key)) {
+	        this[key] = nestedSchema[key];
+	      }
+	    }
+	  };
+	
+	  return EntitySchema;
+	})();
+	
+	exports['default'] = EntitySchema;
+	module.exports = exports['default'];
+
+/***/ },
+/* 215 */
+/*!*******************************************!*\
+  !*** ./~/normalizr/lib/IterableSchema.js ***!
+  \*******************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	exports.__esModule = true;
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+	
+	var _lodashIsObject = __webpack_require__(/*! lodash/isObject */ 216);
+	
+	var _lodashIsObject2 = _interopRequireDefault(_lodashIsObject);
+	
+	var _UnionSchema = __webpack_require__(/*! ./UnionSchema */ 217);
+	
+	var _UnionSchema2 = _interopRequireDefault(_UnionSchema);
+	
+	var ArraySchema = (function () {
+	  function ArraySchema(itemSchema) {
+	    var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+	
+	    _classCallCheck(this, ArraySchema);
+	
+	    if (!_lodashIsObject2['default'](itemSchema)) {
+	      throw new Error('ArraySchema requires item schema to be an object.');
+	    }
+	
+	    if (options.schemaAttribute) {
+	      var schemaAttribute = options.schemaAttribute;
+	      this._itemSchema = new _UnionSchema2['default'](itemSchema, { schemaAttribute: schemaAttribute });
+	    } else {
+	      this._itemSchema = itemSchema;
+	    }
+	  }
+	
+	  ArraySchema.prototype.getItemSchema = function getItemSchema() {
+	    return this._itemSchema;
+	  };
+	
+	  return ArraySchema;
+	})();
+	
+	exports['default'] = ArraySchema;
+	module.exports = exports['default'];
+
+/***/ },
+/* 216 */
+/*!******************************!*\
+  !*** ./~/lodash/isObject.js ***!
+  \******************************/
+/***/ function(module, exports) {
+
+	/**
+	 * Checks if `value` is the
+	 * [language type](http://www.ecma-international.org/ecma-262/6.0/#sec-ecmascript-language-types)
+	 * of `Object`. (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+	 * @example
+	 *
+	 * _.isObject({});
+	 * // => true
+	 *
+	 * _.isObject([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isObject(_.noop);
+	 * // => true
+	 *
+	 * _.isObject(null);
+	 * // => false
+	 */
+	function isObject(value) {
+	  var type = typeof value;
+	  return !!value && (type == 'object' || type == 'function');
+	}
+	
+	module.exports = isObject;
+
+
+/***/ },
+/* 217 */
+/*!****************************************!*\
+  !*** ./~/normalizr/lib/UnionSchema.js ***!
+  \****************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	exports.__esModule = true;
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+	
+	var _lodashIsObject = __webpack_require__(/*! lodash/isObject */ 216);
+	
+	var _lodashIsObject2 = _interopRequireDefault(_lodashIsObject);
+	
+	var UnionSchema = (function () {
+	  function UnionSchema(itemSchema, options) {
+	    _classCallCheck(this, UnionSchema);
+	
+	    if (!_lodashIsObject2['default'](itemSchema)) {
+	      throw new Error('UnionSchema requires item schema to be an object.');
+	    }
+	
+	    if (!options || !options.schemaAttribute) {
+	      throw new Error('UnionSchema requires schemaAttribute option.');
+	    }
+	
+	    this._itemSchema = itemSchema;
+	
+	    var schemaAttribute = options.schemaAttribute;
+	    this._getSchema = typeof schemaAttribute === 'function' ? schemaAttribute : function (x) {
+	      return x[schemaAttribute];
+	    };
+	  }
+	
+	  UnionSchema.prototype.getItemSchema = function getItemSchema() {
+	    return this._itemSchema;
+	  };
+	
+	  UnionSchema.prototype.getSchemaKey = function getSchemaKey(item) {
+	    return this._getSchema(item);
+	  };
+	
+	  return UnionSchema;
+	})();
+	
+	exports['default'] = UnionSchema;
+	module.exports = exports['default'];
+
+/***/ },
+/* 218 */
+/*!*****************************!*\
+  !*** ./~/lodash/isEqual.js ***!
+  \*****************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var baseIsEqual = __webpack_require__(/*! ./_baseIsEqual */ 219);
+	
+	/**
+	 * Performs a deep comparison between two values to determine if they are
+	 * equivalent.
+	 *
+	 * **Note:** This method supports comparing arrays, array buffers, booleans,
+	 * date objects, error objects, maps, numbers, `Object` objects, regexes,
+	 * sets, strings, symbols, and typed arrays. `Object` objects are compared
+	 * by their own, not inherited, enumerable properties. Functions and DOM
+	 * nodes are **not** supported.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @category Lang
+	 * @param {*} value The value to compare.
+	 * @param {*} other The other value to compare.
+	 * @returns {boolean} Returns `true` if the values are equivalent,
+	 *  else `false`.
+	 * @example
+	 *
+	 * var object = { 'user': 'fred' };
+	 * var other = { 'user': 'fred' };
+	 *
+	 * _.isEqual(object, other);
+	 * // => true
+	 *
+	 * object === other;
+	 * // => false
+	 */
+	function isEqual(value, other) {
+	  return baseIsEqual(value, other);
+	}
+	
+	module.exports = isEqual;
+
+
+/***/ },
+/* 219 */
+/*!**********************************!*\
+  !*** ./~/lodash/_baseIsEqual.js ***!
+  \**********************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var baseIsEqualDeep = __webpack_require__(/*! ./_baseIsEqualDeep */ 220),
+	    isObject = __webpack_require__(/*! ./isObject */ 216),
+	    isObjectLike = __webpack_require__(/*! ./isObjectLike */ 275);
+	
+	/**
+	 * The base implementation of `_.isEqual` which supports partial comparisons
+	 * and tracks traversed objects.
+	 *
+	 * @private
+	 * @param {*} value The value to compare.
+	 * @param {*} other The other value to compare.
+	 * @param {Function} [customizer] The function to customize comparisons.
+	 * @param {boolean} [bitmask] The bitmask of comparison flags.
+	 *  The bitmask may be composed of the following flags:
+	 *     1 - Unordered comparison
+	 *     2 - Partial comparison
+	 * @param {Object} [stack] Tracks traversed `value` and `other` objects.
+	 * @returns {boolean} Returns `true` if the values are equivalent, else `false`.
+	 */
+	function baseIsEqual(value, other, customizer, bitmask, stack) {
+	  if (value === other) {
+	    return true;
+	  }
+	  if (value == null || other == null || (!isObject(value) && !isObjectLike(other))) {
+	    return value !== value && other !== other;
+	  }
+	  return baseIsEqualDeep(value, other, baseIsEqual, customizer, bitmask, stack);
+	}
+	
+	module.exports = baseIsEqual;
+
+
+/***/ },
+/* 220 */
+/*!**************************************!*\
+  !*** ./~/lodash/_baseIsEqualDeep.js ***!
+  \**************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var Stack = __webpack_require__(/*! ./_Stack */ 221),
+	    equalArrays = __webpack_require__(/*! ./_equalArrays */ 255),
+	    equalByTag = __webpack_require__(/*! ./_equalByTag */ 257),
+	    equalObjects = __webpack_require__(/*! ./_equalObjects */ 262),
+	    getTag = __webpack_require__(/*! ./_getTag */ 280),
+	    isArray = __webpack_require__(/*! ./isArray */ 276),
+	    isHostObject = __webpack_require__(/*! ./_isHostObject */ 239),
+	    isTypedArray = __webpack_require__(/*! ./isTypedArray */ 285);
+	
+	/** Used to compose bitmasks for comparison styles. */
+	var PARTIAL_COMPARE_FLAG = 2;
+	
+	/** `Object#toString` result references. */
+	var argsTag = '[object Arguments]',
+	    arrayTag = '[object Array]',
+	    objectTag = '[object Object]';
+	
+	/** Used for built-in method references. */
+	var objectProto = Object.prototype;
+	
+	/** Used to check objects for own properties. */
+	var hasOwnProperty = objectProto.hasOwnProperty;
+	
+	/**
+	 * A specialized version of `baseIsEqual` for arrays and objects which performs
+	 * deep comparisons and tracks traversed objects enabling objects with circular
+	 * references to be compared.
+	 *
+	 * @private
+	 * @param {Object} object The object to compare.
+	 * @param {Object} other The other object to compare.
+	 * @param {Function} equalFunc The function to determine equivalents of values.
+	 * @param {Function} [customizer] The function to customize comparisons.
+	 * @param {number} [bitmask] The bitmask of comparison flags. See `baseIsEqual`
+	 *  for more details.
+	 * @param {Object} [stack] Tracks traversed `object` and `other` objects.
+	 * @returns {boolean} Returns `true` if the objects are equivalent, else `false`.
+	 */
+	function baseIsEqualDeep(object, other, equalFunc, customizer, bitmask, stack) {
+	  var objIsArr = isArray(object),
+	      othIsArr = isArray(other),
+	      objTag = arrayTag,
+	      othTag = arrayTag;
+	
+	  if (!objIsArr) {
+	    objTag = getTag(object);
+	    objTag = objTag == argsTag ? objectTag : objTag;
+	  }
+	  if (!othIsArr) {
+	    othTag = getTag(other);
+	    othTag = othTag == argsTag ? objectTag : othTag;
+	  }
+	  var objIsObj = objTag == objectTag && !isHostObject(object),
+	      othIsObj = othTag == objectTag && !isHostObject(other),
+	      isSameTag = objTag == othTag;
+	
+	  if (isSameTag && !objIsObj) {
+	    stack || (stack = new Stack);
+	    return (objIsArr || isTypedArray(object))
+	      ? equalArrays(object, other, equalFunc, customizer, bitmask, stack)
+	      : equalByTag(object, other, objTag, equalFunc, customizer, bitmask, stack);
+	  }
+	  if (!(bitmask & PARTIAL_COMPARE_FLAG)) {
+	    var objIsWrapped = objIsObj && hasOwnProperty.call(object, '__wrapped__'),
+	        othIsWrapped = othIsObj && hasOwnProperty.call(other, '__wrapped__');
+	
+	    if (objIsWrapped || othIsWrapped) {
+	      var objUnwrapped = objIsWrapped ? object.value() : object,
+	          othUnwrapped = othIsWrapped ? other.value() : other;
+	
+	      stack || (stack = new Stack);
+	      return equalFunc(objUnwrapped, othUnwrapped, customizer, bitmask, stack);
+	    }
+	  }
+	  if (!isSameTag) {
+	    return false;
+	  }
+	  stack || (stack = new Stack);
+	  return equalObjects(object, other, equalFunc, customizer, bitmask, stack);
+	}
+	
+	module.exports = baseIsEqualDeep;
+
+
+/***/ },
+/* 221 */
+/*!****************************!*\
+  !*** ./~/lodash/_Stack.js ***!
+  \****************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var stackClear = __webpack_require__(/*! ./_stackClear */ 222),
+	    stackDelete = __webpack_require__(/*! ./_stackDelete */ 223),
+	    stackGet = __webpack_require__(/*! ./_stackGet */ 227),
+	    stackHas = __webpack_require__(/*! ./_stackHas */ 229),
+	    stackSet = __webpack_require__(/*! ./_stackSet */ 231);
+	
+	/**
+	 * Creates a stack cache object to store key-value pairs.
+	 *
+	 * @private
+	 * @constructor
+	 * @param {Array} [values] The values to cache.
+	 */
+	function Stack(values) {
+	  var index = -1,
+	      length = values ? values.length : 0;
+	
+	  this.clear();
+	  while (++index < length) {
+	    var entry = values[index];
+	    this.set(entry[0], entry[1]);
+	  }
+	}
+	
+	// Add methods to `Stack`.
+	Stack.prototype.clear = stackClear;
+	Stack.prototype['delete'] = stackDelete;
+	Stack.prototype.get = stackGet;
+	Stack.prototype.has = stackHas;
+	Stack.prototype.set = stackSet;
+	
+	module.exports = Stack;
+
+
+/***/ },
+/* 222 */
+/*!*********************************!*\
+  !*** ./~/lodash/_stackClear.js ***!
+  \*********************************/
+/***/ function(module, exports) {
+
+	/**
+	 * Removes all key-value entries from the stack.
+	 *
+	 * @private
+	 * @name clear
+	 * @memberOf Stack
+	 */
+	function stackClear() {
+	  this.__data__ = { 'array': [], 'map': null };
+	}
+	
+	module.exports = stackClear;
+
+
+/***/ },
+/* 223 */
+/*!**********************************!*\
+  !*** ./~/lodash/_stackDelete.js ***!
+  \**********************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var assocDelete = __webpack_require__(/*! ./_assocDelete */ 224);
+	
+	/**
+	 * Removes `key` and its value from the stack.
+	 *
+	 * @private
+	 * @name delete
+	 * @memberOf Stack
+	 * @param {string} key The key of the value to remove.
+	 * @returns {boolean} Returns `true` if the entry was removed, else `false`.
+	 */
+	function stackDelete(key) {
+	  var data = this.__data__,
+	      array = data.array;
+	
+	  return array ? assocDelete(array, key) : data.map['delete'](key);
+	}
+	
+	module.exports = stackDelete;
+
+
+/***/ },
+/* 224 */
+/*!**********************************!*\
+  !*** ./~/lodash/_assocDelete.js ***!
+  \**********************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var assocIndexOf = __webpack_require__(/*! ./_assocIndexOf */ 225);
+	
+	/** Used for built-in method references. */
+	var arrayProto = Array.prototype;
+	
+	/** Built-in value references. */
+	var splice = arrayProto.splice;
+	
+	/**
+	 * Removes `key` and its value from the associative array.
+	 *
+	 * @private
+	 * @param {Array} array The array to modify.
+	 * @param {string} key The key of the value to remove.
+	 * @returns {boolean} Returns `true` if the entry was removed, else `false`.
+	 */
+	function assocDelete(array, key) {
+	  var index = assocIndexOf(array, key);
+	  if (index < 0) {
+	    return false;
+	  }
+	  var lastIndex = array.length - 1;
+	  if (index == lastIndex) {
+	    array.pop();
+	  } else {
+	    splice.call(array, index, 1);
+	  }
+	  return true;
+	}
+	
+	module.exports = assocDelete;
+
+
+/***/ },
+/* 225 */
+/*!***********************************!*\
+  !*** ./~/lodash/_assocIndexOf.js ***!
+  \***********************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var eq = __webpack_require__(/*! ./eq */ 226);
+	
+	/**
+	 * Gets the index at which the `key` is found in `array` of key-value pairs.
+	 *
+	 * @private
+	 * @param {Array} array The array to search.
+	 * @param {*} key The key to search for.
+	 * @returns {number} Returns the index of the matched value, else `-1`.
+	 */
+	function assocIndexOf(array, key) {
+	  var length = array.length;
+	  while (length--) {
+	    if (eq(array[length][0], key)) {
+	      return length;
+	    }
+	  }
+	  return -1;
+	}
+	
+	module.exports = assocIndexOf;
+
+
+/***/ },
+/* 226 */
+/*!************************!*\
+  !*** ./~/lodash/eq.js ***!
+  \************************/
+/***/ function(module, exports) {
+
+	/**
+	 * Performs a
+	 * [`SameValueZero`](http://ecma-international.org/ecma-262/6.0/#sec-samevaluezero)
+	 * comparison between two values to determine if they are equivalent.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.0.0
+	 * @category Lang
+	 * @param {*} value The value to compare.
+	 * @param {*} other The other value to compare.
+	 * @returns {boolean} Returns `true` if the values are equivalent, else `false`.
+	 * @example
+	 *
+	 * var object = { 'user': 'fred' };
+	 * var other = { 'user': 'fred' };
+	 *
+	 * _.eq(object, object);
+	 * // => true
+	 *
+	 * _.eq(object, other);
+	 * // => false
+	 *
+	 * _.eq('a', 'a');
+	 * // => true
+	 *
+	 * _.eq('a', Object('a'));
+	 * // => false
+	 *
+	 * _.eq(NaN, NaN);
+	 * // => true
+	 */
+	function eq(value, other) {
+	  return value === other || (value !== value && other !== other);
+	}
+	
+	module.exports = eq;
+
+
+/***/ },
+/* 227 */
+/*!*******************************!*\
+  !*** ./~/lodash/_stackGet.js ***!
+  \*******************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var assocGet = __webpack_require__(/*! ./_assocGet */ 228);
+	
+	/**
+	 * Gets the stack value for `key`.
+	 *
+	 * @private
+	 * @name get
+	 * @memberOf Stack
+	 * @param {string} key The key of the value to get.
+	 * @returns {*} Returns the entry value.
+	 */
+	function stackGet(key) {
+	  var data = this.__data__,
+	      array = data.array;
+	
+	  return array ? assocGet(array, key) : data.map.get(key);
+	}
+	
+	module.exports = stackGet;
+
+
+/***/ },
+/* 228 */
+/*!*******************************!*\
+  !*** ./~/lodash/_assocGet.js ***!
+  \*******************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var assocIndexOf = __webpack_require__(/*! ./_assocIndexOf */ 225);
+	
+	/**
+	 * Gets the associative array value for `key`.
+	 *
+	 * @private
+	 * @param {Array} array The array to query.
+	 * @param {string} key The key of the value to get.
+	 * @returns {*} Returns the entry value.
+	 */
+	function assocGet(array, key) {
+	  var index = assocIndexOf(array, key);
+	  return index < 0 ? undefined : array[index][1];
+	}
+	
+	module.exports = assocGet;
+
+
+/***/ },
+/* 229 */
+/*!*******************************!*\
+  !*** ./~/lodash/_stackHas.js ***!
+  \*******************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var assocHas = __webpack_require__(/*! ./_assocHas */ 230);
+	
+	/**
+	 * Checks if a stack value for `key` exists.
+	 *
+	 * @private
+	 * @name has
+	 * @memberOf Stack
+	 * @param {string} key The key of the entry to check.
+	 * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
+	 */
+	function stackHas(key) {
+	  var data = this.__data__,
+	      array = data.array;
+	
+	  return array ? assocHas(array, key) : data.map.has(key);
+	}
+	
+	module.exports = stackHas;
+
+
+/***/ },
+/* 230 */
+/*!*******************************!*\
+  !*** ./~/lodash/_assocHas.js ***!
+  \*******************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var assocIndexOf = __webpack_require__(/*! ./_assocIndexOf */ 225);
+	
+	/**
+	 * Checks if an associative array value for `key` exists.
+	 *
+	 * @private
+	 * @param {Array} array The array to query.
+	 * @param {string} key The key of the entry to check.
+	 * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
+	 */
+	function assocHas(array, key) {
+	  return assocIndexOf(array, key) > -1;
+	}
+	
+	module.exports = assocHas;
+
+
+/***/ },
+/* 231 */
+/*!*******************************!*\
+  !*** ./~/lodash/_stackSet.js ***!
+  \*******************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var MapCache = __webpack_require__(/*! ./_MapCache */ 232),
+	    assocSet = __webpack_require__(/*! ./_assocSet */ 253);
+	
+	/** Used as the size to enable large array optimizations. */
+	var LARGE_ARRAY_SIZE = 200;
+	
+	/**
+	 * Sets the stack `key` to `value`.
+	 *
+	 * @private
+	 * @name set
+	 * @memberOf Stack
+	 * @param {string} key The key of the value to set.
+	 * @param {*} value The value to set.
+	 * @returns {Object} Returns the stack cache instance.
+	 */
+	function stackSet(key, value) {
+	  var data = this.__data__,
+	      array = data.array;
+	
+	  if (array) {
+	    if (array.length < (LARGE_ARRAY_SIZE - 1)) {
+	      assocSet(array, key, value);
+	    } else {
+	      data.array = null;
+	      data.map = new MapCache(array);
+	    }
+	  }
+	  var map = data.map;
+	  if (map) {
+	    map.set(key, value);
+	  }
+	  return this;
+	}
+	
+	module.exports = stackSet;
+
+
+/***/ },
+/* 232 */
+/*!*******************************!*\
+  !*** ./~/lodash/_MapCache.js ***!
+  \*******************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var mapClear = __webpack_require__(/*! ./_mapClear */ 233),
+	    mapDelete = __webpack_require__(/*! ./_mapDelete */ 245),
+	    mapGet = __webpack_require__(/*! ./_mapGet */ 249),
+	    mapHas = __webpack_require__(/*! ./_mapHas */ 251),
+	    mapSet = __webpack_require__(/*! ./_mapSet */ 252);
+	
+	/**
+	 * Creates a map cache object to store key-value pairs.
+	 *
+	 * @private
+	 * @constructor
+	 * @param {Array} [values] The values to cache.
+	 */
+	function MapCache(values) {
+	  var index = -1,
+	      length = values ? values.length : 0;
+	
+	  this.clear();
+	  while (++index < length) {
+	    var entry = values[index];
+	    this.set(entry[0], entry[1]);
+	  }
+	}
+	
+	// Add methods to `MapCache`.
+	MapCache.prototype.clear = mapClear;
+	MapCache.prototype['delete'] = mapDelete;
+	MapCache.prototype.get = mapGet;
+	MapCache.prototype.has = mapHas;
+	MapCache.prototype.set = mapSet;
+	
+	module.exports = MapCache;
+
+
+/***/ },
+/* 233 */
+/*!*******************************!*\
+  !*** ./~/lodash/_mapClear.js ***!
+  \*******************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var Hash = __webpack_require__(/*! ./_Hash */ 234),
+	    Map = __webpack_require__(/*! ./_Map */ 241);
+	
+	/**
+	 * Removes all key-value entries from the map.
+	 *
+	 * @private
+	 * @name clear
+	 * @memberOf MapCache
+	 */
+	function mapClear() {
+	  this.__data__ = {
+	    'hash': new Hash,
+	    'map': Map ? new Map : [],
+	    'string': new Hash
+	  };
+	}
+	
+	module.exports = mapClear;
+
+
+/***/ },
+/* 234 */
+/*!***************************!*\
+  !*** ./~/lodash/_Hash.js ***!
+  \***************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var nativeCreate = __webpack_require__(/*! ./_nativeCreate */ 235);
+	
+	/** Used for built-in method references. */
+	var objectProto = Object.prototype;
+	
+	/**
+	 * Creates a hash object.
+	 *
+	 * @private
+	 * @constructor
+	 * @returns {Object} Returns the new hash object.
+	 */
+	function Hash() {}
+	
+	// Avoid inheriting from `Object.prototype` when possible.
+	Hash.prototype = nativeCreate ? nativeCreate(null) : objectProto;
+	
+	module.exports = Hash;
+
+
+/***/ },
+/* 235 */
+/*!***********************************!*\
+  !*** ./~/lodash/_nativeCreate.js ***!
+  \***********************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var getNative = __webpack_require__(/*! ./_getNative */ 236);
+	
+	/* Built-in method references that are verified to be native. */
+	var nativeCreate = getNative(Object, 'create');
+	
+	module.exports = nativeCreate;
+
+
+/***/ },
+/* 236 */
+/*!********************************!*\
+  !*** ./~/lodash/_getNative.js ***!
+  \********************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var isNative = __webpack_require__(/*! ./isNative */ 237);
+	
+	/**
+	 * Gets the native function at `key` of `object`.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @param {string} key The key of the method to get.
+	 * @returns {*} Returns the function if it's native, else `undefined`.
+	 */
+	function getNative(object, key) {
+	  var value = object[key];
+	  return isNative(value) ? value : undefined;
+	}
+	
+	module.exports = getNative;
+
+
+/***/ },
+/* 237 */
+/*!******************************!*\
+  !*** ./~/lodash/isNative.js ***!
+  \******************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var isFunction = __webpack_require__(/*! ./isFunction */ 238),
+	    isHostObject = __webpack_require__(/*! ./_isHostObject */ 239),
+	    isObject = __webpack_require__(/*! ./isObject */ 216),
+	    toSource = __webpack_require__(/*! ./_toSource */ 240);
+	
+	/**
+	 * Used to match `RegExp`
+	 * [syntax characters](http://ecma-international.org/ecma-262/6.0/#sec-patterns).
+	 */
+	var reRegExpChar = /[\\^$.*+?()[\]{}|]/g;
+	
+	/** Used to detect host constructors (Safari). */
+	var reIsHostCtor = /^\[object .+?Constructor\]$/;
+	
+	/** Used for built-in method references. */
+	var objectProto = Object.prototype;
+	
+	/** Used to resolve the decompiled source of functions. */
+	var funcToString = Function.prototype.toString;
+	
+	/** Used to check objects for own properties. */
+	var hasOwnProperty = objectProto.hasOwnProperty;
+	
+	/** Used to detect if a method is native. */
+	var reIsNative = RegExp('^' +
+	  funcToString.call(hasOwnProperty).replace(reRegExpChar, '\\$&')
+	  .replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$'
+	);
+	
+	/**
+	 * Checks if `value` is a native function.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 3.0.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a native function,
+	 *  else `false`.
+	 * @example
+	 *
+	 * _.isNative(Array.prototype.push);
+	 * // => true
+	 *
+	 * _.isNative(_);
+	 * // => false
+	 */
+	function isNative(value) {
+	  if (!isObject(value)) {
+	    return false;
+	  }
+	  var pattern = (isFunction(value) || isHostObject(value)) ? reIsNative : reIsHostCtor;
+	  return pattern.test(toSource(value));
+	}
+	
+	module.exports = isNative;
+
+
+/***/ },
+/* 238 */
+/*!********************************!*\
+  !*** ./~/lodash/isFunction.js ***!
+  \********************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var isObject = __webpack_require__(/*! ./isObject */ 216);
+	
+	/** `Object#toString` result references. */
+	var funcTag = '[object Function]',
+	    genTag = '[object GeneratorFunction]';
+	
+	/** Used for built-in method references. */
+	var objectProto = Object.prototype;
+	
+	/**
+	 * Used to resolve the
+	 * [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
+	 * of values.
+	 */
+	var objectToString = objectProto.toString;
+	
+	/**
+	 * Checks if `value` is classified as a `Function` object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is correctly classified,
+	 *  else `false`.
+	 * @example
+	 *
+	 * _.isFunction(_);
+	 * // => true
+	 *
+	 * _.isFunction(/abc/);
+	 * // => false
+	 */
+	function isFunction(value) {
+	  // The use of `Object#toString` avoids issues with the `typeof` operator
+	  // in Safari 8 which returns 'object' for typed array and weak map constructors,
+	  // and PhantomJS 1.9 which returns 'function' for `NodeList` instances.
+	  var tag = isObject(value) ? objectToString.call(value) : '';
+	  return tag == funcTag || tag == genTag;
+	}
+	
+	module.exports = isFunction;
+
+
+/***/ },
+/* 239 */
+/*!***********************************!*\
+  !*** ./~/lodash/_isHostObject.js ***!
+  \***********************************/
+/***/ function(module, exports) {
+
+	/**
+	 * Checks if `value` is a host object in IE < 9.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a host object, else `false`.
+	 */
+	function isHostObject(value) {
+	  // Many host objects are `Object` objects that can coerce to strings
+	  // despite having improperly defined `toString` methods.
+	  var result = false;
+	  if (value != null && typeof value.toString != 'function') {
+	    try {
+	      result = !!(value + '');
+	    } catch (e) {}
+	  }
+	  return result;
+	}
+	
+	module.exports = isHostObject;
+
+
+/***/ },
+/* 240 */
+/*!*******************************!*\
+  !*** ./~/lodash/_toSource.js ***!
+  \*******************************/
+/***/ function(module, exports) {
+
+	/** Used to resolve the decompiled source of functions. */
+	var funcToString = Function.prototype.toString;
+	
+	/**
+	 * Converts `func` to its source code.
+	 *
+	 * @private
+	 * @param {Function} func The function to process.
+	 * @returns {string} Returns the source code.
+	 */
+	function toSource(func) {
+	  if (func != null) {
+	    try {
+	      return funcToString.call(func);
+	    } catch (e) {}
+	    try {
+	      return (func + '');
+	    } catch (e) {}
+	  }
+	  return '';
+	}
+	
+	module.exports = toSource;
+
+
+/***/ },
+/* 241 */
+/*!**************************!*\
+  !*** ./~/lodash/_Map.js ***!
+  \**************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var getNative = __webpack_require__(/*! ./_getNative */ 236),
+	    root = __webpack_require__(/*! ./_root */ 242);
+	
+	/* Built-in method references that are verified to be native. */
+	var Map = getNative(root, 'Map');
+	
+	module.exports = Map;
+
+
+/***/ },
+/* 242 */
+/*!***************************!*\
+  !*** ./~/lodash/_root.js ***!
+  \***************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(module, global) {var checkGlobal = __webpack_require__(/*! ./_checkGlobal */ 244);
+	
+	/** Used to determine if values are of the language type `Object`. */
+	var objectTypes = {
+	  'function': true,
+	  'object': true
+	};
+	
+	/** Detect free variable `exports`. */
+	var freeExports = (objectTypes[typeof exports] && exports && !exports.nodeType)
+	  ? exports
+	  : undefined;
+	
+	/** Detect free variable `module`. */
+	var freeModule = (objectTypes[typeof module] && module && !module.nodeType)
+	  ? module
+	  : undefined;
+	
+	/** Detect free variable `global` from Node.js. */
+	var freeGlobal = checkGlobal(freeExports && freeModule && typeof global == 'object' && global);
+	
+	/** Detect free variable `self`. */
+	var freeSelf = checkGlobal(objectTypes[typeof self] && self);
+	
+	/** Detect free variable `window`. */
+	var freeWindow = checkGlobal(objectTypes[typeof window] && window);
+	
+	/** Detect `this` as the global object. */
+	var thisGlobal = checkGlobal(objectTypes[typeof this] && this);
+	
+	/**
+	 * Used as a reference to the global object.
+	 *
+	 * The `this` value is used if it's the global object to avoid Greasemonkey's
+	 * restricted `window` object, otherwise the `window` object is used.
+	 */
+	var root = freeGlobal ||
+	  ((freeWindow !== (thisGlobal && thisGlobal.window)) && freeWindow) ||
+	    freeSelf || thisGlobal || Function('return this')();
+	
+	module.exports = root;
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./../webpack/buildin/module.js */ 243)(module), (function() { return this; }())))
+
+/***/ },
+/* 243 */
+/*!***********************************!*\
+  !*** (webpack)/buildin/module.js ***!
+  \***********************************/
+/***/ function(module, exports) {
+
+	module.exports = function(module) {
+		if(!module.webpackPolyfill) {
+			module.deprecate = function() {};
+			module.paths = [];
+			// module.parent = undefined by default
+			module.children = [];
+			module.webpackPolyfill = 1;
+		}
+		return module;
+	}
+
+
+/***/ },
+/* 244 */
+/*!**********************************!*\
+  !*** ./~/lodash/_checkGlobal.js ***!
+  \**********************************/
+/***/ function(module, exports) {
+
+	/**
+	 * Checks if `value` is a global object.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {null|Object} Returns `value` if it's a global object, else `null`.
+	 */
+	function checkGlobal(value) {
+	  return (value && value.Object === Object) ? value : null;
+	}
+	
+	module.exports = checkGlobal;
+
+
+/***/ },
+/* 245 */
+/*!********************************!*\
+  !*** ./~/lodash/_mapDelete.js ***!
+  \********************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var Map = __webpack_require__(/*! ./_Map */ 241),
+	    assocDelete = __webpack_require__(/*! ./_assocDelete */ 224),
+	    hashDelete = __webpack_require__(/*! ./_hashDelete */ 246),
+	    isKeyable = __webpack_require__(/*! ./_isKeyable */ 248);
+	
+	/**
+	 * Removes `key` and its value from the map.
+	 *
+	 * @private
+	 * @name delete
+	 * @memberOf MapCache
+	 * @param {string} key The key of the value to remove.
+	 * @returns {boolean} Returns `true` if the entry was removed, else `false`.
+	 */
+	function mapDelete(key) {
+	  var data = this.__data__;
+	  if (isKeyable(key)) {
+	    return hashDelete(typeof key == 'string' ? data.string : data.hash, key);
+	  }
+	  return Map ? data.map['delete'](key) : assocDelete(data.map, key);
+	}
+	
+	module.exports = mapDelete;
+
+
+/***/ },
+/* 246 */
+/*!*********************************!*\
+  !*** ./~/lodash/_hashDelete.js ***!
+  \*********************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var hashHas = __webpack_require__(/*! ./_hashHas */ 247);
+	
+	/**
+	 * Removes `key` and its value from the hash.
+	 *
+	 * @private
+	 * @param {Object} hash The hash to modify.
+	 * @param {string} key The key of the value to remove.
+	 * @returns {boolean} Returns `true` if the entry was removed, else `false`.
+	 */
+	function hashDelete(hash, key) {
+	  return hashHas(hash, key) && delete hash[key];
+	}
+	
+	module.exports = hashDelete;
+
+
+/***/ },
+/* 247 */
+/*!******************************!*\
+  !*** ./~/lodash/_hashHas.js ***!
+  \******************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var nativeCreate = __webpack_require__(/*! ./_nativeCreate */ 235);
+	
+	/** Used for built-in method references. */
+	var objectProto = Object.prototype;
+	
+	/** Used to check objects for own properties. */
+	var hasOwnProperty = objectProto.hasOwnProperty;
+	
+	/**
+	 * Checks if a hash value for `key` exists.
+	 *
+	 * @private
+	 * @param {Object} hash The hash to query.
+	 * @param {string} key The key of the entry to check.
+	 * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
+	 */
+	function hashHas(hash, key) {
+	  return nativeCreate ? hash[key] !== undefined : hasOwnProperty.call(hash, key);
+	}
+	
+	module.exports = hashHas;
+
+
+/***/ },
+/* 248 */
+/*!********************************!*\
+  !*** ./~/lodash/_isKeyable.js ***!
+  \********************************/
+/***/ function(module, exports) {
+
+	/**
+	 * Checks if `value` is suitable for use as unique object key.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is suitable, else `false`.
+	 */
+	function isKeyable(value) {
+	  var type = typeof value;
+	  return type == 'number' || type == 'boolean' ||
+	    (type == 'string' && value != '__proto__') || value == null;
+	}
+	
+	module.exports = isKeyable;
+
+
+/***/ },
+/* 249 */
+/*!*****************************!*\
+  !*** ./~/lodash/_mapGet.js ***!
+  \*****************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var Map = __webpack_require__(/*! ./_Map */ 241),
+	    assocGet = __webpack_require__(/*! ./_assocGet */ 228),
+	    hashGet = __webpack_require__(/*! ./_hashGet */ 250),
+	    isKeyable = __webpack_require__(/*! ./_isKeyable */ 248);
+	
+	/**
+	 * Gets the map value for `key`.
+	 *
+	 * @private
+	 * @name get
+	 * @memberOf MapCache
+	 * @param {string} key The key of the value to get.
+	 * @returns {*} Returns the entry value.
+	 */
+	function mapGet(key) {
+	  var data = this.__data__;
+	  if (isKeyable(key)) {
+	    return hashGet(typeof key == 'string' ? data.string : data.hash, key);
+	  }
+	  return Map ? data.map.get(key) : assocGet(data.map, key);
+	}
+	
+	module.exports = mapGet;
+
+
+/***/ },
+/* 250 */
+/*!******************************!*\
+  !*** ./~/lodash/_hashGet.js ***!
+  \******************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var nativeCreate = __webpack_require__(/*! ./_nativeCreate */ 235);
+	
+	/** Used to stand-in for `undefined` hash values. */
+	var HASH_UNDEFINED = '__lodash_hash_undefined__';
+	
+	/** Used for built-in method references. */
+	var objectProto = Object.prototype;
+	
+	/** Used to check objects for own properties. */
+	var hasOwnProperty = objectProto.hasOwnProperty;
+	
+	/**
+	 * Gets the hash value for `key`.
+	 *
+	 * @private
+	 * @param {Object} hash The hash to query.
+	 * @param {string} key The key of the value to get.
+	 * @returns {*} Returns the entry value.
+	 */
+	function hashGet(hash, key) {
+	  if (nativeCreate) {
+	    var result = hash[key];
+	    return result === HASH_UNDEFINED ? undefined : result;
+	  }
+	  return hasOwnProperty.call(hash, key) ? hash[key] : undefined;
+	}
+	
+	module.exports = hashGet;
+
+
+/***/ },
+/* 251 */
+/*!*****************************!*\
+  !*** ./~/lodash/_mapHas.js ***!
+  \*****************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var Map = __webpack_require__(/*! ./_Map */ 241),
+	    assocHas = __webpack_require__(/*! ./_assocHas */ 230),
+	    hashHas = __webpack_require__(/*! ./_hashHas */ 247),
+	    isKeyable = __webpack_require__(/*! ./_isKeyable */ 248);
+	
+	/**
+	 * Checks if a map value for `key` exists.
+	 *
+	 * @private
+	 * @name has
+	 * @memberOf MapCache
+	 * @param {string} key The key of the entry to check.
+	 * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
+	 */
+	function mapHas(key) {
+	  var data = this.__data__;
+	  if (isKeyable(key)) {
+	    return hashHas(typeof key == 'string' ? data.string : data.hash, key);
+	  }
+	  return Map ? data.map.has(key) : assocHas(data.map, key);
+	}
+	
+	module.exports = mapHas;
+
+
+/***/ },
+/* 252 */
+/*!*****************************!*\
+  !*** ./~/lodash/_mapSet.js ***!
+  \*****************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var Map = __webpack_require__(/*! ./_Map */ 241),
+	    assocSet = __webpack_require__(/*! ./_assocSet */ 253),
+	    hashSet = __webpack_require__(/*! ./_hashSet */ 254),
+	    isKeyable = __webpack_require__(/*! ./_isKeyable */ 248);
+	
+	/**
+	 * Sets the map `key` to `value`.
+	 *
+	 * @private
+	 * @name set
+	 * @memberOf MapCache
+	 * @param {string} key The key of the value to set.
+	 * @param {*} value The value to set.
+	 * @returns {Object} Returns the map cache instance.
+	 */
+	function mapSet(key, value) {
+	  var data = this.__data__;
+	  if (isKeyable(key)) {
+	    hashSet(typeof key == 'string' ? data.string : data.hash, key, value);
+	  } else if (Map) {
+	    data.map.set(key, value);
+	  } else {
+	    assocSet(data.map, key, value);
+	  }
+	  return this;
+	}
+	
+	module.exports = mapSet;
+
+
+/***/ },
+/* 253 */
+/*!*******************************!*\
+  !*** ./~/lodash/_assocSet.js ***!
+  \*******************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var assocIndexOf = __webpack_require__(/*! ./_assocIndexOf */ 225);
+	
+	/**
+	 * Sets the associative array `key` to `value`.
+	 *
+	 * @private
+	 * @param {Array} array The array to modify.
+	 * @param {string} key The key of the value to set.
+	 * @param {*} value The value to set.
+	 */
+	function assocSet(array, key, value) {
+	  var index = assocIndexOf(array, key);
+	  if (index < 0) {
+	    array.push([key, value]);
+	  } else {
+	    array[index][1] = value;
+	  }
+	}
+	
+	module.exports = assocSet;
+
+
+/***/ },
+/* 254 */
+/*!******************************!*\
+  !*** ./~/lodash/_hashSet.js ***!
+  \******************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var nativeCreate = __webpack_require__(/*! ./_nativeCreate */ 235);
+	
+	/** Used to stand-in for `undefined` hash values. */
+	var HASH_UNDEFINED = '__lodash_hash_undefined__';
+	
+	/**
+	 * Sets the hash `key` to `value`.
+	 *
+	 * @private
+	 * @param {Object} hash The hash to modify.
+	 * @param {string} key The key of the value to set.
+	 * @param {*} value The value to set.
+	 */
+	function hashSet(hash, key, value) {
+	  hash[key] = (nativeCreate && value === undefined) ? HASH_UNDEFINED : value;
+	}
+	
+	module.exports = hashSet;
+
+
+/***/ },
+/* 255 */
+/*!**********************************!*\
+  !*** ./~/lodash/_equalArrays.js ***!
+  \**********************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var arraySome = __webpack_require__(/*! ./_arraySome */ 256);
+	
+	/** Used to compose bitmasks for comparison styles. */
+	var UNORDERED_COMPARE_FLAG = 1,
+	    PARTIAL_COMPARE_FLAG = 2;
+	
+	/**
+	 * A specialized version of `baseIsEqualDeep` for arrays with support for
+	 * partial deep comparisons.
+	 *
+	 * @private
+	 * @param {Array} array The array to compare.
+	 * @param {Array} other The other array to compare.
+	 * @param {Function} equalFunc The function to determine equivalents of values.
+	 * @param {Function} customizer The function to customize comparisons.
+	 * @param {number} bitmask The bitmask of comparison flags. See `baseIsEqual`
+	 *  for more details.
+	 * @param {Object} stack Tracks traversed `array` and `other` objects.
+	 * @returns {boolean} Returns `true` if the arrays are equivalent, else `false`.
+	 */
+	function equalArrays(array, other, equalFunc, customizer, bitmask, stack) {
+	  var index = -1,
+	      isPartial = bitmask & PARTIAL_COMPARE_FLAG,
+	      isUnordered = bitmask & UNORDERED_COMPARE_FLAG,
+	      arrLength = array.length,
+	      othLength = other.length;
+	
+	  if (arrLength != othLength && !(isPartial && othLength > arrLength)) {
+	    return false;
+	  }
+	  // Assume cyclic values are equal.
+	  var stacked = stack.get(array);
+	  if (stacked) {
+	    return stacked == other;
+	  }
+	  var result = true;
+	  stack.set(array, other);
+	
+	  // Ignore non-index properties.
+	  while (++index < arrLength) {
+	    var arrValue = array[index],
+	        othValue = other[index];
+	
+	    if (customizer) {
+	      var compared = isPartial
+	        ? customizer(othValue, arrValue, index, other, array, stack)
+	        : customizer(arrValue, othValue, index, array, other, stack);
+	    }
+	    if (compared !== undefined) {
+	      if (compared) {
+	        continue;
+	      }
+	      result = false;
+	      break;
+	    }
+	    // Recursively compare arrays (susceptible to call stack limits).
+	    if (isUnordered) {
+	      if (!arraySome(other, function(othValue) {
+	            return arrValue === othValue ||
+	              equalFunc(arrValue, othValue, customizer, bitmask, stack);
+	          })) {
+	        result = false;
+	        break;
+	      }
+	    } else if (!(
+	          arrValue === othValue ||
+	            equalFunc(arrValue, othValue, customizer, bitmask, stack)
+	        )) {
+	      result = false;
+	      break;
+	    }
+	  }
+	  stack['delete'](array);
+	  return result;
+	}
+	
+	module.exports = equalArrays;
+
+
+/***/ },
+/* 256 */
+/*!********************************!*\
+  !*** ./~/lodash/_arraySome.js ***!
+  \********************************/
+/***/ function(module, exports) {
+
+	/**
+	 * A specialized version of `_.some` for arrays without support for iteratee
+	 * shorthands.
+	 *
+	 * @private
+	 * @param {Array} array The array to iterate over.
+	 * @param {Function} predicate The function invoked per iteration.
+	 * @returns {boolean} Returns `true` if any element passes the predicate check,
+	 *  else `false`.
+	 */
+	function arraySome(array, predicate) {
+	  var index = -1,
+	      length = array.length;
+	
+	  while (++index < length) {
+	    if (predicate(array[index], index, array)) {
+	      return true;
+	    }
+	  }
+	  return false;
+	}
+	
+	module.exports = arraySome;
+
+
+/***/ },
+/* 257 */
+/*!*********************************!*\
+  !*** ./~/lodash/_equalByTag.js ***!
+  \*********************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var Symbol = __webpack_require__(/*! ./_Symbol */ 258),
+	    Uint8Array = __webpack_require__(/*! ./_Uint8Array */ 259),
+	    equalArrays = __webpack_require__(/*! ./_equalArrays */ 255),
+	    mapToArray = __webpack_require__(/*! ./_mapToArray */ 260),
+	    setToArray = __webpack_require__(/*! ./_setToArray */ 261);
+	
+	/** Used to compose bitmasks for comparison styles. */
+	var UNORDERED_COMPARE_FLAG = 1,
+	    PARTIAL_COMPARE_FLAG = 2;
+	
+	/** `Object#toString` result references. */
+	var boolTag = '[object Boolean]',
+	    dateTag = '[object Date]',
+	    errorTag = '[object Error]',
+	    mapTag = '[object Map]',
+	    numberTag = '[object Number]',
+	    regexpTag = '[object RegExp]',
+	    setTag = '[object Set]',
+	    stringTag = '[object String]',
+	    symbolTag = '[object Symbol]';
+	
+	var arrayBufferTag = '[object ArrayBuffer]',
+	    dataViewTag = '[object DataView]';
+	
+	/** Used to convert symbols to primitives and strings. */
+	var symbolProto = Symbol ? Symbol.prototype : undefined,
+	    symbolValueOf = symbolProto ? symbolProto.valueOf : undefined;
+	
+	/**
+	 * A specialized version of `baseIsEqualDeep` for comparing objects of
+	 * the same `toStringTag`.
+	 *
+	 * **Note:** This function only supports comparing values with tags of
+	 * `Boolean`, `Date`, `Error`, `Number`, `RegExp`, or `String`.
+	 *
+	 * @private
+	 * @param {Object} object The object to compare.
+	 * @param {Object} other The other object to compare.
+	 * @param {string} tag The `toStringTag` of the objects to compare.
+	 * @param {Function} equalFunc The function to determine equivalents of values.
+	 * @param {Function} customizer The function to customize comparisons.
+	 * @param {number} bitmask The bitmask of comparison flags. See `baseIsEqual`
+	 *  for more details.
+	 * @param {Object} stack Tracks traversed `object` and `other` objects.
+	 * @returns {boolean} Returns `true` if the objects are equivalent, else `false`.
+	 */
+	function equalByTag(object, other, tag, equalFunc, customizer, bitmask, stack) {
+	  switch (tag) {
+	    case dataViewTag:
+	      if ((object.byteLength != other.byteLength) ||
+	          (object.byteOffset != other.byteOffset)) {
+	        return false;
+	      }
+	      object = object.buffer;
+	      other = other.buffer;
+	
+	    case arrayBufferTag:
+	      if ((object.byteLength != other.byteLength) ||
+	          !equalFunc(new Uint8Array(object), new Uint8Array(other))) {
+	        return false;
+	      }
+	      return true;
+	
+	    case boolTag:
+	    case dateTag:
+	      // Coerce dates and booleans to numbers, dates to milliseconds and
+	      // booleans to `1` or `0` treating invalid dates coerced to `NaN` as
+	      // not equal.
+	      return +object == +other;
+	
+	    case errorTag:
+	      return object.name == other.name && object.message == other.message;
+	
+	    case numberTag:
+	      // Treat `NaN` vs. `NaN` as equal.
+	      return (object != +object) ? other != +other : object == +other;
+	
+	    case regexpTag:
+	    case stringTag:
+	      // Coerce regexes to strings and treat strings, primitives and objects,
+	      // as equal. See http://www.ecma-international.org/ecma-262/6.0/#sec-regexp.prototype.tostring
+	      // for more details.
+	      return object == (other + '');
+	
+	    case mapTag:
+	      var convert = mapToArray;
+	
+	    case setTag:
+	      var isPartial = bitmask & PARTIAL_COMPARE_FLAG;
+	      convert || (convert = setToArray);
+	
+	      if (object.size != other.size && !isPartial) {
+	        return false;
+	      }
+	      // Assume cyclic values are equal.
+	      var stacked = stack.get(object);
+	      if (stacked) {
+	        return stacked == other;
+	      }
+	      bitmask |= UNORDERED_COMPARE_FLAG;
+	      stack.set(object, other);
+	
+	      // Recursively compare objects (susceptible to call stack limits).
+	      return equalArrays(convert(object), convert(other), equalFunc, customizer, bitmask, stack);
+	
+	    case symbolTag:
+	      if (symbolValueOf) {
+	        return symbolValueOf.call(object) == symbolValueOf.call(other);
+	      }
+	  }
+	  return false;
+	}
+	
+	module.exports = equalByTag;
+
+
+/***/ },
+/* 258 */
+/*!*****************************!*\
+  !*** ./~/lodash/_Symbol.js ***!
+  \*****************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var root = __webpack_require__(/*! ./_root */ 242);
+	
+	/** Built-in value references. */
+	var Symbol = root.Symbol;
+	
+	module.exports = Symbol;
+
+
+/***/ },
+/* 259 */
+/*!*********************************!*\
+  !*** ./~/lodash/_Uint8Array.js ***!
+  \*********************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var root = __webpack_require__(/*! ./_root */ 242);
+	
+	/** Built-in value references. */
+	var Uint8Array = root.Uint8Array;
+	
+	module.exports = Uint8Array;
+
+
+/***/ },
+/* 260 */
+/*!*********************************!*\
+  !*** ./~/lodash/_mapToArray.js ***!
+  \*********************************/
+/***/ function(module, exports) {
+
+	/**
+	 * Converts `map` to an array.
+	 *
+	 * @private
+	 * @param {Object} map The map to convert.
+	 * @returns {Array} Returns the converted array.
+	 */
+	function mapToArray(map) {
+	  var index = -1,
+	      result = Array(map.size);
+	
+	  map.forEach(function(value, key) {
+	    result[++index] = [key, value];
+	  });
+	  return result;
+	}
+	
+	module.exports = mapToArray;
+
+
+/***/ },
+/* 261 */
+/*!*********************************!*\
+  !*** ./~/lodash/_setToArray.js ***!
+  \*********************************/
+/***/ function(module, exports) {
+
+	/**
+	 * Converts `set` to an array.
+	 *
+	 * @private
+	 * @param {Object} set The set to convert.
+	 * @returns {Array} Returns the converted array.
+	 */
+	function setToArray(set) {
+	  var index = -1,
+	      result = Array(set.size);
+	
+	  set.forEach(function(value) {
+	    result[++index] = value;
+	  });
+	  return result;
+	}
+	
+	module.exports = setToArray;
+
+
+/***/ },
+/* 262 */
+/*!***********************************!*\
+  !*** ./~/lodash/_equalObjects.js ***!
+  \***********************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var baseHas = __webpack_require__(/*! ./_baseHas */ 263),
+	    keys = __webpack_require__(/*! ./keys */ 265);
+	
+	/** Used to compose bitmasks for comparison styles. */
+	var PARTIAL_COMPARE_FLAG = 2;
+	
+	/**
+	 * A specialized version of `baseIsEqualDeep` for objects with support for
+	 * partial deep comparisons.
+	 *
+	 * @private
+	 * @param {Object} object The object to compare.
+	 * @param {Object} other The other object to compare.
+	 * @param {Function} equalFunc The function to determine equivalents of values.
+	 * @param {Function} customizer The function to customize comparisons.
+	 * @param {number} bitmask The bitmask of comparison flags. See `baseIsEqual`
+	 *  for more details.
+	 * @param {Object} stack Tracks traversed `object` and `other` objects.
+	 * @returns {boolean} Returns `true` if the objects are equivalent, else `false`.
+	 */
+	function equalObjects(object, other, equalFunc, customizer, bitmask, stack) {
+	  var isPartial = bitmask & PARTIAL_COMPARE_FLAG,
+	      objProps = keys(object),
+	      objLength = objProps.length,
+	      othProps = keys(other),
+	      othLength = othProps.length;
+	
+	  if (objLength != othLength && !isPartial) {
+	    return false;
+	  }
+	  var index = objLength;
+	  while (index--) {
+	    var key = objProps[index];
+	    if (!(isPartial ? key in other : baseHas(other, key))) {
+	      return false;
+	    }
+	  }
+	  // Assume cyclic values are equal.
+	  var stacked = stack.get(object);
+	  if (stacked) {
+	    return stacked == other;
+	  }
+	  var result = true;
+	  stack.set(object, other);
+	
+	  var skipCtor = isPartial;
+	  while (++index < objLength) {
+	    key = objProps[index];
+	    var objValue = object[key],
+	        othValue = other[key];
+	
+	    if (customizer) {
+	      var compared = isPartial
+	        ? customizer(othValue, objValue, key, other, object, stack)
+	        : customizer(objValue, othValue, key, object, other, stack);
+	    }
+	    // Recursively compare objects (susceptible to call stack limits).
+	    if (!(compared === undefined
+	          ? (objValue === othValue || equalFunc(objValue, othValue, customizer, bitmask, stack))
+	          : compared
+	        )) {
+	      result = false;
+	      break;
+	    }
+	    skipCtor || (skipCtor = key == 'constructor');
+	  }
+	  if (result && !skipCtor) {
+	    var objCtor = object.constructor,
+	        othCtor = other.constructor;
+	
+	    // Non `Object` object instances with different constructors are not equal.
+	    if (objCtor != othCtor &&
+	        ('constructor' in object && 'constructor' in other) &&
+	        !(typeof objCtor == 'function' && objCtor instanceof objCtor &&
+	          typeof othCtor == 'function' && othCtor instanceof othCtor)) {
+	      result = false;
+	    }
+	  }
+	  stack['delete'](object);
+	  return result;
+	}
+	
+	module.exports = equalObjects;
+
+
+/***/ },
+/* 263 */
+/*!******************************!*\
+  !*** ./~/lodash/_baseHas.js ***!
+  \******************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var getPrototype = __webpack_require__(/*! ./_getPrototype */ 264);
+	
+	/** Used for built-in method references. */
+	var objectProto = Object.prototype;
+	
+	/** Used to check objects for own properties. */
+	var hasOwnProperty = objectProto.hasOwnProperty;
+	
+	/**
+	 * The base implementation of `_.has` without support for deep paths.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @param {Array|string} key The key to check.
+	 * @returns {boolean} Returns `true` if `key` exists, else `false`.
+	 */
+	function baseHas(object, key) {
+	  // Avoid a bug in IE 10-11 where objects with a [[Prototype]] of `null`,
+	  // that are composed entirely of index properties, return `false` for
+	  // `hasOwnProperty` checks of them.
+	  return hasOwnProperty.call(object, key) ||
+	    (typeof object == 'object' && key in object && getPrototype(object) === null);
+	}
+	
+	module.exports = baseHas;
+
+
+/***/ },
+/* 264 */
+/*!***********************************!*\
+  !*** ./~/lodash/_getPrototype.js ***!
+  \***********************************/
+/***/ function(module, exports) {
+
+	/* Built-in method references for those with the same name as other `lodash` methods. */
+	var nativeGetPrototype = Object.getPrototypeOf;
+	
+	/**
+	 * Gets the `[[Prototype]]` of `value`.
+	 *
+	 * @private
+	 * @param {*} value The value to query.
+	 * @returns {null|Object} Returns the `[[Prototype]]`.
+	 */
+	function getPrototype(value) {
+	  return nativeGetPrototype(Object(value));
+	}
+	
+	module.exports = getPrototype;
+
+
+/***/ },
+/* 265 */
+/*!**************************!*\
+  !*** ./~/lodash/keys.js ***!
+  \**************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var baseHas = __webpack_require__(/*! ./_baseHas */ 263),
+	    baseKeys = __webpack_require__(/*! ./_baseKeys */ 266),
+	    indexKeys = __webpack_require__(/*! ./_indexKeys */ 267),
+	    isArrayLike = __webpack_require__(/*! ./isArrayLike */ 271),
+	    isIndex = __webpack_require__(/*! ./_isIndex */ 278),
+	    isPrototype = __webpack_require__(/*! ./_isPrototype */ 279);
+	
+	/**
+	 * Creates an array of the own enumerable property names of `object`.
+	 *
+	 * **Note:** Non-object values are coerced to objects. See the
+	 * [ES spec](http://ecma-international.org/ecma-262/6.0/#sec-object.keys)
+	 * for more details.
+	 *
+	 * @static
+	 * @since 0.1.0
+	 * @memberOf _
+	 * @category Object
+	 * @param {Object} object The object to query.
+	 * @returns {Array} Returns the array of property names.
+	 * @example
+	 *
+	 * function Foo() {
+	 *   this.a = 1;
+	 *   this.b = 2;
+	 * }
+	 *
+	 * Foo.prototype.c = 3;
+	 *
+	 * _.keys(new Foo);
+	 * // => ['a', 'b'] (iteration order is not guaranteed)
+	 *
+	 * _.keys('hi');
+	 * // => ['0', '1']
+	 */
+	function keys(object) {
+	  var isProto = isPrototype(object);
+	  if (!(isProto || isArrayLike(object))) {
+	    return baseKeys(object);
+	  }
+	  var indexes = indexKeys(object),
+	      skipIndexes = !!indexes,
+	      result = indexes || [],
+	      length = result.length;
+	
+	  for (var key in object) {
+	    if (baseHas(object, key) &&
+	        !(skipIndexes && (key == 'length' || isIndex(key, length))) &&
+	        !(isProto && key == 'constructor')) {
+	      result.push(key);
+	    }
+	  }
+	  return result;
+	}
+	
+	module.exports = keys;
+
+
+/***/ },
+/* 266 */
+/*!*******************************!*\
+  !*** ./~/lodash/_baseKeys.js ***!
+  \*******************************/
+/***/ function(module, exports) {
+
+	/* Built-in method references for those with the same name as other `lodash` methods. */
+	var nativeKeys = Object.keys;
+	
+	/**
+	 * The base implementation of `_.keys` which doesn't skip the constructor
+	 * property of prototypes or treat sparse arrays as dense.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @returns {Array} Returns the array of property names.
+	 */
+	function baseKeys(object) {
+	  return nativeKeys(Object(object));
+	}
+	
+	module.exports = baseKeys;
+
+
+/***/ },
+/* 267 */
+/*!********************************!*\
+  !*** ./~/lodash/_indexKeys.js ***!
+  \********************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var baseTimes = __webpack_require__(/*! ./_baseTimes */ 268),
+	    isArguments = __webpack_require__(/*! ./isArguments */ 269),
+	    isArray = __webpack_require__(/*! ./isArray */ 276),
+	    isLength = __webpack_require__(/*! ./isLength */ 274),
+	    isString = __webpack_require__(/*! ./isString */ 277);
+	
+	/**
+	 * Creates an array of index keys for `object` values of arrays,
+	 * `arguments` objects, and strings, otherwise `null` is returned.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @returns {Array|null} Returns index keys, else `null`.
+	 */
+	function indexKeys(object) {
+	  var length = object ? object.length : undefined;
+	  if (isLength(length) &&
+	      (isArray(object) || isString(object) || isArguments(object))) {
+	    return baseTimes(length, String);
+	  }
+	  return null;
+	}
+	
+	module.exports = indexKeys;
+
+
+/***/ },
+/* 268 */
+/*!********************************!*\
+  !*** ./~/lodash/_baseTimes.js ***!
+  \********************************/
+/***/ function(module, exports) {
+
+	/**
+	 * The base implementation of `_.times` without support for iteratee shorthands
+	 * or max array length checks.
+	 *
+	 * @private
+	 * @param {number} n The number of times to invoke `iteratee`.
+	 * @param {Function} iteratee The function invoked per iteration.
+	 * @returns {Array} Returns the array of results.
+	 */
+	function baseTimes(n, iteratee) {
+	  var index = -1,
+	      result = Array(n);
+	
+	  while (++index < n) {
+	    result[index] = iteratee(index);
+	  }
+	  return result;
+	}
+	
+	module.exports = baseTimes;
+
+
+/***/ },
+/* 269 */
+/*!*********************************!*\
+  !*** ./~/lodash/isArguments.js ***!
+  \*********************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var isArrayLikeObject = __webpack_require__(/*! ./isArrayLikeObject */ 270);
+	
+	/** `Object#toString` result references. */
+	var argsTag = '[object Arguments]';
+	
+	/** Used for built-in method references. */
+	var objectProto = Object.prototype;
+	
+	/** Used to check objects for own properties. */
+	var hasOwnProperty = objectProto.hasOwnProperty;
+	
+	/**
+	 * Used to resolve the
+	 * [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
+	 * of values.
+	 */
+	var objectToString = objectProto.toString;
+	
+	/** Built-in value references. */
+	var propertyIsEnumerable = objectProto.propertyIsEnumerable;
+	
+	/**
+	 * Checks if `value` is likely an `arguments` object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is correctly classified,
+	 *  else `false`.
+	 * @example
+	 *
+	 * _.isArguments(function() { return arguments; }());
+	 * // => true
+	 *
+	 * _.isArguments([1, 2, 3]);
+	 * // => false
+	 */
+	function isArguments(value) {
+	  // Safari 8.1 incorrectly makes `arguments.callee` enumerable in strict mode.
+	  return isArrayLikeObject(value) && hasOwnProperty.call(value, 'callee') &&
+	    (!propertyIsEnumerable.call(value, 'callee') || objectToString.call(value) == argsTag);
+	}
+	
+	module.exports = isArguments;
+
+
+/***/ },
+/* 270 */
+/*!***************************************!*\
+  !*** ./~/lodash/isArrayLikeObject.js ***!
+  \***************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var isArrayLike = __webpack_require__(/*! ./isArrayLike */ 271),
+	    isObjectLike = __webpack_require__(/*! ./isObjectLike */ 275);
+	
+	/**
+	 * This method is like `_.isArrayLike` except that it also checks if `value`
+	 * is an object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.0.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is an array-like object,
+	 *  else `false`.
+	 * @example
+	 *
+	 * _.isArrayLikeObject([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isArrayLikeObject(document.body.children);
+	 * // => true
+	 *
+	 * _.isArrayLikeObject('abc');
+	 * // => false
+	 *
+	 * _.isArrayLikeObject(_.noop);
+	 * // => false
+	 */
+	function isArrayLikeObject(value) {
+	  return isObjectLike(value) && isArrayLike(value);
+	}
+	
+	module.exports = isArrayLikeObject;
+
+
+/***/ },
+/* 271 */
+/*!*********************************!*\
+  !*** ./~/lodash/isArrayLike.js ***!
+  \*********************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var getLength = __webpack_require__(/*! ./_getLength */ 272),
+	    isFunction = __webpack_require__(/*! ./isFunction */ 238),
+	    isLength = __webpack_require__(/*! ./isLength */ 274);
+	
+	/**
+	 * Checks if `value` is array-like. A value is considered array-like if it's
+	 * not a function and has a `value.length` that's an integer greater than or
+	 * equal to `0` and less than or equal to `Number.MAX_SAFE_INTEGER`.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.0.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is array-like, else `false`.
+	 * @example
+	 *
+	 * _.isArrayLike([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isArrayLike(document.body.children);
+	 * // => true
+	 *
+	 * _.isArrayLike('abc');
+	 * // => true
+	 *
+	 * _.isArrayLike(_.noop);
+	 * // => false
+	 */
+	function isArrayLike(value) {
+	  return value != null && isLength(getLength(value)) && !isFunction(value);
+	}
+	
+	module.exports = isArrayLike;
+
+
+/***/ },
+/* 272 */
+/*!********************************!*\
+  !*** ./~/lodash/_getLength.js ***!
+  \********************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var baseProperty = __webpack_require__(/*! ./_baseProperty */ 273);
+	
+	/**
+	 * Gets the "length" property value of `object`.
+	 *
+	 * **Note:** This function is used to avoid a
+	 * [JIT bug](https://bugs.webkit.org/show_bug.cgi?id=142792) that affects
+	 * Safari on at least iOS 8.1-8.3 ARM64.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @returns {*} Returns the "length" value.
+	 */
+	var getLength = baseProperty('length');
+	
+	module.exports = getLength;
+
+
+/***/ },
+/* 273 */
+/*!***********************************!*\
+  !*** ./~/lodash/_baseProperty.js ***!
+  \***********************************/
+/***/ function(module, exports) {
+
+	/**
+	 * The base implementation of `_.property` without support for deep paths.
+	 *
+	 * @private
+	 * @param {string} key The key of the property to get.
+	 * @returns {Function} Returns the new function.
+	 */
+	function baseProperty(key) {
+	  return function(object) {
+	    return object == null ? undefined : object[key];
+	  };
+	}
+	
+	module.exports = baseProperty;
+
+
+/***/ },
+/* 274 */
+/*!******************************!*\
+  !*** ./~/lodash/isLength.js ***!
+  \******************************/
+/***/ function(module, exports) {
+
+	/** Used as references for various `Number` constants. */
+	var MAX_SAFE_INTEGER = 9007199254740991;
+	
+	/**
+	 * Checks if `value` is a valid array-like length.
+	 *
+	 * **Note:** This function is loosely based on
+	 * [`ToLength`](http://ecma-international.org/ecma-262/6.0/#sec-tolength).
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.0.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a valid length,
+	 *  else `false`.
+	 * @example
+	 *
+	 * _.isLength(3);
+	 * // => true
+	 *
+	 * _.isLength(Number.MIN_VALUE);
+	 * // => false
+	 *
+	 * _.isLength(Infinity);
+	 * // => false
+	 *
+	 * _.isLength('3');
+	 * // => false
+	 */
+	function isLength(value) {
+	  return typeof value == 'number' &&
+	    value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
+	}
+	
+	module.exports = isLength;
+
+
+/***/ },
+/* 275 */
+/*!**********************************!*\
+  !*** ./~/lodash/isObjectLike.js ***!
+  \**********************************/
+/***/ function(module, exports) {
+
+	/**
+	 * Checks if `value` is object-like. A value is object-like if it's not `null`
+	 * and has a `typeof` result of "object".
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.0.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+	 * @example
+	 *
+	 * _.isObjectLike({});
+	 * // => true
+	 *
+	 * _.isObjectLike([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isObjectLike(_.noop);
+	 * // => false
+	 *
+	 * _.isObjectLike(null);
+	 * // => false
+	 */
+	function isObjectLike(value) {
+	  return !!value && typeof value == 'object';
+	}
+	
+	module.exports = isObjectLike;
+
+
+/***/ },
+/* 276 */
+/*!*****************************!*\
+  !*** ./~/lodash/isArray.js ***!
+  \*****************************/
+/***/ function(module, exports) {
+
+	/**
+	 * Checks if `value` is classified as an `Array` object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @type {Function}
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is correctly classified,
+	 *  else `false`.
+	 * @example
+	 *
+	 * _.isArray([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isArray(document.body.children);
+	 * // => false
+	 *
+	 * _.isArray('abc');
+	 * // => false
+	 *
+	 * _.isArray(_.noop);
+	 * // => false
+	 */
+	var isArray = Array.isArray;
+	
+	module.exports = isArray;
+
+
+/***/ },
+/* 277 */
+/*!******************************!*\
+  !*** ./~/lodash/isString.js ***!
+  \******************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var isArray = __webpack_require__(/*! ./isArray */ 276),
+	    isObjectLike = __webpack_require__(/*! ./isObjectLike */ 275);
+	
+	/** `Object#toString` result references. */
+	var stringTag = '[object String]';
+	
+	/** Used for built-in method references. */
+	var objectProto = Object.prototype;
+	
+	/**
+	 * Used to resolve the
+	 * [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
+	 * of values.
+	 */
+	var objectToString = objectProto.toString;
+	
+	/**
+	 * Checks if `value` is classified as a `String` primitive or object.
+	 *
+	 * @static
+	 * @since 0.1.0
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is correctly classified,
+	 *  else `false`.
+	 * @example
+	 *
+	 * _.isString('abc');
+	 * // => true
+	 *
+	 * _.isString(1);
+	 * // => false
+	 */
+	function isString(value) {
+	  return typeof value == 'string' ||
+	    (!isArray(value) && isObjectLike(value) && objectToString.call(value) == stringTag);
+	}
+	
+	module.exports = isString;
+
+
+/***/ },
+/* 278 */
+/*!******************************!*\
+  !*** ./~/lodash/_isIndex.js ***!
+  \******************************/
+/***/ function(module, exports) {
+
+	/** Used as references for various `Number` constants. */
+	var MAX_SAFE_INTEGER = 9007199254740991;
+	
+	/** Used to detect unsigned integer values. */
+	var reIsUint = /^(?:0|[1-9]\d*)$/;
+	
+	/**
+	 * Checks if `value` is a valid array-like index.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @param {number} [length=MAX_SAFE_INTEGER] The upper bounds of a valid index.
+	 * @returns {boolean} Returns `true` if `value` is a valid index, else `false`.
+	 */
+	function isIndex(value, length) {
+	  value = (typeof value == 'number' || reIsUint.test(value)) ? +value : -1;
+	  length = length == null ? MAX_SAFE_INTEGER : length;
+	  return value > -1 && value % 1 == 0 && value < length;
+	}
+	
+	module.exports = isIndex;
+
+
+/***/ },
+/* 279 */
+/*!**********************************!*\
+  !*** ./~/lodash/_isPrototype.js ***!
+  \**********************************/
+/***/ function(module, exports) {
+
+	/** Used for built-in method references. */
+	var objectProto = Object.prototype;
+	
+	/**
+	 * Checks if `value` is likely a prototype object.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a prototype, else `false`.
+	 */
+	function isPrototype(value) {
+	  var Ctor = value && value.constructor,
+	      proto = (typeof Ctor == 'function' && Ctor.prototype) || objectProto;
+	
+	  return value === proto;
+	}
+	
+	module.exports = isPrototype;
+
+
+/***/ },
+/* 280 */
+/*!*****************************!*\
+  !*** ./~/lodash/_getTag.js ***!
+  \*****************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var DataView = __webpack_require__(/*! ./_DataView */ 281),
+	    Map = __webpack_require__(/*! ./_Map */ 241),
+	    Promise = __webpack_require__(/*! ./_Promise */ 282),
+	    Set = __webpack_require__(/*! ./_Set */ 283),
+	    WeakMap = __webpack_require__(/*! ./_WeakMap */ 284),
+	    toSource = __webpack_require__(/*! ./_toSource */ 240);
+	
+	/** `Object#toString` result references. */
+	var mapTag = '[object Map]',
+	    objectTag = '[object Object]',
+	    promiseTag = '[object Promise]',
+	    setTag = '[object Set]',
+	    weakMapTag = '[object WeakMap]';
+	
+	var dataViewTag = '[object DataView]';
+	
+	/** Used for built-in method references. */
+	var objectProto = Object.prototype;
+	
+	/**
+	 * Used to resolve the
+	 * [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
+	 * of values.
+	 */
+	var objectToString = objectProto.toString;
+	
+	/** Used to detect maps, sets, and weakmaps. */
+	var dataViewCtorString = toSource(DataView),
+	    mapCtorString = toSource(Map),
+	    promiseCtorString = toSource(Promise),
+	    setCtorString = toSource(Set),
+	    weakMapCtorString = toSource(WeakMap);
+	
+	/**
+	 * Gets the `toStringTag` of `value`.
+	 *
+	 * @private
+	 * @param {*} value The value to query.
+	 * @returns {string} Returns the `toStringTag`.
+	 */
+	function getTag(value) {
+	  return objectToString.call(value);
+	}
+	
+	// Fallback for data views, maps, sets, and weak maps in IE 11,
+	// for data views in Edge, and promises in Node.js.
+	if ((DataView && getTag(new DataView(new ArrayBuffer(1))) != dataViewTag) ||
+	    (Map && getTag(new Map) != mapTag) ||
+	    (Promise && getTag(Promise.resolve()) != promiseTag) ||
+	    (Set && getTag(new Set) != setTag) ||
+	    (WeakMap && getTag(new WeakMap) != weakMapTag)) {
+	  getTag = function(value) {
+	    var result = objectToString.call(value),
+	        Ctor = result == objectTag ? value.constructor : undefined,
+	        ctorString = Ctor ? toSource(Ctor) : undefined;
+	
+	    if (ctorString) {
+	      switch (ctorString) {
+	        case dataViewCtorString: return dataViewTag;
+	        case mapCtorString: return mapTag;
+	        case promiseCtorString: return promiseTag;
+	        case setCtorString: return setTag;
+	        case weakMapCtorString: return weakMapTag;
+	      }
+	    }
+	    return result;
+	  };
+	}
+	
+	module.exports = getTag;
+
+
+/***/ },
+/* 281 */
+/*!*******************************!*\
+  !*** ./~/lodash/_DataView.js ***!
+  \*******************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var getNative = __webpack_require__(/*! ./_getNative */ 236),
+	    root = __webpack_require__(/*! ./_root */ 242);
+	
+	/* Built-in method references that are verified to be native. */
+	var DataView = getNative(root, 'DataView');
+	
+	module.exports = DataView;
+
+
+/***/ },
+/* 282 */
+/*!******************************!*\
+  !*** ./~/lodash/_Promise.js ***!
+  \******************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var getNative = __webpack_require__(/*! ./_getNative */ 236),
+	    root = __webpack_require__(/*! ./_root */ 242);
+	
+	/* Built-in method references that are verified to be native. */
+	var Promise = getNative(root, 'Promise');
+	
+	module.exports = Promise;
+
+
+/***/ },
+/* 283 */
+/*!**************************!*\
+  !*** ./~/lodash/_Set.js ***!
+  \**************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var getNative = __webpack_require__(/*! ./_getNative */ 236),
+	    root = __webpack_require__(/*! ./_root */ 242);
+	
+	/* Built-in method references that are verified to be native. */
+	var Set = getNative(root, 'Set');
+	
+	module.exports = Set;
+
+
+/***/ },
+/* 284 */
+/*!******************************!*\
+  !*** ./~/lodash/_WeakMap.js ***!
+  \******************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var getNative = __webpack_require__(/*! ./_getNative */ 236),
+	    root = __webpack_require__(/*! ./_root */ 242);
+	
+	/* Built-in method references that are verified to be native. */
+	var WeakMap = getNative(root, 'WeakMap');
+	
+	module.exports = WeakMap;
+
+
+/***/ },
+/* 285 */
+/*!**********************************!*\
+  !*** ./~/lodash/isTypedArray.js ***!
+  \**********************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var isLength = __webpack_require__(/*! ./isLength */ 274),
+	    isObjectLike = __webpack_require__(/*! ./isObjectLike */ 275);
+	
+	/** `Object#toString` result references. */
+	var argsTag = '[object Arguments]',
+	    arrayTag = '[object Array]',
+	    boolTag = '[object Boolean]',
+	    dateTag = '[object Date]',
+	    errorTag = '[object Error]',
+	    funcTag = '[object Function]',
+	    mapTag = '[object Map]',
+	    numberTag = '[object Number]',
+	    objectTag = '[object Object]',
+	    regexpTag = '[object RegExp]',
+	    setTag = '[object Set]',
+	    stringTag = '[object String]',
+	    weakMapTag = '[object WeakMap]';
+	
+	var arrayBufferTag = '[object ArrayBuffer]',
+	    dataViewTag = '[object DataView]',
+	    float32Tag = '[object Float32Array]',
+	    float64Tag = '[object Float64Array]',
+	    int8Tag = '[object Int8Array]',
+	    int16Tag = '[object Int16Array]',
+	    int32Tag = '[object Int32Array]',
+	    uint8Tag = '[object Uint8Array]',
+	    uint8ClampedTag = '[object Uint8ClampedArray]',
+	    uint16Tag = '[object Uint16Array]',
+	    uint32Tag = '[object Uint32Array]';
+	
+	/** Used to identify `toStringTag` values of typed arrays. */
+	var typedArrayTags = {};
+	typedArrayTags[float32Tag] = typedArrayTags[float64Tag] =
+	typedArrayTags[int8Tag] = typedArrayTags[int16Tag] =
+	typedArrayTags[int32Tag] = typedArrayTags[uint8Tag] =
+	typedArrayTags[uint8ClampedTag] = typedArrayTags[uint16Tag] =
+	typedArrayTags[uint32Tag] = true;
+	typedArrayTags[argsTag] = typedArrayTags[arrayTag] =
+	typedArrayTags[arrayBufferTag] = typedArrayTags[boolTag] =
+	typedArrayTags[dataViewTag] = typedArrayTags[dateTag] =
+	typedArrayTags[errorTag] = typedArrayTags[funcTag] =
+	typedArrayTags[mapTag] = typedArrayTags[numberTag] =
+	typedArrayTags[objectTag] = typedArrayTags[regexpTag] =
+	typedArrayTags[setTag] = typedArrayTags[stringTag] =
+	typedArrayTags[weakMapTag] = false;
+	
+	/** Used for built-in method references. */
+	var objectProto = Object.prototype;
+	
+	/**
+	 * Used to resolve the
+	 * [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
+	 * of values.
+	 */
+	var objectToString = objectProto.toString;
+	
+	/**
+	 * Checks if `value` is classified as a typed array.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 3.0.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is correctly classified,
+	 *  else `false`.
+	 * @example
+	 *
+	 * _.isTypedArray(new Uint8Array);
+	 * // => true
+	 *
+	 * _.isTypedArray([]);
+	 * // => false
+	 */
+	function isTypedArray(value) {
+	  return isObjectLike(value) &&
+	    isLength(value.length) && !!typedArrayTags[objectToString.call(value)];
+	}
+	
+	module.exports = isTypedArray;
+
+
+/***/ },
+/* 286 */
 /*!****************************************!*\
   !*** ./src/constants/serviceDomain.js ***!
   \****************************************/
@@ -33063,7 +35992,7 @@
 	//# sourceMappingURL=serviceDomain.js.map
 
 /***/ },
-/* 214 */
+/* 287 */
 /*!***************************************!*\
   !*** ./src/utils/antiForgeryToken.js ***!
   \***************************************/
@@ -33082,7 +36011,7 @@
 	//# sourceMappingURL=antiForgeryToken.js.map
 
 /***/ },
-/* 215 */
+/* 288 */
 /*!*************************************************!*\
   !*** ./src/validators/validationMessageType.js ***!
   \*************************************************/
@@ -33099,7 +36028,21 @@
 	//# sourceMappingURL=validationMessageType.js.map
 
 /***/ },
-/* 216 */
+/* 289 */
+/*!***********************************!*\
+  !*** ./src/schemas/toolSchema.js ***!
+  \***********************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var normalizr_1 = __webpack_require__(/*! normalizr */ 213);
+	var toolSchema = new normalizr_1.Schema('tools', { idAttribute: 'id' });
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = toolSchema;
+	//# sourceMappingURL=toolSchema.js.map
+
+/***/ },
+/* 290 */
 /*!*******************************************************!*\
   !*** ./src/components/common/ItemListControlPanel.js ***!
   \*******************************************************/
@@ -33112,7 +36055,7 @@
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var React = __webpack_require__(/*! react */ 1);
-	var SearchInput_1 = __webpack_require__(/*! ./SearchInput */ 217);
+	var SearchInput_1 = __webpack_require__(/*! ./SearchInput */ 291);
 	var ItemListControlPanel = (function (_super) {
 	    __extends(ItemListControlPanel, _super);
 	    function ItemListControlPanel(props, context) {
@@ -33144,7 +36087,7 @@
 	//# sourceMappingURL=ItemListControlPanel.js.map
 
 /***/ },
-/* 217 */
+/* 291 */
 /*!**********************************************!*\
   !*** ./src/components/common/SearchInput.js ***!
   \**********************************************/
@@ -33176,7 +36119,7 @@
 	//# sourceMappingURL=SearchInput.js.map
 
 /***/ },
-/* 218 */
+/* 292 */
 /*!*******************************************************!*\
   !*** ./src/components/common/ItemsPerPageSelector.js ***!
   \*******************************************************/
@@ -33189,7 +36132,7 @@
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var React = __webpack_require__(/*! react */ 1);
-	var PagingParameter = __webpack_require__(/*! ../../constants/pagingParameter */ 219);
+	var PagingParameter = __webpack_require__(/*! ../../constants/pagingParameter */ 293);
 	var ItemsPerPageSelector = (function (_super) {
 	    __extends(ItemsPerPageSelector, _super);
 	    function ItemsPerPageSelector(props, context) {
@@ -33258,7 +36201,7 @@
 	//# sourceMappingURL=ItemsPerPageSelector.js.map
 
 /***/ },
-/* 219 */
+/* 293 */
 /*!******************************************!*\
   !*** ./src/constants/pagingParameter.js ***!
   \******************************************/
@@ -33271,7 +36214,7 @@
 	//# sourceMappingURL=pagingParameter.js.map
 
 /***/ },
-/* 220 */
+/* 294 */
 /*!*********************************************!*\
   !*** ./src/components/common/Pagination.js ***!
   \*********************************************/
@@ -33349,7 +36292,7 @@
 	//# sourceMappingURL=Pagination.js.map
 
 /***/ },
-/* 221 */
+/* 295 */
 /*!***************************************************!*\
   !*** ./src/components/common/DialogBackground.js ***!
   \***************************************************/
@@ -33388,7 +36331,7 @@
 	//# sourceMappingURL=DialogBackground.js.map
 
 /***/ },
-/* 222 */
+/* 296 */
 /*!**********************************************************!*\
   !*** ./src/components/common/ConfirmationDialogPanel.js ***!
   \**********************************************************/
@@ -33396,7 +36339,7 @@
 
 	"use strict";
 	var React = __webpack_require__(/*! react */ 1);
-	var DialogPanel_1 = __webpack_require__(/*! ./DialogPanel */ 223);
+	var DialogPanel_1 = __webpack_require__(/*! ./DialogPanel */ 297);
 	function ConfirmationDialogPanel(props) {
 	    return (React.createElement(DialogPanel_1.default, {onCloseClick: props.onCancelClick, title: props.title}, React.createElement("div", {className: "panel-body"}, props.children), React.createElement("div", {className: "panel-footer clearfix"}, React.createElement("div", {className: "btn-toolbar pull-right"}, React.createElement("button", {type: "button", className: "btn btn-danger", onClick: props.onConfirmClick}, "Да"), React.createElement("button", {type: "button", className: "btn btn-default", onClick: props.onCancelClick}, "Нет")))));
 	}
@@ -33405,7 +36348,7 @@
 	//# sourceMappingURL=ConfirmationDialogPanel.js.map
 
 /***/ },
-/* 223 */
+/* 297 */
 /*!**********************************************!*\
   !*** ./src/components/common/DialogPanel.js ***!
   \**********************************************/
@@ -33421,7 +36364,7 @@
 	//# sourceMappingURL=DialogPanel.js.map
 
 /***/ },
-/* 224 */
+/* 298 */
 /*!***********************************************!*\
   !*** ./src/components/common/PendingPanel.js ***!
   \***********************************************/
@@ -33437,7 +36380,7 @@
 	//# sourceMappingURL=PendingPanel.js.map
 
 /***/ },
-/* 225 */
+/* 299 */
 /*!***************************************************!*\
   !*** ./src/components/common/PendingAnimation.js ***!
   \***************************************************/
@@ -33453,7 +36396,7 @@
 	//# sourceMappingURL=PendingAnimation.js.map
 
 /***/ },
-/* 226 */
+/* 300 */
 /*!****************************************!*\
   !*** ./src/containers/ToolEditForm.js ***!
   \****************************************/
@@ -33461,7 +36404,7 @@
 
 	"use strict";
 	var react_redux_1 = __webpack_require__(/*! react-redux */ 166);
-	var ToolEditForm_1 = __webpack_require__(/*! ../components/ToolEditForm */ 227);
+	var ToolEditForm_1 = __webpack_require__(/*! ../components/ToolEditForm */ 301);
 	var ToolActionCreator = __webpack_require__(/*! ../actions/toolActionCreator */ 210);
 	var mapStateToToolEditFormProps = function (state, ownProps) {
 	    var toolEditFormState = state.toolEditForms.filter(function (toolEditForm) { return toolEditForm.id == ownProps.id; })[0];
@@ -33491,7 +36434,7 @@
 	//# sourceMappingURL=ToolEditForm.js.map
 
 /***/ },
-/* 227 */
+/* 301 */
 /*!****************************************!*\
   !*** ./src/components/ToolEditForm.js ***!
   \****************************************/
@@ -33499,9 +36442,9 @@
 
 	"use strict";
 	var React = __webpack_require__(/*! react */ 1);
-	var DialogBackground_1 = __webpack_require__(/*! ./common/DialogBackground */ 221);
-	var PendingPanel_1 = __webpack_require__(/*! ./common/PendingPanel */ 224);
-	var PendingAnimation_1 = __webpack_require__(/*! ./common/PendingAnimation */ 225);
+	var DialogBackground_1 = __webpack_require__(/*! ./common/DialogBackground */ 295);
+	var PendingPanel_1 = __webpack_require__(/*! ./common/PendingPanel */ 298);
+	var PendingAnimation_1 = __webpack_require__(/*! ./common/PendingAnimation */ 299);
 	function ToolEditForm(props) {
 	    return (React.createElement("div", {style: { width: '100%' }}, React.createElement(DialogBackground_1.default, {isShow: props.isSaving}, React.createElement(PendingPanel_1.default, {title: "Сохранение инструмента"}, React.createElement(PendingAnimation_1.default, null, React.createElement("h4", null, "Пожалуйста, подождите."), React.createElement("h4", null, "Идет сохранение.")))), React.createElement("form", {role: "form", onSubmit: props.handleSubmit}, React.createElement("div", {className: "form-group"}, React.createElement("label", {className: "control-label"}, "Наименование: "), React.createElement("input", {className: 'form-control', onChange: props.onNameChange, value: props.values.name})), React.createElement("div", {className: "form-group"}, React.createElement("label", {className: "control-label"}, "Цена: "), React.createElement("input", {className: 'form-control', onChange: props.onPriceChange, value: props.values.price})), React.createElement("div", {className: "form-group"}, React.createElement("div", {className: "btn-toolbar"}, React.createElement("button", {className: "btn btn-primary", type: "submit", disabled: false}, "Сохранить"))))));
 	}
@@ -33510,7 +36453,7 @@
 	//# sourceMappingURL=ToolEditForm.js.map
 
 /***/ },
-/* 228 */
+/* 302 */
 /*!*****************************************!*\
   !*** ./src/containers/part/PartList.js ***!
   \*****************************************/
@@ -33518,15 +36461,15 @@
 
 	"use strict";
 	var react_redux_1 = __webpack_require__(/*! react-redux */ 166);
-	var PartList_1 = __webpack_require__(/*! ../../components/part/PartList */ 229);
-	var PartActionCreator = __webpack_require__(/*! ../../actions/partActionCreator */ 232);
+	var PartList_1 = __webpack_require__(/*! ../../components/part/PartList */ 303);
+	var PartActionCreator = __webpack_require__(/*! ../../actions/partActionCreator */ 306);
 	var PanelActionCreator = __webpack_require__(/*! ../../actions/panelActionCreator */ 195);
 	var PanelType = __webpack_require__(/*! ../../components/panelType */ 197);
-	var PagingParameter = __webpack_require__(/*! ../../constants/pagingParameter */ 219);
+	var PagingParameter = __webpack_require__(/*! ../../constants/pagingParameter */ 293);
 	var mapStateToPartListProps = function (state, ownProps) {
 	    var partListState = state.partLists.filter(function (partList) { return partList.id === ownProps.id; })[0];
 	    return {
-	        parts: (partListState.parts.map(function (partId) { return state.entities.parts.filter(function (part) { return part.id === partId; })[0]; })),
+	        parts: partListState.parts.map(function (partId) { return state.entities.parts[partId]; }),
 	        selectedParts: partListState.selectedParts,
 	        params: partListState.params
 	    };
@@ -33558,7 +36501,7 @@
 	//# sourceMappingURL=PartList.js.map
 
 /***/ },
-/* 229 */
+/* 303 */
 /*!*****************************************!*\
   !*** ./src/components/part/PartList.js ***!
   \*****************************************/
@@ -33571,14 +36514,14 @@
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var React = __webpack_require__(/*! react */ 1);
-	var PartTable_1 = __webpack_require__(/*! ../../containers/part/PartTable */ 230);
-	var ItemListControlPanel_1 = __webpack_require__(/*! ../common/ItemListControlPanel */ 216);
-	var ItemsPerPageSelector_1 = __webpack_require__(/*! ../common/ItemsPerPageSelector */ 218);
-	var Pagination_1 = __webpack_require__(/*! ../common/Pagination */ 220);
-	var DialogBackground_1 = __webpack_require__(/*! ../common/DialogBackground */ 221);
-	var ConfirmationDialogPanel_1 = __webpack_require__(/*! ../common/ConfirmationDialogPanel */ 222);
-	var PendingPanel_1 = __webpack_require__(/*! ../common/PendingPanel */ 224);
-	var PendingAnimation_1 = __webpack_require__(/*! ../common/PendingAnimation */ 225);
+	var PartTable_1 = __webpack_require__(/*! ../../containers/part/PartTable */ 304);
+	var ItemListControlPanel_1 = __webpack_require__(/*! ../common/ItemListControlPanel */ 290);
+	var ItemsPerPageSelector_1 = __webpack_require__(/*! ../common/ItemsPerPageSelector */ 292);
+	var Pagination_1 = __webpack_require__(/*! ../common/Pagination */ 294);
+	var DialogBackground_1 = __webpack_require__(/*! ../common/DialogBackground */ 295);
+	var ConfirmationDialogPanel_1 = __webpack_require__(/*! ../common/ConfirmationDialogPanel */ 296);
+	var PendingPanel_1 = __webpack_require__(/*! ../common/PendingPanel */ 298);
+	var PendingAnimation_1 = __webpack_require__(/*! ../common/PendingAnimation */ 299);
 	var PartList = (function (_super) {
 	    __extends(PartList, _super);
 	    function PartList(props) {
@@ -33621,7 +36564,7 @@
 	//# sourceMappingURL=PartList.js.map
 
 /***/ },
-/* 230 */
+/* 304 */
 /*!******************************************!*\
   !*** ./src/containers/part/PartTable.js ***!
   \******************************************/
@@ -33629,9 +36572,9 @@
 
 	"use strict";
 	var react_redux_1 = __webpack_require__(/*! react-redux */ 166);
-	var PartTable_1 = __webpack_require__(/*! ../../components/part/PartTable */ 231);
+	var PartTable_1 = __webpack_require__(/*! ../../components/part/PartTable */ 305);
 	var PanelActionCreator = __webpack_require__(/*! ../../actions/panelActionCreator */ 195);
-	var PartActionCreator = __webpack_require__(/*! ../../actions/partActionCreator */ 232);
+	var PartActionCreator = __webpack_require__(/*! ../../actions/partActionCreator */ 306);
 	var PanelType = __webpack_require__(/*! ../../components/panelType */ 197);
 	var mapDispatchToPartTableProps = function (dispatch, ownProps) {
 	    return {
@@ -33673,7 +36616,7 @@
 	//# sourceMappingURL=PartTable.js.map
 
 /***/ },
-/* 231 */
+/* 305 */
 /*!******************************************!*\
   !*** ./src/components/part/PartTable.js ***!
   \******************************************/
@@ -33704,7 +36647,7 @@
 	//# sourceMappingURL=PartTable.js.map
 
 /***/ },
-/* 232 */
+/* 306 */
 /*!******************************************!*\
   !*** ./src/actions/partActionCreator.js ***!
   \******************************************/
@@ -33712,9 +36655,11 @@
 
 	"use strict";
 	var $ = __webpack_require__(/*! jquery */ 211);
-	var PartActionType = __webpack_require__(/*! ./partActionType */ 233);
-	var serviceDomain_1 = __webpack_require__(/*! ../constants/serviceDomain */ 213);
-	var AntiForgeryToken = __webpack_require__(/*! ../utils/antiForgeryToken */ 214);
+	var PartActionType = __webpack_require__(/*! ./partActionType */ 307);
+	var normalizr_1 = __webpack_require__(/*! normalizr */ 213);
+	var serviceDomain_1 = __webpack_require__(/*! ../constants/serviceDomain */ 286);
+	var AntiForgeryToken = __webpack_require__(/*! ../utils/antiForgeryToken */ 287);
+	var partSchema_1 = __webpack_require__(/*! ../schemas/partSchema */ 308);
 	function load(partListId, page, partPerPage, searchText) {
 	    return function (dispatch) {
 	        $.ajax({
@@ -33726,7 +36671,8 @@
 	            dataType: 'json',
 	            type: 'GET',
 	            success: function (partListModel) {
-	                dispatch(loadSucceed(partListId, partListModel.parts, partListModel.partAmount, page, partPerPage, searchText));
+	                var normalizedResponse = normalizr_1.normalize(partListModel.parts, normalizr_1.arrayOf(partSchema_1.default));
+	                dispatch(loadSucceed(partListId, normalizedResponse, partListModel.partAmount, page, partPerPage, searchText));
 	            },
 	            error: function (xhr, status, err) {
 	                dispatch(loadFailed(partListId, err));
@@ -33743,11 +36689,11 @@
 	    };
 	}
 	exports.loadPending = loadPending;
-	function loadSucceed(partListId, parts, totalAmount, page, partsPerPage, searchText) {
+	function loadSucceed(partListId, response, totalAmount, page, partsPerPage, searchText) {
 	    return {
 	        type: PartActionType.PART_LOAD_SUCCEED,
 	        partListId: partListId,
-	        parts: parts,
+	        response: response,
 	        totalAmount: totalAmount,
 	        partPage: page,
 	        partsPerPage: partsPerPage,
@@ -33903,7 +36849,7 @@
 	//# sourceMappingURL=partActionCreator.js.map
 
 /***/ },
-/* 233 */
+/* 307 */
 /*!***************************************!*\
   !*** ./src/actions/partActionType.js ***!
   \***************************************/
@@ -33937,7 +36883,21 @@
 	//# sourceMappingURL=partActionType.js.map
 
 /***/ },
-/* 234 */
+/* 308 */
+/*!***********************************!*\
+  !*** ./src/schemas/partSchema.js ***!
+  \***********************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var normalizr_1 = __webpack_require__(/*! normalizr */ 213);
+	var partSchema = new normalizr_1.Schema('parts', { idAttribute: 'id' });
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = partSchema;
+	//# sourceMappingURL=partSchema.js.map
+
+/***/ },
+/* 309 */
 /*!*********************************************!*\
   !*** ./src/containers/part/PartEditForm.js ***!
   \*********************************************/
@@ -33945,8 +36905,8 @@
 
 	"use strict";
 	var react_redux_1 = __webpack_require__(/*! react-redux */ 166);
-	var PartEditForm_1 = __webpack_require__(/*! ../../components/part/PartEditForm */ 235);
-	var PartActionCreator = __webpack_require__(/*! ../../actions/partActionCreator */ 232);
+	var PartEditForm_1 = __webpack_require__(/*! ../../components/part/PartEditForm */ 310);
+	var PartActionCreator = __webpack_require__(/*! ../../actions/partActionCreator */ 306);
 	var mapStateToPartEditFormProps = function (state, ownProps) {
 	    var partEditFormState = state.partEditForms.filter(function (partEditForm) { return partEditForm.id == ownProps.id; })[0];
 	    var values = partEditFormState.values;
@@ -33975,7 +36935,7 @@
 	//# sourceMappingURL=PartEditForm.js.map
 
 /***/ },
-/* 235 */
+/* 310 */
 /*!*********************************************!*\
   !*** ./src/components/part/PartEditForm.js ***!
   \*********************************************/
@@ -33983,9 +36943,9 @@
 
 	"use strict";
 	var React = __webpack_require__(/*! react */ 1);
-	var DialogBackground_1 = __webpack_require__(/*! ../common/DialogBackground */ 221);
-	var PendingPanel_1 = __webpack_require__(/*! ../common/PendingPanel */ 224);
-	var PendingAnimation_1 = __webpack_require__(/*! ../common/PendingAnimation */ 225);
+	var DialogBackground_1 = __webpack_require__(/*! ../common/DialogBackground */ 295);
+	var PendingPanel_1 = __webpack_require__(/*! ../common/PendingPanel */ 298);
+	var PendingAnimation_1 = __webpack_require__(/*! ../common/PendingAnimation */ 299);
 	function PartEditForm(props) {
 	    return (React.createElement("div", {style: { width: '100%' }}, React.createElement(DialogBackground_1.default, {isShow: props.isSaving}, React.createElement(PendingPanel_1.default, {title: "Сохранение инструмента"}, React.createElement(PendingAnimation_1.default, null, React.createElement("h4", null, "Пожалуйста, подождите."), React.createElement("h4", null, "Идет сохранение.")))), React.createElement("form", {role: "form", onSubmit: props.handleSubmit}, React.createElement("div", {className: "form-group"}, React.createElement("label", {className: "control-label"}, "Наименование: "), React.createElement("input", {className: 'form-control', onChange: props.onNameChange, value: props.values.name})), React.createElement("div", {className: "form-group"}, React.createElement("label", {className: "control-label"}, "Цена: "), React.createElement("input", {className: 'form-control', onChange: props.onPriceChange, value: props.values.price})), React.createElement("div", {className: "form-group"}, React.createElement("div", {className: "btn-toolbar"}, React.createElement("button", {className: "btn btn-primary", type: "submit", disabled: false}, "Сохранить"))))));
 	}
@@ -33994,7 +36954,7 @@
 	//# sourceMappingURL=PartEditForm.js.map
 
 /***/ },
-/* 236 */
+/* 311 */
 /*!*************************************************!*\
   !*** ./src/containers/techStep/TechStepList.js ***!
   \*************************************************/
@@ -34002,15 +36962,15 @@
 
 	"use strict";
 	var react_redux_1 = __webpack_require__(/*! react-redux */ 166);
-	var TechStepList_1 = __webpack_require__(/*! ../../components/techStep/TechStepList */ 237);
-	var TechStepActionCreator = __webpack_require__(/*! ../../actions/techStepActionCreator */ 240);
+	var TechStepList_1 = __webpack_require__(/*! ../../components/techStep/TechStepList */ 312);
+	var TechStepActionCreator = __webpack_require__(/*! ../../actions/techStepActionCreator */ 315);
 	var PanelActionCreator = __webpack_require__(/*! ../../actions/panelActionCreator */ 195);
 	var PanelType = __webpack_require__(/*! ../../components/panelType */ 197);
-	var PagingParameter = __webpack_require__(/*! ../../constants/pagingParameter */ 219);
+	var PagingParameter = __webpack_require__(/*! ../../constants/pagingParameter */ 293);
 	var mapStateToTechStepListProps = function (state, ownProps) {
 	    var techStepListState = state.techStepLists.filter(function (techStepList) { return techStepList.id === ownProps.id; })[0];
 	    return {
-	        techSteps: (techStepListState.techSteps.map(function (techStepId) { return state.entities.techSteps.filter(function (techStep) { return techStep.id === techStepId; })[0]; })),
+	        techSteps: techStepListState.techSteps.map(function (techStepId) { return state.entities.techSteps[techStepId]; }),
 	        selectedTechSteps: techStepListState.selectedTechSteps,
 	        params: techStepListState.params
 	    };
@@ -34024,7 +36984,7 @@
 	            dispatch(TechStepActionCreator.confirmDelete(ownProps.id));
 	        },
 	        onAddBtnClick: function () {
-	            dispatch(PanelActionCreator.open(PanelType.TOOL_EDIT_FORM, "Редактирование инструмента", { techStep: { id: 0, name: null, price: null } }));
+	            dispatch(PanelActionCreator.open(PanelType.TOOL_EDIT_FORM, "Редактирование технологического шага", { techStep: { id: 0, name: null } }));
 	        },
 	        load: function (page, itemsPerPage, searchText) {
 	            dispatch(TechStepActionCreator.load(ownProps.id, page, itemsPerPage, searchText));
@@ -34042,7 +37002,7 @@
 	//# sourceMappingURL=TechStepList.js.map
 
 /***/ },
-/* 237 */
+/* 312 */
 /*!*************************************************!*\
   !*** ./src/components/techStep/TechStepList.js ***!
   \*************************************************/
@@ -34055,14 +37015,14 @@
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var React = __webpack_require__(/*! react */ 1);
-	var TechStepTable_1 = __webpack_require__(/*! ../../containers/techStep/TechStepTable */ 238);
-	var ItemListControlPanel_1 = __webpack_require__(/*! ../common/ItemListControlPanel */ 216);
-	var ItemsPerPageSelector_1 = __webpack_require__(/*! ../common/ItemsPerPageSelector */ 218);
-	var Pagination_1 = __webpack_require__(/*! ../common/Pagination */ 220);
-	var DialogBackground_1 = __webpack_require__(/*! ../common/DialogBackground */ 221);
-	var ConfirmationDialogPanel_1 = __webpack_require__(/*! ../common/ConfirmationDialogPanel */ 222);
-	var PendingPanel_1 = __webpack_require__(/*! ../common/PendingPanel */ 224);
-	var PendingAnimation_1 = __webpack_require__(/*! ../common/PendingAnimation */ 225);
+	var TechStepTable_1 = __webpack_require__(/*! ../../containers/techStep/TechStepTable */ 313);
+	var ItemListControlPanel_1 = __webpack_require__(/*! ../common/ItemListControlPanel */ 290);
+	var ItemsPerPageSelector_1 = __webpack_require__(/*! ../common/ItemsPerPageSelector */ 292);
+	var Pagination_1 = __webpack_require__(/*! ../common/Pagination */ 294);
+	var DialogBackground_1 = __webpack_require__(/*! ../common/DialogBackground */ 295);
+	var ConfirmationDialogPanel_1 = __webpack_require__(/*! ../common/ConfirmationDialogPanel */ 296);
+	var PendingPanel_1 = __webpack_require__(/*! ../common/PendingPanel */ 298);
+	var PendingAnimation_1 = __webpack_require__(/*! ../common/PendingAnimation */ 299);
 	var TechStepList = (function (_super) {
 	    __extends(TechStepList, _super);
 	    function TechStepList(props) {
@@ -34105,7 +37065,7 @@
 	//# sourceMappingURL=TechStepList.js.map
 
 /***/ },
-/* 238 */
+/* 313 */
 /*!**************************************************!*\
   !*** ./src/containers/techStep/TechStepTable.js ***!
   \**************************************************/
@@ -34113,14 +37073,13 @@
 
 	"use strict";
 	var react_redux_1 = __webpack_require__(/*! react-redux */ 166);
-	var TechStepTable_1 = __webpack_require__(/*! ../../components/techStep/TechStepTable */ 239);
+	var TechStepTable_1 = __webpack_require__(/*! ../../components/techStep/TechStepTable */ 314);
 	var PanelActionCreator = __webpack_require__(/*! ../../actions/panelActionCreator */ 195);
-	var TechStepActionCreator = __webpack_require__(/*! ../../actions/techStepActionCreator */ 240);
-	var PanelType = __webpack_require__(/*! ../../components/panelType */ 197);
+	var TechStepActionCreator = __webpack_require__(/*! ../../actions/techStepActionCreator */ 315);
 	var mapDispatchToTechStepTableProps = function (dispatch, ownProps) {
 	    return {
 	        onTableRowDoubleClick: function (techStep) {
-	            dispatch(PanelActionCreator.open(PanelType.PART_EDIT_FORM, "Редактирование детали", { techStep: techStep }));
+	            dispatch(PanelActionCreator.openTechStepEditor(techStep.id));
 	        },
 	        onTechStepSelect: function (event) {
 	            var selectedTechSteps = ownProps.selectedTechSteps;
@@ -34157,7 +37116,7 @@
 	//# sourceMappingURL=TechStepTable.js.map
 
 /***/ },
-/* 239 */
+/* 314 */
 /*!**************************************************!*\
   !*** ./src/components/techStep/TechStepTable.js ***!
   \**************************************************/
@@ -34188,7 +37147,7 @@
 	//# sourceMappingURL=TechStepTable.js.map
 
 /***/ },
-/* 240 */
+/* 315 */
 /*!**********************************************!*\
   !*** ./src/actions/techStepActionCreator.js ***!
   \**********************************************/
@@ -34196,9 +37155,11 @@
 
 	"use strict";
 	var $ = __webpack_require__(/*! jquery */ 211);
-	var TechStepActionType = __webpack_require__(/*! ./techStepActionType */ 241);
-	var serviceDomain_1 = __webpack_require__(/*! ../constants/serviceDomain */ 213);
-	var AntiForgeryToken = __webpack_require__(/*! ../utils/antiForgeryToken */ 214);
+	var TechStepActionType = __webpack_require__(/*! ./techStepActionType */ 316);
+	var normalizr_1 = __webpack_require__(/*! normalizr */ 213);
+	var serviceDomain_1 = __webpack_require__(/*! ../constants/serviceDomain */ 286);
+	var AntiForgeryToken = __webpack_require__(/*! ../utils/antiForgeryToken */ 287);
+	var techStepSchema_1 = __webpack_require__(/*! ../schemas/techStepSchema */ 317);
 	function load(techStepListId, page, techStepPerPage, searchText) {
 	    return function (dispatch) {
 	        $.ajax({
@@ -34210,7 +37171,8 @@
 	            dataType: 'json',
 	            type: 'GET',
 	            success: function (techStepListModel) {
-	                dispatch(loadSucceed(techStepListId, techStepListModel.techSteps, techStepListModel.techStepAmount, page, techStepPerPage, searchText));
+	                var normalizedResponse = normalizr_1.normalize(techStepListModel.techSteps, normalizr_1.arrayOf(techStepSchema_1.default));
+	                dispatch(loadSucceed(techStepListId, normalizedResponse, techStepListModel.techStepAmount, page, techStepPerPage, searchText));
 	            },
 	            error: function (xhr, status, err) {
 	                dispatch(loadFailed(techStepListId, err));
@@ -34227,11 +37189,11 @@
 	    };
 	}
 	exports.loadPending = loadPending;
-	function loadSucceed(techStepListId, techSteps, totalAmount, page, techStepsPerPage, searchText) {
+	function loadSucceed(techStepListId, response, totalAmount, page, techStepsPerPage, searchText) {
 	    return {
 	        type: TechStepActionType.TECHSTEP_LOAD_SUCCEED,
 	        techStepListId: techStepListId,
-	        techSteps: techSteps,
+	        response: response,
 	        totalAmount: totalAmount,
 	        techStepPage: page,
 	        techStepsPerPage: techStepsPerPage,
@@ -34375,10 +37337,28 @@
 	    };
 	}
 	exports.saveFailed = saveFailed;
+	function changeToolUsage(techStepEditFormId, toolId, quantityValue) {
+	    return {
+	        type: TechStepActionType.TECHSTEP_TOOLUSAGE_CHANGE,
+	        techStepEditFormId: techStepEditFormId,
+	        toolId: toolId,
+	        quantityValue: quantityValue
+	    };
+	}
+	exports.changeToolUsage = changeToolUsage;
+	function changePartUsage(techStepEditFormId, partId, quantityValue) {
+	    return {
+	        type: TechStepActionType.TECHSTEP_PARTUSAGE_CHANGE,
+	        techStepEditFormId: techStepEditFormId,
+	        partId: partId,
+	        quantityValue: quantityValue
+	    };
+	}
+	exports.changePartUsage = changePartUsage;
 	//# sourceMappingURL=techStepActionCreator.js.map
 
 /***/ },
-/* 241 */
+/* 316 */
 /*!*******************************************!*\
   !*** ./src/actions/techStepActionType.js ***!
   \*******************************************/
@@ -34397,6 +37377,8 @@
 	exports.TECHSTEP_CONFIRM_DELETE = 'TECHSTEP_CONFIRM_DELETE';
 	exports.TECHSTEP_CANCEL_DELETE = 'TECHSTEP_CANCEL_DELETE';
 	exports.TECHSTEP_NAME_CHANGE = 'TECHSTEP_NAME_CHANGE';
+	exports.TECHSTEP_TOOLUSAGE_CHANGE = 'TECHSTEP_TOOLUSAGE_CHANGE';
+	exports.TECHSTEP_PARTUSAGE_CHANGE = 'TECHSTEP_PARTUSAGE_CHANGE';
 	exports.TECHSTEP_NAME_VALIDATION_PENDING = 'TECHSTEP_NAME_VALIDATION_PENDING';
 	exports.TECHSTEP_NAME_VALIDATION_SUCCEED = 'TECHSTEP_NAME_VALIDATION_SUCCEED';
 	exports.TECHSTEP_NAME_VALIDATION_FAILED = 'TECHSTEP_NAME_VALIDATION_FAILED';
@@ -34409,7 +37391,37 @@
 	//# sourceMappingURL=techStepActionType.js.map
 
 /***/ },
-/* 242 */
+/* 317 */
+/*!***************************************!*\
+  !*** ./src/schemas/techStepSchema.js ***!
+  \***************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var normalizr_1 = __webpack_require__(/*! normalizr */ 213);
+	var toolSchema_1 = __webpack_require__(/*! ./toolSchema */ 289);
+	var partSchema_1 = __webpack_require__(/*! ./partSchema */ 308);
+	var generateToolUsageId = function (toolUsage) { return toolUsage.toolId + "" + toolUsage.techStepId; };
+	var toolUsageSchema = new normalizr_1.Schema('toolUsages', { idAttribute: generateToolUsageId });
+	toolUsageSchema.define({
+	    tool: toolSchema_1.default
+	});
+	var generatePartUsageId = function (partUsage) { return partUsage.partId + "" + partUsage.techStepId; };
+	var partUsageSchema = new normalizr_1.Schema('partUsages', { idAttribute: generatePartUsageId });
+	partUsageSchema.define({
+	    part: partSchema_1.default
+	});
+	var techStepSchema = new normalizr_1.Schema('techSteps', { idAttribute: 'id' });
+	techStepSchema.define({
+	    toolUsages: normalizr_1.arrayOf(toolUsageSchema),
+	    partUsages: normalizr_1.arrayOf(partUsageSchema)
+	});
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = techStepSchema;
+	//# sourceMappingURL=techStepSchema.js.map
+
+/***/ },
+/* 318 */
 /*!*****************************************************!*\
   !*** ./src/containers/techStep/TechStepEditForm.js ***!
   \*****************************************************/
@@ -34417,14 +37429,16 @@
 
 	"use strict";
 	var react_redux_1 = __webpack_require__(/*! react-redux */ 166);
-	var TechStepEditForm_1 = __webpack_require__(/*! ../../components/techStep/TechStepEditForm */ 243);
-	var TechStepActionCreator = __webpack_require__(/*! ../../actions/techStepActionCreator */ 240);
+	var TechStepEditForm_1 = __webpack_require__(/*! ../../components/techStep/TechStepEditForm */ 319);
+	var TechStepActionCreator = __webpack_require__(/*! ../../actions/techStepActionCreator */ 315);
 	var mapStateToTechStepEditFormProps = function (state, ownProps) {
 	    var techStepEditFormState = state.techStepEditForms.filter(function (techStepEditForm) { return techStepEditForm.id == ownProps.id; })[0];
 	    var values = techStepEditFormState.values;
 	    return {
 	        techStepId: techStepEditFormState.techStepId,
 	        values: values,
+	        toolUsages: techStepEditFormState.toolUsages,
+	        partUsages: techStepEditFormState.partUsages,
 	        isSaving: techStepEditFormState.isSaving
 	    };
 	};
@@ -34436,6 +37450,12 @@
 	        },
 	        onNameChange: function (event) {
 	            dispatch(TechStepActionCreator.techStepNameChange(ownProps.id, event.target.value));
+	        },
+	        onToolUsageChange: function (toolId, quantityValue) {
+	            dispatch(TechStepActionCreator.changeToolUsage(ownProps.id, toolId, quantityValue));
+	        },
+	        onPartUsageChange: function (partId, quantityValue) {
+	            dispatch(TechStepActionCreator.changePartUsage(ownProps.id, partId, quantityValue));
 	        }
 	    };
 	};
@@ -34444,26 +37464,68 @@
 	//# sourceMappingURL=TechStepEditForm.js.map
 
 /***/ },
-/* 243 */
+/* 319 */
 /*!*****************************************************!*\
   !*** ./src/components/techStep/TechStepEditForm.js ***!
   \*****************************************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
 	var React = __webpack_require__(/*! react */ 1);
-	var DialogBackground_1 = __webpack_require__(/*! ../common/DialogBackground */ 221);
-	var PendingPanel_1 = __webpack_require__(/*! ../common/PendingPanel */ 224);
-	var PendingAnimation_1 = __webpack_require__(/*! ../common/PendingAnimation */ 225);
+	var ReactDOM = __webpack_require__(/*! react-dom */ 32);
+	var DialogBackground_1 = __webpack_require__(/*! ../common/DialogBackground */ 295);
+	var PendingPanel_1 = __webpack_require__(/*! ../common/PendingPanel */ 298);
+	var PendingAnimation_1 = __webpack_require__(/*! ../common/PendingAnimation */ 299);
+	var ToolList_1 = __webpack_require__(/*! ../../containers/ToolList */ 205);
+	var ContentEditable = (function (_super) {
+	    __extends(ContentEditable, _super);
+	    function ContentEditable() {
+	        var _this = this;
+	        _super.apply(this, arguments);
+	        this.onContentChange = function () {
+	            _this.props.onChange(ReactDOM.findDOMNode(_this).innerHTML);
+	        };
+	    }
+	    ContentEditable.prototype.render = function () {
+	        return (React.createElement("div", {className: "edit", contentEditable: true, dangerouslySetInnerHTML: { __html: this.props.html }, onInput: this.onContentChange, style: { height: 100 + '%', width: 100 + '%', margin: 0, padding: 0, textAlign: 'center' }}));
+	    };
+	    return ContentEditable;
+	}(React.Component));
+	;
+	var ToolUsageRow = function (props) {
+	    return (React.createElement("tr", null, React.createElement("td", {style: { width: 25 + '%' }}, props.toolUsage.tool.id), React.createElement("td", {style: { width: 50 + '%' }}, props.toolUsage.tool.name), React.createElement("td", {style: { width: 25 + '%', position: "relative", padding: 0 + 'px', verticalAlign: 'middle' }}, React.createElement(ContentEditable, {html: String(props.toolUsage.quantity), onChange: props.onToolUsageChange}))));
+	};
+	var PartUsageRow = function (props) {
+	    return (React.createElement("tr", null, React.createElement("td", {style: { width: 25 + '%' }}, props.partUsage.part.id), React.createElement("td", {style: { width: 50 + '%' }}, props.partUsage.part.name), React.createElement("td", {style: { width: 25 + '%', position: "relative", padding: 0 + 'px', verticalAlign: 'middle' }}, React.createElement(ContentEditable, {html: String(props.partUsage.quantity), onChange: props.onPartUsageChange}))));
+	};
+	var ToolChooser = function (props) {
+	    return (React.createElement("div", null, props.isToolListOpen ?
+	        React.createElement("div", null, React.createElement("div", {className: "form-group"}, React.createElement("button", {onClick: props.openCloseToolList, className: "btn btn-default"}, React.createElement("span", {className: "glyphicon glyphicon-minus"})), React.createElement("button", {onClick: function () { }, className: "btn btn-default pull-right"}, React.createElement("span", {className: "glyphicon glyphicon-plus"}), React.createElement("span", null, " Добавить выбранные"))), React.createElement(ToolList_1.default, {id: props.toolListId}))
+	        :
+	            React.createElement("div", {className: "form-group"}, React.createElement("button", {onClick: props.openCloseToolList, className: "btn btn-default"}, React.createElement("span", {className: "glyphicon glyphicon-plus"})))));
+	};
+	var ToolUsagesEditor = function (props) {
+	    var toolUsageRows = props.toolUsages.map(function (toolUsage) { return React.createElement(ToolUsageRow, {key: toolUsage.toolId, toolUsage: toolUsage, onToolUsageChange: function (value) { props.onToolUsageChange(toolUsage.toolId, value); }}); });
+	    return (React.createElement("div", null, React.createElement("div", {style: { marginBottom: 10 + 'px' }}, React.createElement("table", {className: "table table-bordered", style: { marginBottom: 1 + 'px' }}, React.createElement("thead", null, React.createElement("tr", null, React.createElement("th", {style: { width: 25 + '%' }}, "ID"), React.createElement("th", {style: { width: 50 + '%' }}, "Наименование"), React.createElement("th", {style: { width: 25 + '%' }}, "Применяемость"))), React.createElement("tbody", null, toolUsageRows)))));
+	};
+	var PartUsagesEditor = function (props) {
+	    var partUsageRows = props.partUsages.map(function (partUsage) { return React.createElement(PartUsageRow, {key: partUsage.partId, partUsage: partUsage, onPartUsageChange: function (value) { props.onPartUsageChange(partUsage.partId, value); }}); });
+	    return (React.createElement("div", null, React.createElement("div", {style: { marginBottom: 10 + 'px' }}, React.createElement("table", {className: "table table-bordered", style: { marginBottom: 1 + 'px' }}, React.createElement("thead", null, React.createElement("tr", null, React.createElement("th", {style: { width: 25 + '%' }}, "ID"), React.createElement("th", {style: { width: 50 + '%' }}, "Наименование"), React.createElement("th", {style: { width: 25 + '%' }}, "Применяемость"))), React.createElement("tbody", null, partUsageRows)))));
+	};
 	function TechStepEditForm(props) {
-	    return (React.createElement("div", {style: { width: '100%' }}, React.createElement(DialogBackground_1.default, {isShow: props.isSaving}, React.createElement(PendingPanel_1.default, {title: "Сохранение инструмента"}, React.createElement(PendingAnimation_1.default, null, React.createElement("h4", null, "Пожалуйста, подождите."), React.createElement("h4", null, "Идет сохранение.")))), React.createElement("form", {role: "form", onSubmit: props.handleSubmit}, React.createElement("div", {className: "form-group"}, React.createElement("label", {className: "control-label"}, "Наименование: "), React.createElement("input", {className: 'form-control', onChange: props.onNameChange, value: props.values.name})), React.createElement("div", {className: "form-group"}, React.createElement("div", {className: "btn-toolbar"}, React.createElement("button", {className: "btn btn-primary", type: "submit", disabled: false}, "Сохранить"))))));
+	    return (React.createElement("div", {style: { width: '100%' }}, React.createElement(DialogBackground_1.default, {isShow: props.isSaving}, React.createElement(PendingPanel_1.default, {title: "Сохранение инструмента"}, React.createElement(PendingAnimation_1.default, null, React.createElement("h4", null, "Пожалуйста, подождите."), React.createElement("h4", null, "Идет сохранение.")))), React.createElement("form", {role: "form", onSubmit: props.handleSubmit}, React.createElement("div", {className: "form-group"}, React.createElement("label", {className: "control-label"}, "Описание: "), React.createElement("textarea", {className: "form-control", rows: "5", cols: "50", onChange: function () { }, value: props.values.description})), React.createElement("div", {className: "form-group"}, React.createElement("label", {className: "control-label"}, "Инструменты: "), React.createElement(ToolUsagesEditor, {toolUsages: props.toolUsages, onToolUsageChange: props.onToolUsageChange})), React.createElement("div", {className: "form-group"}, React.createElement("label", {className: "control-label"}, "Детали: "), React.createElement(PartUsagesEditor, {partUsages: props.partUsages, onPartUsageChange: props.onPartUsageChange})), React.createElement("div", {className: "form-group"}, React.createElement("div", {className: "btn-toolbar"}, React.createElement("button", {className: "btn btn-primary", type: "submit", disabled: false}, "Сохранить"))))));
 	}
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.default = TechStepEditForm;
 	//# sourceMappingURL=TechStepEditForm.js.map
 
 /***/ },
-/* 244 */
+/* 320 */
 /*!***********************************************************!*\
   !*** ./src/containers/techOperation/TechOperationList.js ***!
   \***********************************************************/
@@ -34471,15 +37533,15 @@
 
 	"use strict";
 	var react_redux_1 = __webpack_require__(/*! react-redux */ 166);
-	var TechOperationList_1 = __webpack_require__(/*! ../../components/techOperation/TechOperationList */ 245);
-	var TechOperationActionCreator = __webpack_require__(/*! ../../actions/techOperationActionCreator */ 248);
+	var TechOperationList_1 = __webpack_require__(/*! ../../components/techOperation/TechOperationList */ 321);
+	var TechOperationActionCreator = __webpack_require__(/*! ../../actions/techOperationActionCreator */ 324);
 	var PanelActionCreator = __webpack_require__(/*! ../../actions/panelActionCreator */ 195);
 	var PanelType = __webpack_require__(/*! ../../components/panelType */ 197);
-	var PagingParameter = __webpack_require__(/*! ../../constants/pagingParameter */ 219);
+	var PagingParameter = __webpack_require__(/*! ../../constants/pagingParameter */ 293);
 	var mapStateToTechOperationListProps = function (state, ownProps) {
 	    var techOperationListState = state.techOperationLists.filter(function (techOperationList) { return techOperationList.id === ownProps.id; })[0];
 	    return {
-	        techOperations: (techOperationListState.techOperations.map(function (techOperationId) { return state.entities.techOperations.filter(function (techOperation) { return techOperation.id === techOperationId; })[0]; })),
+	        techOperations: techOperationListState.techOperations.map(function (techOperationId) { return state.entities.techOperations[techOperationId]; }),
 	        selectedTechOperations: techOperationListState.selectedTechOperations,
 	        params: techOperationListState.params
 	    };
@@ -34511,7 +37573,7 @@
 	//# sourceMappingURL=TechOperationList.js.map
 
 /***/ },
-/* 245 */
+/* 321 */
 /*!***********************************************************!*\
   !*** ./src/components/techOperation/TechOperationList.js ***!
   \***********************************************************/
@@ -34524,14 +37586,14 @@
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var React = __webpack_require__(/*! react */ 1);
-	var TechOperationTable_1 = __webpack_require__(/*! ../../containers/techOperation/TechOperationTable */ 246);
-	var ItemListControlPanel_1 = __webpack_require__(/*! ../common/ItemListControlPanel */ 216);
-	var ItemsPerPageSelector_1 = __webpack_require__(/*! ../common/ItemsPerPageSelector */ 218);
-	var Pagination_1 = __webpack_require__(/*! ../common/Pagination */ 220);
-	var DialogBackground_1 = __webpack_require__(/*! ../common/DialogBackground */ 221);
-	var ConfirmationDialogPanel_1 = __webpack_require__(/*! ../common/ConfirmationDialogPanel */ 222);
-	var PendingPanel_1 = __webpack_require__(/*! ../common/PendingPanel */ 224);
-	var PendingAnimation_1 = __webpack_require__(/*! ../common/PendingAnimation */ 225);
+	var TechOperationTable_1 = __webpack_require__(/*! ../../containers/techOperation/TechOperationTable */ 322);
+	var ItemListControlPanel_1 = __webpack_require__(/*! ../common/ItemListControlPanel */ 290);
+	var ItemsPerPageSelector_1 = __webpack_require__(/*! ../common/ItemsPerPageSelector */ 292);
+	var Pagination_1 = __webpack_require__(/*! ../common/Pagination */ 294);
+	var DialogBackground_1 = __webpack_require__(/*! ../common/DialogBackground */ 295);
+	var ConfirmationDialogPanel_1 = __webpack_require__(/*! ../common/ConfirmationDialogPanel */ 296);
+	var PendingPanel_1 = __webpack_require__(/*! ../common/PendingPanel */ 298);
+	var PendingAnimation_1 = __webpack_require__(/*! ../common/PendingAnimation */ 299);
 	var TechOperationList = (function (_super) {
 	    __extends(TechOperationList, _super);
 	    function TechOperationList(props) {
@@ -34574,7 +37636,7 @@
 	//# sourceMappingURL=TechOperationList.js.map
 
 /***/ },
-/* 246 */
+/* 322 */
 /*!************************************************************!*\
   !*** ./src/containers/techOperation/TechOperationTable.js ***!
   \************************************************************/
@@ -34582,9 +37644,9 @@
 
 	"use strict";
 	var react_redux_1 = __webpack_require__(/*! react-redux */ 166);
-	var TechOperationTable_1 = __webpack_require__(/*! ../../components/techOperation/TechOperationTable */ 247);
+	var TechOperationTable_1 = __webpack_require__(/*! ../../components/techOperation/TechOperationTable */ 323);
 	var PanelActionCreator = __webpack_require__(/*! ../../actions/panelActionCreator */ 195);
-	var TechOperationActionCreator = __webpack_require__(/*! ../../actions/techOperationActionCreator */ 248);
+	var TechOperationActionCreator = __webpack_require__(/*! ../../actions/techOperationActionCreator */ 324);
 	var PanelType = __webpack_require__(/*! ../../components/panelType */ 197);
 	var mapDispatchToTechOperationTableProps = function (dispatch, ownProps) {
 	    return {
@@ -34626,7 +37688,7 @@
 	//# sourceMappingURL=TechOperationTable.js.map
 
 /***/ },
-/* 247 */
+/* 323 */
 /*!************************************************************!*\
   !*** ./src/components/techOperation/TechOperationTable.js ***!
   \************************************************************/
@@ -34657,7 +37719,7 @@
 	//# sourceMappingURL=TechOperationTable.js.map
 
 /***/ },
-/* 248 */
+/* 324 */
 /*!***************************************************!*\
   !*** ./src/actions/techOperationActionCreator.js ***!
   \***************************************************/
@@ -34665,9 +37727,11 @@
 
 	"use strict";
 	var $ = __webpack_require__(/*! jquery */ 211);
-	var TechOperationActionType = __webpack_require__(/*! ./techOperationActionType */ 249);
-	var serviceDomain_1 = __webpack_require__(/*! ../constants/serviceDomain */ 213);
-	var AntiForgeryToken = __webpack_require__(/*! ../utils/antiForgeryToken */ 214);
+	var TechOperationActionType = __webpack_require__(/*! ./techOperationActionType */ 325);
+	var normalizr_1 = __webpack_require__(/*! normalizr */ 213);
+	var serviceDomain_1 = __webpack_require__(/*! ../constants/serviceDomain */ 286);
+	var AntiForgeryToken = __webpack_require__(/*! ../utils/antiForgeryToken */ 287);
+	var techOperationSchema_1 = __webpack_require__(/*! ../schemas/techOperationSchema */ 326);
 	function load(techOperationListId, page, techOperationPerPage, searchText) {
 	    return function (dispatch) {
 	        $.ajax({
@@ -34679,7 +37743,8 @@
 	            dataType: 'json',
 	            type: 'GET',
 	            success: function (techOperationListModel) {
-	                dispatch(loadSucceed(techOperationListId, techOperationListModel.techOperations, techOperationListModel.techOperationAmount, page, techOperationPerPage, searchText));
+	                var normalizedResponse = normalizr_1.normalize(techOperationListModel.techOperations, normalizr_1.arrayOf(techOperationSchema_1.default));
+	                dispatch(loadSucceed(techOperationListId, normalizedResponse, techOperationListModel.techOperationAmount, page, techOperationPerPage, searchText));
 	            },
 	            error: function (xhr, status, err) {
 	                dispatch(loadFailed(techOperationListId, err));
@@ -34696,11 +37761,11 @@
 	    };
 	}
 	exports.loadPending = loadPending;
-	function loadSucceed(techOperationListId, techOperations, totalAmount, page, techOperationsPerPage, searchText) {
+	function loadSucceed(techOperationListId, response, totalAmount, page, techOperationsPerPage, searchText) {
 	    return {
 	        type: TechOperationActionType.TECHOPERATION_LOAD_SUCCEED,
 	        techOperationListId: techOperationListId,
-	        techOperations: techOperations,
+	        response: response,
 	        totalAmount: totalAmount,
 	        techOperationPage: page,
 	        techOperationsPerPage: techOperationsPerPage,
@@ -34847,7 +37912,7 @@
 	//# sourceMappingURL=techOperationActionCreator.js.map
 
 /***/ },
-/* 249 */
+/* 325 */
 /*!************************************************!*\
   !*** ./src/actions/techOperationActionType.js ***!
   \************************************************/
@@ -34878,7 +37943,25 @@
 	//# sourceMappingURL=techOperationActionType.js.map
 
 /***/ },
-/* 250 */
+/* 326 */
+/*!********************************************!*\
+  !*** ./src/schemas/techOperationSchema.js ***!
+  \********************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var normalizr_1 = __webpack_require__(/*! normalizr */ 213);
+	var techStepSchema_1 = __webpack_require__(/*! ./techStepSchema */ 317);
+	var techOperationSchema = new normalizr_1.Schema('techOperations', { idAttribute: 'id' });
+	techOperationSchema.define({
+	    techSteps: normalizr_1.arrayOf(techStepSchema_1.default)
+	});
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = techOperationSchema;
+	//# sourceMappingURL=techOperationSchema.js.map
+
+/***/ },
+/* 327 */
 /*!***************************************************************!*\
   !*** ./src/containers/techOperation/TechOperationEditForm.js ***!
   \***************************************************************/
@@ -34886,8 +37969,8 @@
 
 	"use strict";
 	var react_redux_1 = __webpack_require__(/*! react-redux */ 166);
-	var TechOperationEditForm_1 = __webpack_require__(/*! ../../components/techOperation/TechOperationEditForm */ 251);
-	var TechOperationActionCreator = __webpack_require__(/*! ../../actions/techOperationActionCreator */ 248);
+	var TechOperationEditForm_1 = __webpack_require__(/*! ../../components/techOperation/TechOperationEditForm */ 328);
+	var TechOperationActionCreator = __webpack_require__(/*! ../../actions/techOperationActionCreator */ 324);
 	var mapStateToTechOperationEditFormProps = function (state, ownProps) {
 	    var techOperationEditFormState = state.techOperationEditForms.filter(function (techOperationEditForm) { return techOperationEditForm.id == ownProps.id; })[0];
 	    var values = techOperationEditFormState.values;
@@ -34913,7 +37996,7 @@
 	//# sourceMappingURL=TechOperationEditForm.js.map
 
 /***/ },
-/* 251 */
+/* 328 */
 /*!***************************************************************!*\
   !*** ./src/components/techOperation/TechOperationEditForm.js ***!
   \***************************************************************/
@@ -34921,9 +38004,9 @@
 
 	"use strict";
 	var React = __webpack_require__(/*! react */ 1);
-	var DialogBackground_1 = __webpack_require__(/*! ../common/DialogBackground */ 221);
-	var PendingPanel_1 = __webpack_require__(/*! ../common/PendingPanel */ 224);
-	var PendingAnimation_1 = __webpack_require__(/*! ../common/PendingAnimation */ 225);
+	var DialogBackground_1 = __webpack_require__(/*! ../common/DialogBackground */ 295);
+	var PendingPanel_1 = __webpack_require__(/*! ../common/PendingPanel */ 298);
+	var PendingAnimation_1 = __webpack_require__(/*! ../common/PendingAnimation */ 299);
 	function TechOperationEditForm(props) {
 	    return (React.createElement("div", {style: { width: '100%' }}, React.createElement(DialogBackground_1.default, {isShow: props.isSaving}, React.createElement(PendingPanel_1.default, {title: "Сохранение инструмента"}, React.createElement(PendingAnimation_1.default, null, React.createElement("h4", null, "Пожалуйста, подождите."), React.createElement("h4", null, "Идет сохранение.")))), React.createElement("form", {role: "form", onSubmit: props.handleSubmit}, React.createElement("div", {className: "form-group"}, React.createElement("label", {className: "control-label"}, "Наименование: "), React.createElement("input", {className: 'form-control', onChange: props.onNameChange, value: props.values.name})), React.createElement("div", {className: "form-group"}, React.createElement("div", {className: "btn-toolbar"}, React.createElement("button", {className: "btn btn-primary", type: "submit", disabled: false}, "Сохранить"))))));
 	}
@@ -34932,7 +38015,7 @@
 	//# sourceMappingURL=TechOperationEditForm.js.map
 
 /***/ },
-/* 252 */
+/* 329 */
 /*!*******************************************************!*\
   !*** ./src/containers/techProcess/TechProcessList.js ***!
   \*******************************************************/
@@ -34940,15 +38023,15 @@
 
 	"use strict";
 	var react_redux_1 = __webpack_require__(/*! react-redux */ 166);
-	var TechProcessList_1 = __webpack_require__(/*! ../../components/techProcess/TechProcessList */ 253);
-	var TechProcessActionCreator = __webpack_require__(/*! ../../actions/techProcessActionCreator */ 256);
+	var TechProcessList_1 = __webpack_require__(/*! ../../components/techProcess/TechProcessList */ 330);
+	var TechProcessActionCreator = __webpack_require__(/*! ../../actions/techProcessActionCreator */ 333);
 	var PanelActionCreator = __webpack_require__(/*! ../../actions/panelActionCreator */ 195);
 	var PanelType = __webpack_require__(/*! ../../components/panelType */ 197);
-	var PagingParameter = __webpack_require__(/*! ../../constants/pagingParameter */ 219);
+	var PagingParameter = __webpack_require__(/*! ../../constants/pagingParameter */ 293);
 	var mapStateToTechProcessListProps = function (state, ownProps) {
 	    var techProcessListState = state.techProcessLists.filter(function (techProcessList) { return techProcessList.id === ownProps.id; })[0];
 	    return {
-	        techProcesses: (techProcessListState.techProcesses.map(function (techProcessId) { return state.entities.techProcesses.filter(function (techProcess) { return techProcess.id === techProcessId; })[0]; })),
+	        techProcesses: techProcessListState.techProcesses.map(function (techProcessId) { return state.entities.techProcesses[techProcessId]; }),
 	        selectedTechProcesses: techProcessListState.selectedTechProcesses,
 	        params: techProcessListState.params
 	    };
@@ -34980,7 +38063,7 @@
 	//# sourceMappingURL=TechProcessList.js.map
 
 /***/ },
-/* 253 */
+/* 330 */
 /*!*******************************************************!*\
   !*** ./src/components/techProcess/TechProcessList.js ***!
   \*******************************************************/
@@ -34993,14 +38076,14 @@
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var React = __webpack_require__(/*! react */ 1);
-	var TechProcessTable_1 = __webpack_require__(/*! ../../containers/techProcess/TechProcessTable */ 254);
-	var ItemListControlPanel_1 = __webpack_require__(/*! ../common/ItemListControlPanel */ 216);
-	var ItemsPerPageSelector_1 = __webpack_require__(/*! ../common/ItemsPerPageSelector */ 218);
-	var Pagination_1 = __webpack_require__(/*! ../common/Pagination */ 220);
-	var DialogBackground_1 = __webpack_require__(/*! ../common/DialogBackground */ 221);
-	var ConfirmationDialogPanel_1 = __webpack_require__(/*! ../common/ConfirmationDialogPanel */ 222);
-	var PendingPanel_1 = __webpack_require__(/*! ../common/PendingPanel */ 224);
-	var PendingAnimation_1 = __webpack_require__(/*! ../common/PendingAnimation */ 225);
+	var TechProcessTable_1 = __webpack_require__(/*! ../../containers/techProcess/TechProcessTable */ 331);
+	var ItemListControlPanel_1 = __webpack_require__(/*! ../common/ItemListControlPanel */ 290);
+	var ItemsPerPageSelector_1 = __webpack_require__(/*! ../common/ItemsPerPageSelector */ 292);
+	var Pagination_1 = __webpack_require__(/*! ../common/Pagination */ 294);
+	var DialogBackground_1 = __webpack_require__(/*! ../common/DialogBackground */ 295);
+	var ConfirmationDialogPanel_1 = __webpack_require__(/*! ../common/ConfirmationDialogPanel */ 296);
+	var PendingPanel_1 = __webpack_require__(/*! ../common/PendingPanel */ 298);
+	var PendingAnimation_1 = __webpack_require__(/*! ../common/PendingAnimation */ 299);
 	var TechProcessList = (function (_super) {
 	    __extends(TechProcessList, _super);
 	    function TechProcessList(props) {
@@ -35043,7 +38126,7 @@
 	//# sourceMappingURL=TechProcessList.js.map
 
 /***/ },
-/* 254 */
+/* 331 */
 /*!********************************************************!*\
   !*** ./src/containers/techProcess/TechProcessTable.js ***!
   \********************************************************/
@@ -35051,9 +38134,9 @@
 
 	"use strict";
 	var react_redux_1 = __webpack_require__(/*! react-redux */ 166);
-	var TechProcessTable_1 = __webpack_require__(/*! ../../components/techProcess/TechProcessTable */ 255);
+	var TechProcessTable_1 = __webpack_require__(/*! ../../components/techProcess/TechProcessTable */ 332);
 	var PanelActionCreator = __webpack_require__(/*! ../../actions/panelActionCreator */ 195);
-	var TechProcessActionCreator = __webpack_require__(/*! ../../actions/techProcessActionCreator */ 256);
+	var TechProcessActionCreator = __webpack_require__(/*! ../../actions/techProcessActionCreator */ 333);
 	var PanelType = __webpack_require__(/*! ../../components/panelType */ 197);
 	var mapDispatchToTechProcessTableProps = function (dispatch, ownProps) {
 	    return {
@@ -35095,7 +38178,7 @@
 	//# sourceMappingURL=TechProcessTable.js.map
 
 /***/ },
-/* 255 */
+/* 332 */
 /*!********************************************************!*\
   !*** ./src/components/techProcess/TechProcessTable.js ***!
   \********************************************************/
@@ -35126,7 +38209,7 @@
 	//# sourceMappingURL=TechProcessTable.js.map
 
 /***/ },
-/* 256 */
+/* 333 */
 /*!*************************************************!*\
   !*** ./src/actions/techProcessActionCreator.js ***!
   \*************************************************/
@@ -35134,9 +38217,11 @@
 
 	"use strict";
 	var $ = __webpack_require__(/*! jquery */ 211);
-	var TechProcessActionType = __webpack_require__(/*! ./techProcessActionType */ 257);
-	var serviceDomain_1 = __webpack_require__(/*! ../constants/serviceDomain */ 213);
-	var AntiForgeryToken = __webpack_require__(/*! ../utils/antiForgeryToken */ 214);
+	var TechProcessActionType = __webpack_require__(/*! ./techProcessActionType */ 334);
+	var normalizr_1 = __webpack_require__(/*! normalizr */ 213);
+	var serviceDomain_1 = __webpack_require__(/*! ../constants/serviceDomain */ 286);
+	var AntiForgeryToken = __webpack_require__(/*! ../utils/antiForgeryToken */ 287);
+	var techProcessSchema_1 = __webpack_require__(/*! ../schemas/techProcessSchema */ 335);
 	function load(techProcessListId, page, techProcessPerPage, searchText) {
 	    return function (dispatch) {
 	        $.ajax({
@@ -35148,7 +38233,8 @@
 	            dataType: 'json',
 	            type: 'GET',
 	            success: function (techProcessListModel) {
-	                dispatch(loadSucceed(techProcessListId, techProcessListModel.techProcesses, techProcessListModel.techProcessAmount, page, techProcessPerPage, searchText));
+	                var normalizedResponse = normalizr_1.normalize(techProcessListModel.techProcesses, normalizr_1.arrayOf(techProcessSchema_1.default));
+	                dispatch(loadSucceed(techProcessListId, normalizedResponse, techProcessListModel.techProcessAmount, page, techProcessPerPage, searchText));
 	            },
 	            error: function (xhr, status, err) {
 	                dispatch(loadFailed(techProcessListId, err));
@@ -35165,11 +38251,11 @@
 	    };
 	}
 	exports.loadPending = loadPending;
-	function loadSucceed(techProcessListId, techProcesses, totalAmount, page, techProcessesPerPage, searchText) {
+	function loadSucceed(techProcessListId, response, totalAmount, page, techProcessesPerPage, searchText) {
 	    return {
 	        type: TechProcessActionType.TECHPROCESS_LOAD_SUCCEED,
 	        techProcessListId: techProcessListId,
-	        techProcesses: techProcesses,
+	        response: response,
 	        totalAmount: totalAmount,
 	        techProcessPage: page,
 	        techProcessesPerPage: techProcessesPerPage,
@@ -35316,7 +38402,7 @@
 	//# sourceMappingURL=techProcessActionCreator.js.map
 
 /***/ },
-/* 257 */
+/* 334 */
 /*!**********************************************!*\
   !*** ./src/actions/techProcessActionType.js ***!
   \**********************************************/
@@ -35347,7 +38433,25 @@
 	//# sourceMappingURL=techProcessActionType.js.map
 
 /***/ },
-/* 258 */
+/* 335 */
+/*!******************************************!*\
+  !*** ./src/schemas/techProcessSchema.js ***!
+  \******************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var normalizr_1 = __webpack_require__(/*! normalizr */ 213);
+	var techOperationSchema_1 = __webpack_require__(/*! ./techOperationSchema */ 326);
+	var techProcessSchema = new normalizr_1.Schema('techProcesses', { idAttribute: 'id' });
+	techProcessSchema.define({
+	    techOperations: normalizr_1.arrayOf(techOperationSchema_1.default)
+	});
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = techProcessSchema;
+	//# sourceMappingURL=techProcessSchema.js.map
+
+/***/ },
+/* 336 */
 /*!***********************************************************!*\
   !*** ./src/containers/techProcess/TechProcessEditForm.js ***!
   \***********************************************************/
@@ -35355,8 +38459,8 @@
 
 	"use strict";
 	var react_redux_1 = __webpack_require__(/*! react-redux */ 166);
-	var TechProcessEditForm_1 = __webpack_require__(/*! ../../components/techProcess/TechProcessEditForm */ 259);
-	var TechProcessActionCreator = __webpack_require__(/*! ../../actions/techProcessActionCreator */ 256);
+	var TechProcessEditForm_1 = __webpack_require__(/*! ../../components/techProcess/TechProcessEditForm */ 337);
+	var TechProcessActionCreator = __webpack_require__(/*! ../../actions/techProcessActionCreator */ 333);
 	var mapStateToTechProcessEditFormProps = function (state, ownProps) {
 	    var techProcessEditFormState = state.techProcessEditForms.filter(function (techProcessEditForm) { return techProcessEditForm.id == ownProps.id; })[0];
 	    var values = techProcessEditFormState.values;
@@ -35382,7 +38486,7 @@
 	//# sourceMappingURL=TechProcessEditForm.js.map
 
 /***/ },
-/* 259 */
+/* 337 */
 /*!***********************************************************!*\
   !*** ./src/components/techProcess/TechProcessEditForm.js ***!
   \***********************************************************/
@@ -35390,9 +38494,9 @@
 
 	"use strict";
 	var React = __webpack_require__(/*! react */ 1);
-	var DialogBackground_1 = __webpack_require__(/*! ../common/DialogBackground */ 221);
-	var PendingPanel_1 = __webpack_require__(/*! ../common/PendingPanel */ 224);
-	var PendingAnimation_1 = __webpack_require__(/*! ../common/PendingAnimation */ 225);
+	var DialogBackground_1 = __webpack_require__(/*! ../common/DialogBackground */ 295);
+	var PendingPanel_1 = __webpack_require__(/*! ../common/PendingPanel */ 298);
+	var PendingAnimation_1 = __webpack_require__(/*! ../common/PendingAnimation */ 299);
 	function TechProcessEditForm(props) {
 	    return (React.createElement("div", {style: { width: '100%' }}, React.createElement(DialogBackground_1.default, {isShow: props.isSaving}, React.createElement(PendingPanel_1.default, {title: "Сохранение инструмента"}, React.createElement(PendingAnimation_1.default, null, React.createElement("h4", null, "Пожалуйста, подождите."), React.createElement("h4", null, "Идет сохранение.")))), React.createElement("form", {role: "form", onSubmit: props.handleSubmit}, React.createElement("div", {className: "form-group"}, React.createElement("label", {className: "control-label"}, "Наименование: "), React.createElement("input", {className: 'form-control', onChange: props.onNameChange, value: props.values.name})), React.createElement("div", {className: "form-group"}, React.createElement("div", {className: "btn-toolbar"}, React.createElement("button", {className: "btn btn-primary", type: "submit", disabled: false}, "Сохранить"))))));
 	}
@@ -35401,7 +38505,7 @@
 	//# sourceMappingURL=TechProcessEditForm.js.map
 
 /***/ },
-/* 260 */
+/* 338 */
 /*!*************************************!*\
   !*** ./src/store/configureStore.js ***!
   \*************************************/
@@ -35409,8 +38513,8 @@
 
 	"use strict";
 	var redux_1 = __webpack_require__(/*! redux */ 173);
-	var main_1 = __webpack_require__(/*! ../reducers/main */ 261);
-	var redux_thunk_1 = __webpack_require__(/*! redux-thunk */ 276);
+	var main_1 = __webpack_require__(/*! ../reducers/main */ 339);
+	var redux_thunk_1 = __webpack_require__(/*! redux-thunk */ 353);
 	var logger = function (store) { return function (next) { return function (action) {
 	    console.group(action.type);
 	    console.info('dispatching', action);
@@ -35428,7 +38532,7 @@
 	//# sourceMappingURL=configureStore.js.map
 
 /***/ },
-/* 261 */
+/* 339 */
 /*!******************************!*\
   !*** ./src/reducers/main.js ***!
   \******************************/
@@ -35436,18 +38540,18 @@
 
 	"use strict";
 	var redux_1 = __webpack_require__(/*! redux */ 173);
-	var panels_1 = __webpack_require__(/*! ./panels */ 262);
-	var entities_1 = __webpack_require__(/*! ./entities */ 263);
-	var toolLists_1 = __webpack_require__(/*! ./toolLists */ 266);
-	var toolEditForms_1 = __webpack_require__(/*! ./toolEditForms */ 267);
-	var partLists_1 = __webpack_require__(/*! ./partLists */ 268);
-	var partEditForms_1 = __webpack_require__(/*! ./partEditForms */ 269);
-	var techStepLists_1 = __webpack_require__(/*! ./techStepLists */ 270);
-	var techStepEditForms_1 = __webpack_require__(/*! ./techStepEditForms */ 271);
-	var techOperationLists_1 = __webpack_require__(/*! ./techOperationLists */ 272);
-	var techOperationEditForms_1 = __webpack_require__(/*! ./techOperationEditForms */ 273);
-	var techProcessLists_1 = __webpack_require__(/*! ./techProcessLists */ 274);
-	var techProcessEditForms_1 = __webpack_require__(/*! ./techProcessEditForms */ 275);
+	var panels_1 = __webpack_require__(/*! ./panels */ 340);
+	var entities_1 = __webpack_require__(/*! ./entities */ 341);
+	var toolLists_1 = __webpack_require__(/*! ./toolLists */ 343);
+	var toolEditForms_1 = __webpack_require__(/*! ./toolEditForms */ 344);
+	var partLists_1 = __webpack_require__(/*! ./partLists */ 345);
+	var partEditForms_1 = __webpack_require__(/*! ./partEditForms */ 346);
+	var techStepLists_1 = __webpack_require__(/*! ./techStepLists */ 347);
+	var techStepEditForms_1 = __webpack_require__(/*! ./techStepEditForms */ 348);
+	var techOperationLists_1 = __webpack_require__(/*! ./techOperationLists */ 349);
+	var techOperationEditForms_1 = __webpack_require__(/*! ./techOperationEditForms */ 350);
+	var techProcessLists_1 = __webpack_require__(/*! ./techProcessLists */ 351);
+	var techProcessEditForms_1 = __webpack_require__(/*! ./techProcessEditForms */ 352);
 	var main = redux_1.combineReducers({
 	    panels: panels_1.default,
 	    entities: entities_1.default,
@@ -35467,7 +38571,7 @@
 	//# sourceMappingURL=main.js.map
 
 /***/ },
-/* 262 */
+/* 340 */
 /*!********************************!*\
   !*** ./src/reducers/panels.js ***!
   \********************************/
@@ -35503,7 +38607,7 @@
 	//# sourceMappingURL=panels.js.map
 
 /***/ },
-/* 263 */
+/* 341 */
 /*!**********************************!*\
   !*** ./src/reducers/entities.js ***!
   \**********************************/
@@ -35511,40 +38615,53 @@
 
 	"use strict";
 	var ToolActionType = __webpack_require__(/*! ../actions/toolActionType */ 212);
-	var PartActionType = __webpack_require__(/*! ../actions/partActionType */ 233);
-	var TechStepActionType = __webpack_require__(/*! ../actions/techStepActionType */ 241);
-	var TechOperationActionType = __webpack_require__(/*! ../actions/techOperationActionType */ 249);
-	var TechProcessActionType = __webpack_require__(/*! ../actions/techProcessActionType */ 257);
-	var _ = __webpack_require__(/*! lodash */ 264);
+	var PartActionType = __webpack_require__(/*! ../actions/partActionType */ 307);
+	var TechStepActionType = __webpack_require__(/*! ../actions/techStepActionType */ 316);
+	var TechOperationActionType = __webpack_require__(/*! ../actions/techOperationActionType */ 325);
+	var TechProcessActionType = __webpack_require__(/*! ../actions/techProcessActionType */ 334);
+	var _ = __webpack_require__(/*! lodash */ 342);
 	var initialState = {
-	    tools: [],
-	    parts: [],
-	    techSteps: [],
-	    techOperations: [],
-	    techProcesses: []
+	    tools: {},
+	    parts: {},
+	    toolUsages: {},
+	    partUsages: {},
+	    techSteps: {},
+	    techOperations: {},
+	    techProcesses: {}
 	};
 	function entities(state, action) {
 	    if (state === void 0) { state = initialState; }
 	    switch (action.type) {
 	        case ToolActionType.TOOL_LOAD_SUCCEED:
-	            return _.assign({}, state, { tools: _.unionBy(action.tools, state.tools, 'id') });
+	            return _.assign({}, state, { tools: _.assign({}, state.tools, action.response.entities.tools) });
 	        case PartActionType.PART_LOAD_SUCCEED:
-	            return _.assign({}, state, { parts: _.unionBy(action.parts, state.parts, 'id') });
+	            return _.assign({}, state, { parts: _.assign({}, state.parts, action.response.entities.parts) });
 	        case TechStepActionType.TECHSTEP_LOAD_SUCCEED:
 	            return _.assign({}, state, {
-	                techSteps: _.unionBy(action.techSteps, state.techSteps, 'id'),
-	                tools: _.unionBy(action.tools, state.tools, 'id'),
-	                parts: _.unionBy(action.parts, state.parts, 'id')
+	                techSteps: _.assign({}, state.techSteps, action.response.entities.techSteps),
+	                toolUsages: _.assign({}, state.toolUsages, action.response.entities.toolUsages),
+	                partUsages: _.assign({}, state.partUsages, action.response.entities.partUsages),
+	                tools: _.assign({}, state.tools, action.response.entities.tools),
+	                parts: _.assign({}, state.parts, action.response.entities.parts)
 	            });
 	        case TechOperationActionType.TECHOPERATION_LOAD_SUCCEED:
 	            return _.assign({}, state, {
-	                techOperations: _.unionBy(action.techOperations, state.techOperations, 'id'),
-	                techSteps: _.unionBy(action.techStep, state.techSteps, 'id')
+	                techOperations: _.assign({}, state.techOperations, action.response.entities.techOperations),
+	                techSteps: _.assign({}, state.techSteps, action.response.entities.techSteps),
+	                toolUsages: _.assign({}, state.toolUsages, action.response.entities.toolUsages),
+	                partUsages: _.assign({}, state.partUsages, action.response.entities.partUsages),
+	                tools: _.assign({}, state.tools, action.response.entities.tools),
+	                parts: _.assign({}, state.parts, action.response.entities.parts)
 	            });
 	        case TechProcessActionType.TECHPROCESS_LOAD_SUCCEED:
 	            return _.assign({}, state, {
-	                techProcesses: _.unionBy(action.techProcesses, state.techProcesses, 'id'),
-	                techOperations: _.unionBy(action.techOperations, state.techOperations, 'id')
+	                techProcesses: _.assign({}, state.techProcesses, action.response.entities.techProcesses),
+	                techOperations: _.assign({}, state.techOperations, action.response.entities.techOperations),
+	                techSteps: _.assign({}, state.techSteps, action.response.entities.techSteps),
+	                toolUsages: _.assign({}, state.toolUsages, action.response.entities.toolUsages),
+	                partUsages: _.assign({}, state.partUsages, action.response.entities.partUsages),
+	                tools: _.assign({}, state.tools, action.response.entities.tools),
+	                parts: _.assign({}, state.parts, action.response.entities.parts)
 	            });
 	        default:
 	            return state;
@@ -35556,7 +38673,7 @@
 	//# sourceMappingURL=entities.js.map
 
 /***/ },
-/* 264 */
+/* 342 */
 /*!****************************!*\
   !*** ./~/lodash/lodash.js ***!
   \****************************/
@@ -51590,29 +54707,10 @@
 	  }
 	}.call(this));
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./../webpack/buildin/module.js */ 265)(module), (function() { return this; }())))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./../webpack/buildin/module.js */ 243)(module), (function() { return this; }())))
 
 /***/ },
-/* 265 */
-/*!***********************************!*\
-  !*** (webpack)/buildin/module.js ***!
-  \***********************************/
-/***/ function(module, exports) {
-
-	module.exports = function(module) {
-		if(!module.webpackPolyfill) {
-			module.deprecate = function() {};
-			module.paths = [];
-			// module.parent = undefined by default
-			module.children = [];
-			module.webpackPolyfill = 1;
-		}
-		return module;
-	}
-
-
-/***/ },
-/* 266 */
+/* 343 */
 /*!***********************************!*\
   !*** ./src/reducers/toolLists.js ***!
   \***********************************/
@@ -51622,7 +54720,7 @@
 	var ToolActionType = __webpack_require__(/*! ../actions/toolActionType */ 212);
 	var PanelActionType = __webpack_require__(/*! ../actions/panelActionType */ 196);
 	var PanelType = __webpack_require__(/*! ../components/panelType */ 197);
-	var _ = __webpack_require__(/*! lodash */ 264);
+	var _ = __webpack_require__(/*! lodash */ 342);
 	var initialState = [];
 	function toolLists(state, action) {
 	    if (state === void 0) { state = initialState; }
@@ -51730,7 +54828,7 @@
 	                            searchText: action.searchText
 	                        })
 	                    }, {
-	                        tools: action.tools.map(function (tool) { return tool.id; }),
+	                        tools: action.response.result,
 	                        selectedTools: []
 	                    });
 	                }
@@ -51763,7 +54861,7 @@
 	//# sourceMappingURL=toolLists.js.map
 
 /***/ },
-/* 267 */
+/* 344 */
 /*!***************************************!*\
   !*** ./src/reducers/toolEditForms.js ***!
   \***************************************/
@@ -51781,7 +54879,6 @@
 	            if (action.panelType !== PanelType.TOOL_EDIT_FORM) {
 	                return state;
 	            }
-	            console.log(action);
 	            return state.concat([
 	                {
 	                    id: action.contentId,
@@ -51857,17 +54954,17 @@
 	//# sourceMappingURL=toolEditForms.js.map
 
 /***/ },
-/* 268 */
+/* 345 */
 /*!***********************************!*\
   !*** ./src/reducers/partLists.js ***!
   \***********************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var PartActionType = __webpack_require__(/*! ../actions/partActionType */ 233);
+	var PartActionType = __webpack_require__(/*! ../actions/partActionType */ 307);
 	var PanelActionType = __webpack_require__(/*! ../actions/panelActionType */ 196);
 	var PanelType = __webpack_require__(/*! ../components/panelType */ 197);
-	var _ = __webpack_require__(/*! lodash */ 264);
+	var _ = __webpack_require__(/*! lodash */ 342);
 	var initialState = [];
 	function partLists(state, action) {
 	    if (state === void 0) { state = initialState; }
@@ -51975,7 +55072,7 @@
 	                            searchText: action.searchText
 	                        })
 	                    }, {
-	                        parts: action.parts.map(function (part) { return part.id; }),
+	                        parts: action.response.result,
 	                        selectedParts: []
 	                    });
 	                }
@@ -52008,14 +55105,14 @@
 	//# sourceMappingURL=partLists.js.map
 
 /***/ },
-/* 269 */
+/* 346 */
 /*!***************************************!*\
   !*** ./src/reducers/partEditForms.js ***!
   \***************************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var PartActionType = __webpack_require__(/*! ../actions/partActionType */ 233);
+	var PartActionType = __webpack_require__(/*! ../actions/partActionType */ 307);
 	var PanelActionType = __webpack_require__(/*! ../actions/panelActionType */ 196);
 	var PanelType = __webpack_require__(/*! ../components/panelType */ 197);
 	var initialState = [];
@@ -52026,7 +55123,6 @@
 	            if (action.panelType !== PanelType.PART_EDIT_FORM) {
 	                return state;
 	            }
-	            console.log(action);
 	            return state.concat([
 	                {
 	                    id: action.contentId,
@@ -52102,17 +55198,17 @@
 	//# sourceMappingURL=partEditForms.js.map
 
 /***/ },
-/* 270 */
+/* 347 */
 /*!***************************************!*\
   !*** ./src/reducers/techStepLists.js ***!
   \***************************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var TechStepActionType = __webpack_require__(/*! ../actions/techStepActionType */ 241);
+	var TechStepActionType = __webpack_require__(/*! ../actions/techStepActionType */ 316);
 	var PanelActionType = __webpack_require__(/*! ../actions/panelActionType */ 196);
 	var PanelType = __webpack_require__(/*! ../components/panelType */ 197);
-	var _ = __webpack_require__(/*! lodash */ 264);
+	var _ = __webpack_require__(/*! lodash */ 342);
 	var initialState = [];
 	function techStepLists(state, action) {
 	    if (state === void 0) { state = initialState; }
@@ -52220,7 +55316,7 @@
 	                            searchText: action.searchText
 	                        })
 	                    }, {
-	                        techSteps: action.techSteps.map(function (techStep) { return techStep.id; }),
+	                        techSteps: action.response.result,
 	                        selectedTechSteps: []
 	                    });
 	                }
@@ -52253,14 +55349,14 @@
 	//# sourceMappingURL=techStepLists.js.map
 
 /***/ },
-/* 271 */
+/* 348 */
 /*!*******************************************!*\
   !*** ./src/reducers/techStepEditForms.js ***!
   \*******************************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var TechStepActionType = __webpack_require__(/*! ../actions/techStepActionType */ 241);
+	var TechStepActionType = __webpack_require__(/*! ../actions/techStepActionType */ 316);
 	var PanelActionType = __webpack_require__(/*! ../actions/panelActionType */ 196);
 	var PanelType = __webpack_require__(/*! ../components/panelType */ 197);
 	var initialState = [];
@@ -52271,14 +55367,15 @@
 	            if (action.panelType !== PanelType.TECHSTEP_EDIT_FORM) {
 	                return state;
 	            }
-	            console.log(action);
 	            return state.concat([
 	                {
 	                    id: action.contentId,
 	                    techStepId: action.params.techStep.id,
 	                    values: {
-	                        name: action.params.techStep.name
+	                        description: action.params.techStep.description
 	                    },
+	                    toolUsages: action.params.toolUsages,
+	                    partUsages: action.params.partUsages,
 	                    isSaving: false
 	                }
 	            ]);
@@ -52287,6 +55384,38 @@
 	                if (techStepEditForm.id === action.techStepEditFormId) {
 	                    return _.assign({}, techStepEditForm, {
 	                        values: _.assign({}, techStepEditForm.values, { name: action.name }),
+	                    });
+	                }
+	                else {
+	                    return techStepEditForm;
+	                }
+	            });
+	        case TechStepActionType.TECHSTEP_TOOLUSAGE_CHANGE:
+	            return state.map(function (techStepEditForm) {
+	                if (techStepEditForm.id === action.techStepEditFormId) {
+	                    return _.assign({}, techStepEditForm, {
+	                        toolUsages: techStepEditForm.toolUsages.map(function (toolUsage) {
+	                            if (toolUsage.toolId == action.toolId)
+	                                return _.assign({}, toolUsage, { quantity: action.quantityValue });
+	                            else
+	                                return toolUsage;
+	                        }),
+	                    });
+	                }
+	                else {
+	                    return techStepEditForm;
+	                }
+	            });
+	        case TechStepActionType.TECHSTEP_PARTUSAGE_CHANGE:
+	            return state.map(function (techStepEditForm) {
+	                if (techStepEditForm.id === action.techStepEditFormId) {
+	                    return _.assign({}, techStepEditForm, {
+	                        partUsages: techStepEditForm.partUsages.map(function (partUsage) {
+	                            if (partUsage.partId == action.partId)
+	                                return _.assign({}, partUsage, { quantity: action.quantityValue });
+	                            else
+	                                return partUsage;
+	                        }),
 	                    });
 	                }
 	                else {
@@ -52335,17 +55464,17 @@
 	//# sourceMappingURL=techStepEditForms.js.map
 
 /***/ },
-/* 272 */
+/* 349 */
 /*!********************************************!*\
   !*** ./src/reducers/techOperationLists.js ***!
   \********************************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var TechOperationActionType = __webpack_require__(/*! ../actions/techOperationActionType */ 249);
+	var TechOperationActionType = __webpack_require__(/*! ../actions/techOperationActionType */ 325);
 	var PanelActionType = __webpack_require__(/*! ../actions/panelActionType */ 196);
 	var PanelType = __webpack_require__(/*! ../components/panelType */ 197);
-	var _ = __webpack_require__(/*! lodash */ 264);
+	var _ = __webpack_require__(/*! lodash */ 342);
 	var initialState = [];
 	function techOperationLists(state, action) {
 	    if (state === void 0) { state = initialState; }
@@ -52453,7 +55582,7 @@
 	                            searchText: action.searchText
 	                        })
 	                    }, {
-	                        techOperations: action.techOperations.map(function (techOperation) { return techOperation.id; }),
+	                        techOperations: action.response.result,
 	                        selectedTechOperations: []
 	                    });
 	                }
@@ -52486,14 +55615,14 @@
 	//# sourceMappingURL=techOperationLists.js.map
 
 /***/ },
-/* 273 */
+/* 350 */
 /*!************************************************!*\
   !*** ./src/reducers/techOperationEditForms.js ***!
   \************************************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var TechOperationActionType = __webpack_require__(/*! ../actions/techOperationActionType */ 249);
+	var TechOperationActionType = __webpack_require__(/*! ../actions/techOperationActionType */ 325);
 	var PanelActionType = __webpack_require__(/*! ../actions/panelActionType */ 196);
 	var PanelType = __webpack_require__(/*! ../components/panelType */ 197);
 	var initialState = [];
@@ -52504,7 +55633,6 @@
 	            if (action.panelType !== PanelType.TECHOPERATION_EDIT_FORM) {
 	                return state;
 	            }
-	            console.log(action);
 	            return state.concat([
 	                {
 	                    id: action.contentId,
@@ -52568,17 +55696,17 @@
 	//# sourceMappingURL=techOperationEditForms.js.map
 
 /***/ },
-/* 274 */
+/* 351 */
 /*!******************************************!*\
   !*** ./src/reducers/techProcessLists.js ***!
   \******************************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var TechProcessActionType = __webpack_require__(/*! ../actions/techProcessActionType */ 257);
+	var TechProcessActionType = __webpack_require__(/*! ../actions/techProcessActionType */ 334);
 	var PanelActionType = __webpack_require__(/*! ../actions/panelActionType */ 196);
 	var PanelType = __webpack_require__(/*! ../components/panelType */ 197);
-	var _ = __webpack_require__(/*! lodash */ 264);
+	var _ = __webpack_require__(/*! lodash */ 342);
 	var initialState = [];
 	function techProcessLists(state, action) {
 	    if (state === void 0) { state = initialState; }
@@ -52686,7 +55814,7 @@
 	                            searchText: action.searchText
 	                        })
 	                    }, {
-	                        techProcesses: action.techProcesses.map(function (techProcess) { return techProcess.id; }),
+	                        techProcesses: action.response.result,
 	                        selectedTechProcesses: []
 	                    });
 	                }
@@ -52719,14 +55847,14 @@
 	//# sourceMappingURL=techProcessLists.js.map
 
 /***/ },
-/* 275 */
+/* 352 */
 /*!**********************************************!*\
   !*** ./src/reducers/techProcessEditForms.js ***!
   \**********************************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var TechProcessActionType = __webpack_require__(/*! ../actions/techProcessActionType */ 257);
+	var TechProcessActionType = __webpack_require__(/*! ../actions/techProcessActionType */ 334);
 	var PanelActionType = __webpack_require__(/*! ../actions/panelActionType */ 196);
 	var PanelType = __webpack_require__(/*! ../components/panelType */ 197);
 	var initialState = [];
@@ -52737,7 +55865,6 @@
 	            if (action.panelType !== PanelType.TECHPROCESS_EDIT_FORM) {
 	                return state;
 	            }
-	            console.log(action);
 	            return state.concat([
 	                {
 	                    id: action.contentId,
@@ -52801,7 +55928,7 @@
 	//# sourceMappingURL=techProcessEditForms.js.map
 
 /***/ },
-/* 276 */
+/* 353 */
 /*!************************************!*\
   !*** ./~/redux-thunk/lib/index.js ***!
   \************************************/
