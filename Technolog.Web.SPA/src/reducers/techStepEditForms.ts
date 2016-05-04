@@ -21,7 +21,11 @@ export default function techStepEditForms(state = initialState, action) {
                     },
                     toolUsages: action.params.toolUsages,
                     partUsages: action.params.partUsages,
-                    isSaving: false
+                    isSaving: false,
+                    toolListId: null,
+                    isToolListOpen: false,
+                    partListId: null,
+                    isPartListOpen: false
                 }
             ];
         case TechStepActionType.TECHSTEP_NAME_CHANGE:
@@ -112,6 +116,64 @@ export default function techStepEditForms(state = initialState, action) {
                         techStepEditForm,
                         {
                             isSaving: false,
+                        }
+                    );
+                } else {
+                    return techStepEditForm;
+                }
+            });
+        case TechStepActionType.TECHSTEP_OPEN_TOOL_LIST:
+            return state.map(techStepEditForm => {
+                if (techStepEditForm.id === action.techStepEditFormId) {
+                    return _.assign(
+                        {},
+                        techStepEditForm,
+                        {
+                            isToolListOpen: true,
+                            toolListId: action.toolListId
+                        }
+                    );
+                } else {
+                    return techStepEditForm;
+                }
+            });
+        case TechStepActionType.TECHSTEP_CLOSE_TOOL_LIST:
+            return state.map(techStepEditForm => {
+                if (techStepEditForm.id === action.techStepEditFormId) {
+                    return _.assign(
+                        {},
+                        techStepEditForm,
+                        {
+                            isToolListOpen: false
+                        }
+                    );
+                } else {
+                    return techStepEditForm;
+                }
+            });
+        case TechStepActionType.TECHSTEP_OPEN_PART_LIST:
+            return state.map(techStepEditForm => {
+                if (techStepEditForm.id === action.techStepEditFormId) {
+                    return _.assign(
+                        {},
+                        techStepEditForm,
+                        {
+                            isPartListOpen: true,
+                            partListId: action.partListId
+                        }
+                    );
+                } else {
+                    return techStepEditForm;
+                }
+            });
+        case TechStepActionType.TECHSTEP_CLOSE_PART_LIST:
+            return state.map(techStepEditForm => {
+                if (techStepEditForm.id === action.techStepEditFormId) {
+                    return _.assign(
+                        {},
+                        techStepEditForm,
+                        {
+                            isPartListOpen: false
                         }
                     );
                 } else {

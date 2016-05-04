@@ -4,6 +4,7 @@ import { Schema, arrayOf, normalize } from 'normalizr';
 import serviceDomain from '../constants/serviceDomain';
 import * as AntiForgeryToken from '../utils/antiForgeryToken';
 import techStepSchema from '../schemas/techStepSchema';
+import * as IdGenerator from '../utils/idGenerator';
 
 export function load(techStepListId: number, page: number, techStepPerPage: number, searchText: string) {
     return dispatch => {
@@ -209,5 +210,35 @@ export function changePartUsage(techStepEditFormId, partId, quantityValue) {
         techStepEditFormId: techStepEditFormId,
         partId: partId,
         quantityValue: quantityValue
-    }
+    };
+}
+
+export function openToolList(techStepEditFormId) {
+    return {
+        type: TechStepActionType.TECHSTEP_OPEN_TOOL_LIST,
+        techStepEditFormId: techStepEditFormId,
+        toolListId: IdGenerator.getToolListId()
+    };
+}
+
+export function closeToolList(techStepEditFormId) {
+    return {
+        type: TechStepActionType.TECHSTEP_CLOSE_TOOL_LIST,
+        techStepEditFormId: techStepEditFormId
+    };
+}
+
+export function openPartList(techStepEditFormId) {
+    return {
+        type: TechStepActionType.TECHSTEP_OPEN_PART_LIST,
+        techStepEditFormId: techStepEditFormId,
+        partListId: IdGenerator.getPartListId()
+    };
+}
+
+export function closePartList(techStepEditFormId) {
+    return {
+        type: TechStepActionType.TECHSTEP_CLOSE_PART_LIST,
+        techStepEditFormId: techStepEditFormId
+    };
 }

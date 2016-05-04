@@ -7,7 +7,7 @@ import * as PagingParameter from '../../constants/pagingParameter';
 
 const mapStateToPartListProps = (state, ownProps) => {
     const partListState = state.partLists.filter(partList => partList.id === ownProps.id)[0];
-
+    console.log(ownProps);
     return {
         parts: partListState.parts.map(partId => state.entities.parts[partId]),
         selectedParts: partListState.selectedParts,

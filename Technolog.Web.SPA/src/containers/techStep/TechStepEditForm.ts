@@ -6,15 +6,17 @@ import * as _ from 'lodash';
 const mapStateToTechStepEditFormProps = (state, ownProps) => {
     const techStepEditFormState = state.techStepEditForms.filter(
         techStepEditForm => techStepEditForm.id == ownProps.id)[0];
-
-    const values = techStepEditFormState.values;
-
+    
     return {
         techStepId: techStepEditFormState.techStepId,
-        values: values,
+        values: techStepEditFormState.values,
         toolUsages: techStepEditFormState.toolUsages,
         partUsages: techStepEditFormState.partUsages,
-        isSaving: techStepEditFormState.isSaving
+        isSaving: techStepEditFormState.isSaving,
+        toolListId: techStepEditFormState.toolListId,
+        isToolListOpen: techStepEditFormState.isToolListOpen,
+        partListId: techStepEditFormState.partListId,
+        isPartListOpen: techStepEditFormState.isPartListOpen
     };
 };
 
@@ -32,6 +34,18 @@ const mapDispatchToTechStepEditFormProps = (dispatch, ownProps) => {
         },
         onPartUsageChange: (partId, quantityValue) => {
             dispatch(TechStepActionCreator.changePartUsage(ownProps.id, partId, quantityValue));
+        },
+        onOpenToolList: () => {
+            dispatch(TechStepActionCreator.openToolList(ownProps.id));
+        },
+        onCloseToolList: () => {
+            dispatch(TechStepActionCreator.closeToolList(ownProps.id));
+        },
+        onOpenPartList: () => {
+            dispatch(TechStepActionCreator.openPartList(ownProps.id));
+        },
+        onClosePartList: () => {
+            dispatch(TechStepActionCreator.closePartList(ownProps.id));
         }
     };
 };

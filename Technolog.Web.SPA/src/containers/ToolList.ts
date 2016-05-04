@@ -7,7 +7,7 @@ import * as PagingParameter from '../constants/pagingParameter';
 
 const mapStateToToolListProps = (state, ownProps) => {
     const toolListState = state.toolLists.filter(toolList => toolList.id === ownProps.id)[0];
-
+    
     return {
         tools: toolListState.tools.map(toolId => state.entities.tools[toolId]),
         selectedTools: toolListState.selectedTools,

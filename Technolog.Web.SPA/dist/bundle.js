@@ -36468,6 +36468,7 @@
 	var PagingParameter = __webpack_require__(/*! ../../constants/pagingParameter */ 293);
 	var mapStateToPartListProps = function (state, ownProps) {
 	    var partListState = state.partLists.filter(function (partList) { return partList.id === ownProps.id; })[0];
+	    console.log(ownProps);
 	    return {
 	        parts: partListState.parts.map(function (partId) { return state.entities.parts[partId]; }),
 	        selectedParts: partListState.selectedParts,
@@ -37160,6 +37161,7 @@
 	var serviceDomain_1 = __webpack_require__(/*! ../constants/serviceDomain */ 286);
 	var AntiForgeryToken = __webpack_require__(/*! ../utils/antiForgeryToken */ 287);
 	var techStepSchema_1 = __webpack_require__(/*! ../schemas/techStepSchema */ 317);
+	var IdGenerator = __webpack_require__(/*! ../utils/idGenerator */ 198);
 	function load(techStepListId, page, techStepPerPage, searchText) {
 	    return function (dispatch) {
 	        $.ajax({
@@ -37355,6 +37357,36 @@
 	    };
 	}
 	exports.changePartUsage = changePartUsage;
+	function openToolList(techStepEditFormId) {
+	    return {
+	        type: TechStepActionType.TECHSTEP_OPEN_TOOL_LIST,
+	        techStepEditFormId: techStepEditFormId,
+	        toolListId: IdGenerator.getToolListId()
+	    };
+	}
+	exports.openToolList = openToolList;
+	function closeToolList(techStepEditFormId) {
+	    return {
+	        type: TechStepActionType.TECHSTEP_CLOSE_TOOL_LIST,
+	        techStepEditFormId: techStepEditFormId
+	    };
+	}
+	exports.closeToolList = closeToolList;
+	function openPartList(techStepEditFormId) {
+	    return {
+	        type: TechStepActionType.TECHSTEP_OPEN_PART_LIST,
+	        techStepEditFormId: techStepEditFormId,
+	        partListId: IdGenerator.getPartListId()
+	    };
+	}
+	exports.openPartList = openPartList;
+	function closePartList(techStepEditFormId) {
+	    return {
+	        type: TechStepActionType.TECHSTEP_CLOSE_PART_LIST,
+	        techStepEditFormId: techStepEditFormId
+	    };
+	}
+	exports.closePartList = closePartList;
 	//# sourceMappingURL=techStepActionCreator.js.map
 
 /***/ },
@@ -37388,6 +37420,10 @@
 	exports.TECHSTEP_SAVE_FAILED = 'TECHSTEP_SAVE_FAILED';
 	exports.TECHSTEP_NAME_UNDO = 'TECHSTEP_NAME_UNDO';
 	exports.TECHSTEP_NAME_REDO = 'TECHSTEP_NAME_REDO';
+	exports.TECHSTEP_OPEN_TOOL_LIST = 'TECHSTEP_OPEN_TOOL_LIST';
+	exports.TECHSTEP_CLOSE_TOOL_LIST = 'TECHSTEP_CLOSE_TOOL_LIST';
+	exports.TECHSTEP_OPEN_PART_LIST = 'TECHSTEP_OPEN_PART_LIST';
+	exports.TECHSTEP_CLOSE_PART_LIST = 'TECHSTEP_CLOSE_PART_LIST';
 	//# sourceMappingURL=techStepActionType.js.map
 
 /***/ },
@@ -37433,13 +37469,16 @@
 	var TechStepActionCreator = __webpack_require__(/*! ../../actions/techStepActionCreator */ 315);
 	var mapStateToTechStepEditFormProps = function (state, ownProps) {
 	    var techStepEditFormState = state.techStepEditForms.filter(function (techStepEditForm) { return techStepEditForm.id == ownProps.id; })[0];
-	    var values = techStepEditFormState.values;
 	    return {
 	        techStepId: techStepEditFormState.techStepId,
-	        values: values,
+	        values: techStepEditFormState.values,
 	        toolUsages: techStepEditFormState.toolUsages,
 	        partUsages: techStepEditFormState.partUsages,
-	        isSaving: techStepEditFormState.isSaving
+	        isSaving: techStepEditFormState.isSaving,
+	        toolListId: techStepEditFormState.toolListId,
+	        isToolListOpen: techStepEditFormState.isToolListOpen,
+	        partListId: techStepEditFormState.partListId,
+	        isPartListOpen: techStepEditFormState.isPartListOpen
 	    };
 	};
 	var mapDispatchToTechStepEditFormProps = function (dispatch, ownProps) {
@@ -37456,6 +37495,18 @@
 	        },
 	        onPartUsageChange: function (partId, quantityValue) {
 	            dispatch(TechStepActionCreator.changePartUsage(ownProps.id, partId, quantityValue));
+	        },
+	        onOpenToolList: function () {
+	            dispatch(TechStepActionCreator.openToolList(ownProps.id));
+	        },
+	        onCloseToolList: function () {
+	            dispatch(TechStepActionCreator.closeToolList(ownProps.id));
+	        },
+	        onOpenPartList: function () {
+	            dispatch(TechStepActionCreator.openPartList(ownProps.id));
+	        },
+	        onClosePartList: function () {
+	            dispatch(TechStepActionCreator.closePartList(ownProps.id));
 	        }
 	    };
 	};
@@ -37482,6 +37533,7 @@
 	var PendingPanel_1 = __webpack_require__(/*! ../common/PendingPanel */ 298);
 	var PendingAnimation_1 = __webpack_require__(/*! ../common/PendingAnimation */ 299);
 	var ToolList_1 = __webpack_require__(/*! ../../containers/ToolList */ 205);
+	var PartList_1 = __webpack_require__(/*! ../../containers/part/PartList */ 302);
 	var ContentEditable = (function (_super) {
 	    __extends(ContentEditable, _super);
 	    function ContentEditable() {
@@ -37503,22 +37555,28 @@
 	var PartUsageRow = function (props) {
 	    return (React.createElement("tr", null, React.createElement("td", {style: { width: 25 + '%' }}, props.partUsage.part.id), React.createElement("td", {style: { width: 50 + '%' }}, props.partUsage.part.name), React.createElement("td", {style: { width: 25 + '%', position: "relative", padding: 0 + 'px', verticalAlign: 'middle' }}, React.createElement(ContentEditable, {html: String(props.partUsage.quantity), onChange: props.onPartUsageChange}))));
 	};
-	var ToolChooser = function (props) {
+	var ToolPicker = function (props) {
 	    return (React.createElement("div", null, props.isToolListOpen ?
-	        React.createElement("div", null, React.createElement("div", {className: "form-group"}, React.createElement("button", {onClick: props.openCloseToolList, className: "btn btn-default"}, React.createElement("span", {className: "glyphicon glyphicon-minus"})), React.createElement("button", {onClick: function () { }, className: "btn btn-default pull-right"}, React.createElement("span", {className: "glyphicon glyphicon-plus"}), React.createElement("span", null, " Добавить выбранные"))), React.createElement(ToolList_1.default, {id: props.toolListId}))
+	        React.createElement("div", null, React.createElement("div", {className: "form-group"}, React.createElement("button", {type: "button", onClick: props.closeToolList, className: "btn btn-default"}, React.createElement("span", {className: "glyphicon glyphicon-minus"})), React.createElement("button", {type: "button", onClick: function () { }, className: "btn btn-default pull-right"}, React.createElement("span", {className: "glyphicon glyphicon-plus"}), React.createElement("span", null, " Добавить выбранные"))), React.createElement(ToolList_1.default, {id: props.toolListId}))
 	        :
-	            React.createElement("div", {className: "form-group"}, React.createElement("button", {onClick: props.openCloseToolList, className: "btn btn-default"}, React.createElement("span", {className: "glyphicon glyphicon-plus"})))));
+	            React.createElement("div", {className: "form-group"}, React.createElement("button", {type: "button", onClick: props.openToolList, className: "btn btn-default"}, React.createElement("span", {className: "glyphicon glyphicon-plus"})))));
+	};
+	var PartPicker = function (props) {
+	    return (React.createElement("div", null, props.isPartListOpen ?
+	        React.createElement("div", null, React.createElement("div", {className: "form-group"}, React.createElement("button", {type: "button", onClick: props.closePartList, className: "btn btn-default"}, React.createElement("span", {className: "glyphicon glyphicon-minus"})), React.createElement("button", {type: "button", onClick: function () { }, className: "btn btn-default pull-right"}, React.createElement("span", {className: "glyphicon glyphicon-plus"}), React.createElement("span", null, " Добавить выбранные"))), React.createElement(PartList_1.default, {id: props.partListId}))
+	        :
+	            React.createElement("div", {className: "form-group"}, React.createElement("button", {type: "button", onClick: props.openPartList, className: "btn btn-default"}, React.createElement("span", {className: "glyphicon glyphicon-plus"})))));
 	};
 	var ToolUsagesEditor = function (props) {
 	    var toolUsageRows = props.toolUsages.map(function (toolUsage) { return React.createElement(ToolUsageRow, {key: toolUsage.toolId, toolUsage: toolUsage, onToolUsageChange: function (value) { props.onToolUsageChange(toolUsage.toolId, value); }}); });
-	    return (React.createElement("div", null, React.createElement("div", {style: { marginBottom: 10 + 'px' }}, React.createElement("table", {className: "table table-bordered", style: { marginBottom: 1 + 'px' }}, React.createElement("thead", null, React.createElement("tr", null, React.createElement("th", {style: { width: 25 + '%' }}, "ID"), React.createElement("th", {style: { width: 50 + '%' }}, "Наименование"), React.createElement("th", {style: { width: 25 + '%' }}, "Применяемость"))), React.createElement("tbody", null, toolUsageRows)))));
+	    return (React.createElement("div", null, React.createElement("div", {style: { marginBottom: 10 + 'px' }}, React.createElement("table", {className: "table table-bordered", style: { marginBottom: 1 + 'px' }}, React.createElement("thead", null, React.createElement("tr", null, React.createElement("th", {style: { width: 25 + '%' }}, "ID"), React.createElement("th", {style: { width: 50 + '%' }}, "Наименование"), React.createElement("th", {style: { width: 25 + '%' }}, "Применяемость"))), React.createElement("tbody", null, toolUsageRows))), React.createElement(ToolPicker, {isToolListOpen: props.isToolListOpen, toolListId: props.toolListId, openToolList: props.openToolList, closeToolList: props.closeToolList})));
 	};
 	var PartUsagesEditor = function (props) {
 	    var partUsageRows = props.partUsages.map(function (partUsage) { return React.createElement(PartUsageRow, {key: partUsage.partId, partUsage: partUsage, onPartUsageChange: function (value) { props.onPartUsageChange(partUsage.partId, value); }}); });
-	    return (React.createElement("div", null, React.createElement("div", {style: { marginBottom: 10 + 'px' }}, React.createElement("table", {className: "table table-bordered", style: { marginBottom: 1 + 'px' }}, React.createElement("thead", null, React.createElement("tr", null, React.createElement("th", {style: { width: 25 + '%' }}, "ID"), React.createElement("th", {style: { width: 50 + '%' }}, "Наименование"), React.createElement("th", {style: { width: 25 + '%' }}, "Применяемость"))), React.createElement("tbody", null, partUsageRows)))));
+	    return (React.createElement("div", null, React.createElement("div", {style: { marginBottom: 10 + 'px' }}, React.createElement("table", {className: "table table-bordered", style: { marginBottom: 1 + 'px' }}, React.createElement("thead", null, React.createElement("tr", null, React.createElement("th", {style: { width: 25 + '%' }}, "ID"), React.createElement("th", {style: { width: 50 + '%' }}, "Наименование"), React.createElement("th", {style: { width: 25 + '%' }}, "Применяемость"))), React.createElement("tbody", null, partUsageRows))), React.createElement(PartPicker, {isPartListOpen: props.isPartListOpen, partListId: props.partListId, openPartList: props.openPartList, closePartList: props.closePartList})));
 	};
 	function TechStepEditForm(props) {
-	    return (React.createElement("div", {style: { width: '100%' }}, React.createElement(DialogBackground_1.default, {isShow: props.isSaving}, React.createElement(PendingPanel_1.default, {title: "Сохранение инструмента"}, React.createElement(PendingAnimation_1.default, null, React.createElement("h4", null, "Пожалуйста, подождите."), React.createElement("h4", null, "Идет сохранение.")))), React.createElement("form", {role: "form", onSubmit: props.handleSubmit}, React.createElement("div", {className: "form-group"}, React.createElement("label", {className: "control-label"}, "Описание: "), React.createElement("textarea", {className: "form-control", rows: "5", cols: "50", onChange: function () { }, value: props.values.description})), React.createElement("div", {className: "form-group"}, React.createElement("label", {className: "control-label"}, "Инструменты: "), React.createElement(ToolUsagesEditor, {toolUsages: props.toolUsages, onToolUsageChange: props.onToolUsageChange})), React.createElement("div", {className: "form-group"}, React.createElement("label", {className: "control-label"}, "Детали: "), React.createElement(PartUsagesEditor, {partUsages: props.partUsages, onPartUsageChange: props.onPartUsageChange})), React.createElement("div", {className: "form-group"}, React.createElement("div", {className: "btn-toolbar"}, React.createElement("button", {className: "btn btn-primary", type: "submit", disabled: false}, "Сохранить"))))));
+	    return (React.createElement("div", {style: { width: '100%', display: 'flex', flexDirection: 'column', overflow: 'auto' }}, React.createElement(DialogBackground_1.default, {isShow: props.isSaving}, React.createElement(PendingPanel_1.default, {title: "Сохранение инструмента"}, React.createElement(PendingAnimation_1.default, null, React.createElement("h4", null, "Пожалуйста, подождите."), React.createElement("h4", null, "Идет сохранение.")))), React.createElement("form", {role: "form", onSubmit: props.handleSubmit}, React.createElement("div", {className: "form-group"}, React.createElement("label", {className: "control-label"}, "Описание: "), React.createElement("textarea", {className: "form-control", rows: "5", cols: "50", onChange: function () { }, value: props.values.description})), React.createElement("div", {className: "form-group"}, React.createElement("label", {className: "control-label"}, "Инструменты: "), React.createElement(ToolUsagesEditor, {toolUsages: props.toolUsages, onToolUsageChange: props.onToolUsageChange, isToolListOpen: props.isToolListOpen, toolListId: props.toolListId, openToolList: props.onOpenToolList, closeToolList: props.onCloseToolList})), React.createElement("div", {className: "form-group"}, React.createElement("label", {className: "control-label"}, "Детали: "), React.createElement(PartUsagesEditor, {partUsages: props.partUsages, onPartUsageChange: props.onPartUsageChange, isPartListOpen: props.isPartListOpen, partListId: props.partListId, openPartList: props.onOpenPartList, closePartList: props.onClosePartList})), React.createElement("div", {className: "form-group"}, React.createElement("div", {className: "btn-toolbar"}, React.createElement("button", {className: "btn btn-primary", type: "submit", disabled: false}, "Сохранить"))))));
 	}
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.default = TechStepEditForm;
@@ -54719,6 +54777,7 @@
 	"use strict";
 	var ToolActionType = __webpack_require__(/*! ../actions/toolActionType */ 212);
 	var PanelActionType = __webpack_require__(/*! ../actions/panelActionType */ 196);
+	var TechStepActionType = __webpack_require__(/*! ../actions/techStepActionType */ 316);
 	var PanelType = __webpack_require__(/*! ../components/panelType */ 197);
 	var _ = __webpack_require__(/*! lodash */ 342);
 	var initialState = [];
@@ -54852,6 +54911,19 @@
 	                    }
 	                }
 	            ]);
+	        case TechStepActionType.TECHSTEP_OPEN_TOOL_LIST:
+	            return state.concat([
+	                {
+	                    id: action.toolListId,
+	                    tools: [],
+	                    selectedTools: [],
+	                    params: {
+	                        isPending: true,
+	                        isDeleting: false,
+	                        isConfirmDeleting: false
+	                    }
+	                }
+	            ]);
 	        default:
 	            return state;
 	    }
@@ -54963,6 +55035,7 @@
 	"use strict";
 	var PartActionType = __webpack_require__(/*! ../actions/partActionType */ 307);
 	var PanelActionType = __webpack_require__(/*! ../actions/panelActionType */ 196);
+	var TechStepActionType = __webpack_require__(/*! ../actions/techStepActionType */ 316);
 	var PanelType = __webpack_require__(/*! ../components/panelType */ 197);
 	var _ = __webpack_require__(/*! lodash */ 342);
 	var initialState = [];
@@ -55087,6 +55160,19 @@
 	            return state.concat([
 	                {
 	                    id: action.contentId,
+	                    parts: [],
+	                    selectedParts: [],
+	                    params: {
+	                        isPending: true,
+	                        isDeleting: false,
+	                        isConfirmDeleting: false
+	                    }
+	                }
+	            ]);
+	        case TechStepActionType.TECHSTEP_OPEN_PART_LIST:
+	            return state.concat([
+	                {
+	                    id: action.partListId,
 	                    parts: [],
 	                    selectedParts: [],
 	                    params: {
@@ -55376,7 +55462,11 @@
 	                    },
 	                    toolUsages: action.params.toolUsages,
 	                    partUsages: action.params.partUsages,
-	                    isSaving: false
+	                    isSaving: false,
+	                    toolListId: null,
+	                    isToolListOpen: false,
+	                    partListId: null,
+	                    isPartListOpen: false
 	                }
 	            ]);
 	        case TechStepActionType.TECHSTEP_NAME_CHANGE:
@@ -55449,6 +55539,52 @@
 	                if (techStepEditForm.id === action.techStepEditFormId) {
 	                    return _.assign({}, techStepEditForm, {
 	                        isSaving: false,
+	                    });
+	                }
+	                else {
+	                    return techStepEditForm;
+	                }
+	            });
+	        case TechStepActionType.TECHSTEP_OPEN_TOOL_LIST:
+	            return state.map(function (techStepEditForm) {
+	                if (techStepEditForm.id === action.techStepEditFormId) {
+	                    return _.assign({}, techStepEditForm, {
+	                        isToolListOpen: true,
+	                        toolListId: action.toolListId
+	                    });
+	                }
+	                else {
+	                    return techStepEditForm;
+	                }
+	            });
+	        case TechStepActionType.TECHSTEP_CLOSE_TOOL_LIST:
+	            return state.map(function (techStepEditForm) {
+	                if (techStepEditForm.id === action.techStepEditFormId) {
+	                    return _.assign({}, techStepEditForm, {
+	                        isToolListOpen: false
+	                    });
+	                }
+	                else {
+	                    return techStepEditForm;
+	                }
+	            });
+	        case TechStepActionType.TECHSTEP_OPEN_PART_LIST:
+	            return state.map(function (techStepEditForm) {
+	                if (techStepEditForm.id === action.techStepEditFormId) {
+	                    return _.assign({}, techStepEditForm, {
+	                        isPartListOpen: true,
+	                        partListId: action.partListId
+	                    });
+	                }
+	                else {
+	                    return techStepEditForm;
+	                }
+	            });
+	        case TechStepActionType.TECHSTEP_CLOSE_PART_LIST:
+	            return state.map(function (techStepEditForm) {
+	                if (techStepEditForm.id === action.techStepEditFormId) {
+	                    return _.assign({}, techStepEditForm, {
+	                        isPartListOpen: false
 	                    });
 	                }
 	                else {

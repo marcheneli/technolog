@@ -5,6 +5,7 @@ import ConfirmationDialogPanel from '../common/ConfirmationDialogPanel';
 import PendingPanel from '../common/PendingPanel';
 import PendingAnimation from '../common/PendingAnimation';
 import ToolList from '../../containers/ToolList';
+import PartList from '../../containers/part/PartList';
 
 interface IContentEditableProps {
     onChange(text: string);
@@ -57,16 +58,16 @@ const PartUsageRow = (props: any) => {
     );
 };
 
-const ToolChooser = (props: any) => {
+const ToolPicker = (props: any) => {
     return (
         <div>
             { props.isToolListOpen ?
                 <div>
                     <div className="form-group">
-                        <button onClick={props.openCloseToolList} className="btn btn-default">
+                        <button type="button" onClick={props.closeToolList} className="btn btn-default">
                             <span className="glyphicon glyphicon-minus"></span>
                         </button>
-                        <button onClick={() => { } } className="btn btn-default pull-right">
+                        <button type="button" onClick={() => { } } className="btn btn-default pull-right">
                             <span className="glyphicon glyphicon-plus"></span>
                             <span> Добавить выбранные</span>
                         </button>
@@ -75,7 +76,34 @@ const ToolChooser = (props: any) => {
                 </div>
                 :
                 <div className="form-group">
-                    <button onClick={props.openCloseToolList} className="btn btn-default">
+                    <button type="button" onClick={props.openToolList} className="btn btn-default">
+                        <span className="glyphicon glyphicon-plus"></span>
+                    </button>
+                </div>
+            }
+        </div>
+    );
+};
+
+const PartPicker = (props: any) => {
+    return (
+        <div>
+            { props.isPartListOpen ?
+                <div>
+                    <div className="form-group">
+                        <button type="button" onClick={props.closePartList} className="btn btn-default">
+                            <span className="glyphicon glyphicon-minus"></span>
+                        </button>
+                        <button type="button" onClick={() => { } } className="btn btn-default pull-right">
+                            <span className="glyphicon glyphicon-plus"></span>
+                            <span> Добавить выбранные</span>
+                        </button>
+                    </div>
+                    <PartList id={props.partListId}/>
+                </div>
+                :
+                <div className="form-group">
+                    <button type="button" onClick={props.openPartList} className="btn btn-default">
                         <span className="glyphicon glyphicon-plus"></span>
                     </button>
                 </div>
@@ -105,6 +133,11 @@ const ToolUsagesEditor = (props: any) => {
                     </tbody>
                 </table>
             </div>
+            <ToolPicker
+                isToolListOpen={props.isToolListOpen}
+                toolListId={props.toolListId}
+                openToolList={props.openToolList}
+                closeToolList={props.closeToolList}/>
         </div>    
     );
 };
@@ -130,13 +163,18 @@ const PartUsagesEditor = (props: any) => {
                     </tbody>
                 </table>
             </div>
+            <PartPicker
+                isPartListOpen={props.isPartListOpen}
+                partListId={props.partListId}
+                openPartList={props.openPartList}
+                closePartList={props.closePartList}/>
         </div>
     );
 };
 
 export default function TechStepEditForm(props: any) {
     return (
-        <div style={{ width: '100%' }}>
+        <div style={{ width: '100%', display: 'flex', flexDirection: 'column', overflow: 'auto' }}>
             <DialogBackground isShow={props.isSaving}>
                 <PendingPanel title={"Сохранение инструмента"}>
                     <PendingAnimation>
@@ -159,12 +197,24 @@ export default function TechStepEditForm(props: any) {
                 <div
                     className="form-group">
                     <label className="control-label">Инструменты: </label>
-                    <ToolUsagesEditor toolUsages={props.toolUsages} onToolUsageChange={props.onToolUsageChange}/>
+                    <ToolUsagesEditor
+                        toolUsages={props.toolUsages}
+                        onToolUsageChange={props.onToolUsageChange}
+                        isToolListOpen={props.isToolListOpen}
+                        toolListId={props.toolListId}
+                        openToolList={props.onOpenToolList}
+                        closeToolList={props.onCloseToolList}/>
                 </div>
                 <div
                     className="form-group">
                     <label className="control-label">Детали: </label>
-                    <PartUsagesEditor partUsages={props.partUsages} onPartUsageChange={props.onPartUsageChange}/>
+                    <PartUsagesEditor
+                        partUsages={props.partUsages}
+                        onPartUsageChange={props.onPartUsageChange}
+                        isPartListOpen={props.isPartListOpen}
+                        partListId={props.partListId}
+                        openPartList={props.onOpenPartList}
+                        closePartList={props.onClosePartList}/>
                 </div>
                 <div className="form-group">
                     <div className="btn-toolbar">

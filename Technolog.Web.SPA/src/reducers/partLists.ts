@@ -1,5 +1,6 @@
 ﻿import * as PartActionType from '../actions/partActionType';
 import * as PanelActionType from '../actions/panelActionType';
+import * as TechStepActionType from '../actions/techStepActionType';
 import * as PanelType from '../components/panelType';
 import * as _ from 'lodash';
 
@@ -153,6 +154,20 @@ export default function partLists(state = initialState, action) {
                 ...state,
                 {
                     id: action.contentId,
+                    parts: [],
+                    selectedParts: [],
+                    params: {
+                        isPending: true,
+                        isDeleting: false,
+                        isConfirmDeleting: false
+                    }
+                }
+            ];
+        case TechStepActionType.TECHSTEP_OPEN_PART_LIST:
+            return [
+                ...state,
+                {
+                    id: action.partListId,
                     parts: [],
                     selectedParts: [],
                     params: {
