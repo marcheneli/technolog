@@ -17,6 +17,11 @@ namespace Technolog.DAL.EF.EntityConfigurations
             this.Property(c => c.Id).IsRequired();
 
             this.Property(c => c.Name).HasMaxLength(256).IsUnicode(true);
+
+            this.HasMany<TechStep>(to => to.TechSteps)
+                .WithOptional(ts => ts.TechOperation)
+                .HasForeignKey(ts => ts.TechOperationId)
+                .WillCascadeOnDelete(false);
         }
     }
 }

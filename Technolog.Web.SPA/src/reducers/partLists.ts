@@ -156,6 +156,7 @@ export default function partLists(state = initialState, action) {
                     id: action.contentId,
                     parts: [],
                     selectedParts: [],
+                    disabledParts: [],
                     params: {
                         isPending: true,
                         isDeleting: false,
@@ -170,6 +171,7 @@ export default function partLists(state = initialState, action) {
                     id: action.partListId,
                     parts: [],
                     selectedParts: [],
+                    disabledParts: action.parts,
                     params: {
                         isPending: true,
                         isDeleting: false,
@@ -177,6 +179,24 @@ export default function partLists(state = initialState, action) {
                     }
                 }
             ];
+        case TechStepActionType.TECHSTEP_ADD_PARTUSAGES:
+            return state.map(partList => {
+                if (partList.id === action.partListId) {
+                    return _.assign(
+                        {},
+                        partList,
+                        {
+                            selectedParts: [],
+                            disabledParts: [
+                                ...partList.disabledParts,
+                                ...action.parts.map(part => part.id)
+                            ]
+                        }
+                    );
+                } else {
+                    return partList
+                }
+            });
         default:
             return state;
     }

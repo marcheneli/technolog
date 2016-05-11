@@ -3,8 +3,47 @@ import DialogBackground from '../common/DialogBackground';
 import ConfirmationDialogPanel from '../common/ConfirmationDialogPanel';
 import PendingPanel from '../common/PendingPanel';
 import PendingAnimation from '../common/PendingAnimation';
+import InnerPanel from '../common/InnerPanel';
+import TechOperationList from '../../containers/techOperation/TechOperationList';
+import TechOperationTable from '../../components/techOperation/TechOperationTable';
 
 export default function TechProcessEditForm(props: any) {
+    const onTechOperationSelect = (event) => {
+        var selectedTechOperations = props.selectedTechOperations;
+        var techOperations = props.techOperations;
+
+        if (event.target.checked) {
+            var techOperation;
+
+            for (var i = 0; i < techOperations.length; i++) {
+                if (techOperations[i].id == event.target.value) {
+                    techOperation = techOperations[i];
+                    break;
+                }
+            }
+
+            selectedTechOperations = [
+                ...selectedTechOperations,
+                techOperation.id
+            ];
+
+        } else {
+            selectedTechOperations = selectedTechOperations.filter(id => id != event.target.value);
+        }
+
+        props.onTechOperationSelect(selectedTechOperations);
+    }
+
+    const onAllTechOperationsSelect = (event) => {
+        var selectedTechOperations = [];
+        var techOperations = props.techOperations;
+
+        if (event.target.checked) {
+            selectedTechOperations = techOperations.map(techOperation => techOperation.id);
+        }
+
+        props.onAllTechOperationsSelect(selectedTechOperations);
+    }
     return (
         <div style={{ width: '100%' }}>
             <DialogBackground isShow={props.isSaving}>
@@ -15,13 +54,51 @@ export default function TechProcessEditForm(props: any) {
                     </PendingAnimation>
                 </PendingPanel>
             </DialogBackground>
+            <DialogBackground isShow={props.isTechOperationListOpen}>
+                <InnerPanel title={"Добавление операции"}>
+                    <button type="button" onClick={() => { } } className="btn btn-default" style={{ marginBottom: '5px' }}>
+                        <span className="glyphicon glyphicon-plus"></span>
+                        <span>&nbsp;Добавить выбранные</span>
+                    </button>
+                    <TechOperationList id={props.techOperationListId}/>
+                </InnerPanel>
+            </DialogBackground>
             <form role="form" onSubmit={props.handleSubmit}>
                 <div
                     className="form-group">
-                    <label className="control-label">Наименование: </label>
+                    <label className="control-label">Наименование:</label>
                     <input className='form-control'
                         onChange={props.onNameChange}
                         value={props.values.name} />
+                </div>
+                <div className="form-group">
+                    <label className="control-label">Операции: </label>
+                    <br/>
+                    { props.techOperations.length == 0 ?
+                        <div style={{ textAlign: 'center' }}>
+                            На данный момент операции отсутствуют.
+                            <br/>
+                            Для добавления нажмите кнопку&nbsp;
+                            <button type="button" onClick={props.onTechOperationListOpenBtnClick} className="btn btn-default">
+                                <span className="glyphicon glyphicon-plus"></span>
+                                <span>&nbsp;Добавить</span>
+                            </button>.
+                        </div>
+                        :
+                        <div>
+                            <button type="button" onClick={props.onTechOperationListOpenBtnClick} className="btn btn-default" style={{ marginBottom: '5px' }}>
+                                <span className="glyphicon glyphicon-plus"></span>
+                                <span>&nbsp;Добавить</span>
+                            </button>
+                            <TechOperationTable
+                                techOperations={props.techOperations}
+                                selectedTechOperations={props.selectedTechOperations}
+                                onTechOperationSelect={onTechOperationSelect}
+                                onAllTechOperationsSelect={onAllTechOperationsSelect}
+                                onTableRowDoubleClick={props.onTableRowDoubleClick}
+                                />
+                        </div>
+                    }
                 </div>
                 <div className="form-group">
                     <div className="btn-toolbar">

@@ -1,4 +1,5 @@
 ﻿import * as TechStepActionType from '../actions/techStepActionType';
+import * as TechOperationActionType from '../actions/techOperationActionType';
 import * as PanelActionType from '../actions/panelActionType';
 import * as PanelType from '../components/panelType';
 import * as _ from 'lodash';
@@ -153,6 +154,20 @@ export default function techStepLists(state = initialState, action) {
                 ...state,
                 {
                     id: action.contentId,
+                    techSteps: [],
+                    selectedTechSteps: [],
+                    params: {
+                        isPending: true,
+                        isDeleting: false,
+                        isConfirmDeleting: false
+                    }
+                }
+            ];
+        case TechOperationActionType.TECHOPERATION_OPEN_TECHSTEP_LIST:
+            return [
+                ...state,
+                {
+                    id: action.techStepListId,
                     techSteps: [],
                     selectedTechSteps: [],
                     params: {

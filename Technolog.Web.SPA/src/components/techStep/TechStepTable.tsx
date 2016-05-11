@@ -1,7 +1,7 @@
 ﻿import * as React from 'react';
 import TableRow from '../common/TableRow';
 
-export default function TableList(props: any) {
+export default function (props: any) {
     var techStepRows = [];
     var techSteps = props.techSteps;
     var selectedTechSteps = props.selectedTechSteps;
@@ -30,7 +30,7 @@ export default function TableList(props: any) {
                     </input>
                 </td>
                 <td  style={{ width: 15 + '%' }}>{techStep.id}</td>
-                <td  style={{ width: 80 + '%' }}>{techStep.name}</td>
+                <td  style={{ width: 80 + '%' }}>{techStep.description}</td>
             </TableRow>);
     });
 
@@ -47,7 +47,7 @@ export default function TableList(props: any) {
                             </input>
                         </th>
                         <th style={{ width: 15 + '%' }}>ID</th>
-                        <th style={{ width: 80 + '%' }}>Наименование</th>
+                        <th style={{ width: 80 + '%' }}>Описание</th>
                     </tr>
                 </thead>
                 <tbody>

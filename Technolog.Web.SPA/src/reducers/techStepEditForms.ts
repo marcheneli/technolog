@@ -16,11 +16,14 @@ export default function techStepEditForms(state = initialState, action) {
                 {
                     id: action.contentId,
                     techStepId: action.params.techStep.id,
+                    techOperationEditFormId: action.params.techOperationEditFormId,
                     values: {
                         description: action.params.techStep.description
                     },
                     toolUsages: action.params.toolUsages,
+                    selectedToolUsages: [],
                     partUsages: action.params.partUsages,
+                    selectedPartUsages: [],
                     isSaving: false,
                     toolListId: null,
                     isToolListOpen: false,
@@ -28,14 +31,14 @@ export default function techStepEditForms(state = initialState, action) {
                     isPartListOpen: false
                 }
             ];
-        case TechStepActionType.TECHSTEP_NAME_CHANGE:
+        case TechStepActionType.TECHSTEP_DESCRIPTION_CHANGE:
             return state.map(techStepEditForm => {
                 if (techStepEditForm.id === action.techStepEditFormId) {
                     return _.assign(
                         {},
                         techStepEditForm,
                         {
-                            values: _.assign({}, techStepEditForm.values, { name: action.name }),
+                            values: _.assign({}, techStepEditForm.values, { description: action.description }),
                         }
                     );
                 } else {
@@ -174,6 +177,112 @@ export default function techStepEditForms(state = initialState, action) {
                         techStepEditForm,
                         {
                             isPartListOpen: false
+                        }
+                    );
+                } else {
+                    return techStepEditForm;
+                }
+            });
+        case TechStepActionType.TECHSTEP_ADD_TOOLUSAGES:
+            return state.map(techStepEditForm => {
+                if (techStepEditForm.id === action.techStepEditFormId) {
+                    return _.assign(
+                        {},
+                        techStepEditForm,
+                        {
+                            toolUsages: [
+                                ...techStepEditForm.toolUsages,
+                                ...action.tools.map(tool => {
+                                    return {
+                                        techStepId: techStepEditForm.techStepId,
+                                        toolId: tool.id,
+                                        quantity: 1,
+                                        tool: tool
+                                    };
+                                })
+                            ]
+                        }
+                    );
+                } else {
+                    return techStepEditForm;
+                }
+            });
+        case TechStepActionType.TECHSTEP_ADD_PARTUSAGES:
+            return state.map(techStepEditForm => {
+                if (techStepEditForm.id === action.techStepEditFormId) {
+                    return _.assign(
+                        {},
+                        techStepEditForm,
+                        {
+                            partUsages: [
+                                ...techStepEditForm.partUsages,
+                                ...action.parts.map(part => {
+                                    return {
+                                        techStepId: techStepEditForm.techStepId,
+                                        partId: part.id,
+                                        quantity: 1,
+                                        part: part
+                                    };
+                                })
+                            ]
+                        }
+                    );
+                } else {
+                    return techStepEditForm;
+                }
+            });
+        case TechStepActionType.TECHSTEP_SELECT_TOOLUSAGES:
+            return state.map(techStepEditForm => {
+                if (techStepEditForm.id == action.techStepEditFormId) {
+                    return _.assign(
+                        {},
+                        techStepEditForm,
+                        {
+                            selectedToolUsages: action.toolUsages
+                        }
+                    );
+                } else {
+                    return techStepEditForm;
+                }
+            });
+        case TechStepActionType.TECHSTEP_SELECT_PARTUSAGES:
+            return state.map(techStepEditForm => {
+                if (techStepEditForm.id == action.techStepEditFormId) {
+                    return _.assign(
+                        {},
+                        techStepEditForm,
+                        {
+                            selectedPartUsages: action.partUsages
+                        }
+                    );
+                } else {
+                    return techStepEditForm;
+                }
+            });
+        case TechStepActionType.TECHSTEP_DELETE_TOOLUSAGES:
+            return state.map(techStepEditForm => {
+                if (techStepEditForm.id == action.techStepEditFormId) {
+                    return _.assign(
+                        {},
+                        techStepEditForm,
+                        {
+                            toolUsages: techStepEditForm.toolUsages.filter(tu => techStepEditForm.selectedToolUsages.indexOf(tu.id) < 0),
+                            selectedToolUsages: []
+                        }
+                    );
+                } else {
+                    return techStepEditForm;
+                }
+            });
+        case TechStepActionType.TECHSTEP_DELETE_PARTUSAGES:
+            return state.map(techStepEditForm => {
+                if (techStepEditForm.id == action.techStepEditFormId) {
+                    return _.assign(
+                        {},
+                        techStepEditForm,
+                        {
+                            partUsages: techStepEditForm.partUsages.filter(pu => techStepEditForm.selectedPartUsages.indexOf(pu.id) < 0),
+                            selectedPartUsages: []
                         }
                     );
                 } else {

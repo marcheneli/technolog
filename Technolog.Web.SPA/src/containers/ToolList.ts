@@ -11,6 +11,7 @@ const mapStateToToolListProps = (state, ownProps) => {
     return {
         tools: toolListState.tools.map(toolId => state.entities.tools[toolId]),
         selectedTools: toolListState.selectedTools,
+        disabledTools: toolListState.disabledTools,
         params: toolListState.params
     };
 };

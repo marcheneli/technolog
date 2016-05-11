@@ -86,7 +86,19 @@ namespace Technolog.SL.Services
 
         public int Insert(TechProcessDTO techProcessDTO)
         {
-            TechProcess techProcess = mapper.Map<TechProcess>(techProcessDTO);
+            TechProcess techProcess = new TechProcess()
+            {
+                Name = techProcessDTO.Name,
+                TechOperations = new List<TechOperation>()
+            };
+
+            foreach (var techOperationDTO in techProcessDTO.TechOperations)
+            {
+                var techOperation = database.TechOperations.GetById(techOperationDTO.Id);
+
+                techProcess.TechOperations.Add(techOperation);
+            }
+
             database.TechProcesses.Add(techProcess);
 
             try
@@ -118,7 +130,21 @@ namespace Technolog.SL.Services
 
         public void Update(TechProcessDTO techProcessDTO)
         {
-            TechProcess techProcess = mapper.Map<TechProcess>(techProcessDTO);
+            TechProcess techProcess = database.TechProcesses.GetById(techProcessDTO.Id);
+
+            techProcess.Name = techProcessDTO.Name;
+
+            foreach (var techOperationDTO in techProcessDTO.TechOperations)
+            {
+                var techOperation = techProcess.TechOperations.FirstOrDefault(to => to.Id == techOperationDTO.Id);
+
+                if (techOperation == null) {
+                    techOperation = database.TechOperations.GetById(techOperationDTO.Id);
+
+                    techProcess.TechOperations.Add(techOperation);
+                }
+            }
+
             database.TechProcesses.Update(techProcess);
 
             try

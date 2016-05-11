@@ -52,7 +52,7 @@
 	var ReactDOM = __webpack_require__(/*! react-dom */ 32);
 	var react_redux_1 = __webpack_require__(/*! react-redux */ 166);
 	var Technolog_1 = __webpack_require__(/*! ./components/Technolog */ 192);
-	var configureStore_1 = __webpack_require__(/*! ./store/configureStore */ 338);
+	var configureStore_1 = __webpack_require__(/*! ./store/configureStore */ 339);
 	var $ = __webpack_require__(/*! jquery */ 211);
 	var serviceDomain_1 = __webpack_require__(/*! ./constants/serviceDomain */ 286);
 	var AntiForgeryToken = __webpack_require__(/*! ./utils/antiForgeryToken */ 287);
@@ -22417,27 +22417,80 @@
 	    };
 	}
 	exports.open = open;
-	function openTechStepEditor(techStepId) {
+	function openTechStepEditor(techStepId, techOperationEditFormId) {
 	    return function (dispatch, getState) {
-	        var state = getState();
-	        var techStep = state.entities.techSteps[techStepId];
-	        var toolUsages = techStep.toolUsages.map(function (id) {
-	            var toolUsage = state.entities.toolUsages[id];
-	            return _.assign({}, toolUsage, { tool: state.entities.tools[toolUsage.tool] });
-	        });
-	        var partUsages = techStep.partUsages.map(function (id) {
-	            var partUsage = state.entities.partUsages[id];
-	            return _.assign({}, partUsage, { part: state.entities.parts[partUsage.part] });
-	        });
-	        var params = {
-	            techStep: techStep,
-	            toolUsages: toolUsages,
-	            partUsages: partUsages
-	        };
-	        dispatch(open(PanelType.TECHSTEP_EDIT_FORM, "Редактирование технологического шага", params));
+	        if (techStepId == 0) {
+	            var params = {
+	                techStep: { id: 0, description: "" },
+	                toolUsages: [],
+	                partUsages: [],
+	                techOperationEditFormId: techOperationEditFormId
+	            };
+	            dispatch(open(PanelType.TECHSTEP_EDIT_FORM, "Создание технологического шага", params));
+	        }
+	        else {
+	            var state_1 = getState();
+	            var techStep = state_1.entities.techSteps[techStepId];
+	            var toolUsages = techStep.toolUsages.map(function (id) {
+	                var toolUsage = state_1.entities.toolUsages[id];
+	                return _.assign({}, toolUsage, { tool: state_1.entities.tools[toolUsage.tool] });
+	            });
+	            var partUsages = techStep.partUsages.map(function (id) {
+	                var partUsage = state_1.entities.partUsages[id];
+	                return _.assign({}, partUsage, { part: state_1.entities.parts[partUsage.part] });
+	            });
+	            var params = {
+	                techStep: techStep,
+	                toolUsages: toolUsages,
+	                partUsages: partUsages
+	            };
+	            dispatch(open(PanelType.TECHSTEP_EDIT_FORM, "Редактирование технологического шага", params));
+	        }
 	    };
 	}
 	exports.openTechStepEditor = openTechStepEditor;
+	function openTechProcessEditor(techProcessId) {
+	    return function (dispatch, getState) {
+	        var state = getState();
+	        var techProcess = state.entities.techProcesses[techProcessId];
+	        var techOperations = techProcess.techOperations.map(function (id) {
+	            var techOperation = state.entities.techOperations[id];
+	            return _.assign({}, techOperation);
+	        });
+	        var params = {
+	            techProcess: techProcess,
+	            techOperations: techOperations
+	        };
+	        dispatch(open(PanelType.TECHPROCESS_EDIT_FORM, "Редактирование технологического процесса", params));
+	    };
+	}
+	exports.openTechProcessEditor = openTechProcessEditor;
+	function openTechOperationEditor(techOperationId, techProcessEditFormId) {
+	    return function (dispatch, getState) {
+	        if (techOperationId == 0) {
+	            var params = {
+	                techOperation: { id: 0, name: "" },
+	                techSteps: [],
+	                techProcessEditFormId: techProcessEditFormId
+	            };
+	            dispatch(open(PanelType.TECHOPERATION_EDIT_FORM, "Создание технологической операции", params));
+	        }
+	        else {
+	            var state_2 = getState();
+	            var techOperation = state_2.entities.techOperations[techOperationId];
+	            var techSteps = techOperation.techSteps.map(function (id) {
+	                var techStep = state_2.entities.techSteps[id];
+	                return _.assign({}, techStep);
+	            });
+	            var params = {
+	                techOperation: techOperation,
+	                techSteps: techSteps
+	            };
+	            dispatch(open(PanelType.TECHOPERATION_EDIT_FORM, "Редактирование технологической операции", params));
+	        }
+	    };
+	}
+	exports.openTechOperationEditor = openTechOperationEditor;
 	function close(id) {
 	    return {
 	        type: PanelActionType.PANEL_CLOSE,
@@ -22618,8 +22671,8 @@
 	var TechStepEditForm_1 = __webpack_require__(/*! ../containers/techStep/TechStepEditForm */ 318);
 	var TechOperationList_1 = __webpack_require__(/*! ../containers/techOperation/TechOperationList */ 320);
 	var TechOperationEditForm_1 = __webpack_require__(/*! ../containers/techOperation/TechOperationEditForm */ 327);
-	var TechProcessList_1 = __webpack_require__(/*! ../containers/techProcess/TechProcessList */ 329);
-	var TechProcessEditForm_1 = __webpack_require__(/*! ../containers/techProcess/TechProcessEditForm */ 336);
+	var TechProcessList_1 = __webpack_require__(/*! ../containers/techProcess/TechProcessList */ 330);
+	var TechProcessEditForm_1 = __webpack_require__(/*! ../containers/techProcess/TechProcessEditForm */ 337);
 	function getContent(panel) {
 	    switch (panel.type) {
 	        case PanelType.TOOL_LIST:
@@ -22710,6 +22763,7 @@
 	    return {
 	        tools: toolListState.tools.map(function (toolId) { return state.entities.tools[toolId]; }),
 	        selectedTools: toolListState.selectedTools,
+	        disabledTools: toolListState.disabledTools,
 	        params: toolListState.params
 	    };
 	};
@@ -22802,7 +22856,7 @@
 	            flexGrow: 2,
 	            flexBasis: 0 + '%',
 	            minHeight: 0, minWidth: 0
-	        }}, React.createElement("div", {style: { flexShrink: 0 }}, React.createElement(ItemListControlPanel_1.default, {onItemDelete: this.props.onDeleteBtnClick, onNewItem: this.props.onAddBtnClick, onRefresh: this.refreshBtnClickHandler, onSearchTextChange: this.searchTextChangeHandler, isDeleteEnable: this.props.selectedTools.length > 0, isUpdating: this.props.params.isPending})), React.createElement(ToolTable_1.default, {id: this.props.id, tools: this.props.tools, selectedTools: this.props.selectedTools}), React.createElement("div", {className: "btn-toolbar", style: { flexShrink: 0 }}, React.createElement(ItemsPerPageSelector_1.default, {onChange: this.toolsPerPageChangeHandler}), React.createElement(Pagination_1.default, {itemAmount: this.props.params.totalAmount, itemsPerPage: this.props.params.toolsPerPage, currentPage: this.props.params.toolPage, firstSymbol: '«', nextSymbol: '›', prevSymbol: '‹', lastSymbol: '»', onPageBtnClick: this.toolPageChangeHandler})))));
+	        }}, React.createElement("div", {style: { flexShrink: 0 }}, React.createElement(ItemListControlPanel_1.default, {onItemDelete: this.props.onDeleteBtnClick, onNewItem: this.props.onAddBtnClick, onRefresh: this.refreshBtnClickHandler, onSearchTextChange: this.searchTextChangeHandler, isDeleteEnable: this.props.selectedTools.length > 0, isUpdating: this.props.params.isPending})), React.createElement(ToolTable_1.default, {id: this.props.id, tools: this.props.tools, selectedTools: this.props.selectedTools, disabledTools: this.props.disabledTools}), React.createElement("div", {className: "btn-toolbar", style: { flexShrink: 0 }}, React.createElement(ItemsPerPageSelector_1.default, {onChange: this.toolsPerPageChangeHandler}), React.createElement(Pagination_1.default, {itemAmount: this.props.params.totalAmount, itemsPerPage: this.props.params.toolsPerPage, currentPage: this.props.params.toolPage, firstSymbol: '«', nextSymbol: '›', prevSymbol: '‹', lastSymbol: '»', onPageBtnClick: this.toolPageChangeHandler})))));
 	    };
 	    return ToolList;
 	}(React.Component));
@@ -22876,16 +22930,24 @@
 	    var toolRows = [];
 	    var tools = props.tools;
 	    var selectedTools = props.selectedTools;
+	    var disabledTools = props.disabledTools;
 	    var isAllChecked = tools.length == selectedTools.length && tools.length != 0;
 	    toolRows = tools.map(function (tool, index) {
 	        var selectedTool = null;
+	        var disabledTool = null;
 	        for (var j = 0; j < selectedTools.length; j++) {
 	            if (selectedTools[j] == tool.id) {
 	                selectedTool = selectedTools[j];
 	                break;
 	            }
 	        }
-	        return (React.createElement(TableRow_1.default, {key: index, onTableRowDoubleClick: function () { props.onTableRowDoubleClick(tool); }}, React.createElement("td", {style: { width: 5 + '%' }}, React.createElement("input", {type: 'checkbox', value: tool.id, onChange: props.onToolSelect, checked: selectedTool})), React.createElement("td", {style: { width: 15 + '%' }}, tool.id), React.createElement("td", {style: { width: 80 + '%' }}, tool.name)));
+	        for (var j = 0; j < disabledTools.length; j++) {
+	            if (disabledTools[j] == tool.id) {
+	                disabledTool = disabledTools[j];
+	                break;
+	            }
+	        }
+	        return (React.createElement(TableRow_1.default, {key: index, onTableRowDoubleClick: function () { props.onTableRowDoubleClick(tool); }}, React.createElement("td", {style: { width: 5 + '%' }}, React.createElement("input", {type: 'checkbox', value: tool.id, onChange: props.onToolSelect, checked: selectedTool, disabled: disabledTool})), React.createElement("td", {style: { width: 15 + '%' }}, tool.id), React.createElement("td", {style: { width: 80 + '%' }}, tool.name)));
 	    });
 	    return (React.createElement("div", {style: { marginBottom: 10 + 'px', overflow: 'auto' }}, React.createElement("table", {className: "table table-bordered", style: { marginBottom: 1 + 'px' }}, React.createElement("thead", null, React.createElement("tr", null, React.createElement("th", {style: { width: 5 + '%' }}, React.createElement("input", {type: 'checkbox', onChange: props.onAllToolsSelect, checked: isAllChecked})), React.createElement("th", {style: { width: 15 + '%' }}, "ID"), React.createElement("th", {style: { width: 80 + '%' }}, "Наименование"))), React.createElement("tbody", null, toolRows))));
 	}
@@ -36472,6 +36534,7 @@
 	    return {
 	        parts: partListState.parts.map(function (partId) { return state.entities.parts[partId]; }),
 	        selectedParts: partListState.selectedParts,
+	        disabledParts: partListState.disabledParts,
 	        params: partListState.params
 	    };
 	};
@@ -36556,7 +36619,7 @@
 	            flexGrow: 2,
 	            flexBasis: 0 + '%',
 	            minHeight: 0, minWidth: 0
-	        }}, React.createElement("div", {style: { flexShrink: 0 }}, React.createElement(ItemListControlPanel_1.default, {onItemDelete: this.props.onDeleteBtnClick, onNewItem: this.props.onAddBtnClick, onRefresh: this.refreshBtnClickHandler, onSearchTextChange: this.searchTextChangeHandler, isDeleteEnable: this.props.selectedParts.length > 0, isUpdating: this.props.params.isPending})), React.createElement(PartTable_1.default, {id: this.props.id, parts: this.props.parts, selectedParts: this.props.selectedParts}), React.createElement("div", {className: "btn-partbar", style: { flexShrink: 0 }}, React.createElement(ItemsPerPageSelector_1.default, {onChange: this.partsPerPageChangeHandler}), React.createElement(Pagination_1.default, {itemAmount: this.props.params.totalAmount, itemsPerPage: this.props.params.partsPerPage, currentPage: this.props.params.partPage, firstSymbol: '«', nextSymbol: '›', prevSymbol: '‹', lastSymbol: '»', onPageBtnClick: this.partPageChangeHandler})))));
+	        }}, React.createElement("div", {style: { flexShrink: 0 }}, React.createElement(ItemListControlPanel_1.default, {onItemDelete: this.props.onDeleteBtnClick, onNewItem: this.props.onAddBtnClick, onRefresh: this.refreshBtnClickHandler, onSearchTextChange: this.searchTextChangeHandler, isDeleteEnable: this.props.selectedParts.length > 0, isUpdating: this.props.params.isPending})), React.createElement(PartTable_1.default, {id: this.props.id, parts: this.props.parts, selectedParts: this.props.selectedParts, disabledParts: this.props.disabledParts}), React.createElement("div", {className: "btn-partbar", style: { flexShrink: 0 }}, React.createElement(ItemsPerPageSelector_1.default, {onChange: this.partsPerPageChangeHandler}), React.createElement(Pagination_1.default, {itemAmount: this.props.params.totalAmount, itemsPerPage: this.props.params.partsPerPage, currentPage: this.props.params.partPage, firstSymbol: '«', nextSymbol: '›', prevSymbol: '‹', lastSymbol: '»', onPageBtnClick: this.partPageChangeHandler})))));
 	    };
 	    return PartList;
 	}(React.Component));
@@ -36630,16 +36693,24 @@
 	    var partRows = [];
 	    var parts = props.parts;
 	    var selectedParts = props.selectedParts;
+	    var disabledParts = props.disabledParts;
 	    var isAllChecked = parts.length == selectedParts.length && parts.length != 0;
 	    partRows = parts.map(function (part, index) {
 	        var selectedPart = null;
+	        var disabledPart = null;
 	        for (var j = 0; j < selectedParts.length; j++) {
 	            if (selectedParts[j] == part.id) {
 	                selectedPart = selectedParts[j];
 	                break;
 	            }
 	        }
-	        return (React.createElement(TableRow_1.default, {key: index, onTableRowDoubleClick: function () { props.onTableRowDoubleClick(part); }}, React.createElement("td", {style: { width: 5 + '%' }}, React.createElement("input", {type: 'checkbox', value: part.id, onChange: props.onPartSelect, checked: selectedPart})), React.createElement("td", {style: { width: 15 + '%' }}, part.id), React.createElement("td", {style: { width: 80 + '%' }}, part.name)));
+	        for (var j = 0; j < disabledParts.length; j++) {
+	            if (disabledParts[j] == part.id) {
+	                disabledPart = disabledParts[j];
+	                break;
+	            }
+	        }
+	        return (React.createElement(TableRow_1.default, {key: index, onTableRowDoubleClick: function () { props.onTableRowDoubleClick(part); }}, React.createElement("td", {style: { width: 5 + '%' }}, React.createElement("input", {type: 'checkbox', value: part.id, onChange: props.onPartSelect, checked: selectedPart, disabled: disabledPart})), React.createElement("td", {style: { width: 15 + '%' }}, part.id), React.createElement("td", {style: { width: 80 + '%' }}, part.name)));
 	    });
 	    return (React.createElement("div", {style: { marginBottom: 10 + 'px', overflow: 'auto' }}, React.createElement("table", {className: "table table-bordered", style: { marginBottom: 1 + 'px' }}, React.createElement("thead", null, React.createElement("tr", null, React.createElement("th", {style: { width: 5 + '%' }}, React.createElement("input", {type: 'checkbox', onChange: props.onAllPartsSelect, checked: isAllChecked})), React.createElement("th", {style: { width: 15 + '%' }}, "ID"), React.createElement("th", {style: { width: 80 + '%' }}, "Наименование"))), React.createElement("tbody", null, partRows))));
 	}
@@ -37126,7 +37197,7 @@
 	"use strict";
 	var React = __webpack_require__(/*! react */ 1);
 	var TableRow_1 = __webpack_require__(/*! ../common/TableRow */ 209);
-	function TableList(props) {
+	function default_1(props) {
 	    var techStepRows = [];
 	    var techSteps = props.techSteps;
 	    var selectedTechSteps = props.selectedTechSteps;
@@ -37139,12 +37210,12 @@
 	                break;
 	            }
 	        }
-	        return (React.createElement(TableRow_1.default, {key: index, onTableRowDoubleClick: function () { props.onTableRowDoubleClick(techStep); }}, React.createElement("td", {style: { width: 5 + '%' }}, React.createElement("input", {type: 'checkbox', value: techStep.id, onChange: props.onTechStepSelect, checked: selectedTechStep})), React.createElement("td", {style: { width: 15 + '%' }}, techStep.id), React.createElement("td", {style: { width: 80 + '%' }}, techStep.name)));
+	        return (React.createElement(TableRow_1.default, {key: index, onTableRowDoubleClick: function () { props.onTableRowDoubleClick(techStep); }}, React.createElement("td", {style: { width: 5 + '%' }}, React.createElement("input", {type: 'checkbox', value: techStep.id, onChange: props.onTechStepSelect, checked: selectedTechStep})), React.createElement("td", {style: { width: 15 + '%' }}, techStep.id), React.createElement("td", {style: { width: 80 + '%' }}, techStep.description)));
 	    });
-	    return (React.createElement("div", {style: { marginBottom: 10 + 'px', overflow: 'auto' }}, React.createElement("table", {className: "table table-bordered", style: { marginBottom: 1 + 'px' }}, React.createElement("thead", null, React.createElement("tr", null, React.createElement("th", {style: { width: 5 + '%' }}, React.createElement("input", {type: 'checkbox', onChange: props.onAllTechStepsSelect, checked: isAllChecked})), React.createElement("th", {style: { width: 15 + '%' }}, "ID"), React.createElement("th", {style: { width: 80 + '%' }}, "Наименование"))), React.createElement("tbody", null, techStepRows))));
+	    return (React.createElement("div", {style: { marginBottom: 10 + 'px', overflow: 'auto' }}, React.createElement("table", {className: "table table-bordered", style: { marginBottom: 1 + 'px' }}, React.createElement("thead", null, React.createElement("tr", null, React.createElement("th", {style: { width: 5 + '%' }}, React.createElement("input", {type: 'checkbox', onChange: props.onAllTechStepsSelect, checked: isAllChecked})), React.createElement("th", {style: { width: 15 + '%' }}, "ID"), React.createElement("th", {style: { width: 80 + '%' }}, "Описание"))), React.createElement("tbody", null, techStepRows))));
 	}
 	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.default = TableList;
+	exports.default = default_1;
 	//# sourceMappingURL=TechStepTable.js.map
 
 /***/ },
@@ -37276,14 +37347,14 @@
 	    };
 	}
 	exports.cancelDelete = cancelDelete;
-	function techStepNameChange(techStepEditFormId, value) {
+	function techStepDescriptionChange(techStepEditFormId, value) {
 	    return {
-	        type: TechStepActionType.TECHSTEP_NAME_CHANGE,
+	        type: TechStepActionType.TECHSTEP_DESCRIPTION_CHANGE,
 	        techStepEditFormId: techStepEditFormId,
-	        name: value
+	        description: value
 	    };
 	}
-	exports.techStepNameChange = techStepNameChange;
+	exports.techStepDescriptionChange = techStepDescriptionChange;
 	function techStepNameValidationPending(techStepEditFormId, value, nameValidation) {
 	    return {
 	        type: TechStepActionType.TECHSTEP_NAME_VALIDATION_PENDING,
@@ -37296,10 +37367,13 @@
 	function save(techStepEditFormId) {
 	    return function (dispatch, getState) {
 	        var techStepEditForm = getState().techStepEditForms.filter(function (tef) { return tef.id == techStepEditFormId; })[0];
+	        var techOperationEditFormId = techStepEditForm.techOperationEditFormId;
 	        var type = techStepEditForm.techStepId == 0 ? 'PUT' : 'POST';
 	        var techStep = {
 	            id: techStepEditForm.techStepId,
-	            name: techStepEditForm.values.name
+	            description: techStepEditForm.values.description,
+	            toolUsages: techStepEditForm.toolUsages,
+	            partUsages: techStepEditForm.partUsages
 	        };
 	        $.ajax({
 	            url: serviceDomain_1.default + '/api/' + "techSteps" + "/",
@@ -37307,7 +37381,9 @@
 	            dataType: "json",
 	            data: _.assign({}, techStep, { __RequestVerificationToken: AntiForgeryToken.get() }),
 	            success: function (response) {
-	                dispatch(saveSucceed(techStepEditFormId));
+	                var isNewTechStep = techStepEditForm.techStepId == 0;
+	                var normalizedResponse = normalizr_1.normalize(response, techStepSchema_1.default);
+	                dispatch(saveSucceed(techStepEditFormId, isNewTechStep, normalizedResponse, { id: response.id, description: response.description }, techOperationEditFormId));
 	            },
 	            error: function (xhr, status, err) {
 	                dispatch(saveFailed(techStepEditFormId, err));
@@ -37324,10 +37400,14 @@
 	    };
 	}
 	exports.savePending = savePending;
-	function saveSucceed(techStepEditFormId) {
+	function saveSucceed(techStepEditFormId, isNewTechStep, response, techStep, techOperationEditFormId) {
 	    return {
 	        type: TechStepActionType.TECHSTEP_SAVE_SUCCEED,
-	        techStepEditFormId: techStepEditFormId
+	        techStepEditFormId: techStepEditFormId,
+	        techOperationEditFormId: techOperationEditFormId,
+	        isNewTechStep: isNewTechStep,
+	        response: response,
+	        techStep: techStep
 	    };
 	}
 	exports.saveSucceed = saveSucceed;
@@ -37358,10 +37438,15 @@
 	}
 	exports.changePartUsage = changePartUsage;
 	function openToolList(techStepEditFormId) {
-	    return {
-	        type: TechStepActionType.TECHSTEP_OPEN_TOOL_LIST,
-	        techStepEditFormId: techStepEditFormId,
-	        toolListId: IdGenerator.getToolListId()
+	    return function (dispath, getState) {
+	        var techStepEditForm = getState().techStepEditForms.filter(function (tef) { return tef.id == techStepEditFormId; })[0];
+	        var tools = techStepEditForm.toolUsages.map(function (tu) { return tu.toolId; });
+	        dispath({
+	            type: TechStepActionType.TECHSTEP_OPEN_TOOL_LIST,
+	            techStepEditFormId: techStepEditFormId,
+	            toolListId: IdGenerator.getToolListId(),
+	            tools: tools
+	        });
 	    };
 	}
 	exports.openToolList = openToolList;
@@ -37373,10 +37458,15 @@
 	}
 	exports.closeToolList = closeToolList;
 	function openPartList(techStepEditFormId) {
-	    return {
-	        type: TechStepActionType.TECHSTEP_OPEN_PART_LIST,
-	        techStepEditFormId: techStepEditFormId,
-	        partListId: IdGenerator.getPartListId()
+	    return function (dispath, getState) {
+	        var techStepEditForm = getState().techStepEditForms.filter(function (tef) { return tef.id == techStepEditFormId; })[0];
+	        var parts = techStepEditForm.partUsages.map(function (pu) { return pu.partId; });
+	        dispath({
+	            type: TechStepActionType.TECHSTEP_OPEN_PART_LIST,
+	            techStepEditFormId: techStepEditFormId,
+	            partListId: IdGenerator.getPartListId(),
+	            parts: parts
+	        });
 	    };
 	}
 	exports.openPartList = openPartList;
@@ -37387,6 +37477,40 @@
 	    };
 	}
 	exports.closePartList = closePartList;
+	function addToolUsages(techStepEditFormId, toolListId) {
+	    return function (dispatch, getState) {
+	        var state = getState();
+	        var toolListState = state.toolLists.filter(function (tl) { return tl.id == toolListId; })[0];
+	        var tools = toolListState.selectedTools.map(function (toolId) { return state.entities.tools[toolId]; });
+	        dispatch({
+	            type: TechStepActionType.TECHSTEP_ADD_TOOLUSAGES,
+	            techStepEditFormId: techStepEditFormId,
+	            toolListId: toolListId,
+	            tools: tools
+	        });
+	    };
+	}
+	exports.addToolUsages = addToolUsages;
+	function deleteToolUsages(techStepEditFormId) {
+	}
+	exports.deleteToolUsages = deleteToolUsages;
+	function addPartUsages(techStepEditFormId, partListId) {
+	    return function (dispatch, getState) {
+	        var state = getState();
+	        var partListState = state.partLists.filter(function (pl) { return pl.id == partListId; })[0];
+	        var parts = partListState.selectedParts.map(function (partId) { return state.entities.parts[partId]; });
+	        dispatch({
+	            type: TechStepActionType.TECHSTEP_ADD_PARTUSAGES,
+	            techStepEditFormId: techStepEditFormId,
+	            partListId: partListId,
+	            parts: parts
+	        });
+	    };
+	}
+	exports.addPartUsages = addPartUsages;
+	function deletePartUsages(techStepEditFormId) {
+	}
+	exports.deletePartUsages = deletePartUsages;
 	//# sourceMappingURL=techStepActionCreator.js.map
 
 /***/ },
@@ -37408,7 +37532,7 @@
 	exports.TECHSTEP_SELECT = 'TECHSTEP_SELECT';
 	exports.TECHSTEP_CONFIRM_DELETE = 'TECHSTEP_CONFIRM_DELETE';
 	exports.TECHSTEP_CANCEL_DELETE = 'TECHSTEP_CANCEL_DELETE';
-	exports.TECHSTEP_NAME_CHANGE = 'TECHSTEP_NAME_CHANGE';
+	exports.TECHSTEP_DESCRIPTION_CHANGE = 'TECHSTEP_DESCRIPTION_CHANGE';
 	exports.TECHSTEP_TOOLUSAGE_CHANGE = 'TECHSTEP_TOOLUSAGE_CHANGE';
 	exports.TECHSTEP_PARTUSAGE_CHANGE = 'TECHSTEP_PARTUSAGE_CHANGE';
 	exports.TECHSTEP_NAME_VALIDATION_PENDING = 'TECHSTEP_NAME_VALIDATION_PENDING';
@@ -37424,6 +37548,12 @@
 	exports.TECHSTEP_CLOSE_TOOL_LIST = 'TECHSTEP_CLOSE_TOOL_LIST';
 	exports.TECHSTEP_OPEN_PART_LIST = 'TECHSTEP_OPEN_PART_LIST';
 	exports.TECHSTEP_CLOSE_PART_LIST = 'TECHSTEP_CLOSE_PART_LIST';
+	exports.TECHSTEP_ADD_TOOLUSAGES = 'TECHSTEP_ADD_TOOLUSAGES';
+	exports.TECHSTEP_ADD_PARTUSAGES = 'TECHSTEP_ADD_PARTUSAGES';
+	exports.TECHSTEP_DELETE_TOOLUSAGES = 'TECHSTEP_DELETE_TOOLUSAGES';
+	exports.TECHSTEP_DELETE_PARTUSAGES = 'TECHSTEP_DELETE_PARTUSAGES';
+	exports.TECHSTEP_SELECT_TOOLUSAGES = 'TECHSTEP_SELECT_TOOLUSAGES';
+	exports.TECHSTEP_SELECT_PARTUSAGES = 'TECHSTEP_SELECT_PARTUSAGES';
 	//# sourceMappingURL=techStepActionType.js.map
 
 /***/ },
@@ -37487,8 +37617,8 @@
 	            event.preventDefault();
 	            dispatch(TechStepActionCreator.save(ownProps.id));
 	        },
-	        onNameChange: function (event) {
-	            dispatch(TechStepActionCreator.techStepNameChange(ownProps.id, event.target.value));
+	        onDescriptionChange: function (event) {
+	            dispatch(TechStepActionCreator.techStepDescriptionChange(ownProps.id, event.target.value));
 	        },
 	        onToolUsageChange: function (toolId, quantityValue) {
 	            dispatch(TechStepActionCreator.changeToolUsage(ownProps.id, toolId, quantityValue));
@@ -37507,6 +37637,12 @@
 	        },
 	        onClosePartList: function () {
 	            dispatch(TechStepActionCreator.closePartList(ownProps.id));
+	        },
+	        onAddToolUsages: function (toolListId) {
+	            dispatch(TechStepActionCreator.addToolUsages(ownProps.id, toolListId));
+	        },
+	        onAddPartUsages: function (partListId) {
+	            dispatch(TechStepActionCreator.addPartUsages(ownProps.id, partListId));
 	        }
 	    };
 	};
@@ -37550,33 +37686,33 @@
 	}(React.Component));
 	;
 	var ToolUsageRow = function (props) {
-	    return (React.createElement("tr", null, React.createElement("td", {style: { width: 25 + '%' }}, props.toolUsage.tool.id), React.createElement("td", {style: { width: 50 + '%' }}, props.toolUsage.tool.name), React.createElement("td", {style: { width: 25 + '%', position: "relative", padding: 0 + 'px', verticalAlign: 'middle' }}, React.createElement(ContentEditable, {html: String(props.toolUsage.quantity), onChange: props.onToolUsageChange}))));
+	    return (React.createElement("tr", null, React.createElement("td", {style: { width: 5 + '%' }}, React.createElement("input", {type: "checkbox", value: true, onChanged: function () { }, checked: false})), React.createElement("td", {style: { width: 20 + '%' }}, props.toolUsage.tool.id), React.createElement("td", {style: { width: 65 + '%' }}, props.toolUsage.tool.name), React.createElement("td", {style: { width: 10 + '%', position: "relative", padding: 0 + 'px', verticalAlign: 'middle' }}, React.createElement(ContentEditable, {html: String(props.toolUsage.quantity), onChange: props.onToolUsageChange}))));
 	};
 	var PartUsageRow = function (props) {
-	    return (React.createElement("tr", null, React.createElement("td", {style: { width: 25 + '%' }}, props.partUsage.part.id), React.createElement("td", {style: { width: 50 + '%' }}, props.partUsage.part.name), React.createElement("td", {style: { width: 25 + '%', position: "relative", padding: 0 + 'px', verticalAlign: 'middle' }}, React.createElement(ContentEditable, {html: String(props.partUsage.quantity), onChange: props.onPartUsageChange}))));
+	    return (React.createElement("tr", null, React.createElement("td", {style: { width: 5 + '%' }}, React.createElement("input", {type: "checkbox", value: true, onChange: function () { }, checked: false})), React.createElement("td", {style: { width: 20 + '%' }}, props.partUsage.part.id), React.createElement("td", {style: { width: 65 + '%' }}, props.partUsage.part.name), React.createElement("td", {style: { width: 10 + '%', position: "relative", padding: 0 + 'px', verticalAlign: 'middle' }}, React.createElement(ContentEditable, {html: String(props.partUsage.quantity), onChange: props.onPartUsageChange}))));
 	};
 	var ToolPicker = function (props) {
 	    return (React.createElement("div", null, props.isToolListOpen ?
-	        React.createElement("div", null, React.createElement("div", {className: "form-group"}, React.createElement("button", {type: "button", onClick: props.closeToolList, className: "btn btn-default"}, React.createElement("span", {className: "glyphicon glyphicon-minus"})), React.createElement("button", {type: "button", onClick: function () { }, className: "btn btn-default pull-right"}, React.createElement("span", {className: "glyphicon glyphicon-plus"}), React.createElement("span", null, " Добавить выбранные"))), React.createElement(ToolList_1.default, {id: props.toolListId}))
+	        React.createElement("div", null, React.createElement("div", {className: "form-group"}, React.createElement("button", {type: "button", onClick: props.closeToolList, className: "btn btn-default"}, React.createElement("span", {className: "glyphicon glyphicon-minus"})), React.createElement("button", {type: "button", onClick: function () { props.onToolAddBtnClick(props.toolListId); }, className: "btn btn-default pull-right"}, React.createElement("span", {className: "glyphicon glyphicon-plus"}), React.createElement("span", null, " Добавить выбранные"))), React.createElement(ToolList_1.default, {id: props.toolListId}))
 	        :
-	            React.createElement("div", {className: "form-group"}, React.createElement("button", {type: "button", onClick: props.openToolList, className: "btn btn-default"}, React.createElement("span", {className: "glyphicon glyphicon-plus"})))));
+	            React.createElement("div", {className: "form-group"}, React.createElement("button", {type: "button", onClick: props.openToolList, className: "btn btn-default"}, React.createElement("span", {className: "glyphicon glyphicon-plus"})), React.createElement("button", {type: "button", onClick: function () { }, className: "btn btn-default"}, React.createElement("span", {className: "glyphicon glyphicon-trash"})))));
 	};
 	var PartPicker = function (props) {
 	    return (React.createElement("div", null, props.isPartListOpen ?
-	        React.createElement("div", null, React.createElement("div", {className: "form-group"}, React.createElement("button", {type: "button", onClick: props.closePartList, className: "btn btn-default"}, React.createElement("span", {className: "glyphicon glyphicon-minus"})), React.createElement("button", {type: "button", onClick: function () { }, className: "btn btn-default pull-right"}, React.createElement("span", {className: "glyphicon glyphicon-plus"}), React.createElement("span", null, " Добавить выбранные"))), React.createElement(PartList_1.default, {id: props.partListId}))
+	        React.createElement("div", null, React.createElement("div", {className: "form-group"}, React.createElement("button", {type: "button", onClick: props.closePartList, className: "btn btn-default"}, React.createElement("span", {className: "glyphicon glyphicon-minus"})), React.createElement("button", {type: "button", onClick: function () { props.onPartAddBtnClick(props.partListId); }, className: "btn btn-default pull-right"}, React.createElement("span", {className: "glyphicon glyphicon-plus"}), React.createElement("span", null, " Добавить выбранные"))), React.createElement(PartList_1.default, {id: props.partListId}))
 	        :
-	            React.createElement("div", {className: "form-group"}, React.createElement("button", {type: "button", onClick: props.openPartList, className: "btn btn-default"}, React.createElement("span", {className: "glyphicon glyphicon-plus"})))));
+	            React.createElement("div", {className: "form-group"}, React.createElement("button", {type: "button", onClick: props.openPartList, className: "btn btn-default"}, React.createElement("span", {className: "glyphicon glyphicon-plus"})), React.createElement("button", {type: "button", onClick: function () { }, className: "btn btn-default"}, React.createElement("span", {className: "glyphicon glyphicon-trash"})))));
 	};
 	var ToolUsagesEditor = function (props) {
 	    var toolUsageRows = props.toolUsages.map(function (toolUsage) { return React.createElement(ToolUsageRow, {key: toolUsage.toolId, toolUsage: toolUsage, onToolUsageChange: function (value) { props.onToolUsageChange(toolUsage.toolId, value); }}); });
-	    return (React.createElement("div", null, React.createElement("div", {style: { marginBottom: 10 + 'px' }}, React.createElement("table", {className: "table table-bordered", style: { marginBottom: 1 + 'px' }}, React.createElement("thead", null, React.createElement("tr", null, React.createElement("th", {style: { width: 25 + '%' }}, "ID"), React.createElement("th", {style: { width: 50 + '%' }}, "Наименование"), React.createElement("th", {style: { width: 25 + '%' }}, "Применяемость"))), React.createElement("tbody", null, toolUsageRows))), React.createElement(ToolPicker, {isToolListOpen: props.isToolListOpen, toolListId: props.toolListId, openToolList: props.openToolList, closeToolList: props.closeToolList})));
+	    return (React.createElement("div", null, React.createElement("div", {style: { marginBottom: 10 + 'px' }}, React.createElement("table", {className: "table table-bordered", style: { marginBottom: 1 + 'px' }}, React.createElement("thead", null, React.createElement("tr", null, React.createElement("th", {style: { width: 5 + '%' }}, React.createElement("input", {type: "checkbox", value: true, onChange: function () { }, checked: false})), React.createElement("th", {style: { width: 20 + '%' }}, "ID"), React.createElement("th", {style: { width: 65 + '%' }}, "Наименование"), React.createElement("th", {style: { width: 10 + '%' }}, "Применяемость"))), React.createElement("tbody", null, toolUsageRows)))));
 	};
 	var PartUsagesEditor = function (props) {
 	    var partUsageRows = props.partUsages.map(function (partUsage) { return React.createElement(PartUsageRow, {key: partUsage.partId, partUsage: partUsage, onPartUsageChange: function (value) { props.onPartUsageChange(partUsage.partId, value); }}); });
-	    return (React.createElement("div", null, React.createElement("div", {style: { marginBottom: 10 + 'px' }}, React.createElement("table", {className: "table table-bordered", style: { marginBottom: 1 + 'px' }}, React.createElement("thead", null, React.createElement("tr", null, React.createElement("th", {style: { width: 25 + '%' }}, "ID"), React.createElement("th", {style: { width: 50 + '%' }}, "Наименование"), React.createElement("th", {style: { width: 25 + '%' }}, "Применяемость"))), React.createElement("tbody", null, partUsageRows))), React.createElement(PartPicker, {isPartListOpen: props.isPartListOpen, partListId: props.partListId, openPartList: props.openPartList, closePartList: props.closePartList})));
+	    return (React.createElement("div", null, React.createElement("div", {style: { marginBottom: 10 + 'px' }}, React.createElement("table", {className: "table table-bordered", style: { marginBottom: 1 + 'px' }}, React.createElement("thead", null, React.createElement("tr", null, React.createElement("th", {style: { width: 5 + '%' }}, React.createElement("input", {type: "checkbox", value: true, onChange: function () { }, checked: false})), React.createElement("th", {style: { width: 20 + '%' }}, "ID"), React.createElement("th", {style: { width: 65 + '%' }}, "Наименование"), React.createElement("th", {style: { width: 10 + '%' }}, "Применяемость"))), React.createElement("tbody", null, partUsageRows)))));
 	};
 	function TechStepEditForm(props) {
-	    return (React.createElement("div", {style: { width: '100%', display: 'flex', flexDirection: 'column', overflow: 'auto' }}, React.createElement(DialogBackground_1.default, {isShow: props.isSaving}, React.createElement(PendingPanel_1.default, {title: "Сохранение инструмента"}, React.createElement(PendingAnimation_1.default, null, React.createElement("h4", null, "Пожалуйста, подождите."), React.createElement("h4", null, "Идет сохранение.")))), React.createElement("form", {role: "form", onSubmit: props.handleSubmit}, React.createElement("div", {className: "form-group"}, React.createElement("label", {className: "control-label"}, "Описание: "), React.createElement("textarea", {className: "form-control", rows: "5", cols: "50", onChange: function () { }, value: props.values.description})), React.createElement("div", {className: "form-group"}, React.createElement("label", {className: "control-label"}, "Инструменты: "), React.createElement(ToolUsagesEditor, {toolUsages: props.toolUsages, onToolUsageChange: props.onToolUsageChange, isToolListOpen: props.isToolListOpen, toolListId: props.toolListId, openToolList: props.onOpenToolList, closeToolList: props.onCloseToolList})), React.createElement("div", {className: "form-group"}, React.createElement("label", {className: "control-label"}, "Детали: "), React.createElement(PartUsagesEditor, {partUsages: props.partUsages, onPartUsageChange: props.onPartUsageChange, isPartListOpen: props.isPartListOpen, partListId: props.partListId, openPartList: props.onOpenPartList, closePartList: props.onClosePartList})), React.createElement("div", {className: "form-group"}, React.createElement("div", {className: "btn-toolbar"}, React.createElement("button", {className: "btn btn-primary", type: "submit", disabled: false}, "Сохранить"))))));
+	    return (React.createElement("div", {style: { width: '100%', display: 'flex', flexDirection: 'column', overflow: 'auto' }}, React.createElement(DialogBackground_1.default, {isShow: props.isSaving}, React.createElement(PendingPanel_1.default, {title: "Сохранение инструмента"}, React.createElement(PendingAnimation_1.default, null, React.createElement("h4", null, "Пожалуйста, подождите."), React.createElement("h4", null, "Идет сохранение.")))), React.createElement("form", {role: "form", onSubmit: props.handleSubmit}, React.createElement("div", {className: "form-group"}, React.createElement("label", {className: "control-label"}, "Описание: "), React.createElement("textarea", {className: "form-control", rows: "5", cols: "50", onChange: props.onDescriptionChange, value: props.values.description})), React.createElement("div", {className: "form-group"}, React.createElement("label", {className: "control-label"}, "Инструменты: "), React.createElement("div", {className: "btn-toolbar", style: { marginBottom: '5px' }}, React.createElement("button", {type: "button", onClick: props.openToolList, className: "btn btn-default"}, React.createElement("span", {className: "glyphicon glyphicon-plus"})), React.createElement("button", {type: "button", onClick: function () { }, className: "btn btn-default"}, React.createElement("span", {className: "glyphicon glyphicon-trash"}))), React.createElement(ToolUsagesEditor, {toolUsages: props.toolUsages, onToolUsageChange: props.onToolUsageChange, isToolListOpen: props.isToolListOpen, toolListId: props.toolListId, openToolList: props.onOpenToolList, closeToolList: props.onCloseToolList, onToolAddBtnClick: props.onAddToolUsages})), React.createElement("div", {className: "form-group"}, React.createElement("label", {className: "control-label"}, "Детали: "), React.createElement("div", {className: "btn-toolbar", style: { marginBottom: '5px' }}, React.createElement("button", {type: "button", onClick: props.openPartList, className: "btn btn-default"}, React.createElement("span", {className: "glyphicon glyphicon-plus"})), React.createElement("button", {type: "button", onClick: function () { }, className: "btn btn-default"}, React.createElement("span", {className: "glyphicon glyphicon-trash"}))), React.createElement(PartUsagesEditor, {partUsages: props.partUsages, onPartUsageChange: props.onPartUsageChange, isPartListOpen: props.isPartListOpen, partListId: props.partListId, openPartList: props.onOpenPartList, closePartList: props.onClosePartList, onPartAddBtnClick: props.onAddPartUsages})), React.createElement("div", {className: "form-group"}, React.createElement("div", {className: "btn-toolbar"}, React.createElement("button", {className: "btn btn-primary", type: "submit", disabled: false}, "Сохранить"))))));
 	}
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.default = TechStepEditForm;
@@ -37705,11 +37841,10 @@
 	var TechOperationTable_1 = __webpack_require__(/*! ../../components/techOperation/TechOperationTable */ 323);
 	var PanelActionCreator = __webpack_require__(/*! ../../actions/panelActionCreator */ 195);
 	var TechOperationActionCreator = __webpack_require__(/*! ../../actions/techOperationActionCreator */ 324);
-	var PanelType = __webpack_require__(/*! ../../components/panelType */ 197);
 	var mapDispatchToTechOperationTableProps = function (dispatch, ownProps) {
 	    return {
 	        onTableRowDoubleClick: function (techOperation) {
-	            dispatch(PanelActionCreator.open(PanelType.TECHOPERATION_EDIT_FORM, "Редактирование детали", { techOperation: techOperation }));
+	            dispatch(PanelActionCreator.openTechOperationEditor(techOperation.id));
 	        },
 	        onTechOperationSelect: function (event) {
 	            var selectedTechOperations = ownProps.selectedTechOperations;
@@ -37790,6 +37925,7 @@
 	var serviceDomain_1 = __webpack_require__(/*! ../constants/serviceDomain */ 286);
 	var AntiForgeryToken = __webpack_require__(/*! ../utils/antiForgeryToken */ 287);
 	var techOperationSchema_1 = __webpack_require__(/*! ../schemas/techOperationSchema */ 326);
+	var IdGenerator = __webpack_require__(/*! ../utils/idGenerator */ 198);
 	function load(techOperationListId, page, techOperationPerPage, searchText) {
 	    return function (dispatch) {
 	        $.ajax({
@@ -37927,7 +38063,8 @@
 	        var type = techOperationEditForm.techOperationId == 0 ? 'PUT' : 'POST';
 	        var techOperation = {
 	            id: techOperationEditForm.techOperationId,
-	            name: techOperationEditForm.values.name
+	            name: techOperationEditForm.values.name,
+	            techSteps: techOperationEditForm.techSteps
 	        };
 	        $.ajax({
 	            url: serviceDomain_1.default + '/api/' + "techOperations" + "/",
@@ -37935,7 +38072,10 @@
 	            dataType: "json",
 	            data: _.assign({}, techOperation, { __RequestVerificationToken: AntiForgeryToken.get() }),
 	            success: function (response) {
-	                dispatch(saveSucceed(techOperationEditFormId));
+	                var isNewTechOperation = techOperationEditForm.techOperationId == 0;
+	                var normalizedResponse = normalizr_1.normalize(response, techOperationSchema_1.default);
+	                var techProcessEditFormId = techOperationEditForm.techProcessEditFormId;
+	                dispatch(saveSucceed(techOperationEditFormId, normalizedResponse, isNewTechOperation, techProcessEditFormId));
 	            },
 	            error: function (xhr, status, err) {
 	                dispatch(saveFailed(techOperationEditFormId, err));
@@ -37952,10 +38092,13 @@
 	    };
 	}
 	exports.savePending = savePending;
-	function saveSucceed(techOperationEditFormId) {
+	function saveSucceed(techOperationEditFormId, response, isNewTechOperation, techProcessEditFormId) {
 	    return {
 	        type: TechOperationActionType.TECHOPERATION_SAVE_SUCCEED,
-	        techOperationEditFormId: techOperationEditFormId
+	        techOperationEditFormId: techOperationEditFormId,
+	        response: response,
+	        isNewTechOperation: isNewTechOperation,
+	        techProcessEditFormId: techProcessEditFormId
 	    };
 	}
 	exports.saveSucceed = saveSucceed;
@@ -37967,6 +38110,40 @@
 	    };
 	}
 	exports.saveFailed = saveFailed;
+	function openTechStepList(techOperationEditFormId) {
+	    return function (dispatch, getState) {
+	        var state = getState();
+	        dispatch({
+	            type: TechOperationActionType.TECHOPERATION_OPEN_TECHSTEP_LIST,
+	            techOperationEditFormId: techOperationEditFormId,
+	            techStepListId: IdGenerator.getTechStepListId()
+	        });
+	    };
+	}
+	exports.openTechStepList = openTechStepList;
+	function closeTechStepList(techOperationEditFormId, techStepListId) {
+	    return {
+	        type: TechOperationActionType.TECHOPERATION_CLOSE_TECHSTEP_LIST,
+	        techOperationEditFormId: techOperationEditFormId,
+	        techStepListId: techStepListId
+	    };
+	}
+	exports.closeTechStepList = closeTechStepList;
+	function selectTechSteps(techOperationEditFormId, techSteps) {
+	    return {
+	        type: TechOperationActionType.TECHOPERATION_SELECT_TECHSTEPS,
+	        techOperationEditFormId: techOperationEditFormId,
+	        techSteps: techSteps
+	    };
+	}
+	exports.selectTechSteps = selectTechSteps;
+	function deleteTechSteps(techOperationEditFormId) {
+	    return {
+	        type: TechOperationActionType.TECHOPERATION_DELETE_TECHSTEPS,
+	        techOperationEditFormId: techOperationEditFormId
+	    };
+	}
+	exports.deleteTechSteps = deleteTechSteps;
 	//# sourceMappingURL=techOperationActionCreator.js.map
 
 /***/ },
@@ -37998,6 +38175,11 @@
 	exports.TECHOPERATION_SAVE_FAILED = 'TECHOPERATION_SAVE_FAILED';
 	exports.TECHOPERATION_NAME_UNDO = 'TECHOPERATION_NAME_UNDO';
 	exports.TECHOPERATION_NAME_REDO = 'TECHOPERATION_NAME_REDO';
+	exports.TECHOPERATION_OPEN_TECHSTEP_LIST = 'TECHOPERATION_OPEN_TECHSTEP_LIST';
+	exports.TECHOPERATION_CLOSE_TECHSTEP_LIST = 'TECHOPERATION_CLOSE_TECHSTEP_LIST';
+	exports.TECHOPERATION_ADD_TECHSTEPS = 'TECHOPERATION_ADD_TECHSTEPS';
+	exports.TECHOPERATION_DELETE_TECHSTEPS = 'TECHOPERATION_DELETE_TECHSTEPS';
+	exports.TECHOPERATION_SELECT_TECHSTEPS = 'TECHOPERATION_SELECT_TECHSTEPS';
 	//# sourceMappingURL=techOperationActionType.js.map
 
 /***/ },
@@ -38029,13 +38211,18 @@
 	var react_redux_1 = __webpack_require__(/*! react-redux */ 166);
 	var TechOperationEditForm_1 = __webpack_require__(/*! ../../components/techOperation/TechOperationEditForm */ 328);
 	var TechOperationActionCreator = __webpack_require__(/*! ../../actions/techOperationActionCreator */ 324);
+	var PanelActionCreator = __webpack_require__(/*! ../../actions/panelActionCreator */ 195);
 	var mapStateToTechOperationEditFormProps = function (state, ownProps) {
 	    var techOperationEditFormState = state.techOperationEditForms.filter(function (techOperationEditForm) { return techOperationEditForm.id == ownProps.id; })[0];
 	    var values = techOperationEditFormState.values;
 	    return {
 	        techOperationId: techOperationEditFormState.techOperationId,
 	        values: values,
-	        isSaving: techOperationEditFormState.isSaving
+	        techSteps: techOperationEditFormState.techSteps,
+	        selectedTechSteps: techOperationEditFormState.selectedTechSteps,
+	        isSaving: techOperationEditFormState.isSaving,
+	        techStepListId: techOperationEditFormState.techStepListId,
+	        isTechStepListOpen: techOperationEditFormState.isTechStepListOpen
 	    };
 	};
 	var mapDispatchToTechOperationEditFormProps = function (dispatch, ownProps) {
@@ -38046,6 +38233,18 @@
 	        },
 	        onNameChange: function (event) {
 	            dispatch(TechOperationActionCreator.techOperationNameChange(ownProps.id, event.target.value));
+	        },
+	        onTechStepListOpenBtnClick: function () {
+	            dispatch(PanelActionCreator.openTechStepEditor(0, ownProps.id));
+	        },
+	        onTableRowDoubleClick: function (techStep) {
+	            dispatch(PanelActionCreator.openTechStepEditor(techStep.id));
+	        },
+	        onTechStepSelect: function (selectedTechSteps) {
+	            dispatch(TechOperationActionCreator.selectTechSteps(ownProps.id, selectedTechSteps));
+	        },
+	        onAllTechStepsSelect: function (selectedTechSteps) {
+	            dispatch(TechOperationActionCreator.selectTechSteps(ownProps.id, selectedTechSteps));
 	        }
 	    };
 	};
@@ -38065,8 +38264,42 @@
 	var DialogBackground_1 = __webpack_require__(/*! ../common/DialogBackground */ 295);
 	var PendingPanel_1 = __webpack_require__(/*! ../common/PendingPanel */ 298);
 	var PendingAnimation_1 = __webpack_require__(/*! ../common/PendingAnimation */ 299);
+	var InnerPanel_1 = __webpack_require__(/*! ../common/InnerPanel */ 329);
+	var TechStepList_1 = __webpack_require__(/*! ../../containers/techStep/TechStepList */ 311);
+	var TechStepTable_1 = __webpack_require__(/*! ../techStep/TechStepTable */ 314);
 	function TechOperationEditForm(props) {
-	    return (React.createElement("div", {style: { width: '100%' }}, React.createElement(DialogBackground_1.default, {isShow: props.isSaving}, React.createElement(PendingPanel_1.default, {title: "Сохранение инструмента"}, React.createElement(PendingAnimation_1.default, null, React.createElement("h4", null, "Пожалуйста, подождите."), React.createElement("h4", null, "Идет сохранение.")))), React.createElement("form", {role: "form", onSubmit: props.handleSubmit}, React.createElement("div", {className: "form-group"}, React.createElement("label", {className: "control-label"}, "Наименование: "), React.createElement("input", {className: 'form-control', onChange: props.onNameChange, value: props.values.name})), React.createElement("div", {className: "form-group"}, React.createElement("div", {className: "btn-toolbar"}, React.createElement("button", {className: "btn btn-primary", type: "submit", disabled: false}, "Сохранить"))))));
+	    var onTechStepSelect = function (event) {
+	        var selectedTechSteps = props.selectedTechSteps;
+	        var techSteps = props.techSteps;
+	        if (event.target.checked) {
+	            var techStep;
+	            for (var i = 0; i < techSteps.length; i++) {
+	                if (techSteps[i].id == event.target.value) {
+	                    techStep = techSteps[i];
+	                    break;
+	                }
+	            }
+	            selectedTechSteps = selectedTechSteps.concat([
+	                techStep.id
+	            ]);
+	        }
+	        else {
+	            selectedTechSteps = selectedTechSteps.filter(function (id) { return id != event.target.value; });
+	        }
+	        props.onTechStepSelect(selectedTechSteps);
+	    };
+	    var onAllTechStepsSelect = function (event) {
+	        var selectedTechSteps = [];
+	        var techSteps = props.techSteps;
+	        if (event.target.checked) {
+	            selectedTechSteps = techSteps.map(function (techStep) { return techStep.id; });
+	        }
+	        props.onAllTechStepsSelect(selectedTechSteps);
+	    };
+	    return (React.createElement("div", {style: { width: '100%' }}, React.createElement(DialogBackground_1.default, {isShow: props.isSaving}, React.createElement(PendingPanel_1.default, {title: "Сохранение инструмента"}, React.createElement(PendingAnimation_1.default, null, React.createElement("h4", null, "Пожалуйста, подождите."), React.createElement("h4", null, "Идет сохранение.")))), React.createElement(DialogBackground_1.default, {isShow: props.isTechStepListOpen}, React.createElement(InnerPanel_1.default, {title: "Добавление шагов"}, React.createElement("button", {type: "button", onClick: function () { }, className: "btn btn-default", style: { marginBottom: '5px' }}, React.createElement("span", {className: "glyphicon glyphicon-plus"}), React.createElement("span", null, " Добавить выбранные")), React.createElement(TechStepList_1.default, {id: props.techStepListId}))), React.createElement("form", {role: "form", onSubmit: props.handleSubmit}, React.createElement("div", {className: "form-group"}, React.createElement("label", {className: "control-label"}, "Наименование:"), React.createElement("input", {className: 'form-control', onChange: props.onNameChange, value: props.values.name})), React.createElement("div", {className: "form-group"}, React.createElement("label", {className: "control-label"}, "Шаги: "), React.createElement("br", null), props.techSteps.length == 0 ?
+	        React.createElement("div", {style: { textAlign: 'center' }}, "На данный момент шаги отсутствуют.", React.createElement("br", null), "Для добавления нажмите кнопку ", React.createElement("button", {type: "button", onClick: props.onTechStepListOpenBtnClick, className: "btn btn-default"}, React.createElement("span", {className: "glyphicon glyphicon-plus"}), React.createElement("span", null, " Добавить")), ".")
+	        :
+	            React.createElement("div", null, React.createElement("button", {type: "button", onClick: function () { }, className: "btn btn-default", style: { marginBottom: '5px' }}, React.createElement("span", {className: "glyphicon glyphicon-plus"}), React.createElement("span", null, " Добавить")), React.createElement(TechStepTable_1.default, {techSteps: props.techSteps, selectedTechSteps: props.selectedTechSteps, onTableRowDoubleClick: props.onTableRowDoubleClick, onTechStepSelect: onTechStepSelect, onAllTechStepsSelect: onAllTechStepsSelect}))), React.createElement("div", {className: "form-group"}, React.createElement("div", {className: "btn-toolbar"}, React.createElement("button", {className: "btn btn-primary", type: "submit", disabled: false}, "Сохранить"))))));
 	}
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.default = TechOperationEditForm;
@@ -38074,6 +38307,22 @@
 
 /***/ },
 /* 329 */
+/*!*********************************************!*\
+  !*** ./src/components/common/InnerPanel.js ***!
+  \*********************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var React = __webpack_require__(/*! react */ 1);
+	function InnerPanel(props) {
+	    return (React.createElement("div", {className: "panel panel-default", style: { width: '400px' }}, React.createElement("div", {className: "panel-heading table-style"}, React.createElement("h4", {className: "panel-title"}, props.title), React.createElement("div", {className: "button-wrap"}, React.createElement("div", {className: "btn btn-default btn-sm", onClick: props.onClosePanel}, React.createElement("div", {style: { display: 'table-cell', verticalAlign: 'middle' }}, React.createElement("span", null, '❌'))))), React.createElement("div", {className: "panel-body"}, props.children)));
+	}
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = InnerPanel;
+	//# sourceMappingURL=InnerPanel.js.map
+
+/***/ },
+/* 330 */
 /*!*******************************************************!*\
   !*** ./src/containers/techProcess/TechProcessList.js ***!
   \*******************************************************/
@@ -38081,8 +38330,8 @@
 
 	"use strict";
 	var react_redux_1 = __webpack_require__(/*! react-redux */ 166);
-	var TechProcessList_1 = __webpack_require__(/*! ../../components/techProcess/TechProcessList */ 330);
-	var TechProcessActionCreator = __webpack_require__(/*! ../../actions/techProcessActionCreator */ 333);
+	var TechProcessList_1 = __webpack_require__(/*! ../../components/techProcess/TechProcessList */ 331);
+	var TechProcessActionCreator = __webpack_require__(/*! ../../actions/techProcessActionCreator */ 334);
 	var PanelActionCreator = __webpack_require__(/*! ../../actions/panelActionCreator */ 195);
 	var PanelType = __webpack_require__(/*! ../../components/panelType */ 197);
 	var PagingParameter = __webpack_require__(/*! ../../constants/pagingParameter */ 293);
@@ -38121,7 +38370,7 @@
 	//# sourceMappingURL=TechProcessList.js.map
 
 /***/ },
-/* 330 */
+/* 331 */
 /*!*******************************************************!*\
   !*** ./src/components/techProcess/TechProcessList.js ***!
   \*******************************************************/
@@ -38134,7 +38383,7 @@
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var React = __webpack_require__(/*! react */ 1);
-	var TechProcessTable_1 = __webpack_require__(/*! ../../containers/techProcess/TechProcessTable */ 331);
+	var TechProcessTable_1 = __webpack_require__(/*! ../../containers/techProcess/TechProcessTable */ 332);
 	var ItemListControlPanel_1 = __webpack_require__(/*! ../common/ItemListControlPanel */ 290);
 	var ItemsPerPageSelector_1 = __webpack_require__(/*! ../common/ItemsPerPageSelector */ 292);
 	var Pagination_1 = __webpack_require__(/*! ../common/Pagination */ 294);
@@ -38184,7 +38433,7 @@
 	//# sourceMappingURL=TechProcessList.js.map
 
 /***/ },
-/* 331 */
+/* 332 */
 /*!********************************************************!*\
   !*** ./src/containers/techProcess/TechProcessTable.js ***!
   \********************************************************/
@@ -38192,14 +38441,13 @@
 
 	"use strict";
 	var react_redux_1 = __webpack_require__(/*! react-redux */ 166);
-	var TechProcessTable_1 = __webpack_require__(/*! ../../components/techProcess/TechProcessTable */ 332);
+	var TechProcessTable_1 = __webpack_require__(/*! ../../components/techProcess/TechProcessTable */ 333);
 	var PanelActionCreator = __webpack_require__(/*! ../../actions/panelActionCreator */ 195);
-	var TechProcessActionCreator = __webpack_require__(/*! ../../actions/techProcessActionCreator */ 333);
-	var PanelType = __webpack_require__(/*! ../../components/panelType */ 197);
+	var TechProcessActionCreator = __webpack_require__(/*! ../../actions/techProcessActionCreator */ 334);
 	var mapDispatchToTechProcessTableProps = function (dispatch, ownProps) {
 	    return {
 	        onTableRowDoubleClick: function (techProcess) {
-	            dispatch(PanelActionCreator.open(PanelType.TECHPROCESS_EDIT_FORM, "Редактирование детали", { techProcess: techProcess }));
+	            dispatch(PanelActionCreator.openTechProcessEditor(techProcess.id));
 	        },
 	        onTechProcessSelect: function (event) {
 	            var selectedTechProcesses = ownProps.selectedTechProcesses;
@@ -38236,7 +38484,7 @@
 	//# sourceMappingURL=TechProcessTable.js.map
 
 /***/ },
-/* 332 */
+/* 333 */
 /*!********************************************************!*\
   !*** ./src/components/techProcess/TechProcessTable.js ***!
   \********************************************************/
@@ -38267,7 +38515,7 @@
 	//# sourceMappingURL=TechProcessTable.js.map
 
 /***/ },
-/* 333 */
+/* 334 */
 /*!*************************************************!*\
   !*** ./src/actions/techProcessActionCreator.js ***!
   \*************************************************/
@@ -38275,11 +38523,12 @@
 
 	"use strict";
 	var $ = __webpack_require__(/*! jquery */ 211);
-	var TechProcessActionType = __webpack_require__(/*! ./techProcessActionType */ 334);
+	var TechProcessActionType = __webpack_require__(/*! ./techProcessActionType */ 335);
 	var normalizr_1 = __webpack_require__(/*! normalizr */ 213);
 	var serviceDomain_1 = __webpack_require__(/*! ../constants/serviceDomain */ 286);
 	var AntiForgeryToken = __webpack_require__(/*! ../utils/antiForgeryToken */ 287);
-	var techProcessSchema_1 = __webpack_require__(/*! ../schemas/techProcessSchema */ 335);
+	var techProcessSchema_1 = __webpack_require__(/*! ../schemas/techProcessSchema */ 336);
+	var IdGenerator = __webpack_require__(/*! ../utils/idGenerator */ 198);
 	function load(techProcessListId, page, techProcessPerPage, searchText) {
 	    return function (dispatch) {
 	        $.ajax({
@@ -38457,10 +38706,36 @@
 	    };
 	}
 	exports.saveFailed = saveFailed;
+	function openTechOperationList(techProcessEditFormId) {
+	    return function (dispatch, getState) {
+	        var state = getState();
+	        dispatch({
+	            type: TechProcessActionType.TECHPROCESS_OPEN_TECHOPERATION_LIST,
+	            techProcessEditFormId: techProcessEditFormId,
+	            techOperationListId: IdGenerator.getPartListId()
+	        });
+	    };
+	}
+	exports.openTechOperationList = openTechOperationList;
+	function selectTechOperations(techProcessEditFormId, techOperations) {
+	    return {
+	        type: TechProcessActionType.TECHPROCESS_SELECT_TECHOPERATIONS,
+	        techProcessEditFormId: techProcessEditFormId,
+	        techOperations: techOperations
+	    };
+	}
+	exports.selectTechOperations = selectTechOperations;
+	function deleteTechOperations(techProcessEditFormId) {
+	    return {
+	        type: TechProcessActionType.TECHPROCESS_DELETE_TECHOPERATIONS,
+	        techProcessEditFormId: techProcessEditFormId
+	    };
+	}
+	exports.deleteTechOperations = deleteTechOperations;
 	//# sourceMappingURL=techProcessActionCreator.js.map
 
 /***/ },
-/* 334 */
+/* 335 */
 /*!**********************************************!*\
   !*** ./src/actions/techProcessActionType.js ***!
   \**********************************************/
@@ -38488,10 +38763,15 @@
 	exports.TECHPROCESS_SAVE_FAILED = 'TECHPROCESS_SAVE_FAILED';
 	exports.TECHPROCESS_NAME_UNDO = 'TECHPROCESS_NAME_UNDO';
 	exports.TECHPROCESS_NAME_REDO = 'TECHPROCESS_NAME_REDO';
+	exports.TECHPROCESS_OPEN_TECHOPERATION_LIST = 'TECHPROCESS_OPEN_TECHOPERATION_LIST';
+	exports.TECHPROCESS_CLOSE_TECHOPERATION_LIST = 'TECHPROCESS_CLOSE_TECHOPERATION_LIST';
+	exports.TECHPROCESS_ADD_TECHOPERATIONS = 'TECHPROCESS_ADD_TECHOPERATIONS';
+	exports.TECHPROCESS_DELETE_TECHOPERATIONS = 'TECHPROCESS_DELETE_TECHOPERATIONS';
+	exports.TECHPROCESS_SELECT_TECHOPERATIONS = 'TECHPROCESS_SELECT_TECHOPERATIONS';
 	//# sourceMappingURL=techProcessActionType.js.map
 
 /***/ },
-/* 335 */
+/* 336 */
 /*!******************************************!*\
   !*** ./src/schemas/techProcessSchema.js ***!
   \******************************************/
@@ -38509,7 +38789,7 @@
 	//# sourceMappingURL=techProcessSchema.js.map
 
 /***/ },
-/* 336 */
+/* 337 */
 /*!***********************************************************!*\
   !*** ./src/containers/techProcess/TechProcessEditForm.js ***!
   \***********************************************************/
@@ -38517,15 +38797,20 @@
 
 	"use strict";
 	var react_redux_1 = __webpack_require__(/*! react-redux */ 166);
-	var TechProcessEditForm_1 = __webpack_require__(/*! ../../components/techProcess/TechProcessEditForm */ 337);
-	var TechProcessActionCreator = __webpack_require__(/*! ../../actions/techProcessActionCreator */ 333);
+	var TechProcessEditForm_1 = __webpack_require__(/*! ../../components/techProcess/TechProcessEditForm */ 338);
+	var TechProcessActionCreator = __webpack_require__(/*! ../../actions/techProcessActionCreator */ 334);
+	var PanelActionCreator = __webpack_require__(/*! ../../actions/panelActionCreator */ 195);
 	var mapStateToTechProcessEditFormProps = function (state, ownProps) {
 	    var techProcessEditFormState = state.techProcessEditForms.filter(function (techProcessEditForm) { return techProcessEditForm.id == ownProps.id; })[0];
 	    var values = techProcessEditFormState.values;
 	    return {
 	        techProcessId: techProcessEditFormState.techProcessId,
 	        values: values,
-	        isSaving: techProcessEditFormState.isSaving
+	        techOperations: techProcessEditFormState.techOperations,
+	        selectedTechOperations: techProcessEditFormState.selectedTechOperations,
+	        isSaving: techProcessEditFormState.isSaving,
+	        isTechOperationListOpen: techProcessEditFormState.isTechOperationListOpen,
+	        techOperationListId: techProcessEditFormState.techOperationListId
 	    };
 	};
 	var mapDispatchToTechProcessEditFormProps = function (dispatch, ownProps) {
@@ -38536,6 +38821,18 @@
 	        },
 	        onNameChange: function (event) {
 	            dispatch(TechProcessActionCreator.techProcessNameChange(ownProps.id, event.target.value));
+	        },
+	        onTechOperationListOpenBtnClick: function () {
+	            dispatch(PanelActionCreator.openTechOperationEditor(0, ownProps.id));
+	        },
+	        onTableRowDoubleClick: function (techOperation) {
+	            dispatch(PanelActionCreator.openTechOperationEditor(techOperation.id));
+	        },
+	        onTechOperationSelect: function (selectedTechOperations) {
+	            dispatch(TechProcessActionCreator.selectTechOperations(ownProps.id, selectedTechOperations));
+	        },
+	        onAllTechOperationsSelect: function (selectedTechOperations) {
+	            dispatch(TechProcessActionCreator.selectTechOperations(ownProps.id, selectedTechOperations));
 	        }
 	    };
 	};
@@ -38544,7 +38841,7 @@
 	//# sourceMappingURL=TechProcessEditForm.js.map
 
 /***/ },
-/* 337 */
+/* 338 */
 /*!***********************************************************!*\
   !*** ./src/components/techProcess/TechProcessEditForm.js ***!
   \***********************************************************/
@@ -38555,15 +38852,49 @@
 	var DialogBackground_1 = __webpack_require__(/*! ../common/DialogBackground */ 295);
 	var PendingPanel_1 = __webpack_require__(/*! ../common/PendingPanel */ 298);
 	var PendingAnimation_1 = __webpack_require__(/*! ../common/PendingAnimation */ 299);
+	var InnerPanel_1 = __webpack_require__(/*! ../common/InnerPanel */ 329);
+	var TechOperationList_1 = __webpack_require__(/*! ../../containers/techOperation/TechOperationList */ 320);
+	var TechOperationTable_1 = __webpack_require__(/*! ../../components/techOperation/TechOperationTable */ 323);
 	function TechProcessEditForm(props) {
-	    return (React.createElement("div", {style: { width: '100%' }}, React.createElement(DialogBackground_1.default, {isShow: props.isSaving}, React.createElement(PendingPanel_1.default, {title: "Сохранение инструмента"}, React.createElement(PendingAnimation_1.default, null, React.createElement("h4", null, "Пожалуйста, подождите."), React.createElement("h4", null, "Идет сохранение.")))), React.createElement("form", {role: "form", onSubmit: props.handleSubmit}, React.createElement("div", {className: "form-group"}, React.createElement("label", {className: "control-label"}, "Наименование: "), React.createElement("input", {className: 'form-control', onChange: props.onNameChange, value: props.values.name})), React.createElement("div", {className: "form-group"}, React.createElement("div", {className: "btn-toolbar"}, React.createElement("button", {className: "btn btn-primary", type: "submit", disabled: false}, "Сохранить"))))));
+	    var onTechOperationSelect = function (event) {
+	        var selectedTechOperations = props.selectedTechOperations;
+	        var techOperations = props.techOperations;
+	        if (event.target.checked) {
+	            var techOperation;
+	            for (var i = 0; i < techOperations.length; i++) {
+	                if (techOperations[i].id == event.target.value) {
+	                    techOperation = techOperations[i];
+	                    break;
+	                }
+	            }
+	            selectedTechOperations = selectedTechOperations.concat([
+	                techOperation.id
+	            ]);
+	        }
+	        else {
+	            selectedTechOperations = selectedTechOperations.filter(function (id) { return id != event.target.value; });
+	        }
+	        props.onTechOperationSelect(selectedTechOperations);
+	    };
+	    var onAllTechOperationsSelect = function (event) {
+	        var selectedTechOperations = [];
+	        var techOperations = props.techOperations;
+	        if (event.target.checked) {
+	            selectedTechOperations = techOperations.map(function (techOperation) { return techOperation.id; });
+	        }
+	        props.onAllTechOperationsSelect(selectedTechOperations);
+	    };
+	    return (React.createElement("div", {style: { width: '100%' }}, React.createElement(DialogBackground_1.default, {isShow: props.isSaving}, React.createElement(PendingPanel_1.default, {title: "Сохранение инструмента"}, React.createElement(PendingAnimation_1.default, null, React.createElement("h4", null, "Пожалуйста, подождите."), React.createElement("h4", null, "Идет сохранение.")))), React.createElement(DialogBackground_1.default, {isShow: props.isTechOperationListOpen}, React.createElement(InnerPanel_1.default, {title: "Добавление операции"}, React.createElement("button", {type: "button", onClick: function () { }, className: "btn btn-default", style: { marginBottom: '5px' }}, React.createElement("span", {className: "glyphicon glyphicon-plus"}), React.createElement("span", null, " Добавить выбранные")), React.createElement(TechOperationList_1.default, {id: props.techOperationListId}))), React.createElement("form", {role: "form", onSubmit: props.handleSubmit}, React.createElement("div", {className: "form-group"}, React.createElement("label", {className: "control-label"}, "Наименование:"), React.createElement("input", {className: 'form-control', onChange: props.onNameChange, value: props.values.name})), React.createElement("div", {className: "form-group"}, React.createElement("label", {className: "control-label"}, "Операции: "), React.createElement("br", null), props.techOperations.length == 0 ?
+	        React.createElement("div", {style: { textAlign: 'center' }}, "На данный момент операции отсутствуют.", React.createElement("br", null), "Для добавления нажмите кнопку ", React.createElement("button", {type: "button", onClick: props.onTechOperationListOpenBtnClick, className: "btn btn-default"}, React.createElement("span", {className: "glyphicon glyphicon-plus"}), React.createElement("span", null, " Добавить")), ".")
+	        :
+	            React.createElement("div", null, React.createElement("button", {type: "button", onClick: props.onTechOperationListOpenBtnClick, className: "btn btn-default", style: { marginBottom: '5px' }}, React.createElement("span", {className: "glyphicon glyphicon-plus"}), React.createElement("span", null, " Добавить")), React.createElement(TechOperationTable_1.default, {techOperations: props.techOperations, selectedTechOperations: props.selectedTechOperations, onTechOperationSelect: onTechOperationSelect, onAllTechOperationsSelect: onAllTechOperationsSelect, onTableRowDoubleClick: props.onTableRowDoubleClick}))), React.createElement("div", {className: "form-group"}, React.createElement("div", {className: "btn-toolbar"}, React.createElement("button", {className: "btn btn-primary", type: "submit", disabled: false}, "Сохранить"))))));
 	}
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.default = TechProcessEditForm;
 	//# sourceMappingURL=TechProcessEditForm.js.map
 
 /***/ },
-/* 338 */
+/* 339 */
 /*!*************************************!*\
   !*** ./src/store/configureStore.js ***!
   \*************************************/
@@ -38571,8 +38902,8 @@
 
 	"use strict";
 	var redux_1 = __webpack_require__(/*! redux */ 173);
-	var main_1 = __webpack_require__(/*! ../reducers/main */ 339);
-	var redux_thunk_1 = __webpack_require__(/*! redux-thunk */ 353);
+	var main_1 = __webpack_require__(/*! ../reducers/main */ 340);
+	var redux_thunk_1 = __webpack_require__(/*! redux-thunk */ 354);
 	var logger = function (store) { return function (next) { return function (action) {
 	    console.group(action.type);
 	    console.info('dispatching', action);
@@ -38590,7 +38921,7 @@
 	//# sourceMappingURL=configureStore.js.map
 
 /***/ },
-/* 339 */
+/* 340 */
 /*!******************************!*\
   !*** ./src/reducers/main.js ***!
   \******************************/
@@ -38598,18 +38929,18 @@
 
 	"use strict";
 	var redux_1 = __webpack_require__(/*! redux */ 173);
-	var panels_1 = __webpack_require__(/*! ./panels */ 340);
-	var entities_1 = __webpack_require__(/*! ./entities */ 341);
-	var toolLists_1 = __webpack_require__(/*! ./toolLists */ 343);
-	var toolEditForms_1 = __webpack_require__(/*! ./toolEditForms */ 344);
-	var partLists_1 = __webpack_require__(/*! ./partLists */ 345);
-	var partEditForms_1 = __webpack_require__(/*! ./partEditForms */ 346);
-	var techStepLists_1 = __webpack_require__(/*! ./techStepLists */ 347);
-	var techStepEditForms_1 = __webpack_require__(/*! ./techStepEditForms */ 348);
-	var techOperationLists_1 = __webpack_require__(/*! ./techOperationLists */ 349);
-	var techOperationEditForms_1 = __webpack_require__(/*! ./techOperationEditForms */ 350);
-	var techProcessLists_1 = __webpack_require__(/*! ./techProcessLists */ 351);
-	var techProcessEditForms_1 = __webpack_require__(/*! ./techProcessEditForms */ 352);
+	var panels_1 = __webpack_require__(/*! ./panels */ 341);
+	var entities_1 = __webpack_require__(/*! ./entities */ 342);
+	var toolLists_1 = __webpack_require__(/*! ./toolLists */ 344);
+	var toolEditForms_1 = __webpack_require__(/*! ./toolEditForms */ 345);
+	var partLists_1 = __webpack_require__(/*! ./partLists */ 346);
+	var partEditForms_1 = __webpack_require__(/*! ./partEditForms */ 347);
+	var techStepLists_1 = __webpack_require__(/*! ./techStepLists */ 348);
+	var techStepEditForms_1 = __webpack_require__(/*! ./techStepEditForms */ 349);
+	var techOperationLists_1 = __webpack_require__(/*! ./techOperationLists */ 350);
+	var techOperationEditForms_1 = __webpack_require__(/*! ./techOperationEditForms */ 351);
+	var techProcessLists_1 = __webpack_require__(/*! ./techProcessLists */ 352);
+	var techProcessEditForms_1 = __webpack_require__(/*! ./techProcessEditForms */ 353);
 	var main = redux_1.combineReducers({
 	    panels: panels_1.default,
 	    entities: entities_1.default,
@@ -38629,7 +38960,7 @@
 	//# sourceMappingURL=main.js.map
 
 /***/ },
-/* 340 */
+/* 341 */
 /*!********************************!*\
   !*** ./src/reducers/panels.js ***!
   \********************************/
@@ -38665,7 +38996,7 @@
 	//# sourceMappingURL=panels.js.map
 
 /***/ },
-/* 341 */
+/* 342 */
 /*!**********************************!*\
   !*** ./src/reducers/entities.js ***!
   \**********************************/
@@ -38676,8 +39007,8 @@
 	var PartActionType = __webpack_require__(/*! ../actions/partActionType */ 307);
 	var TechStepActionType = __webpack_require__(/*! ../actions/techStepActionType */ 316);
 	var TechOperationActionType = __webpack_require__(/*! ../actions/techOperationActionType */ 325);
-	var TechProcessActionType = __webpack_require__(/*! ../actions/techProcessActionType */ 334);
-	var _ = __webpack_require__(/*! lodash */ 342);
+	var TechProcessActionType = __webpack_require__(/*! ../actions/techProcessActionType */ 335);
+	var _ = __webpack_require__(/*! lodash */ 343);
 	var initialState = {
 	    tools: {},
 	    parts: {},
@@ -38721,6 +39052,14 @@
 	                tools: _.assign({}, state.tools, action.response.entities.tools),
 	                parts: _.assign({}, state.parts, action.response.entities.parts)
 	            });
+	        case TechStepActionType.TECHSTEP_SAVE_SUCCEED:
+	            return _.assign({}, state, {
+	                techSteps: _.assign({}, state.techSteps, action.response.entities.techSteps),
+	                toolUsages: _.assign({}, state.toolUsages, action.response.entities.toolUsages),
+	                partUsages: _.assign({}, state.partUsages, action.response.entities.partUsages),
+	                tools: _.assign({}, state.tools, action.response.entities.tools),
+	                parts: _.assign({}, state.parts, action.response.entities.parts)
+	            });
 	        default:
 	            return state;
 	    }
@@ -38731,7 +39070,7 @@
 	//# sourceMappingURL=entities.js.map
 
 /***/ },
-/* 342 */
+/* 343 */
 /*!****************************!*\
   !*** ./~/lodash/lodash.js ***!
   \****************************/
@@ -54768,7 +55107,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./../webpack/buildin/module.js */ 243)(module), (function() { return this; }())))
 
 /***/ },
-/* 343 */
+/* 344 */
 /*!***********************************!*\
   !*** ./src/reducers/toolLists.js ***!
   \***********************************/
@@ -54779,7 +55118,7 @@
 	var PanelActionType = __webpack_require__(/*! ../actions/panelActionType */ 196);
 	var TechStepActionType = __webpack_require__(/*! ../actions/techStepActionType */ 316);
 	var PanelType = __webpack_require__(/*! ../components/panelType */ 197);
-	var _ = __webpack_require__(/*! lodash */ 342);
+	var _ = __webpack_require__(/*! lodash */ 343);
 	var initialState = [];
 	function toolLists(state, action) {
 	    if (state === void 0) { state = initialState; }
@@ -54904,6 +55243,7 @@
 	                    id: action.contentId,
 	                    tools: [],
 	                    selectedTools: [],
+	                    disabledTools: [],
 	                    params: {
 	                        isPending: true,
 	                        isDeleting: false,
@@ -54917,6 +55257,7 @@
 	                    id: action.toolListId,
 	                    tools: [],
 	                    selectedTools: [],
+	                    disabledTools: action.tools,
 	                    params: {
 	                        isPending: true,
 	                        isDeleting: false,
@@ -54924,6 +55265,18 @@
 	                    }
 	                }
 	            ]);
+	        case TechStepActionType.TECHSTEP_ADD_TOOLUSAGES:
+	            return state.map(function (toolList) {
+	                if (toolList.id === action.toolListId) {
+	                    return _.assign({}, toolList, {
+	                        selectedTools: [],
+	                        disabledTools: toolList.disabledTools.concat(action.tools.map(function (tool) { return tool.id; }))
+	                    });
+	                }
+	                else {
+	                    return toolList;
+	                }
+	            });
 	        default:
 	            return state;
 	    }
@@ -54933,7 +55286,7 @@
 	//# sourceMappingURL=toolLists.js.map
 
 /***/ },
-/* 344 */
+/* 345 */
 /*!***************************************!*\
   !*** ./src/reducers/toolEditForms.js ***!
   \***************************************/
@@ -55026,7 +55379,7 @@
 	//# sourceMappingURL=toolEditForms.js.map
 
 /***/ },
-/* 345 */
+/* 346 */
 /*!***********************************!*\
   !*** ./src/reducers/partLists.js ***!
   \***********************************/
@@ -55037,7 +55390,7 @@
 	var PanelActionType = __webpack_require__(/*! ../actions/panelActionType */ 196);
 	var TechStepActionType = __webpack_require__(/*! ../actions/techStepActionType */ 316);
 	var PanelType = __webpack_require__(/*! ../components/panelType */ 197);
-	var _ = __webpack_require__(/*! lodash */ 342);
+	var _ = __webpack_require__(/*! lodash */ 343);
 	var initialState = [];
 	function partLists(state, action) {
 	    if (state === void 0) { state = initialState; }
@@ -55162,6 +55515,7 @@
 	                    id: action.contentId,
 	                    parts: [],
 	                    selectedParts: [],
+	                    disabledParts: [],
 	                    params: {
 	                        isPending: true,
 	                        isDeleting: false,
@@ -55175,6 +55529,7 @@
 	                    id: action.partListId,
 	                    parts: [],
 	                    selectedParts: [],
+	                    disabledParts: action.parts,
 	                    params: {
 	                        isPending: true,
 	                        isDeleting: false,
@@ -55182,6 +55537,18 @@
 	                    }
 	                }
 	            ]);
+	        case TechStepActionType.TECHSTEP_ADD_PARTUSAGES:
+	            return state.map(function (partList) {
+	                if (partList.id === action.partListId) {
+	                    return _.assign({}, partList, {
+	                        selectedParts: [],
+	                        disabledParts: partList.disabledParts.concat(action.parts.map(function (part) { return part.id; }))
+	                    });
+	                }
+	                else {
+	                    return partList;
+	                }
+	            });
 	        default:
 	            return state;
 	    }
@@ -55191,7 +55558,7 @@
 	//# sourceMappingURL=partLists.js.map
 
 /***/ },
-/* 346 */
+/* 347 */
 /*!***************************************!*\
   !*** ./src/reducers/partEditForms.js ***!
   \***************************************/
@@ -55284,7 +55651,7 @@
 	//# sourceMappingURL=partEditForms.js.map
 
 /***/ },
-/* 347 */
+/* 348 */
 /*!***************************************!*\
   !*** ./src/reducers/techStepLists.js ***!
   \***************************************/
@@ -55292,9 +55659,10 @@
 
 	"use strict";
 	var TechStepActionType = __webpack_require__(/*! ../actions/techStepActionType */ 316);
+	var TechOperationActionType = __webpack_require__(/*! ../actions/techOperationActionType */ 325);
 	var PanelActionType = __webpack_require__(/*! ../actions/panelActionType */ 196);
 	var PanelType = __webpack_require__(/*! ../components/panelType */ 197);
-	var _ = __webpack_require__(/*! lodash */ 342);
+	var _ = __webpack_require__(/*! lodash */ 343);
 	var initialState = [];
 	function techStepLists(state, action) {
 	    if (state === void 0) { state = initialState; }
@@ -55426,6 +55794,19 @@
 	                    }
 	                }
 	            ]);
+	        case TechOperationActionType.TECHOPERATION_OPEN_TECHSTEP_LIST:
+	            return state.concat([
+	                {
+	                    id: action.techStepListId,
+	                    techSteps: [],
+	                    selectedTechSteps: [],
+	                    params: {
+	                        isPending: true,
+	                        isDeleting: false,
+	                        isConfirmDeleting: false
+	                    }
+	                }
+	            ]);
 	        default:
 	            return state;
 	    }
@@ -55435,7 +55816,7 @@
 	//# sourceMappingURL=techStepLists.js.map
 
 /***/ },
-/* 348 */
+/* 349 */
 /*!*******************************************!*\
   !*** ./src/reducers/techStepEditForms.js ***!
   \*******************************************/
@@ -55457,11 +55838,14 @@
 	                {
 	                    id: action.contentId,
 	                    techStepId: action.params.techStep.id,
+	                    techOperationEditFormId: action.params.techOperationEditFormId,
 	                    values: {
 	                        description: action.params.techStep.description
 	                    },
 	                    toolUsages: action.params.toolUsages,
+	                    selectedToolUsages: [],
 	                    partUsages: action.params.partUsages,
+	                    selectedPartUsages: [],
 	                    isSaving: false,
 	                    toolListId: null,
 	                    isToolListOpen: false,
@@ -55469,11 +55853,11 @@
 	                    isPartListOpen: false
 	                }
 	            ]);
-	        case TechStepActionType.TECHSTEP_NAME_CHANGE:
+	        case TechStepActionType.TECHSTEP_DESCRIPTION_CHANGE:
 	            return state.map(function (techStepEditForm) {
 	                if (techStepEditForm.id === action.techStepEditFormId) {
 	                    return _.assign({}, techStepEditForm, {
-	                        values: _.assign({}, techStepEditForm.values, { name: action.name }),
+	                        values: _.assign({}, techStepEditForm.values, { description: action.description }),
 	                    });
 	                }
 	                else {
@@ -55591,6 +55975,88 @@
 	                    return techStepEditForm;
 	                }
 	            });
+	        case TechStepActionType.TECHSTEP_ADD_TOOLUSAGES:
+	            return state.map(function (techStepEditForm) {
+	                if (techStepEditForm.id === action.techStepEditFormId) {
+	                    return _.assign({}, techStepEditForm, {
+	                        toolUsages: techStepEditForm.toolUsages.concat(action.tools.map(function (tool) {
+	                            return {
+	                                techStepId: techStepEditForm.techStepId,
+	                                toolId: tool.id,
+	                                quantity: 1,
+	                                tool: tool
+	                            };
+	                        }))
+	                    });
+	                }
+	                else {
+	                    return techStepEditForm;
+	                }
+	            });
+	        case TechStepActionType.TECHSTEP_ADD_PARTUSAGES:
+	            return state.map(function (techStepEditForm) {
+	                if (techStepEditForm.id === action.techStepEditFormId) {
+	                    return _.assign({}, techStepEditForm, {
+	                        partUsages: techStepEditForm.partUsages.concat(action.parts.map(function (part) {
+	                            return {
+	                                techStepId: techStepEditForm.techStepId,
+	                                partId: part.id,
+	                                quantity: 1,
+	                                part: part
+	                            };
+	                        }))
+	                    });
+	                }
+	                else {
+	                    return techStepEditForm;
+	                }
+	            });
+	        case TechStepActionType.TECHSTEP_SELECT_TOOLUSAGES:
+	            return state.map(function (techStepEditForm) {
+	                if (techStepEditForm.id == action.techStepEditFormId) {
+	                    return _.assign({}, techStepEditForm, {
+	                        selectedToolUsages: action.toolUsages
+	                    });
+	                }
+	                else {
+	                    return techStepEditForm;
+	                }
+	            });
+	        case TechStepActionType.TECHSTEP_SELECT_PARTUSAGES:
+	            return state.map(function (techStepEditForm) {
+	                if (techStepEditForm.id == action.techStepEditFormId) {
+	                    return _.assign({}, techStepEditForm, {
+	                        selectedPartUsages: action.partUsages
+	                    });
+	                }
+	                else {
+	                    return techStepEditForm;
+	                }
+	            });
+	        case TechStepActionType.TECHSTEP_DELETE_TOOLUSAGES:
+	            return state.map(function (techStepEditForm) {
+	                if (techStepEditForm.id == action.techStepEditFormId) {
+	                    return _.assign({}, techStepEditForm, {
+	                        toolUsages: techStepEditForm.toolUsages.filter(function (tu) { return techStepEditForm.selectedToolUsages.indexOf(tu.id) < 0; }),
+	                        selectedToolUsages: []
+	                    });
+	                }
+	                else {
+	                    return techStepEditForm;
+	                }
+	            });
+	        case TechStepActionType.TECHSTEP_DELETE_PARTUSAGES:
+	            return state.map(function (techStepEditForm) {
+	                if (techStepEditForm.id == action.techStepEditFormId) {
+	                    return _.assign({}, techStepEditForm, {
+	                        partUsages: techStepEditForm.partUsages.filter(function (pu) { return techStepEditForm.selectedPartUsages.indexOf(pu.id) < 0; }),
+	                        selectedPartUsages: []
+	                    });
+	                }
+	                else {
+	                    return techStepEditForm;
+	                }
+	            });
 	        default:
 	            return state;
 	    }
@@ -55600,7 +56066,7 @@
 	//# sourceMappingURL=techStepEditForms.js.map
 
 /***/ },
-/* 349 */
+/* 350 */
 /*!********************************************!*\
   !*** ./src/reducers/techOperationLists.js ***!
   \********************************************/
@@ -55608,9 +56074,10 @@
 
 	"use strict";
 	var TechOperationActionType = __webpack_require__(/*! ../actions/techOperationActionType */ 325);
+	var TechProcessActionType = __webpack_require__(/*! ../actions/techProcessActionType */ 335);
 	var PanelActionType = __webpack_require__(/*! ../actions/panelActionType */ 196);
 	var PanelType = __webpack_require__(/*! ../components/panelType */ 197);
-	var _ = __webpack_require__(/*! lodash */ 342);
+	var _ = __webpack_require__(/*! lodash */ 343);
 	var initialState = [];
 	function techOperationLists(state, action) {
 	    if (state === void 0) { state = initialState; }
@@ -55726,6 +56193,19 @@
 	                    return techOperationList;
 	                }
 	            });
+	        case TechProcessActionType.TECHPROCESS_OPEN_TECHOPERATION_LIST:
+	            return state.concat([
+	                {
+	                    id: action.techOperationListId,
+	                    techOperations: [],
+	                    selectedTechOperations: [],
+	                    params: {
+	                        isPending: true,
+	                        isDeleting: false,
+	                        isConfirmDeleting: false
+	                    }
+	                }
+	            ]);
 	        case PanelActionType.PANEL_OPEN:
 	            if (action.panelType !== PanelType.TECHOPERATION_LIST) {
 	                return state;
@@ -55751,7 +56231,7 @@
 	//# sourceMappingURL=techOperationLists.js.map
 
 /***/ },
-/* 350 */
+/* 351 */
 /*!************************************************!*\
   !*** ./src/reducers/techOperationEditForms.js ***!
   \************************************************/
@@ -55759,6 +56239,7 @@
 
 	"use strict";
 	var TechOperationActionType = __webpack_require__(/*! ../actions/techOperationActionType */ 325);
+	var TechStepActionType = __webpack_require__(/*! ../actions/techStepActionType */ 316);
 	var PanelActionType = __webpack_require__(/*! ../actions/panelActionType */ 196);
 	var PanelType = __webpack_require__(/*! ../components/panelType */ 197);
 	var initialState = [];
@@ -55776,7 +56257,12 @@
 	                    values: {
 	                        name: action.params.techOperation.name
 	                    },
-	                    isSaving: false
+	                    techSteps: action.params.techSteps,
+	                    techProcessEditFormId: action.params.techProcessEditFormId,
+	                    selectedTechSteps: [],
+	                    isSaving: false,
+	                    isTechStepListOpen: false,
+	                    techStepListId: null
 	                }
 	            ]);
 	        case TechOperationActionType.TECHOPERATION_NAME_CHANGE:
@@ -55823,6 +56309,91 @@
 	                    return techOperationEditForm;
 	                }
 	            });
+	        case TechOperationActionType.TECHOPERATION_OPEN_TECHSTEP_LIST:
+	            return state.map(function (techOperationEditForm) {
+	                if (techOperationEditForm.id == action.techOperationEditFormId) {
+	                    return _.assign({}, techOperationEditForm, {
+	                        isTechStepListOpen: true,
+	                        techStepListId: action.techStepListId
+	                    });
+	                }
+	                else {
+	                    return techOperationEditForm;
+	                }
+	            });
+	        case TechOperationActionType.TECHOPERATION_CLOSE_TECHSTEP_LIST:
+	            return state.map(function (techOperationEditForm) {
+	                if (techOperationEditForm.id == action.techOperationEditFormId) {
+	                    return _.assign({}, techOperationEditForm, {
+	                        isTechStepListOpen: false,
+	                        techStepListId: null
+	                    });
+	                }
+	                else {
+	                    return techOperationEditForm;
+	                }
+	            });
+	        case TechOperationActionType.TECHOPERATION_ADD_TECHSTEPS:
+	            return state.map(function (techOperationEditForm) {
+	                if (techOperationEditForm.id == action.techOperationEditFormId) {
+	                    return _.assign({}, techOperationEditForm, {
+	                        techSteps: techOperationEditForm.techSteps.concat(action.techSteps)
+	                    });
+	                }
+	                else {
+	                    return techOperationEditForm;
+	                }
+	            });
+	        case TechOperationActionType.TECHOPERATION_DELETE_TECHSTEPS:
+	            return state.map(function (techOperationEditForm) {
+	                if (techOperationEditForm.id == action.techOperationEditFormId) {
+	                    return _.assign({}, techOperationEditForm, {
+	                        techSteps: techOperationEditForm.techSteps.filter(function (id) { return techOperationEditForm.selectedTechStep.indexOf(id) > 0; }),
+	                        selectedTechSteps: []
+	                    });
+	                }
+	                else {
+	                    return techOperationEditForm;
+	                }
+	            });
+	        case TechOperationActionType.TECHOPERATION_SELECT_TECHSTEPS:
+	            return state.map(function (techOperationEditForm) {
+	                if (techOperationEditForm.id == action.techOperationEditFormId) {
+	                    return _.assign({}, techOperationEditForm, {
+	                        selectedTechSteps: action.techSteps
+	                    });
+	                }
+	                else {
+	                    return techOperationEditForm;
+	                }
+	            });
+	        case TechStepActionType.TECHSTEP_SAVE_SUCCEED:
+	            if (!action.techOperationEditFormId && !action.isNewTechStep) {
+	                return state;
+	            }
+	            return state.map(function (techOperationEditForm) {
+	                if (techOperationEditForm.id == action.techOperationEditFormId) {
+	                    return _.assign({}, techOperationEditForm, {
+	                        techSteps: techOperationEditForm.techSteps.concat([
+	                            action.techStep
+	                        ])
+	                    });
+	                }
+	                else {
+	                    return techOperationEditForm;
+	                }
+	            });
+	        case TechOperationActionType.TECHOPERATION_DELETE_TECHSTEPS:
+	            return state.map(function (techOperationEditForm) {
+	                if (techOperationEditForm.id == action.techOperationEditFormId) {
+	                    return _.assign({}, techOperationEditForm, {
+	                        techSteps: techOperationEditForm.techSteps.filter(function (techStep) { return techOperationEditForm.selectedTechSteps.indexOf(techStep.id) >= 0; })
+	                    });
+	                }
+	                else {
+	                    return techOperationEditForm;
+	                }
+	            });
 	        default:
 	            return state;
 	    }
@@ -55832,17 +56403,17 @@
 	//# sourceMappingURL=techOperationEditForms.js.map
 
 /***/ },
-/* 351 */
+/* 352 */
 /*!******************************************!*\
   !*** ./src/reducers/techProcessLists.js ***!
   \******************************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var TechProcessActionType = __webpack_require__(/*! ../actions/techProcessActionType */ 334);
+	var TechProcessActionType = __webpack_require__(/*! ../actions/techProcessActionType */ 335);
 	var PanelActionType = __webpack_require__(/*! ../actions/panelActionType */ 196);
 	var PanelType = __webpack_require__(/*! ../components/panelType */ 197);
-	var _ = __webpack_require__(/*! lodash */ 342);
+	var _ = __webpack_require__(/*! lodash */ 343);
 	var initialState = [];
 	function techProcessLists(state, action) {
 	    if (state === void 0) { state = initialState; }
@@ -55983,14 +56554,15 @@
 	//# sourceMappingURL=techProcessLists.js.map
 
 /***/ },
-/* 352 */
+/* 353 */
 /*!**********************************************!*\
   !*** ./src/reducers/techProcessEditForms.js ***!
   \**********************************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var TechProcessActionType = __webpack_require__(/*! ../actions/techProcessActionType */ 334);
+	var TechProcessActionType = __webpack_require__(/*! ../actions/techProcessActionType */ 335);
+	var TechOperationActionType = __webpack_require__(/*! ../actions/techOperationActionType */ 325);
 	var PanelActionType = __webpack_require__(/*! ../actions/panelActionType */ 196);
 	var PanelType = __webpack_require__(/*! ../components/panelType */ 197);
 	var initialState = [];
@@ -56008,7 +56580,11 @@
 	                    values: {
 	                        name: action.params.techProcess.name
 	                    },
-	                    isSaving: false
+	                    techOperations: action.params.techOperations,
+	                    selectedTechOperations: [],
+	                    isSaving: false,
+	                    isTechOperationListOpen: false,
+	                    techOperationListId: null
 	                }
 	            ]);
 	        case TechProcessActionType.TECHPROCESS_NAME_CHANGE:
@@ -56016,6 +56592,18 @@
 	                if (techProcessEditForm.id === action.techProcessEditFormId) {
 	                    return _.assign({}, techProcessEditForm, {
 	                        values: _.assign({}, techProcessEditForm.values, { name: action.name }),
+	                    });
+	                }
+	                else {
+	                    return techProcessEditForm;
+	                }
+	            });
+	        case TechProcessActionType.TECHPROCESS_OPEN_TECHOPERATION_LIST:
+	            return state.map(function (techProcessEditForm) {
+	                if (techProcessEditForm.id === action.techProcessEditFormId) {
+	                    return _.assign({}, techProcessEditForm, {
+	                        isTechOperationListOpen: true,
+	                        techOperationListId: action.techOperationListId
 	                    });
 	                }
 	                else {
@@ -56055,6 +56643,44 @@
 	                    return techProcessEditForm;
 	                }
 	            });
+	        case TechOperationActionType.TECHOPERATION_SAVE_SUCCEED:
+	            if (!action.techProcessEditFormId && !action.isNewTechOperation) {
+	                return state;
+	            }
+	            return state.map(function (techProcessEditForm) {
+	                if (techProcessEditForm.id === action.techProcessEditFormId) {
+	                    return _.assign({}, techProcessEditForm, {
+	                        techOperations: techProcessEditForm.techOperations.concat([
+	                            action.response.entities.techOperations[action.response.result]
+	                        ]),
+	                    });
+	                }
+	                else {
+	                    return techProcessEditForm;
+	                }
+	            });
+	        case TechProcessActionType.TECHPROCESS_SELECT_TECHOPERATIONS:
+	            return state.map(function (techProcessEditForm) {
+	                if (techProcessEditForm.id == action.techProcessEditFormId) {
+	                    return _.assign({}, techProcessEditForm, {
+	                        selectedTechOperations: action.techOperations
+	                    });
+	                }
+	                else {
+	                    return techProcessEditForm;
+	                }
+	            });
+	        case TechProcessActionType.TECHPROCESS_DELETE_TECHOPERATIONS:
+	            return state.map(function (techProcessEditForm) {
+	                if (techProcessEditForm.id == action.techProcessEditFormId) {
+	                    return _.assign({}, techProcessEditForm, {
+	                        techOperations: techProcessEditForm.techOperations.filter(function (techOperation) { return techProcessEditForm.selectedTechOperations.indexOf(techOperation.id) >= 0; })
+	                    });
+	                }
+	                else {
+	                    return techProcessEditForm;
+	                }
+	            });
 	        default:
 	            return state;
 	    }
@@ -56064,7 +56690,7 @@
 	//# sourceMappingURL=techProcessEditForms.js.map
 
 /***/ },
-/* 353 */
+/* 354 */
 /*!************************************!*\
   !*** ./~/redux-thunk/lib/index.js ***!
   \************************************/

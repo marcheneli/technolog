@@ -4,6 +4,7 @@ import { Schema, arrayOf, normalize } from 'normalizr';
 import serviceDomain from '../constants/serviceDomain';
 import * as AntiForgeryToken from '../utils/antiForgeryToken';
 import techProcessSchema from '../schemas/techProcessSchema';
+import * as IdGenerator from '../utils/idGenerator';
 
 export function load(techProcessListId: number, page: number, techProcessPerPage: number, searchText: string) {
     return dispatch => {
@@ -191,5 +192,32 @@ export function saveFailed(techProcessEditFormId, errorMessage) {
         type: TechProcessActionType.TECHPROCESS_SAVE_FAILED,
         techProcessEditFormId: techProcessEditFormId,
         errorMessage: errorMessage
+    };
+}
+
+export function openTechOperationList(techProcessEditFormId) {
+    return (dispatch, getState) => {
+        const state = getState();
+
+        dispatch({
+            type: TechProcessActionType.TECHPROCESS_OPEN_TECHOPERATION_LIST,
+            techProcessEditFormId: techProcessEditFormId,
+            techOperationListId: IdGenerator.getPartListId()
+        });
+    };
+}
+
+export function selectTechOperations(techProcessEditFormId, techOperations) {
+    return {
+        type: TechProcessActionType.TECHPROCESS_SELECT_TECHOPERATIONS,
+        techProcessEditFormId: techProcessEditFormId,
+        techOperations: techOperations
+    };
+}
+
+export function deleteTechOperations(techProcessEditFormId) {
+    return {
+        type: TechProcessActionType.TECHPROCESS_DELETE_TECHOPERATIONS,
+        techProcessEditFormId: techProcessEditFormId
     };
 }

@@ -86,7 +86,18 @@ namespace Technolog.SL.Services
 
         public int Insert(TechStepDTO techStepDTO)
         {
-            TechStep techStep = mapper.Map<TechStep>(techStepDTO);
+            TechStep techStep = new TechStep() { Description = techStepDTO.Description, ToolUsages = new List<ToolTechStep>(), PartUsages = new List<PartTechStep>()};
+
+            foreach (var toolUsage in techStepDTO.ToolUsages)
+            {
+                techStep.ToolUsages.Add(new ToolTechStep() { ToolId = toolUsage.ToolId, Quantity = toolUsage.Quantity });
+            }
+
+            foreach (var partUsage in techStepDTO.PartUsages)
+            {
+                techStep.PartUsages.Add(new PartTechStep() { PartId = partUsage.PartId, Quantity = partUsage.Quantity });
+            }
+
             database.TechSteps.Add(techStep);
 
             try
@@ -118,7 +129,40 @@ namespace Technolog.SL.Services
 
         public void Update(TechStepDTO techStepDTO)
         {
-            TechStep techStep = mapper.Map<TechStep>(techStepDTO);
+            TechStep techStep = database.TechSteps.GetById(techStepDTO.Id);
+
+            techStep.Description = techStepDTO.Description;
+            
+            foreach (var toolUsage in techStepDTO.ToolUsages)
+            {
+                var techStepToolUsage = techStep.ToolUsages.FirstOrDefault(
+                    tu => tu.ToolId == toolUsage.ToolId);
+
+                if (techStepToolUsage != null)
+                {
+                    techStepToolUsage.Quantity = toolUsage.Quantity;
+                }
+                else
+                {
+                    techStep.ToolUsages.Add(new ToolTechStep() { ToolId = toolUsage.ToolId, Quantity = toolUsage.Quantity });
+                }
+            }
+
+            foreach (var partUsage in techStepDTO.PartUsages)
+            {
+                var techStepPartUsage = techStep.PartUsages.FirstOrDefault(
+                    pu => pu.PartId == partUsage.PartId);
+
+                if (techStepPartUsage != null)
+                {
+                    techStepPartUsage.Quantity = partUsage.Quantity;
+                }
+                else
+                {
+                    techStep.PartUsages.Add(new PartTechStep() { PartId = partUsage.PartId, Quantity = partUsage.Quantity });
+                }
+            }
+
             database.TechSteps.Update(techStep);
 
             try

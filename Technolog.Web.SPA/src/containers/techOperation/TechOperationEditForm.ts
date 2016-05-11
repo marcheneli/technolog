@@ -1,6 +1,7 @@
 ﻿import { connect } from 'react-redux';
 import TechOperationEditForm from '../../components/techOperation/TechOperationEditForm';
 import * as TechOperationActionCreator from '../../actions/techOperationActionCreator';
+import * as PanelActionCreator from '../../actions/panelActionCreator';
 
 const mapStateToTechOperationEditFormProps = (state, ownProps) => {
     const techOperationEditFormState = state.techOperationEditForms.filter(
@@ -11,7 +12,11 @@ const mapStateToTechOperationEditFormProps = (state, ownProps) => {
     return {
         techOperationId: techOperationEditFormState.techOperationId,
         values: values,
-        isSaving: techOperationEditFormState.isSaving
+        techSteps: techOperationEditFormState.techSteps,
+        selectedTechSteps: techOperationEditFormState.selectedTechSteps,
+        isSaving: techOperationEditFormState.isSaving,
+        techStepListId: techOperationEditFormState.techStepListId,
+        isTechStepListOpen: techOperationEditFormState.isTechStepListOpen
     };
 };
 
@@ -23,6 +28,18 @@ const mapDispatchToTechOperationEditFormProps = (dispatch, ownProps) => {
         },
         onNameChange: (event) => {
             dispatch(TechOperationActionCreator.techOperationNameChange(ownProps.id, event.target.value));
+        },
+        onTechStepListOpenBtnClick: () => {
+            dispatch(PanelActionCreator.openTechStepEditor(0, ownProps.id));
+        },
+        onTableRowDoubleClick: (techStep) => {
+            dispatch(PanelActionCreator.openTechStepEditor(techStep.id));
+        },
+        onTechStepSelect: (selectedTechSteps) => {
+            dispatch(TechOperationActionCreator.selectTechSteps(ownProps.id, selectedTechSteps));
+        },
+        onAllTechStepsSelect: (selectedTechSteps) => {
+            dispatch(TechOperationActionCreator.selectTechSteps(ownProps.id, selectedTechSteps));
         }
     };
 };

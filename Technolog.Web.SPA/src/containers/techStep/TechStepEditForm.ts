@@ -26,8 +26,8 @@ const mapDispatchToTechStepEditFormProps = (dispatch, ownProps) => {
             event.preventDefault();
             dispatch(TechStepActionCreator.save(ownProps.id));
         },
-        onNameChange: (event) => {
-            dispatch(TechStepActionCreator.techStepNameChange(ownProps.id, event.target.value));
+        onDescriptionChange: (event) => {
+            dispatch(TechStepActionCreator.techStepDescriptionChange(ownProps.id, event.target.value));
         },
         onToolUsageChange: (toolId, quantityValue) => {
             dispatch(TechStepActionCreator.changeToolUsage(ownProps.id, toolId, quantityValue));
@@ -46,6 +46,18 @@ const mapDispatchToTechStepEditFormProps = (dispatch, ownProps) => {
         },
         onClosePartList: () => {
             dispatch(TechStepActionCreator.closePartList(ownProps.id));
+        },
+        onAddToolUsages: (toolListId) => {
+            dispatch(TechStepActionCreator.addToolUsages(ownProps.id, toolListId));
+        },
+        onAddPartUsages: (partListId) => {
+            dispatch(TechStepActionCreator.addPartUsages(ownProps.id, partListId));
+        },
+        onSelectedToolUsagesChange: (toolUsages) => {
+            dispatch(TechStepActionCreator.selectToolUsages(ownProps.id, toolUsages))
+        },
+        onSelectedPartUsagesChange: (partUsages) => {
+            dispatch(TechStepActionCreator.selectPartUsages(ownProps.id, partUsages))
         }
     };
 };

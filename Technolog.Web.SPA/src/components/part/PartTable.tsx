@@ -5,15 +5,24 @@ export default function TableList(props: any) {
     var partRows = [];
     var parts = props.parts;
     var selectedParts = props.selectedParts;
+    var disabledParts = props.disabledParts;
 
     var isAllChecked = parts.length == selectedParts.length && parts.length != 0;
     
     partRows = parts.map((part, index) => {
         var selectedPart = null;
+        var disabledPart = null;
 
         for (var j = 0; j < selectedParts.length; j++) {
             if (selectedParts[j] == part.id) {
                 selectedPart = selectedParts[j];
+                break;
+            }
+        }
+
+        for (var j = 0; j < disabledParts.length; j++) {
+            if (disabledParts[j] == part.id) {
+                disabledPart = disabledParts[j];
                 break;
             }
         }
@@ -26,7 +35,8 @@ export default function TableList(props: any) {
                         type='checkbox'
                         value={part.id}
                         onChange={props.onPartSelect}
-                        checked={selectedPart}>
+                        checked={selectedPart}
+                        disabled={disabledPart}>
                     </input>
                 </td>
                 <td  style={{ width: 15 + '%' }}>{part.id}</td>

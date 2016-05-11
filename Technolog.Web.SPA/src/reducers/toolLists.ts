@@ -156,6 +156,7 @@ export default function toolLists(state = initialState, action) {
                     id: action.contentId,
                     tools: [],
                     selectedTools: [],
+                    disabledTools: [],
                     params: {
                         isPending: true,
                         isDeleting: false,
@@ -170,6 +171,7 @@ export default function toolLists(state = initialState, action) {
                     id: action.toolListId,
                     tools: [],
                     selectedTools: [],
+                    disabledTools: action.tools,
                     params: {
                         isPending: true,
                         isDeleting: false,
@@ -177,6 +179,24 @@ export default function toolLists(state = initialState, action) {
                     }
                 }
             ];
+        case TechStepActionType.TECHSTEP_ADD_TOOLUSAGES:
+            return state.map(toolList => {
+                if (toolList.id === action.toolListId) {
+                    return _.assign(
+                        {},
+                        toolList,
+                        {
+                            selectedTools: [],
+                            disabledTools: [
+                                ...toolList.disabledTools,
+                                ...action.tools.map(tool => tool.id)
+                            ]
+                        }
+                    );
+                } else {
+                    return toolList
+                }
+            });
         default:
             return state;
     }

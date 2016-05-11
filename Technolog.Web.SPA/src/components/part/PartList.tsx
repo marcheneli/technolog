@@ -18,6 +18,7 @@ interface IPartListProps {
     load(page, itemsPerPage, searchText);
     parts: Array<any>;
     selectedParts: Array<any>;
+    disabledParts: Array<any>;
     params: {
         isConfirmDeleting: boolean;
         isDeleting: boolean;
@@ -110,7 +111,8 @@ export default class PartList extends React.Component<IPartListProps, {}> {
                     <PartTable
                         id={this.props.id}
                         parts={this.props.parts}
-                        selectedParts={this.props.selectedParts}/>
+                        selectedParts={this.props.selectedParts}
+                        disabledParts={this.props.disabledParts}/>
                     <div className="btn-partbar" style={{ flexShrink: 0 }}>
                         <ItemsPerPageSelector
                             onChange={this.partsPerPageChangeHandler}/>

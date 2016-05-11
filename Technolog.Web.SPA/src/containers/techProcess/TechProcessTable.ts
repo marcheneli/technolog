@@ -7,7 +7,7 @@ import * as PanelType from '../../components/panelType';
 const mapDispatchToTechProcessTableProps = (dispatch, ownProps) => {
     return {
         onTableRowDoubleClick: (techProcess) => {
-            dispatch(PanelActionCreator.open(PanelType.TECHPROCESS_EDIT_FORM, "Редактирование детали", { techProcess: techProcess }));
+            dispatch(PanelActionCreator.openTechProcessEditor(techProcess.id));
         },
         onTechProcessSelect: (event) => {
             var selectedTechProcesses = ownProps.selectedTechProcesses;

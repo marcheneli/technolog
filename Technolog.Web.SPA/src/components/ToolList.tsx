@@ -18,6 +18,7 @@ interface IToolListProps {
     load(page, itemsPerPage, searchText);
     tools: Array<any>;
     selectedTools: Array<any>;
+    disabledTools: Array<any>;
     params: {
         isConfirmDeleting: boolean;
         isDeleting: boolean;
@@ -119,7 +120,8 @@ export default class ToolList extends React.Component<IToolListProps, {}> {
                     <ToolTable
                         id={this.props.id}
                         tools={this.props.tools}
-                        selectedTools={this.props.selectedTools}/>
+                        selectedTools={this.props.selectedTools}
+                        disabledTools={this.props.disabledTools}/>
                     <div className="btn-toolbar" style={{ flexShrink: 0 }}>
                         <ItemsPerPageSelector
                             onChange={this.toolsPerPageChangeHandler}/>

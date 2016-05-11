@@ -59,6 +59,7 @@
     <TypeScriptCompile Include="src\components\common\ConfirmationDialogPanel.tsx" />
     <TypeScriptCompile Include="src\components\common\DialogBackground.tsx" />
     <TypeScriptCompile Include="src\components\common\DialogPanel.tsx" />
+    <TypeScriptCompile Include="src\components\common\InnerPanel.tsx" />
     <TypeScriptCompile Include="src\components\common\ItemListControlPanel.tsx" />
     <TypeScriptCompile Include="src\components\common\ItemsPerPageSelector.tsx" />
     <TypeScriptCompile Include="src\components\common\Pagination.tsx" />

@@ -48,6 +48,14 @@ export default function entities(state = initialState, action) {
                 tools: _.assign({}, state.tools, action.response.entities.tools),
                 parts: _.assign({}, state.parts, action.response.entities.parts)
             });
+        case TechStepActionType.TECHSTEP_SAVE_SUCCEED:
+            return _.assign({}, state, {
+                techSteps: _.assign({}, state.techSteps, action.response.entities.techSteps),
+                toolUsages: _.assign({}, state.toolUsages, action.response.entities.toolUsages),
+                partUsages: _.assign({}, state.partUsages, action.response.entities.partUsages),
+                tools: _.assign({}, state.tools, action.response.entities.tools),
+                parts: _.assign({}, state.parts, action.response.entities.parts)
+            });
         default:
             return state;
     }

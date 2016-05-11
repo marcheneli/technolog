@@ -1,4 +1,5 @@
 ﻿import * as TechOperationActionType from '../actions/techOperationActionType';
+import * as TechStepActionType from '../actions/techStepActionType';
 import * as PanelActionType from '../actions/panelActionType';
 import * as PanelType from '../components/panelType';
 import * as ValidationMessageType from '../validators/validationMessageType';
@@ -19,7 +20,12 @@ export default function techOperationEditForms(state = initialState, action) {
                     values: {
                         name: action.params.techOperation.name
                     },
-                    isSaving: false
+                    techSteps: action.params.techSteps,
+                    techProcessEditFormId: action.params.techProcessEditFormId,
+                    selectedTechSteps: [],
+                    isSaving: false,
+                    isTechStepListOpen: false,
+                    techStepListId: null
                 }
             ];
         case TechOperationActionType.TECHOPERATION_NAME_CHANGE:
@@ -78,6 +84,116 @@ export default function techOperationEditForms(state = initialState, action) {
                     return techOperationEditForm;
                 }
             });
+        case TechOperationActionType.TECHOPERATION_OPEN_TECHSTEP_LIST:
+            return state.map(techOperationEditForm => {
+                if (techOperationEditForm.id == action.techOperationEditFormId) {
+                    return _.assign(
+                        {},
+                        techOperationEditForm,
+                        {
+                            isTechStepListOpen: true,
+                            techStepListId: action.techStepListId
+                        }
+                    );
+                } else {
+                    return techOperationEditForm;
+                }
+            });
+        case TechOperationActionType.TECHOPERATION_CLOSE_TECHSTEP_LIST:
+            return state.map(techOperationEditForm => {
+                if (techOperationEditForm.id == action.techOperationEditFormId) {
+                    return _.assign(
+                        {},
+                        techOperationEditForm,
+                        {
+                            isTechStepListOpen: false,
+                            techStepListId: null
+                        }
+                    );
+                } else {
+                    return techOperationEditForm;
+                }
+            });
+        case TechOperationActionType.TECHOPERATION_ADD_TECHSTEPS:
+            return state.map(techOperationEditForm => {
+                if (techOperationEditForm.id == action.techOperationEditFormId) {
+                    return _.assign(
+                        {},
+                        techOperationEditForm,
+                        {
+                            techSteps: [
+                                ...techOperationEditForm.techSteps,
+                                ...action.techSteps
+                            ]
+                        }
+                    );
+                } else {
+                    return techOperationEditForm;
+                }
+            });
+        case TechOperationActionType.TECHOPERATION_DELETE_TECHSTEPS:
+            return state.map(techOperationEditForm => {
+                if (techOperationEditForm.id == action.techOperationEditFormId) {
+                    return _.assign(
+                        {},
+                        techOperationEditForm,
+                        {
+                            techSteps: techOperationEditForm.techSteps.filter(id => techOperationEditForm.selectedTechStep.indexOf(id) > 0),
+                            selectedTechSteps: []
+                        }
+                    );
+                } else {
+                    return techOperationEditForm;
+                }
+            });
+        case TechOperationActionType.TECHOPERATION_SELECT_TECHSTEPS:
+            return state.map(techOperationEditForm => {
+                if (techOperationEditForm.id == action.techOperationEditFormId) {
+                    return _.assign(
+                        {},
+                        techOperationEditForm,
+                        {
+                            selectedTechSteps: action.techSteps
+                        }
+                    );
+                } else {
+                    return techOperationEditForm;
+                }
+            });
+        case TechStepActionType.TECHSTEP_SAVE_SUCCEED:
+            if (!action.techOperationEditFormId && !action.isNewTechStep) {
+                return state;
+            }
+            return state.map(techOperationEditForm => {
+                if (techOperationEditForm.id == action.techOperationEditFormId) {
+                    return _.assign(
+                        {},
+                        techOperationEditForm,
+                        {
+                            techSteps: [
+                                ...techOperationEditForm.techSteps,
+                                action.techStep
+                            ]
+                        }
+                    );
+                } else {
+                    return techOperationEditForm;
+                }
+            });
+        case TechOperationActionType.TECHOPERATION_DELETE_TECHSTEPS:
+            return state.map(techOperationEditForm => {
+                if (techOperationEditForm.id == action.techOperationEditFormId) {
+                    return _.assign(
+                        {},
+                        techOperationEditForm,
+                        {
+                            techSteps: techOperationEditForm.techSteps.filter(techStep => techOperationEditForm.selectedTechSteps.indexOf(techStep.id) >= 0)
+                        }
+                    );
+                } else {
+                    return techOperationEditForm;
+                }
+            }); 
         default:
             return state;
     }

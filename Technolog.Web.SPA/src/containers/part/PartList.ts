@@ -11,6 +11,7 @@ const mapStateToPartListProps = (state, ownProps) => {
     return {
         parts: partListState.parts.map(partId => state.entities.parts[partId]),
         selectedParts: partListState.selectedParts,
+        disabledParts: partListState.disabledParts,
         params: partListState.params
     };
 };

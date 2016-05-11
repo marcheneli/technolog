@@ -128,11 +128,11 @@ export function cancelDelete(techStepListId) {
     };
 }
 
-export function techStepNameChange(techStepEditFormId, value): any {
+export function techStepDescriptionChange(techStepEditFormId, value): any {
     return {
-        type: TechStepActionType.TECHSTEP_NAME_CHANGE,
+        type: TechStepActionType.TECHSTEP_DESCRIPTION_CHANGE,
         techStepEditFormId: techStepEditFormId,
-        name: value
+        description: value
     };
 }
 
@@ -148,12 +148,15 @@ export function techStepNameValidationPending(techStepEditFormId, value, nameVal
 export function save(techStepEditFormId: number) {
     return (dispatch, getState) => {
         const techStepEditForm = getState().techStepEditForms.filter(tef => tef.id == techStepEditFormId)[0];
-
+        
+        const techOperationEditFormId = techStepEditForm.techOperationEditFormId;
         const type = techStepEditForm.techStepId == 0 ? 'PUT' : 'POST';
 
         const techStep = {
             id: techStepEditForm.techStepId,
-            name: techStepEditForm.values.name
+            description: techStepEditForm.values.description,
+            toolUsages: techStepEditForm.toolUsages,
+            partUsages: techStepEditForm.partUsages
         };
 
         $.ajax({
@@ -162,7 +165,13 @@ export function save(techStepEditFormId: number) {
             dataType: "json",
             data: _.assign({}, techStep, { __RequestVerificationToken: AntiForgeryToken.get() }),
             success: (response) => {
-                dispatch(saveSucceed(techStepEditFormId));
+                const isNewTechStep = techStepEditForm.techStepId == 0;
+                const normalizedResponse = normalize(response, techStepSchema);
+                dispatch(saveSucceed(techStepEditFormId,
+                    isNewTechStep,
+                    normalizedResponse,
+                    { id: response.id, description: response.description },
+                    techOperationEditFormId));
             },
             error: (xhr, status, err) => {
                 dispatch(saveFailed(techStepEditFormId, err));
@@ -180,10 +189,14 @@ export function savePending(techStepEditFormId: number) {
     };
 }
 
-export function saveSucceed(techStepEditFormId) {
+export function saveSucceed(techStepEditFormId, isNewTechStep, response, techStep, techOperationEditFormId?) {
     return {
         type: TechStepActionType.TECHSTEP_SAVE_SUCCEED,
-        techStepEditFormId: techStepEditFormId
+        techStepEditFormId: techStepEditFormId,
+        techOperationEditFormId: techOperationEditFormId,
+        isNewTechStep: isNewTechStep,
+        response: response,
+        techStep: techStep
     };
 }
 
@@ -214,10 +227,17 @@ export function changePartUsage(techStepEditFormId, partId, quantityValue) {
 }
 
 export function openToolList(techStepEditFormId) {
-    return {
-        type: TechStepActionType.TECHSTEP_OPEN_TOOL_LIST,
-        techStepEditFormId: techStepEditFormId,
-        toolListId: IdGenerator.getToolListId()
+    return (dispath, getState) => {
+        const techStepEditForm = getState().techStepEditForms.filter(tef => tef.id == techStepEditFormId)[0];
+
+        const tools = techStepEditForm.toolUsages.map(tu => tu.toolId);
+
+        dispath({
+            type: TechStepActionType.TECHSTEP_OPEN_TOOL_LIST,
+            techStepEditFormId: techStepEditFormId,
+            toolListId: IdGenerator.getToolListId(),
+            tools: tools
+        });
     };
 }
 
@@ -229,10 +249,17 @@ export function closeToolList(techStepEditFormId) {
 }
 
 export function openPartList(techStepEditFormId) {
-    return {
-        type: TechStepActionType.TECHSTEP_OPEN_PART_LIST,
-        techStepEditFormId: techStepEditFormId,
-        partListId: IdGenerator.getPartListId()
+    return (dispath, getState) => {
+        const techStepEditForm = getState().techStepEditForms.filter(tef => tef.id == techStepEditFormId)[0];
+
+        const parts = techStepEditForm.partUsages.map(pu => pu.partId);
+
+        dispath({
+            type: TechStepActionType.TECHSTEP_OPEN_PART_LIST,
+            techStepEditFormId: techStepEditFormId,
+            partListId: IdGenerator.getPartListId(),
+            parts: parts
+        });
     };
 }
 
@@ -240,5 +267,63 @@ export function closePartList(techStepEditFormId) {
     return {
         type: TechStepActionType.TECHSTEP_CLOSE_PART_LIST,
         techStepEditFormId: techStepEditFormId
+    };
+}
+
+export function addToolUsages(techStepEditFormId, toolListId) {
+    return (dispatch, getState) => {
+        const state = getState();
+
+        const toolListState = state.toolLists.filter(tl => tl.id == toolListId)[0];
+
+        const tools = toolListState.selectedTools.map(toolId => state.entities.tools[toolId]);
+        
+        dispatch({
+            type: TechStepActionType.TECHSTEP_ADD_TOOLUSAGES,
+            techStepEditFormId: techStepEditFormId,
+            toolListId: toolListId,
+            tools: tools
+        });
+    };
+}
+
+export function deleteToolUsages(techStepEditFormId) {
+
+}
+
+export function addPartUsages(techStepEditFormId, partListId) {
+    return (dispatch, getState) => {
+        const state = getState();
+
+        const partListState = state.partLists.filter(pl => pl.id == partListId)[0];
+
+        const parts = partListState.selectedParts.map(partId => state.entities.parts[partId]);
+
+        dispatch({
+            type: TechStepActionType.TECHSTEP_ADD_PARTUSAGES,
+            techStepEditFormId: techStepEditFormId,
+            partListId: partListId,
+            parts: parts
+        });
+    };
+}
+
+export function deletePartUsages(techStepEditFormId) {
+
+}
+
+export function selectToolUsages(techStepEditFormId, toolUsages) {
+    return {
+        type: TechStepActionType.TECHSTEP_SELECT_TOOLUSAGES,
+        techStepEditFormId: techStepEditFormId,
+        toolUsages: toolUsages
+    };
+}
+
+export function selectPartUsages(techStepEditFormId, partUsages) {
+    return {
+        type: TechStepActionType.TECHSTEP_SELECT_PARTUSAGES,
+        techStepEditFormId: techStepEditFormId,
+        partUsages: partUsages
     };
 }

@@ -1,4 +1,5 @@
 ﻿import * as TechOperationActionType from '../actions/techOperationActionType';
+import * as TechProcessActionType from '../actions/techProcessActionType';
 import * as PanelActionType from '../actions/panelActionType';
 import * as PanelType from '../components/panelType';
 import * as _ from 'lodash';
@@ -144,6 +145,20 @@ export default function techOperationLists(state = initialState, action) {
                     return techOperationList
                 }
             });
+        case TechProcessActionType.TECHPROCESS_OPEN_TECHOPERATION_LIST:
+            return [
+                ...state,
+                {
+                    id: action.techOperationListId,
+                    techOperations: [],
+                    selectedTechOperations: [],
+                    params: {
+                        isPending: true,
+                        isDeleting: false,
+                        isConfirmDeleting: false
+                    }
+                }
+            ];
         case PanelActionType.PANEL_OPEN:
             if (action.panelType !== PanelType.TECHOPERATION_LIST) {
                 return state;

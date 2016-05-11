@@ -3,7 +3,8 @@ import * as TechOperationActionType from './techOperationActionType';
 import { Schema, arrayOf, normalize } from 'normalizr';
 import serviceDomain from '../constants/serviceDomain';
 import * as AntiForgeryToken from '../utils/antiForgeryToken';
-import techOperationSchema from '../schemas/techOperationSchema'
+import techOperationSchema from '../schemas/techOperationSchema';
+import * as IdGenerator from '../utils/idGenerator';
 
 export function load(techOperationListId: number, page: number, techOperationPerPage: number, searchText: string) {
     return dispatch => {
@@ -152,7 +153,8 @@ export function save(techOperationEditFormId: number) {
 
         const techOperation = {
             id: techOperationEditForm.techOperationId,
-            name: techOperationEditForm.values.name
+            name: techOperationEditForm.values.name,
+            techSteps: techOperationEditForm.techSteps
         };
 
         $.ajax({
@@ -161,7 +163,15 @@ export function save(techOperationEditFormId: number) {
             dataType: "json",
             data: _.assign({}, techOperation, { __RequestVerificationToken: AntiForgeryToken.get() }),
             success: (response) => {
-                dispatch(saveSucceed(techOperationEditFormId));
+                const isNewTechOperation = techOperationEditForm.techOperationId == 0;
+                const normalizedResponse = normalize(response, techOperationSchema);
+                const techProcessEditFormId = techOperationEditForm.techProcessEditFormId;
+
+                dispatch(saveSucceed(techOperationEditFormId,
+                    normalizedResponse,
+                    isNewTechOperation,
+                    techProcessEditFormId
+                ));
             },
             error: (xhr, status, err) => {
                 dispatch(saveFailed(techOperationEditFormId, err));
@@ -179,10 +189,13 @@ export function savePending(techOperationEditFormId: number) {
     };
 }
 
-export function saveSucceed(techOperationEditFormId) {
+export function saveSucceed(techOperationEditFormId, response, isNewTechOperation, techProcessEditFormId?) {
     return {
         type: TechOperationActionType.TECHOPERATION_SAVE_SUCCEED,
-        techOperationEditFormId: techOperationEditFormId
+        techOperationEditFormId: techOperationEditFormId,
+        response: response,
+        isNewTechOperation: isNewTechOperation,
+        techProcessEditFormId: techProcessEditFormId 
     };
 }
 
@@ -192,4 +205,39 @@ export function saveFailed(techOperationEditFormId, errorMessage) {
         techOperationEditFormId: techOperationEditFormId,
         errorMessage: errorMessage
     };
+}
+
+export function openTechStepList(techOperationEditFormId) {
+    return (dispatch, getState) => {
+        const state = getState();
+
+        dispatch({
+            type: TechOperationActionType.TECHOPERATION_OPEN_TECHSTEP_LIST,
+            techOperationEditFormId: techOperationEditFormId,
+            techStepListId: IdGenerator.getTechStepListId()
+        });
+    }
+}
+
+export function closeTechStepList(techOperationEditFormId, techStepListId) {
+    return {
+        type: TechOperationActionType.TECHOPERATION_CLOSE_TECHSTEP_LIST,
+        techOperationEditFormId: techOperationEditFormId,
+        techStepListId: techStepListId
+    };
+}
+
+export function selectTechSteps(techOperationEditFormId, techSteps) {
+    return {
+        type: TechOperationActionType.TECHOPERATION_SELECT_TECHSTEPS,
+        techOperationEditFormId: techOperationEditFormId,
+        techSteps: techSteps
+    }
+}
+
+export function deleteTechSteps(techOperationEditFormId) {
+    return {
+        type: TechOperationActionType.TECHOPERATION_DELETE_TECHSTEPS,
+        techOperationEditFormId: techOperationEditFormId
+    }
 }
