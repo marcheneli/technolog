@@ -288,7 +288,10 @@ export function addToolUsages(techStepEditFormId, toolListId) {
 }
 
 export function deleteToolUsages(techStepEditFormId) {
-
+    return {
+        type: TechStepActionType.TECHSTEP_DELETE_TOOLUSAGES,
+        techStepEditFormId: techStepEditFormId
+    };
 }
 
 export function addPartUsages(techStepEditFormId, partListId) {
@@ -309,7 +312,10 @@ export function addPartUsages(techStepEditFormId, partListId) {
 }
 
 export function deletePartUsages(techStepEditFormId) {
-
+    return {
+        type: TechStepActionType.TECHSTEP_DELETE_PARTUSAGES,
+        techStepEditFormId: techStepEditFormId
+    };
 }
 
 export function selectToolUsages(techStepEditFormId, toolUsages) {

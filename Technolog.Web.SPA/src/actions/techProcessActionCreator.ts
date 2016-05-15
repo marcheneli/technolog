@@ -153,7 +153,8 @@ export function save(techProcessEditFormId: number) {
 
         const techProcess = {
             id: techProcessEditForm.techProcessId,
-            name: techProcessEditForm.values.name
+            name: techProcessEditForm.values.name,
+            techOperations: techProcessEditForm.techOperations
         };
 
         $.ajax({

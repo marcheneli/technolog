@@ -163,6 +163,20 @@ namespace Technolog.SL.Services
                 }
             }
 
+            foreach (var toolUsage in techStep.ToolUsages.ToList())
+            {
+                var toolUsageDTO = techStepDTO.ToolUsages.FirstOrDefault(tu => tu.ToolId == toolUsage.ToolId);
+
+                if (toolUsageDTO == null) techStep.ToolUsages.Remove(toolUsage);
+            }
+
+            foreach (var partUsage in techStep.PartUsages.ToList())
+            {
+                var partUsageDTO = techStepDTO.PartUsages.FirstOrDefault(pu => pu.PartId == partUsage.PartId);
+
+                if (partUsageDTO == null) techStep.PartUsages.Remove(partUsage);
+            }
+
             database.TechSteps.Update(techStep);
 
             try

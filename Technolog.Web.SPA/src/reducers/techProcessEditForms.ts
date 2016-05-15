@@ -139,7 +139,8 @@ export default function techProcessEditForms(state = initialState, action) {
                         {},
                         techProcessEditForm,
                         {
-                            techOperations: techProcessEditForm.techOperations.filter(techOperation => techProcessEditForm.selectedTechOperations.indexOf(techOperation.id) >= 0)
+                            techOperations: techProcessEditForm.techOperations.filter(to => techProcessEditForm.selectedTechOperations.indexOf(to.id) < 0),
+                            selectedTechOperations: []
                         }
                     );
                 } else {

@@ -32,6 +32,9 @@ const mapDispatchToTechProcessEditFormProps = (dispatch, ownProps) => {
         onTechOperationListOpenBtnClick: () => {
             dispatch(PanelActionCreator.openTechOperationEditor(0, ownProps.id));
         },
+        onTechOperationDeletetOpenBtnClick: () => {
+            dispatch(TechProcessActionCreator.deleteTechOperations(ownProps.id))
+        },
         onTableRowDoubleClick: (techOperation) => {
             dispatch(PanelActionCreator.openTechOperationEditor(techOperation.id));
         },

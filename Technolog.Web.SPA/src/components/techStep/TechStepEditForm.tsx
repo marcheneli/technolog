@@ -6,6 +6,7 @@ import PendingPanel from '../common/PendingPanel';
 import PendingAnimation from '../common/PendingAnimation';
 import ToolList from '../../containers/ToolList';
 import PartList from '../../containers/part/PartList';
+import InnerPanel from '../common/InnerPanel';
 
 interface IContentEditableProps {
     onChange(text: string);
@@ -37,7 +38,7 @@ const ToolUsageRow = (props: any) => {
                 <input
                     type="checkbox"
                     value={props.toolUsage.toolId}
-                    onChanged={props.onToolUsageSelect}
+                    onChange={props.onToolUsageSelect}
                     checked={props.isSelected}>
                 </input>
             </td>
@@ -139,7 +140,7 @@ const ToolUsagesEditor = (props: any) => {
         key={toolUsage.toolId}
         toolUsage={toolUsage}
         onToolUsageChange={(value) => { props.onToolUsageChange(toolUsage.toolId, value) } }
-        onToolUsageSelect={() => { } }
+        onToolUsageSelect={props.onToolUsageSelect}
         isSelected={props.selectedToolUsages.indexOf(toolUsage.toolId) >= 0}/>
     );
     return (
@@ -151,8 +152,8 @@ const ToolUsagesEditor = (props: any) => {
                             <th style={{ width: 5 + '%' }}>
                                 <input
                                     type="checkbox"
-                                    onChange={props.onAllToolSelect}
-                                    checked={false}>
+                                    onChange={props.onAllToolUsagesSelect}
+                                    checked={props.selectedToolUsages.length == props.toolUsages.length}>
                                 </input>
                             </th>
                             <th style={{ width: 20 + '%' }}>ID</th>
@@ -185,8 +186,8 @@ const PartUsagesEditor = (props: any) => {
                             <th style={{ width: 5 + '%' }}>
                                 <input
                                     type="checkbox"
-                                    onChange={props.onAllPartSelect}
-                                    checked={false}>
+                                    onChange={props.onAllPartUsagesSelect}
+                                    checked={props.selectedPartUsages.length == props.partUsages.length}>
                                 </input>
                             </th>
                             <th style={{ width: 20 + '%' }}>ID</th>
@@ -264,7 +265,7 @@ export default function TechStepEditForm(props: any) {
             selectedPartUsages = selectedPartUsages.filter(partId => partId != event.target.value);
         }
 
-        props.onSelectedToolUsagesChange(selectedPartUsages);
+        props.onSelectedPartUsagesChange(selectedPartUsages);
     }
 
     const onAllPartUsagesSelect = (event) => {
@@ -275,7 +276,7 @@ export default function TechStepEditForm(props: any) {
             selectedPartUsages = partUsages.map(pu => pu.partId);
         }
 
-        props.onSelectedToolUsagesChange(selectedPartUsages);
+        props.onSelectedPartUsagesChange(selectedPartUsages);
     }
     return (
         <div style={{ width: '100%', display: 'flex', flexDirection: 'column', overflow: 'auto' }}>
@@ -286,6 +287,24 @@ export default function TechStepEditForm(props: any) {
                         <h4>Идет сохранение.</h4>
                     </PendingAnimation>
                 </PendingPanel>
+            </DialogBackground>
+            <DialogBackground isShow={props.isToolListOpen}>
+                <InnerPanel title={"Добавление инструментов"} onClosePanel={props.onCloseToolList}>
+                    <button type="button" onClick={ () => { props.onAddToolUsages(props.toolListId); } } className="btn btn-default" style={{ marginBottom: '5px' }}>
+                        <span className="glyphicon glyphicon-plus"></span>
+                        <span>&nbsp; Добавить выбранные</span>
+                    </button>
+                    <ToolList id={props.toolListId}/>
+                </InnerPanel>
+            </DialogBackground>
+            <DialogBackground isShow={props.isPartListOpen}>
+                <InnerPanel title={"Добавление деталей"} onClosePanel={props.onClosePartList}>
+                    <button type="button" onClick={() => { props.onAddPartUsages(props.partListId); } } className="btn btn-default" style={{ marginBottom: '5px' }}>
+                        <span className="glyphicon glyphicon-plus"></span>
+                        <span>&nbsp; Добавить выбранные</span>
+                    </button>
+                    <PartList id={props.partListId}/>
+                </InnerPanel>
             </DialogBackground>
             <form role="form" onSubmit={props.handleSubmit}>
                 <div
@@ -301,38 +320,63 @@ export default function TechStepEditForm(props: any) {
                 <div
                     className="form-group">
                     <label className="control-label">Инструменты: </label>
-                    <div className="btn-toolbar" style={{ marginBottom: '5px' }}>
-                        <button type="button" onClick={props.openToolList} className="btn btn-default">
-                            <span className="glyphicon glyphicon-plus"></span>
-                        </button>
-                        <button type="button" onClick={() => { } } className="btn btn-default">
-                            <span className="glyphicon glyphicon-trash"></span>
-                        </button>
-                    </div>
-                    <ToolUsagesEditor
-                        toolUsages={props.toolUsages}
-                        selectedToolUsages={props.selectedToolUsages}
-                        onToolUsageChange={props.onToolUsageChange}
-                        onToolUsageSelect={onToolUsageSelect}
-                        onAllToolUsagesSelect={onAllToolUsagesSelect}/>
+                    { props.toolUsages.length == 0 ?
+                        <div style={{ textAlign: 'center' }}>
+                            На данный момент инструменты отсутствуют.
+                            <br/>
+                            Для добавления нажмите кнопку&nbsp;
+                            <button type="button" onClick={props.onOpenToolList} className="btn btn-default">
+                                <span className="glyphicon glyphicon-plus"></span>
+                            </button>.
+                        </div>
+                        :
+                        <div>
+                            <div className="btn-toolbar" style={{ marginBottom: '5px' }}>
+                                <button type="button" onClick={props.onOpenToolList} className="btn btn-default">
+                                    <span className="glyphicon glyphicon-plus"></span>
+                                </button>
+                                <button type="button" onClick={props.pnToolUsageDeleteClick} className="btn btn-default" disabled={props.selectedToolUsages.length == 0}>
+                                    <span className="glyphicon glyphicon-trash"></span>
+                                </button>
+                            </div>
+                            <ToolUsagesEditor
+                                toolUsages={props.toolUsages}
+                                selectedToolUsages={props.selectedToolUsages}
+                                onToolUsageChange={props.onToolUsageChange}
+                                onToolUsageSelect={onToolUsageSelect}
+                                onAllToolUsagesSelect={onAllToolUsagesSelect}/>
+                        </div>
+                    }
                 </div>
-                <div
-                    className="form-group">
+                <div className="form-group">
                     <label className="control-label">Детали: </label>
-                    <div className="btn-toolbar" style={{ marginBottom: '5px' }}>
-                        <button type="button" onClick={props.openPartList} className="btn btn-default">
-                            <span className="glyphicon glyphicon-plus"></span>
-                        </button>
-                        <button type="button" onClick={() => { } } className="btn btn-default">
-                            <span className="glyphicon glyphicon-trash"></span>
-                        </button>
-                    </div>
-                    <PartUsagesEditor
-                        partUsages={props.partUsages}
-                        selectedPartUsages={props.selectedPartUsages}
-                        onPartUsageChange={props.onPartUsageChange}
-                        onPartUsageSelect={onPartUsageSelect}
-                        onAllPartUsageSelect={onAllPartUsagesSelect}/>
+                    { props.partUsages.length == 0 ?
+                        <div style={{ textAlign: 'center' }}>
+                            На данный момент детали отсутствуют.
+                            <br/>
+                            Для добавления нажмите кнопку&nbsp;
+                            <button type="button" onClick={props.onOpenPartList} className="btn btn-default">
+                                <span className="glyphicon glyphicon-plus"></span>
+                            </button>.
+                        </div>
+                        :
+                        <div>
+                            <div className="btn-toolbar" style={{ marginBottom: '5px' }}>
+                                <button type="button" onClick={props.onOpenPartList} className="btn btn-default">
+                                    <span className="glyphicon glyphicon-plus"></span>
+                                </button>
+                                <button type="button" onClick={props.pnPartUsageDeleteClick} className="btn btn-default" disabled={props.selectedPartUsages.length == 0}>
+                                    <span className="glyphicon glyphicon-trash"></span>
+                                </button>
+                            </div>
+                            <PartUsagesEditor
+                                partUsages={props.partUsages}
+                                selectedPartUsages={props.selectedPartUsages}
+                                onPartUsageChange={props.onPartUsageChange}
+                                onPartUsageSelect={onPartUsageSelect}
+                                onAllPartUsagesSelect={onAllPartUsagesSelect}/>
+                        </div>
+                    }
                 </div>
                 <div className="form-group">
                     <div className="btn-toolbar">

@@ -142,6 +142,13 @@ namespace Technolog.SL.Services
                 }
             }
 
+            foreach (var techStep in techOperation.TechSteps.ToList())
+            {
+                var techStepDTO = techOperationDTO.TechSteps.FirstOrDefault(ts => ts.Id == techStep.Id);
+
+                if (techStepDTO == null) techOperation.TechSteps.Remove(techStep);
+            }
+
             database.TechOperations.Update(techOperation);
 
             try

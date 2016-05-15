@@ -11,7 +11,9 @@ const mapStateToTechStepEditFormProps = (state, ownProps) => {
         techStepId: techStepEditFormState.techStepId,
         values: techStepEditFormState.values,
         toolUsages: techStepEditFormState.toolUsages,
+        selectedToolUsages: techStepEditFormState.selectedToolUsages,
         partUsages: techStepEditFormState.partUsages,
+        selectedPartUsages: techStepEditFormState.selectedPartUsages,
         isSaving: techStepEditFormState.isSaving,
         toolListId: techStepEditFormState.toolListId,
         isToolListOpen: techStepEditFormState.isToolListOpen,
@@ -58,6 +60,12 @@ const mapDispatchToTechStepEditFormProps = (dispatch, ownProps) => {
         },
         onSelectedPartUsagesChange: (partUsages) => {
             dispatch(TechStepActionCreator.selectPartUsages(ownProps.id, partUsages))
+        },
+        pnToolUsageDeleteClick: () => {
+            dispatch(TechStepActionCreator.deleteToolUsages(ownProps.id));
+        },
+        pnPartUsageDeleteClick: () => {
+            dispatch(TechStepActionCreator.deletePartUsages(ownProps.id));
         }
     };
 };

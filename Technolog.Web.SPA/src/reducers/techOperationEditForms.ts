@@ -131,21 +131,6 @@ export default function techOperationEditForms(state = initialState, action) {
                     return techOperationEditForm;
                 }
             });
-        case TechOperationActionType.TECHOPERATION_DELETE_TECHSTEPS:
-            return state.map(techOperationEditForm => {
-                if (techOperationEditForm.id == action.techOperationEditFormId) {
-                    return _.assign(
-                        {},
-                        techOperationEditForm,
-                        {
-                            techSteps: techOperationEditForm.techSteps.filter(id => techOperationEditForm.selectedTechStep.indexOf(id) > 0),
-                            selectedTechSteps: []
-                        }
-                    );
-                } else {
-                    return techOperationEditForm;
-                }
-            });
         case TechOperationActionType.TECHOPERATION_SELECT_TECHSTEPS:
             return state.map(techOperationEditForm => {
                 if (techOperationEditForm.id == action.techOperationEditFormId) {
@@ -187,7 +172,8 @@ export default function techOperationEditForms(state = initialState, action) {
                         {},
                         techOperationEditForm,
                         {
-                            techSteps: techOperationEditForm.techSteps.filter(techStep => techOperationEditForm.selectedTechSteps.indexOf(techStep.id) >= 0)
+                            techSteps: techOperationEditForm.techSteps.filter(ts => techOperationEditForm.selectedTechSteps.indexOf(ts.id) < 0),
+                            selectedTechSteps: []
                         }
                     );
                 } else {

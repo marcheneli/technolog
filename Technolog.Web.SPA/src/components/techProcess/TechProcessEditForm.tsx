@@ -54,15 +54,6 @@ export default function TechProcessEditForm(props: any) {
                     </PendingAnimation>
                 </PendingPanel>
             </DialogBackground>
-            <DialogBackground isShow={props.isTechOperationListOpen}>
-                <InnerPanel title={"Добавление операции"}>
-                    <button type="button" onClick={() => { } } className="btn btn-default" style={{ marginBottom: '5px' }}>
-                        <span className="glyphicon glyphicon-plus"></span>
-                        <span>&nbsp;Добавить выбранные</span>
-                    </button>
-                    <TechOperationList id={props.techOperationListId}/>
-                </InnerPanel>
-            </DialogBackground>
             <form role="form" onSubmit={props.handleSubmit}>
                 <div
                     className="form-group">
@@ -81,15 +72,23 @@ export default function TechProcessEditForm(props: any) {
                             Для добавления нажмите кнопку&nbsp;
                             <button type="button" onClick={props.onTechOperationListOpenBtnClick} className="btn btn-default">
                                 <span className="glyphicon glyphicon-plus"></span>
-                                <span>&nbsp;Добавить</span>
                             </button>.
                         </div>
                         :
                         <div>
-                            <button type="button" onClick={props.onTechOperationListOpenBtnClick} className="btn btn-default" style={{ marginBottom: '5px' }}>
-                                <span className="glyphicon glyphicon-plus"></span>
-                                <span>&nbsp;Добавить</span>
-                            </button>
+                            <div className="btn-toolbar" style={{ marginBottom: '5px' }}>
+                                <button type="button"
+                                    onClick={props.onTechOperationListOpenBtnClick}
+                                    className="btn btn-default">
+                                    <span className="glyphicon glyphicon-plus"></span>
+                                </button>
+                                <button type="button"
+                                    onClick={props.onTechOperationDeletetOpenBtnClick}
+                                    className="btn btn-default"
+                                    disabled={props.selectedTechOperations.length == 0}>
+                                    <span className="glyphicon glyphicon-trash"></span>
+                                </button>
+                            </div>
                             <TechOperationTable
                                 techOperations={props.techOperations}
                                 selectedTechOperations={props.selectedTechOperations}

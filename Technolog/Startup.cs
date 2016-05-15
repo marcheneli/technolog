@@ -19,6 +19,11 @@ namespace Technolog.Web
         {
             app.UseCors(Microsoft.Owin.Cors.CorsOptions.AllowAll);
 
+            app.UseIdentityServerBearerTokenAuthentication(new IdentityServer3.AccessTokenValidation.IdentityServerBearerTokenAuthenticationOptions
+            {
+                Authority = "http://localhost:63808/"
+            });
+
             HttpConfiguration httpConfiguration = new HttpConfiguration();
 
             WebApiConfig.Register(httpConfiguration);

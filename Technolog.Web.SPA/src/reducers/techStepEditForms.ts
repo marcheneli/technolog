@@ -266,7 +266,7 @@ export default function techStepEditForms(state = initialState, action) {
                         {},
                         techStepEditForm,
                         {
-                            toolUsages: techStepEditForm.toolUsages.filter(tu => techStepEditForm.selectedToolUsages.indexOf(tu.id) < 0),
+                            toolUsages: techStepEditForm.toolUsages.filter(tu => techStepEditForm.selectedToolUsages.indexOf(tu.toolId) < 0),
                             selectedToolUsages: []
                         }
                     );
@@ -281,7 +281,7 @@ export default function techStepEditForms(state = initialState, action) {
                         {},
                         techStepEditForm,
                         {
-                            partUsages: techStepEditForm.partUsages.filter(pu => techStepEditForm.selectedPartUsages.indexOf(pu.id) < 0),
+                            partUsages: techStepEditForm.partUsages.filter(pu => techStepEditForm.selectedPartUsages.indexOf(pu.partId) < 0),
                             selectedPartUsages: []
                         }
                     );
