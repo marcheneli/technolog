@@ -52,12 +52,12 @@
 	var ReactDOM = __webpack_require__(/*! react-dom */ 32);
 	var react_redux_1 = __webpack_require__(/*! react-redux */ 166);
 	var Technolog_1 = __webpack_require__(/*! ./containers/Technolog */ 192);
-	var configureStore_1 = __webpack_require__(/*! ./store/configureStore */ 412);
+	var configureStore_1 = __webpack_require__(/*! ./store/configureStore */ 413);
 	var $ = __webpack_require__(/*! jquery */ 212);
-	var _ = __webpack_require__(/*! lodash */ 416);
+	var _ = __webpack_require__(/*! lodash */ 417);
 	var serviceDomain_1 = __webpack_require__(/*! ./constants/serviceDomain */ 287);
 	var AntiForgeryToken = __webpack_require__(/*! ./utils/antiForgeryToken */ 288);
-	var authActionType_1 = __webpack_require__(/*! ./actions/authActionType */ 391);
+	var authActionType_1 = __webpack_require__(/*! ./actions/authActionType */ 392);
 	var store = configureStore_1.default({
 	    panels: []
 	});
@@ -22340,7 +22340,8 @@
 	var React = __webpack_require__(/*! react */ 1);
 	var Sidebar_1 = __webpack_require__(/*! ./Sidebar */ 194);
 	var PanelStack_1 = __webpack_require__(/*! ../containers/PanelStack */ 201);
-	var Signin_1 = __webpack_require__(/*! ../containers/auth/Signin */ 340);
+	var Header_1 = __webpack_require__(/*! ../components/Header */ 340);
+	var Signin_1 = __webpack_require__(/*! ../containers/auth/Signin */ 341);
 	var PanelType = __webpack_require__(/*! ./panelType */ 198);
 	var tabs = [
 	    { id: 1, name: 'Технологические процессы', type: PanelType.TECHPROCESS_LIST },
@@ -22349,12 +22350,12 @@
 	    { id: 4, name: 'Инструменты', type: PanelType.TOOL_LIST },
 	    { id: 5, name: 'Детали', type: PanelType.PART_LIST }
 	];
-	var Technolog = function (props) { return (React.createElement("div", {className: "row full-height"}, props.isAuthenticated ?
-	    [
-	        React.createElement(Sidebar_1.default, {tabs: tabs}),
-	        React.createElement(PanelStack_1.default, null)
-	    ]
-	    : React.createElement(Signin_1.default, null))); };
+	var Technolog = function (props) {
+	    if (props.isAuthenticated) {
+	        return (React.createElement("div", {className: "full-height"}, React.createElement(Header_1.default, null), React.createElement("div", {className: "container-fluid full-height"}, React.createElement("div", {className: "row full-height"}, React.createElement(Sidebar_1.default, {tabs: tabs}), React.createElement(PanelStack_1.default, null)))));
+	    }
+	    return React.createElement(Signin_1.default, null);
+	};
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.default = Technolog;
 	//# sourceMappingURL=Technolog.js.map
@@ -39030,15 +39031,31 @@
 
 /***/ },
 /* 340 */
+/*!**********************************!*\
+  !*** ./src/components/Header.js ***!
+  \**********************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var React = __webpack_require__(/*! react */ 1);
+	function default_1(props) {
+	    return (React.createElement("div", {className: "navbar navbar-inverse navbar-fixed-top"}, React.createElement("div", {className: "container-fluid"}, React.createElement("div", {className: "navbar-header"}, React.createElement("button", {type: "button", className: "navbar-toggle", dataToggle: "collapse", dataTarget: ".navbar-collapse"}, React.createElement("span", {className: "icon-bar"}), React.createElement("span", {className: "icon-bar"}), React.createElement("span", {className: "icon-bar"})), React.createElement("span", {className: "navbar-brand"}, "Технолог")), React.createElement("div", {className: "navbar-collapse collapse"}, React.createElement("ul", {className: "nav navbar-nav"})))));
+	}
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = default_1;
+	//# sourceMappingURL=Header.js.map
+
+/***/ },
+/* 341 */
 /*!***************************************!*\
   !*** ./src/containers/auth/Signin.js ***!
   \***************************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var redux_form_1 = __webpack_require__(/*! redux-form */ 341);
-	var Signin_1 = __webpack_require__(/*! ../../components/auth/Signin */ 389);
-	var AuthActionCreator = __webpack_require__(/*! ../../actions/authActionCreator */ 390);
+	var redux_form_1 = __webpack_require__(/*! redux-form */ 342);
+	var Signin_1 = __webpack_require__(/*! ../../components/auth/Signin */ 390);
+	var AuthActionCreator = __webpack_require__(/*! ../../actions/authActionCreator */ 391);
 	var mapDispatchToProps = function (dispatch) {
 	    return {
 	        signinUser: function (email, password) {
@@ -39054,7 +39071,7 @@
 	//# sourceMappingURL=Signin.js.map
 
 /***/ },
-/* 341 */
+/* 342 */
 /*!***********************************!*\
   !*** ./~/redux-form/lib/index.js ***!
   \***********************************/
@@ -39071,7 +39088,7 @@
 	
 	var _reactRedux = __webpack_require__(/*! react-redux */ 166);
 	
-	var _createAll2 = __webpack_require__(/*! ./createAll */ 342);
+	var _createAll2 = __webpack_require__(/*! ./createAll */ 343);
 	
 	var _createAll3 = _interopRequireDefault(_createAll2);
 	
@@ -39135,7 +39152,7 @@
 	exports.untouchWithKey = untouchWithKey;
 
 /***/ },
-/* 342 */
+/* 343 */
 /*!***************************************!*\
   !*** ./~/redux-form/lib/createAll.js ***!
   \***************************************/
@@ -39149,35 +39166,35 @@
 	
 	exports.default = createAll;
 	
-	var _reducer = __webpack_require__(/*! ./reducer */ 343);
+	var _reducer = __webpack_require__(/*! ./reducer */ 344);
 	
 	var _reducer2 = _interopRequireDefault(_reducer);
 	
-	var _createReduxForm = __webpack_require__(/*! ./createReduxForm */ 354);
+	var _createReduxForm = __webpack_require__(/*! ./createReduxForm */ 355);
 	
 	var _createReduxForm2 = _interopRequireDefault(_createReduxForm);
 	
-	var _mapValues = __webpack_require__(/*! ./mapValues */ 345);
+	var _mapValues = __webpack_require__(/*! ./mapValues */ 346);
 	
 	var _mapValues2 = _interopRequireDefault(_mapValues);
 	
-	var _bindActionData = __webpack_require__(/*! ./bindActionData */ 364);
+	var _bindActionData = __webpack_require__(/*! ./bindActionData */ 365);
 	
 	var _bindActionData2 = _interopRequireDefault(_bindActionData);
 	
-	var _actions = __webpack_require__(/*! ./actions */ 363);
+	var _actions = __webpack_require__(/*! ./actions */ 364);
 	
 	var actions = _interopRequireWildcard(_actions);
 	
-	var _actionTypes = __webpack_require__(/*! ./actionTypes */ 344);
+	var _actionTypes = __webpack_require__(/*! ./actionTypes */ 345);
 	
 	var actionTypes = _interopRequireWildcard(_actionTypes);
 	
-	var _createPropTypes = __webpack_require__(/*! ./createPropTypes */ 388);
+	var _createPropTypes = __webpack_require__(/*! ./createPropTypes */ 389);
 	
 	var _createPropTypes2 = _interopRequireDefault(_createPropTypes);
 	
-	var _getValuesFromState = __webpack_require__(/*! ./getValuesFromState */ 348);
+	var _getValuesFromState = __webpack_require__(/*! ./getValuesFromState */ 349);
 	
 	var _getValuesFromState2 = _interopRequireDefault(_getValuesFromState);
 	
@@ -39294,7 +39311,7 @@
 	}
 
 /***/ },
-/* 343 */
+/* 344 */
 /*!*************************************!*\
   !*** ./~/redux-form/lib/reducer.js ***!
   \*************************************/
@@ -39309,39 +39326,39 @@
 	
 	var _initialState, _behaviors;
 	
-	var _actionTypes = __webpack_require__(/*! ./actionTypes */ 344);
+	var _actionTypes = __webpack_require__(/*! ./actionTypes */ 345);
 	
-	var _mapValues = __webpack_require__(/*! ./mapValues */ 345);
+	var _mapValues = __webpack_require__(/*! ./mapValues */ 346);
 	
 	var _mapValues2 = _interopRequireDefault(_mapValues);
 	
-	var _read = __webpack_require__(/*! ./read */ 346);
+	var _read = __webpack_require__(/*! ./read */ 347);
 	
 	var _read2 = _interopRequireDefault(_read);
 	
-	var _write = __webpack_require__(/*! ./write */ 347);
+	var _write = __webpack_require__(/*! ./write */ 348);
 	
 	var _write2 = _interopRequireDefault(_write);
 	
-	var _getValuesFromState = __webpack_require__(/*! ./getValuesFromState */ 348);
+	var _getValuesFromState = __webpack_require__(/*! ./getValuesFromState */ 349);
 	
 	var _getValuesFromState2 = _interopRequireDefault(_getValuesFromState);
 	
-	var _initializeState = __webpack_require__(/*! ./initializeState */ 350);
+	var _initializeState = __webpack_require__(/*! ./initializeState */ 351);
 	
 	var _initializeState2 = _interopRequireDefault(_initializeState);
 	
-	var _resetState = __webpack_require__(/*! ./resetState */ 351);
+	var _resetState = __webpack_require__(/*! ./resetState */ 352);
 	
 	var _resetState2 = _interopRequireDefault(_resetState);
 	
-	var _setErrors = __webpack_require__(/*! ./setErrors */ 352);
+	var _setErrors = __webpack_require__(/*! ./setErrors */ 353);
 	
 	var _setErrors2 = _interopRequireDefault(_setErrors);
 	
-	var _fieldValue = __webpack_require__(/*! ./fieldValue */ 349);
+	var _fieldValue = __webpack_require__(/*! ./fieldValue */ 350);
 	
-	var _normalizeFields = __webpack_require__(/*! ./normalizeFields */ 353);
+	var _normalizeFields = __webpack_require__(/*! ./normalizeFields */ 354);
 	
 	var _normalizeFields2 = _interopRequireDefault(_normalizeFields);
 	
@@ -39634,7 +39651,7 @@
 	exports.default = decorate(formReducer);
 
 /***/ },
-/* 344 */
+/* 345 */
 /*!*****************************************!*\
   !*** ./~/redux-form/lib/actionTypes.js ***!
   \*****************************************/
@@ -39662,7 +39679,7 @@
 	var UNTOUCH = exports.UNTOUCH = 'redux-form/UNTOUCH';
 
 /***/ },
-/* 345 */
+/* 346 */
 /*!***************************************!*\
   !*** ./~/redux-form/lib/mapValues.js ***!
   \***************************************/
@@ -39687,7 +39704,7 @@
 	}
 
 /***/ },
-/* 346 */
+/* 347 */
 /*!**********************************!*\
   !*** ./~/redux-form/lib/read.js ***!
   \**********************************/
@@ -39736,7 +39753,7 @@
 	exports.default = read;
 
 /***/ },
-/* 347 */
+/* 348 */
 /*!***********************************!*\
   !*** ./~/redux-form/lib/write.js ***!
   \***********************************/
@@ -39845,7 +39862,7 @@
 	exports.default = write;
 
 /***/ },
-/* 348 */
+/* 349 */
 /*!************************************************!*\
   !*** ./~/redux-form/lib/getValuesFromState.js ***!
   \************************************************/
@@ -39855,7 +39872,7 @@
 	
 	exports.__esModule = true;
 	
-	var _fieldValue = __webpack_require__(/*! ./fieldValue */ 349);
+	var _fieldValue = __webpack_require__(/*! ./fieldValue */ 350);
 	
 	/**
 	 * A different version of getValues() that does not need the fields array
@@ -39894,7 +39911,7 @@
 	exports.default = getValuesFromState;
 
 /***/ },
-/* 349 */
+/* 350 */
 /*!****************************************!*\
   !*** ./~/redux-form/lib/fieldValue.js ***!
   \****************************************/
@@ -39922,7 +39939,7 @@
 	}
 
 /***/ },
-/* 350 */
+/* 351 */
 /*!*********************************************!*\
   !*** ./~/redux-form/lib/initializeState.js ***!
   \*********************************************/
@@ -39934,7 +39951,7 @@
 	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
-	var _fieldValue = __webpack_require__(/*! ./fieldValue */ 349);
+	var _fieldValue = __webpack_require__(/*! ./fieldValue */ 350);
 	
 	var makeEntry = function makeEntry(value, previousValue, overwriteValues) {
 	  return (0, _fieldValue.makeFieldValue)(value === undefined ? {} : {
@@ -40006,7 +40023,7 @@
 	exports.default = initializeState;
 
 /***/ },
-/* 351 */
+/* 352 */
 /*!****************************************!*\
   !*** ./~/redux-form/lib/resetState.js ***!
   \****************************************/
@@ -40016,7 +40033,7 @@
 	
 	exports.__esModule = true;
 	
-	var _fieldValue = __webpack_require__(/*! ./fieldValue */ 349);
+	var _fieldValue = __webpack_require__(/*! ./fieldValue */ 350);
 	
 	var reset = function reset(value) {
 	  return (0, _fieldValue.makeFieldValue)(value === undefined || value && value.initial === undefined ? {} : { initial: value.initial, value: value.initial });
@@ -40048,7 +40065,7 @@
 	exports.default = resetState;
 
 /***/ },
-/* 352 */
+/* 353 */
 /*!***************************************!*\
   !*** ./~/redux-form/lib/setErrors.js ***!
   \***************************************/
@@ -40060,7 +40077,7 @@
 	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
-	var _fieldValue = __webpack_require__(/*! ./fieldValue */ 349);
+	var _fieldValue = __webpack_require__(/*! ./fieldValue */ 350);
 	
 	var isMetaKey = function isMetaKey(key) {
 	  return key[0] === '_';
@@ -40145,7 +40162,7 @@
 	exports.default = setErrors;
 
 /***/ },
-/* 353 */
+/* 354 */
 /*!*********************************************!*\
   !*** ./~/redux-form/lib/normalizeFields.js ***!
   \*********************************************/
@@ -40159,7 +40176,7 @@
 	
 	exports.default = normalizeFields;
 	
-	var _fieldValue = __webpack_require__(/*! ./fieldValue */ 349);
+	var _fieldValue = __webpack_require__(/*! ./fieldValue */ 350);
 	
 	function extractKey(field) {
 	  var dotIndex = field.indexOf('.');
@@ -40245,7 +40262,7 @@
 	}
 
 /***/ },
-/* 354 */
+/* 355 */
 /*!*********************************************!*\
   !*** ./~/redux-form/lib/createReduxForm.js ***!
   \*********************************************/
@@ -40257,11 +40274,11 @@
 	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
-	var _createReduxFormConnector = __webpack_require__(/*! ./createReduxFormConnector */ 355);
+	var _createReduxFormConnector = __webpack_require__(/*! ./createReduxFormConnector */ 356);
 	
 	var _createReduxFormConnector2 = _interopRequireDefault(_createReduxFormConnector);
 	
-	var _hoistNonReactStatics = __webpack_require__(/*! hoist-non-react-statics */ 387);
+	var _hoistNonReactStatics = __webpack_require__(/*! hoist-non-react-statics */ 388);
 	
 	var _hoistNonReactStatics2 = _interopRequireDefault(_hoistNonReactStatics);
 	
@@ -40322,7 +40339,7 @@
 	exports.default = createReduxForm;
 
 /***/ },
-/* 355 */
+/* 356 */
 /*!******************************************************!*\
   !*** ./~/redux-form/lib/createReduxFormConnector.js ***!
   \******************************************************/
@@ -40332,15 +40349,15 @@
 	
 	exports.__esModule = true;
 	
-	var _noGetters = __webpack_require__(/*! react-lazy-cache/noGetters */ 356);
+	var _noGetters = __webpack_require__(/*! react-lazy-cache/noGetters */ 357);
 	
 	var _noGetters2 = _interopRequireDefault(_noGetters);
 	
-	var _getDisplayName = __webpack_require__(/*! ./getDisplayName */ 361);
+	var _getDisplayName = __webpack_require__(/*! ./getDisplayName */ 362);
 	
 	var _getDisplayName2 = _interopRequireDefault(_getDisplayName);
 	
-	var _createHigherOrderComponent = __webpack_require__(/*! ./createHigherOrderComponent */ 362);
+	var _createHigherOrderComponent = __webpack_require__(/*! ./createHigherOrderComponent */ 363);
 	
 	var _createHigherOrderComponent2 = _interopRequireDefault(_createHigherOrderComponent);
 	
@@ -40430,17 +40447,17 @@
 	exports.default = createReduxFormConnector;
 
 /***/ },
-/* 356 */
+/* 357 */
 /*!******************************************************!*\
   !*** ./~/redux-form/~/react-lazy-cache/noGetters.js ***!
   \******************************************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(/*! ./lib/noGetters */ 357);
+	module.exports = __webpack_require__(/*! ./lib/noGetters */ 358);
 
 
 /***/ },
-/* 357 */
+/* 358 */
 /*!**********************************************************!*\
   !*** ./~/redux-form/~/react-lazy-cache/lib/noGetters.js ***!
   \**********************************************************/
@@ -40456,7 +40473,7 @@
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 	
-	var _deepEqual = __webpack_require__(/*! deep-equal */ 358);
+	var _deepEqual = __webpack_require__(/*! deep-equal */ 359);
 	
 	var _deepEqual2 = _interopRequireDefault(_deepEqual);
 	
@@ -40538,15 +40555,15 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 358 */
+/* 359 */
 /*!********************************************!*\
   !*** ./~/redux-form/~/deep-equal/index.js ***!
   \********************************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	var pSlice = Array.prototype.slice;
-	var objectKeys = __webpack_require__(/*! ./lib/keys.js */ 359);
-	var isArguments = __webpack_require__(/*! ./lib/is_arguments.js */ 360);
+	var objectKeys = __webpack_require__(/*! ./lib/keys.js */ 360);
+	var isArguments = __webpack_require__(/*! ./lib/is_arguments.js */ 361);
 	
 	var deepEqual = module.exports = function (actual, expected, opts) {
 	  if (!opts) opts = {};
@@ -40641,7 +40658,7 @@
 
 
 /***/ },
-/* 359 */
+/* 360 */
 /*!***********************************************!*\
   !*** ./~/redux-form/~/deep-equal/lib/keys.js ***!
   \***********************************************/
@@ -40659,7 +40676,7 @@
 
 
 /***/ },
-/* 360 */
+/* 361 */
 /*!*******************************************************!*\
   !*** ./~/redux-form/~/deep-equal/lib/is_arguments.js ***!
   \*******************************************************/
@@ -40688,7 +40705,7 @@
 
 
 /***/ },
-/* 361 */
+/* 362 */
 /*!********************************************!*\
   !*** ./~/redux-form/lib/getDisplayName.js ***!
   \********************************************/
@@ -40703,7 +40720,7 @@
 	}
 
 /***/ },
-/* 362 */
+/* 363 */
 /*!********************************************************!*\
   !*** ./~/redux-form/lib/createHigherOrderComponent.js ***!
   \********************************************************/
@@ -40715,57 +40732,57 @@
 	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
-	var _actions = __webpack_require__(/*! ./actions */ 363);
+	var _actions = __webpack_require__(/*! ./actions */ 364);
 	
 	var importedActions = _interopRequireWildcard(_actions);
 	
-	var _getDisplayName = __webpack_require__(/*! ./getDisplayName */ 361);
+	var _getDisplayName = __webpack_require__(/*! ./getDisplayName */ 362);
 	
 	var _getDisplayName2 = _interopRequireDefault(_getDisplayName);
 	
-	var _reducer = __webpack_require__(/*! ./reducer */ 343);
+	var _reducer = __webpack_require__(/*! ./reducer */ 344);
 	
-	var _deepEqual = __webpack_require__(/*! deep-equal */ 358);
+	var _deepEqual = __webpack_require__(/*! deep-equal */ 359);
 	
 	var _deepEqual2 = _interopRequireDefault(_deepEqual);
 	
-	var _bindActionData = __webpack_require__(/*! ./bindActionData */ 364);
+	var _bindActionData = __webpack_require__(/*! ./bindActionData */ 365);
 	
 	var _bindActionData2 = _interopRequireDefault(_bindActionData);
 	
-	var _getValues = __webpack_require__(/*! ./getValues */ 365);
+	var _getValues = __webpack_require__(/*! ./getValues */ 366);
 	
 	var _getValues2 = _interopRequireDefault(_getValues);
 	
-	var _isValid = __webpack_require__(/*! ./isValid */ 366);
+	var _isValid = __webpack_require__(/*! ./isValid */ 367);
 	
 	var _isValid2 = _interopRequireDefault(_isValid);
 	
-	var _readFields = __webpack_require__(/*! ./readFields */ 367);
+	var _readFields = __webpack_require__(/*! ./readFields */ 368);
 	
 	var _readFields2 = _interopRequireDefault(_readFields);
 	
-	var _handleSubmit2 = __webpack_require__(/*! ./handleSubmit */ 381);
+	var _handleSubmit2 = __webpack_require__(/*! ./handleSubmit */ 382);
 	
 	var _handleSubmit3 = _interopRequireDefault(_handleSubmit2);
 	
-	var _asyncValidation = __webpack_require__(/*! ./asyncValidation */ 382);
+	var _asyncValidation = __webpack_require__(/*! ./asyncValidation */ 383);
 	
 	var _asyncValidation2 = _interopRequireDefault(_asyncValidation);
 	
-	var _silenceEvents = __webpack_require__(/*! ./events/silenceEvents */ 383);
+	var _silenceEvents = __webpack_require__(/*! ./events/silenceEvents */ 384);
 	
 	var _silenceEvents2 = _interopRequireDefault(_silenceEvents);
 	
-	var _silenceEvent = __webpack_require__(/*! ./events/silenceEvent */ 384);
+	var _silenceEvent = __webpack_require__(/*! ./events/silenceEvent */ 385);
 	
 	var _silenceEvent2 = _interopRequireDefault(_silenceEvent);
 	
-	var _wrapMapDispatchToProps = __webpack_require__(/*! ./wrapMapDispatchToProps */ 385);
+	var _wrapMapDispatchToProps = __webpack_require__(/*! ./wrapMapDispatchToProps */ 386);
 	
 	var _wrapMapDispatchToProps2 = _interopRequireDefault(_wrapMapDispatchToProps);
 	
-	var _wrapMapStateToProps = __webpack_require__(/*! ./wrapMapStateToProps */ 386);
+	var _wrapMapStateToProps = __webpack_require__(/*! ./wrapMapStateToProps */ 387);
 	
 	var _wrapMapStateToProps2 = _interopRequireDefault(_wrapMapStateToProps);
 	
@@ -41077,7 +41094,7 @@
 	exports.default = createHigherOrderComponent;
 
 /***/ },
-/* 363 */
+/* 364 */
 /*!*************************************!*\
   !*** ./~/redux-form/lib/actions.js ***!
   \*************************************/
@@ -41088,7 +41105,7 @@
 	exports.__esModule = true;
 	exports.untouch = exports.touch = exports.swapArrayValues = exports.submitFailed = exports.stopSubmit = exports.stopAsyncValidation = exports.startSubmit = exports.startAsyncValidation = exports.reset = exports.removeArrayValue = exports.initialize = exports.focus = exports.destroy = exports.change = exports.blur = exports.autofill = exports.addArrayValue = undefined;
 	
-	var _actionTypes = __webpack_require__(/*! ./actionTypes */ 344);
+	var _actionTypes = __webpack_require__(/*! ./actionTypes */ 345);
 	
 	var addArrayValue = exports.addArrayValue = function addArrayValue(path, value, index, fields) {
 	  return { type: _actionTypes.ADD_ARRAY_VALUE, path: path, value: value, index: index, fields: fields };
@@ -41172,7 +41189,7 @@
 	};
 
 /***/ },
-/* 364 */
+/* 365 */
 /*!********************************************!*\
   !*** ./~/redux-form/lib/bindActionData.js ***!
   \********************************************/
@@ -41186,7 +41203,7 @@
 	
 	exports.default = bindActionData;
 	
-	var _mapValues = __webpack_require__(/*! ./mapValues */ 345);
+	var _mapValues = __webpack_require__(/*! ./mapValues */ 346);
 	
 	var _mapValues2 = _interopRequireDefault(_mapValues);
 	
@@ -41210,7 +41227,7 @@
 	}
 
 /***/ },
-/* 365 */
+/* 366 */
 /*!***************************************!*\
   !*** ./~/redux-form/lib/getValues.js ***!
   \***************************************/
@@ -41283,7 +41300,7 @@
 	exports.default = getValues;
 
 /***/ },
-/* 366 */
+/* 367 */
 /*!*************************************!*\
   !*** ./~/redux-form/lib/isValid.js ***!
   \*************************************/
@@ -41308,7 +41325,7 @@
 	}
 
 /***/ },
-/* 367 */
+/* 368 */
 /*!****************************************!*\
   !*** ./~/redux-form/lib/readFields.js ***!
   \****************************************/
@@ -41320,19 +41337,19 @@
 	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
-	var _readField = __webpack_require__(/*! ./readField */ 368);
+	var _readField = __webpack_require__(/*! ./readField */ 369);
 	
 	var _readField2 = _interopRequireDefault(_readField);
 	
-	var _write = __webpack_require__(/*! ./write */ 347);
+	var _write = __webpack_require__(/*! ./write */ 348);
 	
 	var _write2 = _interopRequireDefault(_write);
 	
-	var _getValues = __webpack_require__(/*! ./getValues */ 365);
+	var _getValues = __webpack_require__(/*! ./getValues */ 366);
 	
 	var _getValues2 = _interopRequireDefault(_getValues);
 	
-	var _removeField = __webpack_require__(/*! ./removeField */ 380);
+	var _removeField = __webpack_require__(/*! ./removeField */ 381);
 	
 	var _removeField2 = _interopRequireDefault(_removeField);
 	
@@ -41382,7 +41399,7 @@
 	exports.default = readFields;
 
 /***/ },
-/* 368 */
+/* 369 */
 /*!***************************************!*\
   !*** ./~/redux-form/lib/readField.js ***!
   \***************************************/
@@ -41394,35 +41411,35 @@
 	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
-	var _createOnBlur = __webpack_require__(/*! ./events/createOnBlur */ 369);
+	var _createOnBlur = __webpack_require__(/*! ./events/createOnBlur */ 370);
 	
 	var _createOnBlur2 = _interopRequireDefault(_createOnBlur);
 	
-	var _createOnChange = __webpack_require__(/*! ./events/createOnChange */ 372);
+	var _createOnChange = __webpack_require__(/*! ./events/createOnChange */ 373);
 	
 	var _createOnChange2 = _interopRequireDefault(_createOnChange);
 	
-	var _createOnDragStart = __webpack_require__(/*! ./events/createOnDragStart */ 373);
+	var _createOnDragStart = __webpack_require__(/*! ./events/createOnDragStart */ 374);
 	
 	var _createOnDragStart2 = _interopRequireDefault(_createOnDragStart);
 	
-	var _createOnDrop = __webpack_require__(/*! ./events/createOnDrop */ 374);
+	var _createOnDrop = __webpack_require__(/*! ./events/createOnDrop */ 375);
 	
 	var _createOnDrop2 = _interopRequireDefault(_createOnDrop);
 	
-	var _createOnFocus = __webpack_require__(/*! ./events/createOnFocus */ 375);
+	var _createOnFocus = __webpack_require__(/*! ./events/createOnFocus */ 376);
 	
 	var _createOnFocus2 = _interopRequireDefault(_createOnFocus);
 	
-	var _silencePromise = __webpack_require__(/*! ./silencePromise */ 376);
+	var _silencePromise = __webpack_require__(/*! ./silencePromise */ 377);
 	
 	var _silencePromise2 = _interopRequireDefault(_silencePromise);
 	
-	var _read = __webpack_require__(/*! ./read */ 346);
+	var _read = __webpack_require__(/*! ./read */ 347);
 	
 	var _read2 = _interopRequireDefault(_read);
 	
-	var _updateField = __webpack_require__(/*! ./updateField */ 378);
+	var _updateField = __webpack_require__(/*! ./updateField */ 379);
 	
 	var _updateField2 = _interopRequireDefault(_updateField);
 	
@@ -41608,7 +41625,7 @@
 	exports.default = readField;
 
 /***/ },
-/* 369 */
+/* 370 */
 /*!*************************************************!*\
   !*** ./~/redux-form/lib/events/createOnBlur.js ***!
   \*************************************************/
@@ -41618,7 +41635,7 @@
 	
 	exports.__esModule = true;
 	
-	var _getValue = __webpack_require__(/*! ./getValue */ 370);
+	var _getValue = __webpack_require__(/*! ./getValue */ 371);
 	
 	var _getValue2 = _interopRequireDefault(_getValue);
 	
@@ -41636,7 +41653,7 @@
 	exports.default = createOnBlur;
 
 /***/ },
-/* 370 */
+/* 371 */
 /*!*********************************************!*\
   !*** ./~/redux-form/lib/events/getValue.js ***!
   \*********************************************/
@@ -41646,7 +41663,7 @@
 	
 	exports.__esModule = true;
 	
-	var _isEvent = __webpack_require__(/*! ./isEvent */ 371);
+	var _isEvent = __webpack_require__(/*! ./isEvent */ 372);
 	
 	var _isEvent2 = _interopRequireDefault(_isEvent);
 	
@@ -41699,7 +41716,7 @@
 	exports.default = getValue;
 
 /***/ },
-/* 371 */
+/* 372 */
 /*!********************************************!*\
   !*** ./~/redux-form/lib/events/isEvent.js ***!
   \********************************************/
@@ -41715,7 +41732,7 @@
 	exports.default = isEvent;
 
 /***/ },
-/* 372 */
+/* 373 */
 /*!***************************************************!*\
   !*** ./~/redux-form/lib/events/createOnChange.js ***!
   \***************************************************/
@@ -41725,7 +41742,7 @@
 	
 	exports.__esModule = true;
 	
-	var _getValue = __webpack_require__(/*! ./getValue */ 370);
+	var _getValue = __webpack_require__(/*! ./getValue */ 371);
 	
 	var _getValue2 = _interopRequireDefault(_getValue);
 	
@@ -41739,7 +41756,7 @@
 	exports.default = createOnChange;
 
 /***/ },
-/* 373 */
+/* 374 */
 /*!******************************************************!*\
   !*** ./~/redux-form/lib/events/createOnDragStart.js ***!
   \******************************************************/
@@ -41758,7 +41775,7 @@
 	exports.default = createOnDragStart;
 
 /***/ },
-/* 374 */
+/* 375 */
 /*!*************************************************!*\
   !*** ./~/redux-form/lib/events/createOnDrop.js ***!
   \*************************************************/
@@ -41768,7 +41785,7 @@
 	
 	exports.__esModule = true;
 	
-	var _createOnDragStart = __webpack_require__(/*! ./createOnDragStart */ 373);
+	var _createOnDragStart = __webpack_require__(/*! ./createOnDragStart */ 374);
 	
 	var createOnDrop = function createOnDrop(name, change) {
 	  return function (event) {
@@ -41778,7 +41795,7 @@
 	exports.default = createOnDrop;
 
 /***/ },
-/* 375 */
+/* 376 */
 /*!**************************************************!*\
   !*** ./~/redux-form/lib/events/createOnFocus.js ***!
   \**************************************************/
@@ -41795,7 +41812,7 @@
 	exports.default = createOnFocus;
 
 /***/ },
-/* 376 */
+/* 377 */
 /*!********************************************!*\
   !*** ./~/redux-form/lib/silencePromise.js ***!
   \********************************************/
@@ -41805,7 +41822,7 @@
 	
 	exports.__esModule = true;
 	
-	var _isPromise = __webpack_require__(/*! is-promise */ 377);
+	var _isPromise = __webpack_require__(/*! is-promise */ 378);
 	
 	var _isPromise2 = _interopRequireDefault(_isPromise);
 	
@@ -41822,7 +41839,7 @@
 	exports.default = silencePromise;
 
 /***/ },
-/* 377 */
+/* 378 */
 /*!********************************************!*\
   !*** ./~/redux-form/~/is-promise/index.js ***!
   \********************************************/
@@ -41836,7 +41853,7 @@
 
 
 /***/ },
-/* 378 */
+/* 379 */
 /*!*****************************************!*\
   !*** ./~/redux-form/lib/updateField.js ***!
   \*****************************************/
@@ -41848,11 +41865,11 @@
 	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
-	var _isPristine = __webpack_require__(/*! ./isPristine */ 379);
+	var _isPristine = __webpack_require__(/*! ./isPristine */ 380);
 	
 	var _isPristine2 = _interopRequireDefault(_isPristine);
 	
-	var _isValid = __webpack_require__(/*! ./isValid */ 366);
+	var _isValid = __webpack_require__(/*! ./isValid */ 367);
 	
 	var _isValid2 = _interopRequireDefault(_isValid);
 	
@@ -41914,7 +41931,7 @@
 	exports.default = updateField;
 
 /***/ },
-/* 379 */
+/* 380 */
 /*!****************************************!*\
   !*** ./~/redux-form/lib/isPristine.js ***!
   \****************************************/
@@ -41955,7 +41972,7 @@
 	}
 
 /***/ },
-/* 380 */
+/* 381 */
 /*!*****************************************!*\
   !*** ./~/redux-form/lib/removeField.js ***!
   \*****************************************/
@@ -42038,7 +42055,7 @@
 	exports.default = removeField;
 
 /***/ },
-/* 381 */
+/* 382 */
 /*!******************************************!*\
   !*** ./~/redux-form/lib/handleSubmit.js ***!
   \******************************************/
@@ -42048,11 +42065,11 @@
 	
 	exports.__esModule = true;
 	
-	var _isPromise = __webpack_require__(/*! is-promise */ 377);
+	var _isPromise = __webpack_require__(/*! is-promise */ 378);
 	
 	var _isPromise2 = _interopRequireDefault(_isPromise);
 	
-	var _isValid = __webpack_require__(/*! ./isValid */ 366);
+	var _isValid = __webpack_require__(/*! ./isValid */ 367);
 	
 	var _isValid2 = _interopRequireDefault(_isValid);
 	
@@ -42123,7 +42140,7 @@
 	exports.default = handleSubmit;
 
 /***/ },
-/* 382 */
+/* 383 */
 /*!*********************************************!*\
   !*** ./~/redux-form/lib/asyncValidation.js ***!
   \*********************************************/
@@ -42133,11 +42150,11 @@
 	
 	exports.__esModule = true;
 	
-	var _isPromise = __webpack_require__(/*! is-promise */ 377);
+	var _isPromise = __webpack_require__(/*! is-promise */ 378);
 	
 	var _isPromise2 = _interopRequireDefault(_isPromise);
 	
-	var _isValid = __webpack_require__(/*! ./isValid */ 366);
+	var _isValid = __webpack_require__(/*! ./isValid */ 367);
 	
 	var _isValid2 = _interopRequireDefault(_isValid);
 	
@@ -42168,7 +42185,7 @@
 	exports.default = asyncValidation;
 
 /***/ },
-/* 383 */
+/* 384 */
 /*!**************************************************!*\
   !*** ./~/redux-form/lib/events/silenceEvents.js ***!
   \**************************************************/
@@ -42178,7 +42195,7 @@
 	
 	exports.__esModule = true;
 	
-	var _silenceEvent = __webpack_require__(/*! ./silenceEvent */ 384);
+	var _silenceEvent = __webpack_require__(/*! ./silenceEvent */ 385);
 	
 	var _silenceEvent2 = _interopRequireDefault(_silenceEvent);
 	
@@ -42197,7 +42214,7 @@
 	exports.default = silenceEvents;
 
 /***/ },
-/* 384 */
+/* 385 */
 /*!*************************************************!*\
   !*** ./~/redux-form/lib/events/silenceEvent.js ***!
   \*************************************************/
@@ -42207,7 +42224,7 @@
 	
 	exports.__esModule = true;
 	
-	var _isEvent = __webpack_require__(/*! ./isEvent */ 371);
+	var _isEvent = __webpack_require__(/*! ./isEvent */ 372);
 	
 	var _isEvent2 = _interopRequireDefault(_isEvent);
 	
@@ -42224,7 +42241,7 @@
 	exports.default = silenceEvent;
 
 /***/ },
-/* 385 */
+/* 386 */
 /*!****************************************************!*\
   !*** ./~/redux-form/lib/wrapMapDispatchToProps.js ***!
   \****************************************************/
@@ -42270,7 +42287,7 @@
 	exports.default = wrapMapDispatchToProps;
 
 /***/ },
-/* 386 */
+/* 387 */
 /*!*************************************************!*\
   !*** ./~/redux-form/lib/wrapMapStateToProps.js ***!
   \*************************************************/
@@ -42310,7 +42327,7 @@
 	exports.default = wrapMapStateToProps;
 
 /***/ },
-/* 387 */
+/* 388 */
 /*!*********************************************************!*\
   !*** ./~/redux-form/~/hoist-non-react-statics/index.js ***!
   \*********************************************************/
@@ -42361,7 +42378,7 @@
 
 
 /***/ },
-/* 388 */
+/* 389 */
 /*!*********************************************!*\
   !*** ./~/redux-form/lib/createPropTypes.js ***!
   \*********************************************/
@@ -42410,7 +42427,7 @@
 	exports.default = createPropTypes;
 
 /***/ },
-/* 389 */
+/* 390 */
 /*!***************************************!*\
   !*** ./src/components/auth/Signin.js ***!
   \***************************************/
@@ -42450,16 +42467,16 @@
 	//# sourceMappingURL=Signin.js.map
 
 /***/ },
-/* 390 */
+/* 391 */
 /*!******************************************!*\
   !*** ./src/actions/authActionCreator.js ***!
   \******************************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var AuthActionType = __webpack_require__(/*! ./authActionType */ 391);
-	var axios = __webpack_require__(/*! axios */ 392);
-	var query_string_1 = __webpack_require__(/*! query-string */ 410);
+	var AuthActionType = __webpack_require__(/*! ./authActionType */ 392);
+	var axios = __webpack_require__(/*! axios */ 393);
+	var query_string_1 = __webpack_require__(/*! query-string */ 411);
 	var ROOT_URL = 'http://localhost:63808';
 	function signinUser(email, password) {
 	    return function (dispatch) {
@@ -42489,7 +42506,7 @@
 	//# sourceMappingURL=authActionCreator.js.map
 
 /***/ },
-/* 391 */
+/* 392 */
 /*!***************************************!*\
   !*** ./src/actions/authActionType.js ***!
   \***************************************/
@@ -42502,16 +42519,16 @@
 	//# sourceMappingURL=authActionType.js.map
 
 /***/ },
-/* 392 */
+/* 393 */
 /*!**************************!*\
   !*** ./~/axios/index.js ***!
   \**************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(/*! ./lib/axios */ 393);
+	module.exports = __webpack_require__(/*! ./lib/axios */ 394);
 
 /***/ },
-/* 393 */
+/* 394 */
 /*!******************************!*\
   !*** ./~/axios/lib/axios.js ***!
   \******************************/
@@ -42519,14 +42536,14 @@
 
 	'use strict';
 	
-	var defaults = __webpack_require__(/*! ./defaults */ 394);
-	var utils = __webpack_require__(/*! ./utils */ 395);
-	var dispatchRequest = __webpack_require__(/*! ./core/dispatchRequest */ 396);
-	var InterceptorManager = __webpack_require__(/*! ./core/InterceptorManager */ 405);
-	var isAbsoluteURL = __webpack_require__(/*! ./helpers/isAbsoluteURL */ 406);
-	var combineURLs = __webpack_require__(/*! ./helpers/combineURLs */ 407);
-	var bind = __webpack_require__(/*! ./helpers/bind */ 408);
-	var transformData = __webpack_require__(/*! ./helpers/transformData */ 400);
+	var defaults = __webpack_require__(/*! ./defaults */ 395);
+	var utils = __webpack_require__(/*! ./utils */ 396);
+	var dispatchRequest = __webpack_require__(/*! ./core/dispatchRequest */ 397);
+	var InterceptorManager = __webpack_require__(/*! ./core/InterceptorManager */ 406);
+	var isAbsoluteURL = __webpack_require__(/*! ./helpers/isAbsoluteURL */ 407);
+	var combineURLs = __webpack_require__(/*! ./helpers/combineURLs */ 408);
+	var bind = __webpack_require__(/*! ./helpers/bind */ 409);
+	var transformData = __webpack_require__(/*! ./helpers/transformData */ 401);
 	
 	function Axios(defaultConfig) {
 	  this.defaults = utils.merge({}, defaultConfig);
@@ -42611,7 +42628,7 @@
 	axios.all = function all(promises) {
 	  return Promise.all(promises);
 	};
-	axios.spread = __webpack_require__(/*! ./helpers/spread */ 409);
+	axios.spread = __webpack_require__(/*! ./helpers/spread */ 410);
 	
 	// Provide aliases for supported request methods
 	utils.forEach(['delete', 'get', 'head'], function forEachMethodNoData(method) {
@@ -42639,7 +42656,7 @@
 
 
 /***/ },
-/* 394 */
+/* 395 */
 /*!*********************************!*\
   !*** ./~/axios/lib/defaults.js ***!
   \*********************************/
@@ -42647,7 +42664,7 @@
 
 	'use strict';
 	
-	var utils = __webpack_require__(/*! ./utils */ 395);
+	var utils = __webpack_require__(/*! ./utils */ 396);
 	
 	var PROTECTION_PREFIX = /^\)\]\}',?\n/;
 	var DEFAULT_CONTENT_TYPE = {
@@ -42714,7 +42731,7 @@
 
 
 /***/ },
-/* 395 */
+/* 396 */
 /*!******************************!*\
   !*** ./~/axios/lib/utils.js ***!
   \******************************/
@@ -42989,7 +43006,7 @@
 
 
 /***/ },
-/* 396 */
+/* 397 */
 /*!*********************************************!*\
   !*** ./~/axios/lib/core/dispatchRequest.js ***!
   \*********************************************/
@@ -43014,10 +43031,10 @@
 	        adapter = config.adapter;
 	      } else if (typeof XMLHttpRequest !== 'undefined') {
 	        // For browsers use XHR adapter
-	        adapter = __webpack_require__(/*! ../adapters/xhr */ 397);
+	        adapter = __webpack_require__(/*! ../adapters/xhr */ 398);
 	      } else if (typeof process !== 'undefined') {
 	        // For node use HTTP adapter
-	        adapter = __webpack_require__(/*! ../adapters/http */ 397);
+	        adapter = __webpack_require__(/*! ../adapters/http */ 398);
 	      }
 	
 	      if (typeof adapter === 'function') {
@@ -43033,7 +43050,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! (webpack)/~/node-libs-browser/~/process/browser.js */ 3)))
 
 /***/ },
-/* 397 */
+/* 398 */
 /*!*************************************!*\
   !*** ./~/axios/lib/adapters/xhr.js ***!
   \*************************************/
@@ -43041,13 +43058,13 @@
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
 	
-	var utils = __webpack_require__(/*! ./../utils */ 395);
-	var buildURL = __webpack_require__(/*! ./../helpers/buildURL */ 398);
-	var parseHeaders = __webpack_require__(/*! ./../helpers/parseHeaders */ 399);
-	var transformData = __webpack_require__(/*! ./../helpers/transformData */ 400);
-	var isURLSameOrigin = __webpack_require__(/*! ./../helpers/isURLSameOrigin */ 401);
-	var btoa = (typeof window !== 'undefined' && window.btoa) || __webpack_require__(/*! ./../helpers/btoa */ 402);
-	var settle = __webpack_require__(/*! ../helpers/settle */ 403);
+	var utils = __webpack_require__(/*! ./../utils */ 396);
+	var buildURL = __webpack_require__(/*! ./../helpers/buildURL */ 399);
+	var parseHeaders = __webpack_require__(/*! ./../helpers/parseHeaders */ 400);
+	var transformData = __webpack_require__(/*! ./../helpers/transformData */ 401);
+	var isURLSameOrigin = __webpack_require__(/*! ./../helpers/isURLSameOrigin */ 402);
+	var btoa = (typeof window !== 'undefined' && window.btoa) || __webpack_require__(/*! ./../helpers/btoa */ 403);
+	var settle = __webpack_require__(/*! ../helpers/settle */ 404);
 	
 	module.exports = function xhrAdapter(resolve, reject, config) {
 	  var requestData = config.data;
@@ -43146,7 +43163,7 @@
 	  // This is only done if running in a standard browser environment.
 	  // Specifically not if we're in a web worker, or react-native.
 	  if (utils.isStandardBrowserEnv()) {
-	    var cookies = __webpack_require__(/*! ./../helpers/cookies */ 404);
+	    var cookies = __webpack_require__(/*! ./../helpers/cookies */ 405);
 	
 	    // Add xsrf header
 	    var xsrfValue = config.withCredentials || isURLSameOrigin(config.url) ?
@@ -43207,7 +43224,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! (webpack)/~/node-libs-browser/~/process/browser.js */ 3)))
 
 /***/ },
-/* 398 */
+/* 399 */
 /*!*****************************************!*\
   !*** ./~/axios/lib/helpers/buildURL.js ***!
   \*****************************************/
@@ -43215,7 +43232,7 @@
 
 	'use strict';
 	
-	var utils = __webpack_require__(/*! ./../utils */ 395);
+	var utils = __webpack_require__(/*! ./../utils */ 396);
 	
 	function encode(val) {
 	  return encodeURIComponent(val).
@@ -43283,7 +43300,7 @@
 
 
 /***/ },
-/* 399 */
+/* 400 */
 /*!*********************************************!*\
   !*** ./~/axios/lib/helpers/parseHeaders.js ***!
   \*********************************************/
@@ -43291,7 +43308,7 @@
 
 	'use strict';
 	
-	var utils = __webpack_require__(/*! ./../utils */ 395);
+	var utils = __webpack_require__(/*! ./../utils */ 396);
 	
 	/**
 	 * Parse headers into an object
@@ -43329,7 +43346,7 @@
 
 
 /***/ },
-/* 400 */
+/* 401 */
 /*!**********************************************!*\
   !*** ./~/axios/lib/helpers/transformData.js ***!
   \**********************************************/
@@ -43337,7 +43354,7 @@
 
 	'use strict';
 	
-	var utils = __webpack_require__(/*! ./../utils */ 395);
+	var utils = __webpack_require__(/*! ./../utils */ 396);
 	
 	/**
 	 * Transform the data for a request or a response
@@ -43358,7 +43375,7 @@
 
 
 /***/ },
-/* 401 */
+/* 402 */
 /*!************************************************!*\
   !*** ./~/axios/lib/helpers/isURLSameOrigin.js ***!
   \************************************************/
@@ -43366,7 +43383,7 @@
 
 	'use strict';
 	
-	var utils = __webpack_require__(/*! ./../utils */ 395);
+	var utils = __webpack_require__(/*! ./../utils */ 396);
 	
 	module.exports = (
 	  utils.isStandardBrowserEnv() ?
@@ -43435,7 +43452,7 @@
 
 
 /***/ },
-/* 402 */
+/* 403 */
 /*!*************************************!*\
   !*** ./~/axios/lib/helpers/btoa.js ***!
   \*************************************/
@@ -43480,7 +43497,7 @@
 
 
 /***/ },
-/* 403 */
+/* 404 */
 /*!***************************************!*\
   !*** ./~/axios/lib/helpers/settle.js ***!
   \***************************************/
@@ -43507,7 +43524,7 @@
 
 
 /***/ },
-/* 404 */
+/* 405 */
 /*!****************************************!*\
   !*** ./~/axios/lib/helpers/cookies.js ***!
   \****************************************/
@@ -43515,7 +43532,7 @@
 
 	'use strict';
 	
-	var utils = __webpack_require__(/*! ./../utils */ 395);
+	var utils = __webpack_require__(/*! ./../utils */ 396);
 	
 	module.exports = (
 	  utils.isStandardBrowserEnv() ?
@@ -43569,7 +43586,7 @@
 
 
 /***/ },
-/* 405 */
+/* 406 */
 /*!************************************************!*\
   !*** ./~/axios/lib/core/InterceptorManager.js ***!
   \************************************************/
@@ -43577,7 +43594,7 @@
 
 	'use strict';
 	
-	var utils = __webpack_require__(/*! ./../utils */ 395);
+	var utils = __webpack_require__(/*! ./../utils */ 396);
 	
 	function InterceptorManager() {
 	  this.handlers = [];
@@ -43630,7 +43647,7 @@
 
 
 /***/ },
-/* 406 */
+/* 407 */
 /*!**********************************************!*\
   !*** ./~/axios/lib/helpers/isAbsoluteURL.js ***!
   \**********************************************/
@@ -43653,7 +43670,7 @@
 
 
 /***/ },
-/* 407 */
+/* 408 */
 /*!********************************************!*\
   !*** ./~/axios/lib/helpers/combineURLs.js ***!
   \********************************************/
@@ -43674,7 +43691,7 @@
 
 
 /***/ },
-/* 408 */
+/* 409 */
 /*!*************************************!*\
   !*** ./~/axios/lib/helpers/bind.js ***!
   \*************************************/
@@ -43694,7 +43711,7 @@
 
 
 /***/ },
-/* 409 */
+/* 410 */
 /*!***************************************!*\
   !*** ./~/axios/lib/helpers/spread.js ***!
   \***************************************/
@@ -43730,14 +43747,14 @@
 
 
 /***/ },
-/* 410 */
+/* 411 */
 /*!*********************************!*\
   !*** ./~/query-string/index.js ***!
   \*********************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var strictUriEncode = __webpack_require__(/*! strict-uri-encode */ 411);
+	var strictUriEncode = __webpack_require__(/*! strict-uri-encode */ 412);
 	
 	function encode(value, strict) {
 		return strict ? strictUriEncode(value) : encodeURIComponent(value);
@@ -43829,7 +43846,7 @@
 
 
 /***/ },
-/* 411 */
+/* 412 */
 /*!*****************************************************!*\
   !*** ./~/query-string/~/strict-uri-encode/index.js ***!
   \*****************************************************/
@@ -43844,7 +43861,7 @@
 
 
 /***/ },
-/* 412 */
+/* 413 */
 /*!*************************************!*\
   !*** ./src/store/configureStore.js ***!
   \*************************************/
@@ -43852,8 +43869,8 @@
 
 	"use strict";
 	var redux_1 = __webpack_require__(/*! redux */ 173);
-	var main_1 = __webpack_require__(/*! ../reducers/main */ 413);
-	var redux_thunk_1 = __webpack_require__(/*! redux-thunk */ 428);
+	var main_1 = __webpack_require__(/*! ../reducers/main */ 414);
+	var redux_thunk_1 = __webpack_require__(/*! redux-thunk */ 429);
 	var logger = function (store) { return function (next) { return function (action) {
 	    console.group(action.type);
 	    console.info('dispatching', action);
@@ -43871,7 +43888,7 @@
 	//# sourceMappingURL=configureStore.js.map
 
 /***/ },
-/* 413 */
+/* 414 */
 /*!******************************!*\
   !*** ./src/reducers/main.js ***!
   \******************************/
@@ -43879,20 +43896,20 @@
 
 	"use strict";
 	var redux_1 = __webpack_require__(/*! redux */ 173);
-	var redux_form_1 = __webpack_require__(/*! redux-form */ 341);
-	var panels_1 = __webpack_require__(/*! ./panels */ 414);
-	var entities_1 = __webpack_require__(/*! ./entities */ 415);
-	var auth_1 = __webpack_require__(/*! ./auth */ 417);
-	var toolLists_1 = __webpack_require__(/*! ./toolLists */ 418);
-	var toolEditForms_1 = __webpack_require__(/*! ./toolEditForms */ 419);
-	var partLists_1 = __webpack_require__(/*! ./partLists */ 420);
-	var partEditForms_1 = __webpack_require__(/*! ./partEditForms */ 421);
-	var techStepLists_1 = __webpack_require__(/*! ./techStepLists */ 422);
-	var techStepEditForms_1 = __webpack_require__(/*! ./techStepEditForms */ 423);
-	var techOperationLists_1 = __webpack_require__(/*! ./techOperationLists */ 424);
-	var techOperationEditForms_1 = __webpack_require__(/*! ./techOperationEditForms */ 425);
-	var techProcessLists_1 = __webpack_require__(/*! ./techProcessLists */ 426);
-	var techProcessEditForms_1 = __webpack_require__(/*! ./techProcessEditForms */ 427);
+	var redux_form_1 = __webpack_require__(/*! redux-form */ 342);
+	var panels_1 = __webpack_require__(/*! ./panels */ 415);
+	var entities_1 = __webpack_require__(/*! ./entities */ 416);
+	var auth_1 = __webpack_require__(/*! ./auth */ 418);
+	var toolLists_1 = __webpack_require__(/*! ./toolLists */ 419);
+	var toolEditForms_1 = __webpack_require__(/*! ./toolEditForms */ 420);
+	var partLists_1 = __webpack_require__(/*! ./partLists */ 421);
+	var partEditForms_1 = __webpack_require__(/*! ./partEditForms */ 422);
+	var techStepLists_1 = __webpack_require__(/*! ./techStepLists */ 423);
+	var techStepEditForms_1 = __webpack_require__(/*! ./techStepEditForms */ 424);
+	var techOperationLists_1 = __webpack_require__(/*! ./techOperationLists */ 425);
+	var techOperationEditForms_1 = __webpack_require__(/*! ./techOperationEditForms */ 426);
+	var techProcessLists_1 = __webpack_require__(/*! ./techProcessLists */ 427);
+	var techProcessEditForms_1 = __webpack_require__(/*! ./techProcessEditForms */ 428);
 	var main = redux_1.combineReducers({
 	    panels: panels_1.default,
 	    entities: entities_1.default,
@@ -43914,7 +43931,7 @@
 	//# sourceMappingURL=main.js.map
 
 /***/ },
-/* 414 */
+/* 415 */
 /*!********************************!*\
   !*** ./src/reducers/panels.js ***!
   \********************************/
@@ -43950,7 +43967,7 @@
 	//# sourceMappingURL=panels.js.map
 
 /***/ },
-/* 415 */
+/* 416 */
 /*!**********************************!*\
   !*** ./src/reducers/entities.js ***!
   \**********************************/
@@ -43962,7 +43979,7 @@
 	var TechStepActionType = __webpack_require__(/*! ../actions/techStepActionType */ 317);
 	var TechOperationActionType = __webpack_require__(/*! ../actions/techOperationActionType */ 327);
 	var TechProcessActionType = __webpack_require__(/*! ../actions/techProcessActionType */ 336);
-	var _ = __webpack_require__(/*! lodash */ 416);
+	var _ = __webpack_require__(/*! lodash */ 417);
 	var initialState = {
 	    tools: {},
 	    parts: {},
@@ -44024,7 +44041,7 @@
 	//# sourceMappingURL=entities.js.map
 
 /***/ },
-/* 416 */
+/* 417 */
 /*!****************************!*\
   !*** ./~/lodash/lodash.js ***!
   \****************************/
@@ -60061,15 +60078,15 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./../webpack/buildin/module.js */ 244)(module), (function() { return this; }())))
 
 /***/ },
-/* 417 */
+/* 418 */
 /*!******************************!*\
   !*** ./src/reducers/auth.js ***!
   \******************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var AuthActionType = __webpack_require__(/*! ../actions/authActionType */ 391);
-	var _ = __webpack_require__(/*! lodash */ 416);
+	var AuthActionType = __webpack_require__(/*! ../actions/authActionType */ 392);
+	var _ = __webpack_require__(/*! lodash */ 417);
 	function default_1(state, action) {
 	    if (state === void 0) { state = {}; }
 	    switch (action.type) {
@@ -60088,7 +60105,7 @@
 	//# sourceMappingURL=auth.js.map
 
 /***/ },
-/* 418 */
+/* 419 */
 /*!***********************************!*\
   !*** ./src/reducers/toolLists.js ***!
   \***********************************/
@@ -60099,7 +60116,7 @@
 	var PanelActionType = __webpack_require__(/*! ../actions/panelActionType */ 197);
 	var TechStepActionType = __webpack_require__(/*! ../actions/techStepActionType */ 317);
 	var PanelType = __webpack_require__(/*! ../components/panelType */ 198);
-	var _ = __webpack_require__(/*! lodash */ 416);
+	var _ = __webpack_require__(/*! lodash */ 417);
 	var initialState = [];
 	function toolLists(state, action) {
 	    if (state === void 0) { state = initialState; }
@@ -60267,7 +60284,7 @@
 	//# sourceMappingURL=toolLists.js.map
 
 /***/ },
-/* 419 */
+/* 420 */
 /*!***************************************!*\
   !*** ./src/reducers/toolEditForms.js ***!
   \***************************************/
@@ -60360,7 +60377,7 @@
 	//# sourceMappingURL=toolEditForms.js.map
 
 /***/ },
-/* 420 */
+/* 421 */
 /*!***********************************!*\
   !*** ./src/reducers/partLists.js ***!
   \***********************************/
@@ -60371,7 +60388,7 @@
 	var PanelActionType = __webpack_require__(/*! ../actions/panelActionType */ 197);
 	var TechStepActionType = __webpack_require__(/*! ../actions/techStepActionType */ 317);
 	var PanelType = __webpack_require__(/*! ../components/panelType */ 198);
-	var _ = __webpack_require__(/*! lodash */ 416);
+	var _ = __webpack_require__(/*! lodash */ 417);
 	var initialState = [];
 	function partLists(state, action) {
 	    if (state === void 0) { state = initialState; }
@@ -60539,7 +60556,7 @@
 	//# sourceMappingURL=partLists.js.map
 
 /***/ },
-/* 421 */
+/* 422 */
 /*!***************************************!*\
   !*** ./src/reducers/partEditForms.js ***!
   \***************************************/
@@ -60632,7 +60649,7 @@
 	//# sourceMappingURL=partEditForms.js.map
 
 /***/ },
-/* 422 */
+/* 423 */
 /*!***************************************!*\
   !*** ./src/reducers/techStepLists.js ***!
   \***************************************/
@@ -60643,7 +60660,7 @@
 	var TechOperationActionType = __webpack_require__(/*! ../actions/techOperationActionType */ 327);
 	var PanelActionType = __webpack_require__(/*! ../actions/panelActionType */ 197);
 	var PanelType = __webpack_require__(/*! ../components/panelType */ 198);
-	var _ = __webpack_require__(/*! lodash */ 416);
+	var _ = __webpack_require__(/*! lodash */ 417);
 	var initialState = [];
 	function techStepLists(state, action) {
 	    if (state === void 0) { state = initialState; }
@@ -60797,7 +60814,7 @@
 	//# sourceMappingURL=techStepLists.js.map
 
 /***/ },
-/* 423 */
+/* 424 */
 /*!*******************************************!*\
   !*** ./src/reducers/techStepEditForms.js ***!
   \*******************************************/
@@ -61047,7 +61064,7 @@
 	//# sourceMappingURL=techStepEditForms.js.map
 
 /***/ },
-/* 424 */
+/* 425 */
 /*!********************************************!*\
   !*** ./src/reducers/techOperationLists.js ***!
   \********************************************/
@@ -61058,7 +61075,7 @@
 	var TechProcessActionType = __webpack_require__(/*! ../actions/techProcessActionType */ 336);
 	var PanelActionType = __webpack_require__(/*! ../actions/panelActionType */ 197);
 	var PanelType = __webpack_require__(/*! ../components/panelType */ 198);
-	var _ = __webpack_require__(/*! lodash */ 416);
+	var _ = __webpack_require__(/*! lodash */ 417);
 	var initialState = [];
 	function techOperationLists(state, action) {
 	    if (state === void 0) { state = initialState; }
@@ -61212,7 +61229,7 @@
 	//# sourceMappingURL=techOperationLists.js.map
 
 /***/ },
-/* 425 */
+/* 426 */
 /*!************************************************!*\
   !*** ./src/reducers/techOperationEditForms.js ***!
   \************************************************/
@@ -61373,7 +61390,7 @@
 	//# sourceMappingURL=techOperationEditForms.js.map
 
 /***/ },
-/* 426 */
+/* 427 */
 /*!******************************************!*\
   !*** ./src/reducers/techProcessLists.js ***!
   \******************************************/
@@ -61383,7 +61400,7 @@
 	var TechProcessActionType = __webpack_require__(/*! ../actions/techProcessActionType */ 336);
 	var PanelActionType = __webpack_require__(/*! ../actions/panelActionType */ 197);
 	var PanelType = __webpack_require__(/*! ../components/panelType */ 198);
-	var _ = __webpack_require__(/*! lodash */ 416);
+	var _ = __webpack_require__(/*! lodash */ 417);
 	var initialState = [];
 	function techProcessLists(state, action) {
 	    if (state === void 0) { state = initialState; }
@@ -61524,7 +61541,7 @@
 	//# sourceMappingURL=techProcessLists.js.map
 
 /***/ },
-/* 427 */
+/* 428 */
 /*!**********************************************!*\
   !*** ./src/reducers/techProcessEditForms.js ***!
   \**********************************************/
@@ -61661,7 +61678,7 @@
 	//# sourceMappingURL=techProcessEditForms.js.map
 
 /***/ },
-/* 428 */
+/* 429 */
 /*!************************************!*\
   !*** ./~/redux-thunk/lib/index.js ***!
   \************************************/

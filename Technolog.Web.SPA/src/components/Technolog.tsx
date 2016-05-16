@@ -1,6 +1,7 @@
 ﻿import * as React from "react";
 import Sidebar from './Sidebar';
 import PanelStack from '../containers/PanelStack';
+import Header from '../components/Header';
 import Signin from '../containers/auth/Signin';
 import * as PanelType from './panelType';
 
@@ -12,15 +13,21 @@ const tabs: Array<any> = [
     { id: 5, name: 'Детали', type: PanelType.PART_LIST }
 ];
 
-const Technolog = (props: any) => (
-    <div className="row full-height">
-        { props.isAuthenticated ? 
-            [
-                <Sidebar tabs={tabs}/>,
-                <PanelStack/>
-            ]
-            :   <Signin /> }
-    </div>
-);
+const Technolog = (props: any) => {
+    if (props.isAuthenticated) {
+        return (
+            <div className="full-height">
+                <Header/>
+                <div className="container-fluid full-height">
+                    <div className="row full-height">
+                        <Sidebar tabs={tabs}/>
+                        <PanelStack/>
+                    </div>
+                </div>
+            </div>    
+        );
+    }
+    return <Signin />;
+};
 
 export default Technolog;
