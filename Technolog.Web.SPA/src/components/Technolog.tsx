@@ -1,6 +1,7 @@
 ﻿import * as React from "react";
 import Sidebar from './Sidebar';
 import PanelStack from '../containers/PanelStack';
+import Signin from '../containers/auth/Signin';
 import * as PanelType from './panelType';
 
 const tabs: Array<any> = [
@@ -11,10 +12,14 @@ const tabs: Array<any> = [
     { id: 5, name: 'Детали', type: PanelType.PART_LIST }
 ];
 
-const Technolog = () => (
+const Technolog = (props: any) => (
     <div className="row full-height">
-        <Sidebar tabs={tabs}/>
-        <PanelStack/>
+        { props.isAuthenticated ? 
+            [
+                <Sidebar tabs={tabs}/>,
+                <PanelStack/>
+            ]
+            :   <Signin /> }
     </div>
 );
 

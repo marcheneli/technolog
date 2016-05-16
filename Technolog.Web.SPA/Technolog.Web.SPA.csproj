@@ -44,6 +44,8 @@
     <Content Include="webpack.config.js" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="src\actions\authActionCreator.ts" />
+    <TypeScriptCompile Include="src\actions\authActionType.ts" />
     <TypeScriptCompile Include="src\actions\panelActionCreator.ts" />
     <TypeScriptCompile Include="src\actions\panelActionType.ts" />
     <TypeScriptCompile Include="src\actions\partActionCreator.ts" />
@@ -56,6 +58,7 @@
     <TypeScriptCompile Include="src\actions\techStepActionType.ts" />
     <TypeScriptCompile Include="src\actions\toolActionCreator.ts" />
     <TypeScriptCompile Include="src\actions\toolActionType.ts" />
+    <TypeScriptCompile Include="src\components\auth\Signin.tsx" />
     <TypeScriptCompile Include="src\components\common\ConfirmationDialogPanel.tsx" />
     <TypeScriptCompile Include="src\components\common\DialogBackground.tsx" />
     <TypeScriptCompile Include="src\components\common\DialogPanel.tsx" />
@@ -69,6 +72,7 @@
     <TypeScriptCompile Include="src\components\common\TableRow.tsx" />
     <TypeScriptCompile Include="src\components\common\TextAreaInput.tsx" />
     <TypeScriptCompile Include="src\components\common\TextInput.tsx" />
+    <TypeScriptCompile Include="src\components\Header.tsx" />
     <TypeScriptCompile Include="src\components\Panel.tsx" />
     <TypeScriptCompile Include="src\components\panelFactory.tsx" />
     <TypeScriptCompile Include="src\components\PanelStack.tsx" />
@@ -93,6 +97,7 @@
     <TypeScriptCompile Include="src\components\ToolTable.tsx" />
     <TypeScriptCompile Include="src\constants\pagingParameter.ts" />
     <TypeScriptCompile Include="src\constants\serviceDomain.ts" />
+    <TypeScriptCompile Include="src\containers\auth\Signin.ts" />
     <TypeScriptCompile Include="src\containers\Panel.ts" />
     <TypeScriptCompile Include="src\containers\PanelStack.ts" />
     <TypeScriptCompile Include="src\containers\part\PartEditForm.ts" />
@@ -100,6 +105,7 @@
     <TypeScriptCompile Include="src\containers\part\PartTable.ts" />
     <TypeScriptCompile Include="src\containers\Sidebar.ts" />
     <TypeScriptCompile Include="src\containers\Tab.ts" />
+    <TypeScriptCompile Include="src\containers\Technolog.ts" />
     <TypeScriptCompile Include="src\containers\techOperation\TechOperationEditForm.ts" />
     <TypeScriptCompile Include="src\containers\techOperation\TechOperationList.ts" />
     <TypeScriptCompile Include="src\containers\techOperation\TechOperationTable.ts" />
@@ -113,6 +119,7 @@
     <TypeScriptCompile Include="src\containers\ToolList.ts" />
     <TypeScriptCompile Include="src\containers\ToolTable.ts" />
     <TypeScriptCompile Include="src\main.tsx" />
+    <TypeScriptCompile Include="src\reducers\auth.ts" />
     <TypeScriptCompile Include="src\reducers\entities.ts" />
     <TypeScriptCompile Include="src\reducers\main.ts" />
     <TypeScriptCompile Include="src\reducers\panels.ts" />
@@ -136,13 +143,17 @@
     <TypeScriptCompile Include="src\utils\idGenerator.ts" />
     <TypeScriptCompile Include="src\validators\toolValidator.ts" />
     <TypeScriptCompile Include="src\validators\validationMessageType.ts" />
+    <TypeScriptCompile Include="typings\axios\axios.d.ts" />
+    <TypeScriptCompile Include="typings\es6-promise\es6-promise.d.ts" />
     <TypeScriptCompile Include="typings\jquery\jquery.d.ts" />
     <TypeScriptCompile Include="typings\lodash\lodash.d.ts" />
     <TypeScriptCompile Include="typings\main.d.ts" />
     <TypeScriptCompile Include="typings\normalizr\normalizr.d.ts" />
+    <TypeScriptCompile Include="typings\query-string\query-string.d.ts" />
     <TypeScriptCompile Include="typings\react-redux\react-redux.d.ts" />
     <TypeScriptCompile Include="typings\react\react-dom.d.ts" />
     <TypeScriptCompile Include="typings\react\react.d.ts" />
+    <TypeScriptCompile Include="typings\redux-form\redux-form.d.ts" />
     <TypeScriptCompile Include="typings\redux-thunk\redux-thunk.d.ts" />
     <TypeScriptCompile Include="typings\redux\redux.d.ts" />
   </ItemGroup>

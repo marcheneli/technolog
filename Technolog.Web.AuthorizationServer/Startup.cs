@@ -6,9 +6,9 @@ using IdentityServer3.Core.Configuration;
 using System.Security.Cryptography.X509Certificates;
 using System.Configuration;
 
-[assembly: OwinStartup(typeof(AuthorizationServer.Startup))]
+[assembly: OwinStartup(typeof(Technolog.Web.AuthorizationServer.Startup))]
 
-namespace AuthorizationServer
+namespace Technolog.Web.AuthorizationServer
 {
     public class Startup
     {
@@ -30,6 +30,8 @@ namespace AuthorizationServer
                 RequireSsl = false,
                 Factory = factory
             };
+
+            app.UseCors(Microsoft.Owin.Cors.CorsOptions.AllowAll);
 
             app.UseIdentityServer(options);
         }

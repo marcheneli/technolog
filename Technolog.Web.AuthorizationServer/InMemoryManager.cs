@@ -7,7 +7,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Web;
 
-namespace AuthorizationServer
+namespace Technolog.Web.AuthorizationServer
 {
     public class InMemoryManager
     {

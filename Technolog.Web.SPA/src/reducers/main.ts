@@ -1,6 +1,8 @@
 ﻿import { combineReducers } from "redux";
+import { reducer as form } from 'redux-form';
 import panels from "./panels";
 import entities from "./entities";
+import auth from './auth';
 import toolLists from "./toolLists";
 import toolEditForms from "./toolEditForms";
 import partLists from "./partLists";
@@ -15,6 +17,8 @@ import techProcessEditForms from "./techProcessEditForms";
 const main = combineReducers({
     panels,
     entities,
+    auth,
+    form,
     toolLists,
     toolEditForms,
     partLists,

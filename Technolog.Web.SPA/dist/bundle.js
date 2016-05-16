@@ -51,14 +51,17 @@
 	var React = __webpack_require__(/*! react */ 1);
 	var ReactDOM = __webpack_require__(/*! react-dom */ 32);
 	var react_redux_1 = __webpack_require__(/*! react-redux */ 166);
-	var Technolog_1 = __webpack_require__(/*! ./components/Technolog */ 192);
-	var configureStore_1 = __webpack_require__(/*! ./store/configureStore */ 339);
-	var $ = __webpack_require__(/*! jquery */ 211);
-	var serviceDomain_1 = __webpack_require__(/*! ./constants/serviceDomain */ 286);
-	var AntiForgeryToken = __webpack_require__(/*! ./utils/antiForgeryToken */ 287);
+	var Technolog_1 = __webpack_require__(/*! ./containers/Technolog */ 192);
+	var configureStore_1 = __webpack_require__(/*! ./store/configureStore */ 412);
+	var $ = __webpack_require__(/*! jquery */ 212);
+	var _ = __webpack_require__(/*! lodash */ 416);
+	var serviceDomain_1 = __webpack_require__(/*! ./constants/serviceDomain */ 287);
+	var AntiForgeryToken = __webpack_require__(/*! ./utils/antiForgeryToken */ 288);
+	var authActionType_1 = __webpack_require__(/*! ./actions/authActionType */ 391);
 	var store = configureStore_1.default({
 	    panels: []
 	});
+	React.__spread = _.assign;
 	$.ajax({
 	    url: (serviceDomain_1.default + "/api/"
 	        + 'antiforgerytoken' + '/'),
@@ -70,6 +73,9 @@
 	    error: function (xhr, status, err) {
 	    }
 	});
+	if (localStorage.getItem('token')) {
+	    store.dispatch({ type: authActionType_1.AUTH_USER });
+	}
 	ReactDOM.render(React.createElement(react_redux_1.Provider, {store: store}, React.createElement(Technolog_1.default, null)), document.getElementById('content'));
 	//# sourceMappingURL=main.js.map
 
@@ -22307,15 +22313,35 @@
 /***/ },
 /* 192 */
 /*!*************************************!*\
+  !*** ./src/containers/Technolog.js ***!
+  \*************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var react_redux_1 = __webpack_require__(/*! react-redux */ 166);
+	var Technolog_1 = __webpack_require__(/*! ../components/Technolog */ 193);
+	var mapStateToProps = function (state) {
+	    return {
+	        isAuthenticated: state.auth.isAuthenticated
+	    };
+	};
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = react_redux_1.connect(mapStateToProps)(Technolog_1.default);
+	//# sourceMappingURL=Technolog.js.map
+
+/***/ },
+/* 193 */
+/*!*************************************!*\
   !*** ./src/components/Technolog.js ***!
   \*************************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	var React = __webpack_require__(/*! react */ 1);
-	var Sidebar_1 = __webpack_require__(/*! ./Sidebar */ 193);
-	var PanelStack_1 = __webpack_require__(/*! ../containers/PanelStack */ 200);
-	var PanelType = __webpack_require__(/*! ./panelType */ 197);
+	var Sidebar_1 = __webpack_require__(/*! ./Sidebar */ 194);
+	var PanelStack_1 = __webpack_require__(/*! ../containers/PanelStack */ 201);
+	var Signin_1 = __webpack_require__(/*! ../containers/auth/Signin */ 340);
+	var PanelType = __webpack_require__(/*! ./panelType */ 198);
 	var tabs = [
 	    { id: 1, name: 'Технологические процессы', type: PanelType.TECHPROCESS_LIST },
 	    { id: 2, name: 'Технологические операции', type: PanelType.TECHOPERATION_LIST },
@@ -22323,13 +22349,18 @@
 	    { id: 4, name: 'Инструменты', type: PanelType.TOOL_LIST },
 	    { id: 5, name: 'Детали', type: PanelType.PART_LIST }
 	];
-	var Technolog = function () { return (React.createElement("div", {className: "row full-height"}, React.createElement(Sidebar_1.default, {tabs: tabs}), React.createElement(PanelStack_1.default, null))); };
+	var Technolog = function (props) { return (React.createElement("div", {className: "row full-height"}, props.isAuthenticated ?
+	    [
+	        React.createElement(Sidebar_1.default, {tabs: tabs}),
+	        React.createElement(PanelStack_1.default, null)
+	    ]
+	    : React.createElement(Signin_1.default, null))); };
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.default = Technolog;
 	//# sourceMappingURL=Technolog.js.map
 
 /***/ },
-/* 193 */
+/* 194 */
 /*!***********************************!*\
   !*** ./src/components/Sidebar.js ***!
   \***********************************/
@@ -22337,7 +22368,7 @@
 
 	"use strict";
 	var React = __webpack_require__(/*! react */ 1);
-	var Tab_1 = __webpack_require__(/*! ../containers/Tab */ 194);
+	var Tab_1 = __webpack_require__(/*! ../containers/Tab */ 195);
 	function Sidebar(props) {
 	    var tabs = props.tabs.map(function (tab) {
 	        return React.createElement(Tab_1.default, {key: tab.id, type: tab.type, title: tab.name}, tab.name);
@@ -22349,7 +22380,7 @@
 	//# sourceMappingURL=Sidebar.js.map
 
 /***/ },
-/* 194 */
+/* 195 */
 /*!*******************************!*\
   !*** ./src/containers/Tab.js ***!
   \*******************************/
@@ -22357,8 +22388,8 @@
 
 	"use strict";
 	var react_redux_1 = __webpack_require__(/*! react-redux */ 166);
-	var PanelActionCreator = __webpack_require__(/*! ../actions/panelActionCreator */ 195);
-	var Tab_1 = __webpack_require__(/*! ../components/Tab */ 199);
+	var PanelActionCreator = __webpack_require__(/*! ../actions/panelActionCreator */ 196);
+	var Tab_1 = __webpack_require__(/*! ../components/Tab */ 200);
 	var mapDispatchToTabProps = function (dispatch, ownProps) {
 	    return {
 	        onTabClick: function () {
@@ -22371,16 +22402,16 @@
 	//# sourceMappingURL=Tab.js.map
 
 /***/ },
-/* 195 */
+/* 196 */
 /*!*******************************************!*\
   !*** ./src/actions/panelActionCreator.js ***!
   \*******************************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var PanelActionType = __webpack_require__(/*! ./panelActionType */ 196);
-	var PanelType = __webpack_require__(/*! ../components/panelType */ 197);
-	var IdGenerator = __webpack_require__(/*! ../utils/idGenerator */ 198);
+	var PanelActionType = __webpack_require__(/*! ./panelActionType */ 197);
+	var PanelType = __webpack_require__(/*! ../components/panelType */ 198);
+	var IdGenerator = __webpack_require__(/*! ../utils/idGenerator */ 199);
 	var getContentId = function (panelType) {
 	    switch (panelType) {
 	        case PanelType.TOOL_LIST:
@@ -22501,7 +22532,7 @@
 	//# sourceMappingURL=panelActionCreator.js.map
 
 /***/ },
-/* 196 */
+/* 197 */
 /*!****************************************!*\
   !*** ./src/actions/panelActionType.js ***!
   \****************************************/
@@ -22513,7 +22544,7 @@
 	//# sourceMappingURL=panelActionType.js.map
 
 /***/ },
-/* 197 */
+/* 198 */
 /*!*************************************!*\
   !*** ./src/components/panelType.js ***!
   \*************************************/
@@ -22533,7 +22564,7 @@
 	//# sourceMappingURL=panelType.js.map
 
 /***/ },
-/* 198 */
+/* 199 */
 /*!**********************************!*\
   !*** ./src/utils/idGenerator.js ***!
   \**********************************/
@@ -22598,7 +22629,7 @@
 	//# sourceMappingURL=idGenerator.js.map
 
 /***/ },
-/* 199 */
+/* 200 */
 /*!*******************************!*\
   !*** ./src/components/Tab.js ***!
   \*******************************/
@@ -22614,7 +22645,7 @@
 	//# sourceMappingURL=Tab.js.map
 
 /***/ },
-/* 200 */
+/* 201 */
 /*!**************************************!*\
   !*** ./src/containers/PanelStack.js ***!
   \**************************************/
@@ -22622,7 +22653,7 @@
 
 	"use strict";
 	var react_redux_1 = __webpack_require__(/*! react-redux */ 166);
-	var PanelStack_1 = __webpack_require__(/*! ../components/PanelStack */ 201);
+	var PanelStack_1 = __webpack_require__(/*! ../components/PanelStack */ 202);
 	var mapStateToPanelStackProps = function (state) {
 	    return {
 	        panels: state.panels
@@ -22633,7 +22664,7 @@
 	//# sourceMappingURL=PanelStack.js.map
 
 /***/ },
-/* 201 */
+/* 202 */
 /*!**************************************!*\
   !*** ./src/components/PanelStack.js ***!
   \**************************************/
@@ -22641,7 +22672,7 @@
 
 	"use strict";
 	var React = __webpack_require__(/*! react */ 1);
-	var PanelFactory = __webpack_require__(/*! ./panelFactory */ 202);
+	var PanelFactory = __webpack_require__(/*! ./panelFactory */ 203);
 	function PanelStack(props) {
 	    var panels = props.panels.map(function (panel) {
 	        return React.createElement("div", {key: panel.id, style: { display: 'inline-block', height: 100 + '%' }}, PanelFactory.getPanel(panel));
@@ -22653,7 +22684,7 @@
 	//# sourceMappingURL=PanelStack.js.map
 
 /***/ },
-/* 202 */
+/* 203 */
 /*!****************************************!*\
   !*** ./src/components/panelFactory.js ***!
   \****************************************/
@@ -22661,18 +22692,18 @@
 
 	"use strict";
 	var React = __webpack_require__(/*! react */ 1);
-	var PanelType = __webpack_require__(/*! ./panelType */ 197);
-	var Panel_1 = __webpack_require__(/*! ../containers/Panel */ 203);
-	var ToolList_1 = __webpack_require__(/*! ../containers/ToolList */ 205);
-	var ToolEditForm_1 = __webpack_require__(/*! ../containers/ToolEditForm */ 300);
-	var PartList_1 = __webpack_require__(/*! ../containers/part/PartList */ 302);
-	var PartEditForm_1 = __webpack_require__(/*! ../containers/part/PartEditForm */ 309);
-	var TechStepList_1 = __webpack_require__(/*! ../containers/techStep/TechStepList */ 311);
-	var TechStepEditForm_1 = __webpack_require__(/*! ../containers/techStep/TechStepEditForm */ 318);
-	var TechOperationList_1 = __webpack_require__(/*! ../containers/techOperation/TechOperationList */ 321);
-	var TechOperationEditForm_1 = __webpack_require__(/*! ../containers/techOperation/TechOperationEditForm */ 328);
-	var TechProcessList_1 = __webpack_require__(/*! ../containers/techProcess/TechProcessList */ 330);
-	var TechProcessEditForm_1 = __webpack_require__(/*! ../containers/techProcess/TechProcessEditForm */ 337);
+	var PanelType = __webpack_require__(/*! ./panelType */ 198);
+	var Panel_1 = __webpack_require__(/*! ../containers/Panel */ 204);
+	var ToolList_1 = __webpack_require__(/*! ../containers/ToolList */ 206);
+	var ToolEditForm_1 = __webpack_require__(/*! ../containers/ToolEditForm */ 301);
+	var PartList_1 = __webpack_require__(/*! ../containers/part/PartList */ 303);
+	var PartEditForm_1 = __webpack_require__(/*! ../containers/part/PartEditForm */ 310);
+	var TechStepList_1 = __webpack_require__(/*! ../containers/techStep/TechStepList */ 312);
+	var TechStepEditForm_1 = __webpack_require__(/*! ../containers/techStep/TechStepEditForm */ 319);
+	var TechOperationList_1 = __webpack_require__(/*! ../containers/techOperation/TechOperationList */ 322);
+	var TechOperationEditForm_1 = __webpack_require__(/*! ../containers/techOperation/TechOperationEditForm */ 329);
+	var TechProcessList_1 = __webpack_require__(/*! ../containers/techProcess/TechProcessList */ 331);
+	var TechProcessEditForm_1 = __webpack_require__(/*! ../containers/techProcess/TechProcessEditForm */ 338);
 	function getContent(panel) {
 	    switch (panel.type) {
 	        case PanelType.TOOL_LIST:
@@ -22707,7 +22738,7 @@
 	//# sourceMappingURL=panelFactory.js.map
 
 /***/ },
-/* 203 */
+/* 204 */
 /*!*********************************!*\
   !*** ./src/containers/Panel.js ***!
   \*********************************/
@@ -22715,8 +22746,8 @@
 
 	"use strict";
 	var react_redux_1 = __webpack_require__(/*! react-redux */ 166);
-	var PanelActionCreator = __webpack_require__(/*! ../actions/panelActionCreator */ 195);
-	var Panel_1 = __webpack_require__(/*! ../components/Panel */ 204);
+	var PanelActionCreator = __webpack_require__(/*! ../actions/panelActionCreator */ 196);
+	var Panel_1 = __webpack_require__(/*! ../components/Panel */ 205);
 	var mapDispatchToPanelProps = function (dispatch, ownProps) {
 	    return {
 	        onCloseClick: function () {
@@ -22729,7 +22760,7 @@
 	//# sourceMappingURL=Panel.js.map
 
 /***/ },
-/* 204 */
+/* 205 */
 /*!*********************************!*\
   !*** ./src/components/Panel.js ***!
   \*********************************/
@@ -22745,7 +22776,7 @@
 	//# sourceMappingURL=Panel.js.map
 
 /***/ },
-/* 205 */
+/* 206 */
 /*!************************************!*\
   !*** ./src/containers/ToolList.js ***!
   \************************************/
@@ -22753,11 +22784,11 @@
 
 	"use strict";
 	var react_redux_1 = __webpack_require__(/*! react-redux */ 166);
-	var ToolList_1 = __webpack_require__(/*! ../components/ToolList */ 206);
-	var ToolActionCreator = __webpack_require__(/*! ../actions/toolActionCreator */ 210);
-	var PanelActionCreator = __webpack_require__(/*! ../actions/panelActionCreator */ 195);
-	var PanelType = __webpack_require__(/*! ../components/panelType */ 197);
-	var PagingParameter = __webpack_require__(/*! ../constants/pagingParameter */ 293);
+	var ToolList_1 = __webpack_require__(/*! ../components/ToolList */ 207);
+	var ToolActionCreator = __webpack_require__(/*! ../actions/toolActionCreator */ 211);
+	var PanelActionCreator = __webpack_require__(/*! ../actions/panelActionCreator */ 196);
+	var PanelType = __webpack_require__(/*! ../components/panelType */ 198);
+	var PagingParameter = __webpack_require__(/*! ../constants/pagingParameter */ 294);
 	var mapStateToToolListProps = function (state, ownProps) {
 	    var toolListState = state.toolLists.filter(function (toolList) { return toolList.id === ownProps.id; })[0];
 	    return {
@@ -22794,7 +22825,7 @@
 	//# sourceMappingURL=ToolList.js.map
 
 /***/ },
-/* 206 */
+/* 207 */
 /*!************************************!*\
   !*** ./src/components/ToolList.js ***!
   \************************************/
@@ -22807,14 +22838,14 @@
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var React = __webpack_require__(/*! react */ 1);
-	var ToolTable_1 = __webpack_require__(/*! ../containers/ToolTable */ 207);
-	var ItemListControlPanel_1 = __webpack_require__(/*! ./common/ItemListControlPanel */ 290);
-	var ItemsPerPageSelector_1 = __webpack_require__(/*! ./common/ItemsPerPageSelector */ 292);
-	var Pagination_1 = __webpack_require__(/*! ./common/Pagination */ 294);
-	var DialogBackground_1 = __webpack_require__(/*! ./common/DialogBackground */ 295);
-	var ConfirmationDialogPanel_1 = __webpack_require__(/*! ./common/ConfirmationDialogPanel */ 296);
-	var PendingPanel_1 = __webpack_require__(/*! ./common/PendingPanel */ 298);
-	var PendingAnimation_1 = __webpack_require__(/*! ./common/PendingAnimation */ 299);
+	var ToolTable_1 = __webpack_require__(/*! ../containers/ToolTable */ 208);
+	var ItemListControlPanel_1 = __webpack_require__(/*! ./common/ItemListControlPanel */ 291);
+	var ItemsPerPageSelector_1 = __webpack_require__(/*! ./common/ItemsPerPageSelector */ 293);
+	var Pagination_1 = __webpack_require__(/*! ./common/Pagination */ 295);
+	var DialogBackground_1 = __webpack_require__(/*! ./common/DialogBackground */ 296);
+	var ConfirmationDialogPanel_1 = __webpack_require__(/*! ./common/ConfirmationDialogPanel */ 297);
+	var PendingPanel_1 = __webpack_require__(/*! ./common/PendingPanel */ 299);
+	var PendingAnimation_1 = __webpack_require__(/*! ./common/PendingAnimation */ 300);
 	var ToolList = (function (_super) {
 	    __extends(ToolList, _super);
 	    function ToolList(props) {
@@ -22865,7 +22896,7 @@
 	//# sourceMappingURL=ToolList.js.map
 
 /***/ },
-/* 207 */
+/* 208 */
 /*!*************************************!*\
   !*** ./src/containers/ToolTable.js ***!
   \*************************************/
@@ -22873,10 +22904,10 @@
 
 	"use strict";
 	var react_redux_1 = __webpack_require__(/*! react-redux */ 166);
-	var ToolTable_1 = __webpack_require__(/*! ../components/ToolTable */ 208);
-	var PanelActionCreator = __webpack_require__(/*! ../actions/panelActionCreator */ 195);
-	var ToolActionCreator = __webpack_require__(/*! ../actions/toolActionCreator */ 210);
-	var PanelType = __webpack_require__(/*! ../components/panelType */ 197);
+	var ToolTable_1 = __webpack_require__(/*! ../components/ToolTable */ 209);
+	var PanelActionCreator = __webpack_require__(/*! ../actions/panelActionCreator */ 196);
+	var ToolActionCreator = __webpack_require__(/*! ../actions/toolActionCreator */ 211);
+	var PanelType = __webpack_require__(/*! ../components/panelType */ 198);
 	var mapDispatchToToolTableProps = function (dispatch, ownProps) {
 	    return {
 	        onTableRowDoubleClick: function (tool) {
@@ -22917,7 +22948,7 @@
 	//# sourceMappingURL=ToolTable.js.map
 
 /***/ },
-/* 208 */
+/* 209 */
 /*!*************************************!*\
   !*** ./src/components/ToolTable.js ***!
   \*************************************/
@@ -22925,7 +22956,7 @@
 
 	"use strict";
 	var React = __webpack_require__(/*! react */ 1);
-	var TableRow_1 = __webpack_require__(/*! ./common/TableRow */ 209);
+	var TableRow_1 = __webpack_require__(/*! ./common/TableRow */ 210);
 	function TableList(props) {
 	    var toolRows = [];
 	    var tools = props.tools;
@@ -22956,7 +22987,7 @@
 	//# sourceMappingURL=ToolTable.js.map
 
 /***/ },
-/* 209 */
+/* 210 */
 /*!*******************************************!*\
   !*** ./src/components/common/TableRow.js ***!
   \*******************************************/
@@ -22972,20 +23003,20 @@
 	//# sourceMappingURL=TableRow.js.map
 
 /***/ },
-/* 210 */
+/* 211 */
 /*!******************************************!*\
   !*** ./src/actions/toolActionCreator.js ***!
   \******************************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var $ = __webpack_require__(/*! jquery */ 211);
-	var ToolActionType = __webpack_require__(/*! ./toolActionType */ 212);
-	var normalizr_1 = __webpack_require__(/*! normalizr */ 213);
-	var serviceDomain_1 = __webpack_require__(/*! ../constants/serviceDomain */ 286);
-	var AntiForgeryToken = __webpack_require__(/*! ../utils/antiForgeryToken */ 287);
-	var ValidationMessageType = __webpack_require__(/*! ../validators/validationMessageType */ 288);
-	var toolSchema_1 = __webpack_require__(/*! ../schemas/toolSchema */ 289);
+	var $ = __webpack_require__(/*! jquery */ 212);
+	var ToolActionType = __webpack_require__(/*! ./toolActionType */ 213);
+	var normalizr_1 = __webpack_require__(/*! normalizr */ 214);
+	var serviceDomain_1 = __webpack_require__(/*! ../constants/serviceDomain */ 287);
+	var AntiForgeryToken = __webpack_require__(/*! ../utils/antiForgeryToken */ 288);
+	var ValidationMessageType = __webpack_require__(/*! ../validators/validationMessageType */ 289);
+	var toolSchema_1 = __webpack_require__(/*! ../schemas/toolSchema */ 290);
 	function load(toolListId, page, toolPerPage, searchText) {
 	    return function (dispatch) {
 	        $.ajax({
@@ -23251,7 +23282,7 @@
 	//# sourceMappingURL=toolActionCreator.js.map
 
 /***/ },
-/* 211 */
+/* 212 */
 /*!*********************************!*\
   !*** ./~/jquery/dist/jquery.js ***!
   \*********************************/
@@ -33102,7 +33133,7 @@
 
 
 /***/ },
-/* 212 */
+/* 213 */
 /*!***************************************!*\
   !*** ./src/actions/toolActionType.js ***!
   \***************************************/
@@ -33136,7 +33167,7 @@
 	//# sourceMappingURL=toolActionType.js.map
 
 /***/ },
-/* 213 */
+/* 214 */
 /*!**********************************!*\
   !*** ./~/normalizr/lib/index.js ***!
   \**********************************/
@@ -33152,23 +33183,23 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _EntitySchema = __webpack_require__(/*! ./EntitySchema */ 214);
+	var _EntitySchema = __webpack_require__(/*! ./EntitySchema */ 215);
 	
 	var _EntitySchema2 = _interopRequireDefault(_EntitySchema);
 	
-	var _IterableSchema = __webpack_require__(/*! ./IterableSchema */ 215);
+	var _IterableSchema = __webpack_require__(/*! ./IterableSchema */ 216);
 	
 	var _IterableSchema2 = _interopRequireDefault(_IterableSchema);
 	
-	var _UnionSchema = __webpack_require__(/*! ./UnionSchema */ 217);
+	var _UnionSchema = __webpack_require__(/*! ./UnionSchema */ 218);
 	
 	var _UnionSchema2 = _interopRequireDefault(_UnionSchema);
 	
-	var _lodashIsEqual = __webpack_require__(/*! lodash/isEqual */ 218);
+	var _lodashIsEqual = __webpack_require__(/*! lodash/isEqual */ 219);
 	
 	var _lodashIsEqual2 = _interopRequireDefault(_lodashIsEqual);
 	
-	var _lodashIsObject = __webpack_require__(/*! lodash/isObject */ 216);
+	var _lodashIsObject = __webpack_require__(/*! lodash/isObject */ 217);
 	
 	var _lodashIsObject2 = _interopRequireDefault(_lodashIsObject);
 	
@@ -33311,7 +33342,7 @@
 	}
 
 /***/ },
-/* 214 */
+/* 215 */
 /*!*****************************************!*\
   !*** ./~/normalizr/lib/EntitySchema.js ***!
   \*****************************************/
@@ -33369,7 +33400,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 215 */
+/* 216 */
 /*!*******************************************!*\
   !*** ./~/normalizr/lib/IterableSchema.js ***!
   \*******************************************/
@@ -33383,11 +33414,11 @@
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 	
-	var _lodashIsObject = __webpack_require__(/*! lodash/isObject */ 216);
+	var _lodashIsObject = __webpack_require__(/*! lodash/isObject */ 217);
 	
 	var _lodashIsObject2 = _interopRequireDefault(_lodashIsObject);
 	
-	var _UnionSchema = __webpack_require__(/*! ./UnionSchema */ 217);
+	var _UnionSchema = __webpack_require__(/*! ./UnionSchema */ 218);
 	
 	var _UnionSchema2 = _interopRequireDefault(_UnionSchema);
 	
@@ -33420,7 +33451,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 216 */
+/* 217 */
 /*!******************************!*\
   !*** ./~/lodash/isObject.js ***!
   \******************************/
@@ -33460,7 +33491,7 @@
 
 
 /***/ },
-/* 217 */
+/* 218 */
 /*!****************************************!*\
   !*** ./~/normalizr/lib/UnionSchema.js ***!
   \****************************************/
@@ -33474,7 +33505,7 @@
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 	
-	var _lodashIsObject = __webpack_require__(/*! lodash/isObject */ 216);
+	var _lodashIsObject = __webpack_require__(/*! lodash/isObject */ 217);
 	
 	var _lodashIsObject2 = _interopRequireDefault(_lodashIsObject);
 	
@@ -33513,13 +33544,13 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 218 */
+/* 219 */
 /*!*****************************!*\
   !*** ./~/lodash/isEqual.js ***!
   \*****************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseIsEqual = __webpack_require__(/*! ./_baseIsEqual */ 219);
+	var baseIsEqual = __webpack_require__(/*! ./_baseIsEqual */ 220);
 	
 	/**
 	 * Performs a deep comparison between two values to determine if they are
@@ -33558,15 +33589,15 @@
 
 
 /***/ },
-/* 219 */
+/* 220 */
 /*!**********************************!*\
   !*** ./~/lodash/_baseIsEqual.js ***!
   \**********************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseIsEqualDeep = __webpack_require__(/*! ./_baseIsEqualDeep */ 220),
-	    isObject = __webpack_require__(/*! ./isObject */ 216),
-	    isObjectLike = __webpack_require__(/*! ./isObjectLike */ 275);
+	var baseIsEqualDeep = __webpack_require__(/*! ./_baseIsEqualDeep */ 221),
+	    isObject = __webpack_require__(/*! ./isObject */ 217),
+	    isObjectLike = __webpack_require__(/*! ./isObjectLike */ 276);
 	
 	/**
 	 * The base implementation of `_.isEqual` which supports partial comparisons
@@ -33597,20 +33628,20 @@
 
 
 /***/ },
-/* 220 */
+/* 221 */
 /*!**************************************!*\
   !*** ./~/lodash/_baseIsEqualDeep.js ***!
   \**************************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	var Stack = __webpack_require__(/*! ./_Stack */ 221),
-	    equalArrays = __webpack_require__(/*! ./_equalArrays */ 255),
-	    equalByTag = __webpack_require__(/*! ./_equalByTag */ 257),
-	    equalObjects = __webpack_require__(/*! ./_equalObjects */ 262),
-	    getTag = __webpack_require__(/*! ./_getTag */ 280),
-	    isArray = __webpack_require__(/*! ./isArray */ 276),
-	    isHostObject = __webpack_require__(/*! ./_isHostObject */ 239),
-	    isTypedArray = __webpack_require__(/*! ./isTypedArray */ 285);
+	var Stack = __webpack_require__(/*! ./_Stack */ 222),
+	    equalArrays = __webpack_require__(/*! ./_equalArrays */ 256),
+	    equalByTag = __webpack_require__(/*! ./_equalByTag */ 258),
+	    equalObjects = __webpack_require__(/*! ./_equalObjects */ 263),
+	    getTag = __webpack_require__(/*! ./_getTag */ 281),
+	    isArray = __webpack_require__(/*! ./isArray */ 277),
+	    isHostObject = __webpack_require__(/*! ./_isHostObject */ 240),
+	    isTypedArray = __webpack_require__(/*! ./isTypedArray */ 286);
 	
 	/** Used to compose bitmasks for comparison styles. */
 	var PARTIAL_COMPARE_FLAG = 2;
@@ -33688,17 +33719,17 @@
 
 
 /***/ },
-/* 221 */
+/* 222 */
 /*!****************************!*\
   !*** ./~/lodash/_Stack.js ***!
   \****************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	var stackClear = __webpack_require__(/*! ./_stackClear */ 222),
-	    stackDelete = __webpack_require__(/*! ./_stackDelete */ 223),
-	    stackGet = __webpack_require__(/*! ./_stackGet */ 227),
-	    stackHas = __webpack_require__(/*! ./_stackHas */ 229),
-	    stackSet = __webpack_require__(/*! ./_stackSet */ 231);
+	var stackClear = __webpack_require__(/*! ./_stackClear */ 223),
+	    stackDelete = __webpack_require__(/*! ./_stackDelete */ 224),
+	    stackGet = __webpack_require__(/*! ./_stackGet */ 228),
+	    stackHas = __webpack_require__(/*! ./_stackHas */ 230),
+	    stackSet = __webpack_require__(/*! ./_stackSet */ 232);
 	
 	/**
 	 * Creates a stack cache object to store key-value pairs.
@@ -33729,7 +33760,7 @@
 
 
 /***/ },
-/* 222 */
+/* 223 */
 /*!*********************************!*\
   !*** ./~/lodash/_stackClear.js ***!
   \*********************************/
@@ -33750,13 +33781,13 @@
 
 
 /***/ },
-/* 223 */
+/* 224 */
 /*!**********************************!*\
   !*** ./~/lodash/_stackDelete.js ***!
   \**********************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	var assocDelete = __webpack_require__(/*! ./_assocDelete */ 224);
+	var assocDelete = __webpack_require__(/*! ./_assocDelete */ 225);
 	
 	/**
 	 * Removes `key` and its value from the stack.
@@ -33778,13 +33809,13 @@
 
 
 /***/ },
-/* 224 */
+/* 225 */
 /*!**********************************!*\
   !*** ./~/lodash/_assocDelete.js ***!
   \**********************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	var assocIndexOf = __webpack_require__(/*! ./_assocIndexOf */ 225);
+	var assocIndexOf = __webpack_require__(/*! ./_assocIndexOf */ 226);
 	
 	/** Used for built-in method references. */
 	var arrayProto = Array.prototype;
@@ -33818,13 +33849,13 @@
 
 
 /***/ },
-/* 225 */
+/* 226 */
 /*!***********************************!*\
   !*** ./~/lodash/_assocIndexOf.js ***!
   \***********************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	var eq = __webpack_require__(/*! ./eq */ 226);
+	var eq = __webpack_require__(/*! ./eq */ 227);
 	
 	/**
 	 * Gets the index at which the `key` is found in `array` of key-value pairs.
@@ -33848,7 +33879,7 @@
 
 
 /***/ },
-/* 226 */
+/* 227 */
 /*!************************!*\
   !*** ./~/lodash/eq.js ***!
   \************************/
@@ -33894,13 +33925,13 @@
 
 
 /***/ },
-/* 227 */
+/* 228 */
 /*!*******************************!*\
   !*** ./~/lodash/_stackGet.js ***!
   \*******************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	var assocGet = __webpack_require__(/*! ./_assocGet */ 228);
+	var assocGet = __webpack_require__(/*! ./_assocGet */ 229);
 	
 	/**
 	 * Gets the stack value for `key`.
@@ -33922,13 +33953,13 @@
 
 
 /***/ },
-/* 228 */
+/* 229 */
 /*!*******************************!*\
   !*** ./~/lodash/_assocGet.js ***!
   \*******************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	var assocIndexOf = __webpack_require__(/*! ./_assocIndexOf */ 225);
+	var assocIndexOf = __webpack_require__(/*! ./_assocIndexOf */ 226);
 	
 	/**
 	 * Gets the associative array value for `key`.
@@ -33947,13 +33978,13 @@
 
 
 /***/ },
-/* 229 */
+/* 230 */
 /*!*******************************!*\
   !*** ./~/lodash/_stackHas.js ***!
   \*******************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	var assocHas = __webpack_require__(/*! ./_assocHas */ 230);
+	var assocHas = __webpack_require__(/*! ./_assocHas */ 231);
 	
 	/**
 	 * Checks if a stack value for `key` exists.
@@ -33975,13 +34006,13 @@
 
 
 /***/ },
-/* 230 */
+/* 231 */
 /*!*******************************!*\
   !*** ./~/lodash/_assocHas.js ***!
   \*******************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	var assocIndexOf = __webpack_require__(/*! ./_assocIndexOf */ 225);
+	var assocIndexOf = __webpack_require__(/*! ./_assocIndexOf */ 226);
 	
 	/**
 	 * Checks if an associative array value for `key` exists.
@@ -33999,14 +34030,14 @@
 
 
 /***/ },
-/* 231 */
+/* 232 */
 /*!*******************************!*\
   !*** ./~/lodash/_stackSet.js ***!
   \*******************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	var MapCache = __webpack_require__(/*! ./_MapCache */ 232),
-	    assocSet = __webpack_require__(/*! ./_assocSet */ 253);
+	var MapCache = __webpack_require__(/*! ./_MapCache */ 233),
+	    assocSet = __webpack_require__(/*! ./_assocSet */ 254);
 	
 	/** Used as the size to enable large array optimizations. */
 	var LARGE_ARRAY_SIZE = 200;
@@ -34044,17 +34075,17 @@
 
 
 /***/ },
-/* 232 */
+/* 233 */
 /*!*******************************!*\
   !*** ./~/lodash/_MapCache.js ***!
   \*******************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	var mapClear = __webpack_require__(/*! ./_mapClear */ 233),
-	    mapDelete = __webpack_require__(/*! ./_mapDelete */ 245),
-	    mapGet = __webpack_require__(/*! ./_mapGet */ 249),
-	    mapHas = __webpack_require__(/*! ./_mapHas */ 251),
-	    mapSet = __webpack_require__(/*! ./_mapSet */ 252);
+	var mapClear = __webpack_require__(/*! ./_mapClear */ 234),
+	    mapDelete = __webpack_require__(/*! ./_mapDelete */ 246),
+	    mapGet = __webpack_require__(/*! ./_mapGet */ 250),
+	    mapHas = __webpack_require__(/*! ./_mapHas */ 252),
+	    mapSet = __webpack_require__(/*! ./_mapSet */ 253);
 	
 	/**
 	 * Creates a map cache object to store key-value pairs.
@@ -34085,14 +34116,14 @@
 
 
 /***/ },
-/* 233 */
+/* 234 */
 /*!*******************************!*\
   !*** ./~/lodash/_mapClear.js ***!
   \*******************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	var Hash = __webpack_require__(/*! ./_Hash */ 234),
-	    Map = __webpack_require__(/*! ./_Map */ 241);
+	var Hash = __webpack_require__(/*! ./_Hash */ 235),
+	    Map = __webpack_require__(/*! ./_Map */ 242);
 	
 	/**
 	 * Removes all key-value entries from the map.
@@ -34113,13 +34144,13 @@
 
 
 /***/ },
-/* 234 */
+/* 235 */
 /*!***************************!*\
   !*** ./~/lodash/_Hash.js ***!
   \***************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	var nativeCreate = __webpack_require__(/*! ./_nativeCreate */ 235);
+	var nativeCreate = __webpack_require__(/*! ./_nativeCreate */ 236);
 	
 	/** Used for built-in method references. */
 	var objectProto = Object.prototype;
@@ -34140,13 +34171,13 @@
 
 
 /***/ },
-/* 235 */
+/* 236 */
 /*!***********************************!*\
   !*** ./~/lodash/_nativeCreate.js ***!
   \***********************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	var getNative = __webpack_require__(/*! ./_getNative */ 236);
+	var getNative = __webpack_require__(/*! ./_getNative */ 237);
 	
 	/* Built-in method references that are verified to be native. */
 	var nativeCreate = getNative(Object, 'create');
@@ -34155,13 +34186,13 @@
 
 
 /***/ },
-/* 236 */
+/* 237 */
 /*!********************************!*\
   !*** ./~/lodash/_getNative.js ***!
   \********************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	var isNative = __webpack_require__(/*! ./isNative */ 237);
+	var isNative = __webpack_require__(/*! ./isNative */ 238);
 	
 	/**
 	 * Gets the native function at `key` of `object`.
@@ -34180,16 +34211,16 @@
 
 
 /***/ },
-/* 237 */
+/* 238 */
 /*!******************************!*\
   !*** ./~/lodash/isNative.js ***!
   \******************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	var isFunction = __webpack_require__(/*! ./isFunction */ 238),
-	    isHostObject = __webpack_require__(/*! ./_isHostObject */ 239),
-	    isObject = __webpack_require__(/*! ./isObject */ 216),
-	    toSource = __webpack_require__(/*! ./_toSource */ 240);
+	var isFunction = __webpack_require__(/*! ./isFunction */ 239),
+	    isHostObject = __webpack_require__(/*! ./_isHostObject */ 240),
+	    isObject = __webpack_require__(/*! ./isObject */ 217),
+	    toSource = __webpack_require__(/*! ./_toSource */ 241);
 	
 	/**
 	 * Used to match `RegExp`
@@ -34245,13 +34276,13 @@
 
 
 /***/ },
-/* 238 */
+/* 239 */
 /*!********************************!*\
   !*** ./~/lodash/isFunction.js ***!
   \********************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	var isObject = __webpack_require__(/*! ./isObject */ 216);
+	var isObject = __webpack_require__(/*! ./isObject */ 217);
 	
 	/** `Object#toString` result references. */
 	var funcTag = '[object Function]',
@@ -34297,7 +34328,7 @@
 
 
 /***/ },
-/* 239 */
+/* 240 */
 /*!***********************************!*\
   !*** ./~/lodash/_isHostObject.js ***!
   \***********************************/
@@ -34326,7 +34357,7 @@
 
 
 /***/ },
-/* 240 */
+/* 241 */
 /*!*******************************!*\
   !*** ./~/lodash/_toSource.js ***!
   \*******************************/
@@ -34358,14 +34389,14 @@
 
 
 /***/ },
-/* 241 */
+/* 242 */
 /*!**************************!*\
   !*** ./~/lodash/_Map.js ***!
   \**************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	var getNative = __webpack_require__(/*! ./_getNative */ 236),
-	    root = __webpack_require__(/*! ./_root */ 242);
+	var getNative = __webpack_require__(/*! ./_getNative */ 237),
+	    root = __webpack_require__(/*! ./_root */ 243);
 	
 	/* Built-in method references that are verified to be native. */
 	var Map = getNative(root, 'Map');
@@ -34374,13 +34405,13 @@
 
 
 /***/ },
-/* 242 */
+/* 243 */
 /*!***************************!*\
   !*** ./~/lodash/_root.js ***!
   \***************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(module, global) {var checkGlobal = __webpack_require__(/*! ./_checkGlobal */ 244);
+	/* WEBPACK VAR INJECTION */(function(module, global) {var checkGlobal = __webpack_require__(/*! ./_checkGlobal */ 245);
 	
 	/** Used to determine if values are of the language type `Object`. */
 	var objectTypes = {
@@ -34422,10 +34453,10 @@
 	
 	module.exports = root;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./../webpack/buildin/module.js */ 243)(module), (function() { return this; }())))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./../webpack/buildin/module.js */ 244)(module), (function() { return this; }())))
 
 /***/ },
-/* 243 */
+/* 244 */
 /*!***********************************!*\
   !*** (webpack)/buildin/module.js ***!
   \***********************************/
@@ -34444,7 +34475,7 @@
 
 
 /***/ },
-/* 244 */
+/* 245 */
 /*!**********************************!*\
   !*** ./~/lodash/_checkGlobal.js ***!
   \**********************************/
@@ -34465,16 +34496,16 @@
 
 
 /***/ },
-/* 245 */
+/* 246 */
 /*!********************************!*\
   !*** ./~/lodash/_mapDelete.js ***!
   \********************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	var Map = __webpack_require__(/*! ./_Map */ 241),
-	    assocDelete = __webpack_require__(/*! ./_assocDelete */ 224),
-	    hashDelete = __webpack_require__(/*! ./_hashDelete */ 246),
-	    isKeyable = __webpack_require__(/*! ./_isKeyable */ 248);
+	var Map = __webpack_require__(/*! ./_Map */ 242),
+	    assocDelete = __webpack_require__(/*! ./_assocDelete */ 225),
+	    hashDelete = __webpack_require__(/*! ./_hashDelete */ 247),
+	    isKeyable = __webpack_require__(/*! ./_isKeyable */ 249);
 	
 	/**
 	 * Removes `key` and its value from the map.
@@ -34497,13 +34528,13 @@
 
 
 /***/ },
-/* 246 */
+/* 247 */
 /*!*********************************!*\
   !*** ./~/lodash/_hashDelete.js ***!
   \*********************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	var hashHas = __webpack_require__(/*! ./_hashHas */ 247);
+	var hashHas = __webpack_require__(/*! ./_hashHas */ 248);
 	
 	/**
 	 * Removes `key` and its value from the hash.
@@ -34521,13 +34552,13 @@
 
 
 /***/ },
-/* 247 */
+/* 248 */
 /*!******************************!*\
   !*** ./~/lodash/_hashHas.js ***!
   \******************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	var nativeCreate = __webpack_require__(/*! ./_nativeCreate */ 235);
+	var nativeCreate = __webpack_require__(/*! ./_nativeCreate */ 236);
 	
 	/** Used for built-in method references. */
 	var objectProto = Object.prototype;
@@ -34551,7 +34582,7 @@
 
 
 /***/ },
-/* 248 */
+/* 249 */
 /*!********************************!*\
   !*** ./~/lodash/_isKeyable.js ***!
   \********************************/
@@ -34574,16 +34605,16 @@
 
 
 /***/ },
-/* 249 */
+/* 250 */
 /*!*****************************!*\
   !*** ./~/lodash/_mapGet.js ***!
   \*****************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	var Map = __webpack_require__(/*! ./_Map */ 241),
-	    assocGet = __webpack_require__(/*! ./_assocGet */ 228),
-	    hashGet = __webpack_require__(/*! ./_hashGet */ 250),
-	    isKeyable = __webpack_require__(/*! ./_isKeyable */ 248);
+	var Map = __webpack_require__(/*! ./_Map */ 242),
+	    assocGet = __webpack_require__(/*! ./_assocGet */ 229),
+	    hashGet = __webpack_require__(/*! ./_hashGet */ 251),
+	    isKeyable = __webpack_require__(/*! ./_isKeyable */ 249);
 	
 	/**
 	 * Gets the map value for `key`.
@@ -34606,13 +34637,13 @@
 
 
 /***/ },
-/* 250 */
+/* 251 */
 /*!******************************!*\
   !*** ./~/lodash/_hashGet.js ***!
   \******************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	var nativeCreate = __webpack_require__(/*! ./_nativeCreate */ 235);
+	var nativeCreate = __webpack_require__(/*! ./_nativeCreate */ 236);
 	
 	/** Used to stand-in for `undefined` hash values. */
 	var HASH_UNDEFINED = '__lodash_hash_undefined__';
@@ -34643,16 +34674,16 @@
 
 
 /***/ },
-/* 251 */
+/* 252 */
 /*!*****************************!*\
   !*** ./~/lodash/_mapHas.js ***!
   \*****************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	var Map = __webpack_require__(/*! ./_Map */ 241),
-	    assocHas = __webpack_require__(/*! ./_assocHas */ 230),
-	    hashHas = __webpack_require__(/*! ./_hashHas */ 247),
-	    isKeyable = __webpack_require__(/*! ./_isKeyable */ 248);
+	var Map = __webpack_require__(/*! ./_Map */ 242),
+	    assocHas = __webpack_require__(/*! ./_assocHas */ 231),
+	    hashHas = __webpack_require__(/*! ./_hashHas */ 248),
+	    isKeyable = __webpack_require__(/*! ./_isKeyable */ 249);
 	
 	/**
 	 * Checks if a map value for `key` exists.
@@ -34675,16 +34706,16 @@
 
 
 /***/ },
-/* 252 */
+/* 253 */
 /*!*****************************!*\
   !*** ./~/lodash/_mapSet.js ***!
   \*****************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	var Map = __webpack_require__(/*! ./_Map */ 241),
-	    assocSet = __webpack_require__(/*! ./_assocSet */ 253),
-	    hashSet = __webpack_require__(/*! ./_hashSet */ 254),
-	    isKeyable = __webpack_require__(/*! ./_isKeyable */ 248);
+	var Map = __webpack_require__(/*! ./_Map */ 242),
+	    assocSet = __webpack_require__(/*! ./_assocSet */ 254),
+	    hashSet = __webpack_require__(/*! ./_hashSet */ 255),
+	    isKeyable = __webpack_require__(/*! ./_isKeyable */ 249);
 	
 	/**
 	 * Sets the map `key` to `value`.
@@ -34712,13 +34743,13 @@
 
 
 /***/ },
-/* 253 */
+/* 254 */
 /*!*******************************!*\
   !*** ./~/lodash/_assocSet.js ***!
   \*******************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	var assocIndexOf = __webpack_require__(/*! ./_assocIndexOf */ 225);
+	var assocIndexOf = __webpack_require__(/*! ./_assocIndexOf */ 226);
 	
 	/**
 	 * Sets the associative array `key` to `value`.
@@ -34741,13 +34772,13 @@
 
 
 /***/ },
-/* 254 */
+/* 255 */
 /*!******************************!*\
   !*** ./~/lodash/_hashSet.js ***!
   \******************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	var nativeCreate = __webpack_require__(/*! ./_nativeCreate */ 235);
+	var nativeCreate = __webpack_require__(/*! ./_nativeCreate */ 236);
 	
 	/** Used to stand-in for `undefined` hash values. */
 	var HASH_UNDEFINED = '__lodash_hash_undefined__';
@@ -34768,13 +34799,13 @@
 
 
 /***/ },
-/* 255 */
+/* 256 */
 /*!**********************************!*\
   !*** ./~/lodash/_equalArrays.js ***!
   \**********************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	var arraySome = __webpack_require__(/*! ./_arraySome */ 256);
+	var arraySome = __webpack_require__(/*! ./_arraySome */ 257);
 	
 	/** Used to compose bitmasks for comparison styles. */
 	var UNORDERED_COMPARE_FLAG = 1,
@@ -34854,7 +34885,7 @@
 
 
 /***/ },
-/* 256 */
+/* 257 */
 /*!********************************!*\
   !*** ./~/lodash/_arraySome.js ***!
   \********************************/
@@ -34886,17 +34917,17 @@
 
 
 /***/ },
-/* 257 */
+/* 258 */
 /*!*********************************!*\
   !*** ./~/lodash/_equalByTag.js ***!
   \*********************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	var Symbol = __webpack_require__(/*! ./_Symbol */ 258),
-	    Uint8Array = __webpack_require__(/*! ./_Uint8Array */ 259),
-	    equalArrays = __webpack_require__(/*! ./_equalArrays */ 255),
-	    mapToArray = __webpack_require__(/*! ./_mapToArray */ 260),
-	    setToArray = __webpack_require__(/*! ./_setToArray */ 261);
+	var Symbol = __webpack_require__(/*! ./_Symbol */ 259),
+	    Uint8Array = __webpack_require__(/*! ./_Uint8Array */ 260),
+	    equalArrays = __webpack_require__(/*! ./_equalArrays */ 256),
+	    mapToArray = __webpack_require__(/*! ./_mapToArray */ 261),
+	    setToArray = __webpack_require__(/*! ./_setToArray */ 262);
 	
 	/** Used to compose bitmasks for comparison styles. */
 	var UNORDERED_COMPARE_FLAG = 1,
@@ -35009,13 +35040,13 @@
 
 
 /***/ },
-/* 258 */
+/* 259 */
 /*!*****************************!*\
   !*** ./~/lodash/_Symbol.js ***!
   \*****************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	var root = __webpack_require__(/*! ./_root */ 242);
+	var root = __webpack_require__(/*! ./_root */ 243);
 	
 	/** Built-in value references. */
 	var Symbol = root.Symbol;
@@ -35024,13 +35055,13 @@
 
 
 /***/ },
-/* 259 */
+/* 260 */
 /*!*********************************!*\
   !*** ./~/lodash/_Uint8Array.js ***!
   \*********************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	var root = __webpack_require__(/*! ./_root */ 242);
+	var root = __webpack_require__(/*! ./_root */ 243);
 	
 	/** Built-in value references. */
 	var Uint8Array = root.Uint8Array;
@@ -35039,7 +35070,7 @@
 
 
 /***/ },
-/* 260 */
+/* 261 */
 /*!*********************************!*\
   !*** ./~/lodash/_mapToArray.js ***!
   \*********************************/
@@ -35066,7 +35097,7 @@
 
 
 /***/ },
-/* 261 */
+/* 262 */
 /*!*********************************!*\
   !*** ./~/lodash/_setToArray.js ***!
   \*********************************/
@@ -35093,14 +35124,14 @@
 
 
 /***/ },
-/* 262 */
+/* 263 */
 /*!***********************************!*\
   !*** ./~/lodash/_equalObjects.js ***!
   \***********************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseHas = __webpack_require__(/*! ./_baseHas */ 263),
-	    keys = __webpack_require__(/*! ./keys */ 265);
+	var baseHas = __webpack_require__(/*! ./_baseHas */ 264),
+	    keys = __webpack_require__(/*! ./keys */ 266);
 	
 	/** Used to compose bitmasks for comparison styles. */
 	var PARTIAL_COMPARE_FLAG = 2;
@@ -35185,13 +35216,13 @@
 
 
 /***/ },
-/* 263 */
+/* 264 */
 /*!******************************!*\
   !*** ./~/lodash/_baseHas.js ***!
   \******************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	var getPrototype = __webpack_require__(/*! ./_getPrototype */ 264);
+	var getPrototype = __webpack_require__(/*! ./_getPrototype */ 265);
 	
 	/** Used for built-in method references. */
 	var objectProto = Object.prototype;
@@ -35219,7 +35250,7 @@
 
 
 /***/ },
-/* 264 */
+/* 265 */
 /*!***********************************!*\
   !*** ./~/lodash/_getPrototype.js ***!
   \***********************************/
@@ -35243,18 +35274,18 @@
 
 
 /***/ },
-/* 265 */
+/* 266 */
 /*!**************************!*\
   !*** ./~/lodash/keys.js ***!
   \**************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseHas = __webpack_require__(/*! ./_baseHas */ 263),
-	    baseKeys = __webpack_require__(/*! ./_baseKeys */ 266),
-	    indexKeys = __webpack_require__(/*! ./_indexKeys */ 267),
-	    isArrayLike = __webpack_require__(/*! ./isArrayLike */ 271),
-	    isIndex = __webpack_require__(/*! ./_isIndex */ 278),
-	    isPrototype = __webpack_require__(/*! ./_isPrototype */ 279);
+	var baseHas = __webpack_require__(/*! ./_baseHas */ 264),
+	    baseKeys = __webpack_require__(/*! ./_baseKeys */ 267),
+	    indexKeys = __webpack_require__(/*! ./_indexKeys */ 268),
+	    isArrayLike = __webpack_require__(/*! ./isArrayLike */ 272),
+	    isIndex = __webpack_require__(/*! ./_isIndex */ 279),
+	    isPrototype = __webpack_require__(/*! ./_isPrototype */ 280);
 	
 	/**
 	 * Creates an array of the own enumerable property names of `object`.
@@ -35308,7 +35339,7 @@
 
 
 /***/ },
-/* 266 */
+/* 267 */
 /*!*******************************!*\
   !*** ./~/lodash/_baseKeys.js ***!
   \*******************************/
@@ -35333,17 +35364,17 @@
 
 
 /***/ },
-/* 267 */
+/* 268 */
 /*!********************************!*\
   !*** ./~/lodash/_indexKeys.js ***!
   \********************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseTimes = __webpack_require__(/*! ./_baseTimes */ 268),
-	    isArguments = __webpack_require__(/*! ./isArguments */ 269),
-	    isArray = __webpack_require__(/*! ./isArray */ 276),
-	    isLength = __webpack_require__(/*! ./isLength */ 274),
-	    isString = __webpack_require__(/*! ./isString */ 277);
+	var baseTimes = __webpack_require__(/*! ./_baseTimes */ 269),
+	    isArguments = __webpack_require__(/*! ./isArguments */ 270),
+	    isArray = __webpack_require__(/*! ./isArray */ 277),
+	    isLength = __webpack_require__(/*! ./isLength */ 275),
+	    isString = __webpack_require__(/*! ./isString */ 278);
 	
 	/**
 	 * Creates an array of index keys for `object` values of arrays,
@@ -35366,7 +35397,7 @@
 
 
 /***/ },
-/* 268 */
+/* 269 */
 /*!********************************!*\
   !*** ./~/lodash/_baseTimes.js ***!
   \********************************/
@@ -35395,13 +35426,13 @@
 
 
 /***/ },
-/* 269 */
+/* 270 */
 /*!*********************************!*\
   !*** ./~/lodash/isArguments.js ***!
   \*********************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	var isArrayLikeObject = __webpack_require__(/*! ./isArrayLikeObject */ 270);
+	var isArrayLikeObject = __webpack_require__(/*! ./isArrayLikeObject */ 271);
 	
 	/** `Object#toString` result references. */
 	var argsTag = '[object Arguments]';
@@ -35450,14 +35481,14 @@
 
 
 /***/ },
-/* 270 */
+/* 271 */
 /*!***************************************!*\
   !*** ./~/lodash/isArrayLikeObject.js ***!
   \***************************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	var isArrayLike = __webpack_require__(/*! ./isArrayLike */ 271),
-	    isObjectLike = __webpack_require__(/*! ./isObjectLike */ 275);
+	var isArrayLike = __webpack_require__(/*! ./isArrayLike */ 272),
+	    isObjectLike = __webpack_require__(/*! ./isObjectLike */ 276);
 	
 	/**
 	 * This method is like `_.isArrayLike` except that it also checks if `value`
@@ -35492,15 +35523,15 @@
 
 
 /***/ },
-/* 271 */
+/* 272 */
 /*!*********************************!*\
   !*** ./~/lodash/isArrayLike.js ***!
   \*********************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	var getLength = __webpack_require__(/*! ./_getLength */ 272),
-	    isFunction = __webpack_require__(/*! ./isFunction */ 238),
-	    isLength = __webpack_require__(/*! ./isLength */ 274);
+	var getLength = __webpack_require__(/*! ./_getLength */ 273),
+	    isFunction = __webpack_require__(/*! ./isFunction */ 239),
+	    isLength = __webpack_require__(/*! ./isLength */ 275);
 	
 	/**
 	 * Checks if `value` is array-like. A value is considered array-like if it's
@@ -35535,13 +35566,13 @@
 
 
 /***/ },
-/* 272 */
+/* 273 */
 /*!********************************!*\
   !*** ./~/lodash/_getLength.js ***!
   \********************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseProperty = __webpack_require__(/*! ./_baseProperty */ 273);
+	var baseProperty = __webpack_require__(/*! ./_baseProperty */ 274);
 	
 	/**
 	 * Gets the "length" property value of `object`.
@@ -35560,7 +35591,7 @@
 
 
 /***/ },
-/* 273 */
+/* 274 */
 /*!***********************************!*\
   !*** ./~/lodash/_baseProperty.js ***!
   \***********************************/
@@ -35583,7 +35614,7 @@
 
 
 /***/ },
-/* 274 */
+/* 275 */
 /*!******************************!*\
   !*** ./~/lodash/isLength.js ***!
   \******************************/
@@ -35628,7 +35659,7 @@
 
 
 /***/ },
-/* 275 */
+/* 276 */
 /*!**********************************!*\
   !*** ./~/lodash/isObjectLike.js ***!
   \**********************************/
@@ -35666,7 +35697,7 @@
 
 
 /***/ },
-/* 276 */
+/* 277 */
 /*!*****************************!*\
   !*** ./~/lodash/isArray.js ***!
   \*****************************/
@@ -35703,14 +35734,14 @@
 
 
 /***/ },
-/* 277 */
+/* 278 */
 /*!******************************!*\
   !*** ./~/lodash/isString.js ***!
   \******************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	var isArray = __webpack_require__(/*! ./isArray */ 276),
-	    isObjectLike = __webpack_require__(/*! ./isObjectLike */ 275);
+	var isArray = __webpack_require__(/*! ./isArray */ 277),
+	    isObjectLike = __webpack_require__(/*! ./isObjectLike */ 276);
 	
 	/** `Object#toString` result references. */
 	var stringTag = '[object String]';
@@ -35752,7 +35783,7 @@
 
 
 /***/ },
-/* 278 */
+/* 279 */
 /*!******************************!*\
   !*** ./~/lodash/_isIndex.js ***!
   \******************************/
@@ -35782,7 +35813,7 @@
 
 
 /***/ },
-/* 279 */
+/* 280 */
 /*!**********************************!*\
   !*** ./~/lodash/_isPrototype.js ***!
   \**********************************/
@@ -35809,18 +35840,18 @@
 
 
 /***/ },
-/* 280 */
+/* 281 */
 /*!*****************************!*\
   !*** ./~/lodash/_getTag.js ***!
   \*****************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	var DataView = __webpack_require__(/*! ./_DataView */ 281),
-	    Map = __webpack_require__(/*! ./_Map */ 241),
-	    Promise = __webpack_require__(/*! ./_Promise */ 282),
-	    Set = __webpack_require__(/*! ./_Set */ 283),
-	    WeakMap = __webpack_require__(/*! ./_WeakMap */ 284),
-	    toSource = __webpack_require__(/*! ./_toSource */ 240);
+	var DataView = __webpack_require__(/*! ./_DataView */ 282),
+	    Map = __webpack_require__(/*! ./_Map */ 242),
+	    Promise = __webpack_require__(/*! ./_Promise */ 283),
+	    Set = __webpack_require__(/*! ./_Set */ 284),
+	    WeakMap = __webpack_require__(/*! ./_WeakMap */ 285),
+	    toSource = __webpack_require__(/*! ./_toSource */ 241);
 	
 	/** `Object#toString` result references. */
 	var mapTag = '[object Map]',
@@ -35888,14 +35919,14 @@
 
 
 /***/ },
-/* 281 */
+/* 282 */
 /*!*******************************!*\
   !*** ./~/lodash/_DataView.js ***!
   \*******************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	var getNative = __webpack_require__(/*! ./_getNative */ 236),
-	    root = __webpack_require__(/*! ./_root */ 242);
+	var getNative = __webpack_require__(/*! ./_getNative */ 237),
+	    root = __webpack_require__(/*! ./_root */ 243);
 	
 	/* Built-in method references that are verified to be native. */
 	var DataView = getNative(root, 'DataView');
@@ -35904,14 +35935,14 @@
 
 
 /***/ },
-/* 282 */
+/* 283 */
 /*!******************************!*\
   !*** ./~/lodash/_Promise.js ***!
   \******************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	var getNative = __webpack_require__(/*! ./_getNative */ 236),
-	    root = __webpack_require__(/*! ./_root */ 242);
+	var getNative = __webpack_require__(/*! ./_getNative */ 237),
+	    root = __webpack_require__(/*! ./_root */ 243);
 	
 	/* Built-in method references that are verified to be native. */
 	var Promise = getNative(root, 'Promise');
@@ -35920,14 +35951,14 @@
 
 
 /***/ },
-/* 283 */
+/* 284 */
 /*!**************************!*\
   !*** ./~/lodash/_Set.js ***!
   \**************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	var getNative = __webpack_require__(/*! ./_getNative */ 236),
-	    root = __webpack_require__(/*! ./_root */ 242);
+	var getNative = __webpack_require__(/*! ./_getNative */ 237),
+	    root = __webpack_require__(/*! ./_root */ 243);
 	
 	/* Built-in method references that are verified to be native. */
 	var Set = getNative(root, 'Set');
@@ -35936,14 +35967,14 @@
 
 
 /***/ },
-/* 284 */
+/* 285 */
 /*!******************************!*\
   !*** ./~/lodash/_WeakMap.js ***!
   \******************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	var getNative = __webpack_require__(/*! ./_getNative */ 236),
-	    root = __webpack_require__(/*! ./_root */ 242);
+	var getNative = __webpack_require__(/*! ./_getNative */ 237),
+	    root = __webpack_require__(/*! ./_root */ 243);
 	
 	/* Built-in method references that are verified to be native. */
 	var WeakMap = getNative(root, 'WeakMap');
@@ -35952,14 +35983,14 @@
 
 
 /***/ },
-/* 285 */
+/* 286 */
 /*!**********************************!*\
   !*** ./~/lodash/isTypedArray.js ***!
   \**********************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	var isLength = __webpack_require__(/*! ./isLength */ 274),
-	    isObjectLike = __webpack_require__(/*! ./isObjectLike */ 275);
+	var isLength = __webpack_require__(/*! ./isLength */ 275),
+	    isObjectLike = __webpack_require__(/*! ./isObjectLike */ 276);
 	
 	/** `Object#toString` result references. */
 	var argsTag = '[object Arguments]',
@@ -36041,7 +36072,7 @@
 
 
 /***/ },
-/* 286 */
+/* 287 */
 /*!****************************************!*\
   !*** ./src/constants/serviceDomain.js ***!
   \****************************************/
@@ -36054,7 +36085,7 @@
 	//# sourceMappingURL=serviceDomain.js.map
 
 /***/ },
-/* 287 */
+/* 288 */
 /*!***************************************!*\
   !*** ./src/utils/antiForgeryToken.js ***!
   \***************************************/
@@ -36073,7 +36104,7 @@
 	//# sourceMappingURL=antiForgeryToken.js.map
 
 /***/ },
-/* 288 */
+/* 289 */
 /*!*************************************************!*\
   !*** ./src/validators/validationMessageType.js ***!
   \*************************************************/
@@ -36090,21 +36121,21 @@
 	//# sourceMappingURL=validationMessageType.js.map
 
 /***/ },
-/* 289 */
+/* 290 */
 /*!***********************************!*\
   !*** ./src/schemas/toolSchema.js ***!
   \***********************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var normalizr_1 = __webpack_require__(/*! normalizr */ 213);
+	var normalizr_1 = __webpack_require__(/*! normalizr */ 214);
 	var toolSchema = new normalizr_1.Schema('tools', { idAttribute: 'id' });
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.default = toolSchema;
 	//# sourceMappingURL=toolSchema.js.map
 
 /***/ },
-/* 290 */
+/* 291 */
 /*!*******************************************************!*\
   !*** ./src/components/common/ItemListControlPanel.js ***!
   \*******************************************************/
@@ -36117,7 +36148,7 @@
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var React = __webpack_require__(/*! react */ 1);
-	var SearchInput_1 = __webpack_require__(/*! ./SearchInput */ 291);
+	var SearchInput_1 = __webpack_require__(/*! ./SearchInput */ 292);
 	var ItemListControlPanel = (function (_super) {
 	    __extends(ItemListControlPanel, _super);
 	    function ItemListControlPanel(props, context) {
@@ -36149,7 +36180,7 @@
 	//# sourceMappingURL=ItemListControlPanel.js.map
 
 /***/ },
-/* 291 */
+/* 292 */
 /*!**********************************************!*\
   !*** ./src/components/common/SearchInput.js ***!
   \**********************************************/
@@ -36181,7 +36212,7 @@
 	//# sourceMappingURL=SearchInput.js.map
 
 /***/ },
-/* 292 */
+/* 293 */
 /*!*******************************************************!*\
   !*** ./src/components/common/ItemsPerPageSelector.js ***!
   \*******************************************************/
@@ -36194,7 +36225,7 @@
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var React = __webpack_require__(/*! react */ 1);
-	var PagingParameter = __webpack_require__(/*! ../../constants/pagingParameter */ 293);
+	var PagingParameter = __webpack_require__(/*! ../../constants/pagingParameter */ 294);
 	var ItemsPerPageSelector = (function (_super) {
 	    __extends(ItemsPerPageSelector, _super);
 	    function ItemsPerPageSelector(props, context) {
@@ -36263,7 +36294,7 @@
 	//# sourceMappingURL=ItemsPerPageSelector.js.map
 
 /***/ },
-/* 293 */
+/* 294 */
 /*!******************************************!*\
   !*** ./src/constants/pagingParameter.js ***!
   \******************************************/
@@ -36276,7 +36307,7 @@
 	//# sourceMappingURL=pagingParameter.js.map
 
 /***/ },
-/* 294 */
+/* 295 */
 /*!*********************************************!*\
   !*** ./src/components/common/Pagination.js ***!
   \*********************************************/
@@ -36354,7 +36385,7 @@
 	//# sourceMappingURL=Pagination.js.map
 
 /***/ },
-/* 295 */
+/* 296 */
 /*!***************************************************!*\
   !*** ./src/components/common/DialogBackground.js ***!
   \***************************************************/
@@ -36393,7 +36424,7 @@
 	//# sourceMappingURL=DialogBackground.js.map
 
 /***/ },
-/* 296 */
+/* 297 */
 /*!**********************************************************!*\
   !*** ./src/components/common/ConfirmationDialogPanel.js ***!
   \**********************************************************/
@@ -36401,7 +36432,7 @@
 
 	"use strict";
 	var React = __webpack_require__(/*! react */ 1);
-	var DialogPanel_1 = __webpack_require__(/*! ./DialogPanel */ 297);
+	var DialogPanel_1 = __webpack_require__(/*! ./DialogPanel */ 298);
 	function ConfirmationDialogPanel(props) {
 	    return (React.createElement(DialogPanel_1.default, {onCloseClick: props.onCancelClick, title: props.title}, React.createElement("div", {className: "panel-body"}, props.children), React.createElement("div", {className: "panel-footer clearfix"}, React.createElement("div", {className: "btn-toolbar pull-right"}, React.createElement("button", {type: "button", className: "btn btn-danger", onClick: props.onConfirmClick}, "Да"), React.createElement("button", {type: "button", className: "btn btn-default", onClick: props.onCancelClick}, "Нет")))));
 	}
@@ -36410,7 +36441,7 @@
 	//# sourceMappingURL=ConfirmationDialogPanel.js.map
 
 /***/ },
-/* 297 */
+/* 298 */
 /*!**********************************************!*\
   !*** ./src/components/common/DialogPanel.js ***!
   \**********************************************/
@@ -36426,7 +36457,7 @@
 	//# sourceMappingURL=DialogPanel.js.map
 
 /***/ },
-/* 298 */
+/* 299 */
 /*!***********************************************!*\
   !*** ./src/components/common/PendingPanel.js ***!
   \***********************************************/
@@ -36442,7 +36473,7 @@
 	//# sourceMappingURL=PendingPanel.js.map
 
 /***/ },
-/* 299 */
+/* 300 */
 /*!***************************************************!*\
   !*** ./src/components/common/PendingAnimation.js ***!
   \***************************************************/
@@ -36458,7 +36489,7 @@
 	//# sourceMappingURL=PendingAnimation.js.map
 
 /***/ },
-/* 300 */
+/* 301 */
 /*!****************************************!*\
   !*** ./src/containers/ToolEditForm.js ***!
   \****************************************/
@@ -36466,8 +36497,8 @@
 
 	"use strict";
 	var react_redux_1 = __webpack_require__(/*! react-redux */ 166);
-	var ToolEditForm_1 = __webpack_require__(/*! ../components/ToolEditForm */ 301);
-	var ToolActionCreator = __webpack_require__(/*! ../actions/toolActionCreator */ 210);
+	var ToolEditForm_1 = __webpack_require__(/*! ../components/ToolEditForm */ 302);
+	var ToolActionCreator = __webpack_require__(/*! ../actions/toolActionCreator */ 211);
 	var mapStateToToolEditFormProps = function (state, ownProps) {
 	    var toolEditFormState = state.toolEditForms.filter(function (toolEditForm) { return toolEditForm.id == ownProps.id; })[0];
 	    var values = toolEditFormState.values;
@@ -36496,7 +36527,7 @@
 	//# sourceMappingURL=ToolEditForm.js.map
 
 /***/ },
-/* 301 */
+/* 302 */
 /*!****************************************!*\
   !*** ./src/components/ToolEditForm.js ***!
   \****************************************/
@@ -36504,9 +36535,9 @@
 
 	"use strict";
 	var React = __webpack_require__(/*! react */ 1);
-	var DialogBackground_1 = __webpack_require__(/*! ./common/DialogBackground */ 295);
-	var PendingPanel_1 = __webpack_require__(/*! ./common/PendingPanel */ 298);
-	var PendingAnimation_1 = __webpack_require__(/*! ./common/PendingAnimation */ 299);
+	var DialogBackground_1 = __webpack_require__(/*! ./common/DialogBackground */ 296);
+	var PendingPanel_1 = __webpack_require__(/*! ./common/PendingPanel */ 299);
+	var PendingAnimation_1 = __webpack_require__(/*! ./common/PendingAnimation */ 300);
 	function ToolEditForm(props) {
 	    return (React.createElement("div", {style: { width: '100%' }}, React.createElement(DialogBackground_1.default, {isShow: props.isSaving}, React.createElement(PendingPanel_1.default, {title: "Сохранение инструмента"}, React.createElement(PendingAnimation_1.default, null, React.createElement("h4", null, "Пожалуйста, подождите."), React.createElement("h4", null, "Идет сохранение.")))), React.createElement("form", {role: "form", onSubmit: props.handleSubmit}, React.createElement("div", {className: "form-group"}, React.createElement("label", {className: "control-label"}, "Наименование: "), React.createElement("input", {className: 'form-control', onChange: props.onNameChange, value: props.values.name})), React.createElement("div", {className: "form-group"}, React.createElement("label", {className: "control-label"}, "Цена: "), React.createElement("input", {className: 'form-control', onChange: props.onPriceChange, value: props.values.price})), React.createElement("div", {className: "form-group"}, React.createElement("div", {className: "btn-toolbar"}, React.createElement("button", {className: "btn btn-primary", type: "submit", disabled: false}, "Сохранить"))))));
 	}
@@ -36515,7 +36546,7 @@
 	//# sourceMappingURL=ToolEditForm.js.map
 
 /***/ },
-/* 302 */
+/* 303 */
 /*!*****************************************!*\
   !*** ./src/containers/part/PartList.js ***!
   \*****************************************/
@@ -36523,11 +36554,11 @@
 
 	"use strict";
 	var react_redux_1 = __webpack_require__(/*! react-redux */ 166);
-	var PartList_1 = __webpack_require__(/*! ../../components/part/PartList */ 303);
-	var PartActionCreator = __webpack_require__(/*! ../../actions/partActionCreator */ 306);
-	var PanelActionCreator = __webpack_require__(/*! ../../actions/panelActionCreator */ 195);
-	var PanelType = __webpack_require__(/*! ../../components/panelType */ 197);
-	var PagingParameter = __webpack_require__(/*! ../../constants/pagingParameter */ 293);
+	var PartList_1 = __webpack_require__(/*! ../../components/part/PartList */ 304);
+	var PartActionCreator = __webpack_require__(/*! ../../actions/partActionCreator */ 307);
+	var PanelActionCreator = __webpack_require__(/*! ../../actions/panelActionCreator */ 196);
+	var PanelType = __webpack_require__(/*! ../../components/panelType */ 198);
+	var PagingParameter = __webpack_require__(/*! ../../constants/pagingParameter */ 294);
 	var mapStateToPartListProps = function (state, ownProps) {
 	    var partListState = state.partLists.filter(function (partList) { return partList.id === ownProps.id; })[0];
 	    console.log(ownProps);
@@ -36565,7 +36596,7 @@
 	//# sourceMappingURL=PartList.js.map
 
 /***/ },
-/* 303 */
+/* 304 */
 /*!*****************************************!*\
   !*** ./src/components/part/PartList.js ***!
   \*****************************************/
@@ -36578,14 +36609,14 @@
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var React = __webpack_require__(/*! react */ 1);
-	var PartTable_1 = __webpack_require__(/*! ../../containers/part/PartTable */ 304);
-	var ItemListControlPanel_1 = __webpack_require__(/*! ../common/ItemListControlPanel */ 290);
-	var ItemsPerPageSelector_1 = __webpack_require__(/*! ../common/ItemsPerPageSelector */ 292);
-	var Pagination_1 = __webpack_require__(/*! ../common/Pagination */ 294);
-	var DialogBackground_1 = __webpack_require__(/*! ../common/DialogBackground */ 295);
-	var ConfirmationDialogPanel_1 = __webpack_require__(/*! ../common/ConfirmationDialogPanel */ 296);
-	var PendingPanel_1 = __webpack_require__(/*! ../common/PendingPanel */ 298);
-	var PendingAnimation_1 = __webpack_require__(/*! ../common/PendingAnimation */ 299);
+	var PartTable_1 = __webpack_require__(/*! ../../containers/part/PartTable */ 305);
+	var ItemListControlPanel_1 = __webpack_require__(/*! ../common/ItemListControlPanel */ 291);
+	var ItemsPerPageSelector_1 = __webpack_require__(/*! ../common/ItemsPerPageSelector */ 293);
+	var Pagination_1 = __webpack_require__(/*! ../common/Pagination */ 295);
+	var DialogBackground_1 = __webpack_require__(/*! ../common/DialogBackground */ 296);
+	var ConfirmationDialogPanel_1 = __webpack_require__(/*! ../common/ConfirmationDialogPanel */ 297);
+	var PendingPanel_1 = __webpack_require__(/*! ../common/PendingPanel */ 299);
+	var PendingAnimation_1 = __webpack_require__(/*! ../common/PendingAnimation */ 300);
 	var PartList = (function (_super) {
 	    __extends(PartList, _super);
 	    function PartList(props) {
@@ -36628,7 +36659,7 @@
 	//# sourceMappingURL=PartList.js.map
 
 /***/ },
-/* 304 */
+/* 305 */
 /*!******************************************!*\
   !*** ./src/containers/part/PartTable.js ***!
   \******************************************/
@@ -36636,10 +36667,10 @@
 
 	"use strict";
 	var react_redux_1 = __webpack_require__(/*! react-redux */ 166);
-	var PartTable_1 = __webpack_require__(/*! ../../components/part/PartTable */ 305);
-	var PanelActionCreator = __webpack_require__(/*! ../../actions/panelActionCreator */ 195);
-	var PartActionCreator = __webpack_require__(/*! ../../actions/partActionCreator */ 306);
-	var PanelType = __webpack_require__(/*! ../../components/panelType */ 197);
+	var PartTable_1 = __webpack_require__(/*! ../../components/part/PartTable */ 306);
+	var PanelActionCreator = __webpack_require__(/*! ../../actions/panelActionCreator */ 196);
+	var PartActionCreator = __webpack_require__(/*! ../../actions/partActionCreator */ 307);
+	var PanelType = __webpack_require__(/*! ../../components/panelType */ 198);
 	var mapDispatchToPartTableProps = function (dispatch, ownProps) {
 	    return {
 	        onTableRowDoubleClick: function (part) {
@@ -36680,7 +36711,7 @@
 	//# sourceMappingURL=PartTable.js.map
 
 /***/ },
-/* 305 */
+/* 306 */
 /*!******************************************!*\
   !*** ./src/components/part/PartTable.js ***!
   \******************************************/
@@ -36688,7 +36719,7 @@
 
 	"use strict";
 	var React = __webpack_require__(/*! react */ 1);
-	var TableRow_1 = __webpack_require__(/*! ../common/TableRow */ 209);
+	var TableRow_1 = __webpack_require__(/*! ../common/TableRow */ 210);
 	function TableList(props) {
 	    var partRows = [];
 	    var parts = props.parts;
@@ -36719,19 +36750,19 @@
 	//# sourceMappingURL=PartTable.js.map
 
 /***/ },
-/* 306 */
+/* 307 */
 /*!******************************************!*\
   !*** ./src/actions/partActionCreator.js ***!
   \******************************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var $ = __webpack_require__(/*! jquery */ 211);
-	var PartActionType = __webpack_require__(/*! ./partActionType */ 307);
-	var normalizr_1 = __webpack_require__(/*! normalizr */ 213);
-	var serviceDomain_1 = __webpack_require__(/*! ../constants/serviceDomain */ 286);
-	var AntiForgeryToken = __webpack_require__(/*! ../utils/antiForgeryToken */ 287);
-	var partSchema_1 = __webpack_require__(/*! ../schemas/partSchema */ 308);
+	var $ = __webpack_require__(/*! jquery */ 212);
+	var PartActionType = __webpack_require__(/*! ./partActionType */ 308);
+	var normalizr_1 = __webpack_require__(/*! normalizr */ 214);
+	var serviceDomain_1 = __webpack_require__(/*! ../constants/serviceDomain */ 287);
+	var AntiForgeryToken = __webpack_require__(/*! ../utils/antiForgeryToken */ 288);
+	var partSchema_1 = __webpack_require__(/*! ../schemas/partSchema */ 309);
 	function load(partListId, page, partPerPage, searchText) {
 	    return function (dispatch) {
 	        $.ajax({
@@ -36921,7 +36952,7 @@
 	//# sourceMappingURL=partActionCreator.js.map
 
 /***/ },
-/* 307 */
+/* 308 */
 /*!***************************************!*\
   !*** ./src/actions/partActionType.js ***!
   \***************************************/
@@ -36955,21 +36986,21 @@
 	//# sourceMappingURL=partActionType.js.map
 
 /***/ },
-/* 308 */
+/* 309 */
 /*!***********************************!*\
   !*** ./src/schemas/partSchema.js ***!
   \***********************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var normalizr_1 = __webpack_require__(/*! normalizr */ 213);
+	var normalizr_1 = __webpack_require__(/*! normalizr */ 214);
 	var partSchema = new normalizr_1.Schema('parts', { idAttribute: 'id' });
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.default = partSchema;
 	//# sourceMappingURL=partSchema.js.map
 
 /***/ },
-/* 309 */
+/* 310 */
 /*!*********************************************!*\
   !*** ./src/containers/part/PartEditForm.js ***!
   \*********************************************/
@@ -36977,8 +37008,8 @@
 
 	"use strict";
 	var react_redux_1 = __webpack_require__(/*! react-redux */ 166);
-	var PartEditForm_1 = __webpack_require__(/*! ../../components/part/PartEditForm */ 310);
-	var PartActionCreator = __webpack_require__(/*! ../../actions/partActionCreator */ 306);
+	var PartEditForm_1 = __webpack_require__(/*! ../../components/part/PartEditForm */ 311);
+	var PartActionCreator = __webpack_require__(/*! ../../actions/partActionCreator */ 307);
 	var mapStateToPartEditFormProps = function (state, ownProps) {
 	    var partEditFormState = state.partEditForms.filter(function (partEditForm) { return partEditForm.id == ownProps.id; })[0];
 	    var values = partEditFormState.values;
@@ -37007,7 +37038,7 @@
 	//# sourceMappingURL=PartEditForm.js.map
 
 /***/ },
-/* 310 */
+/* 311 */
 /*!*********************************************!*\
   !*** ./src/components/part/PartEditForm.js ***!
   \*********************************************/
@@ -37015,9 +37046,9 @@
 
 	"use strict";
 	var React = __webpack_require__(/*! react */ 1);
-	var DialogBackground_1 = __webpack_require__(/*! ../common/DialogBackground */ 295);
-	var PendingPanel_1 = __webpack_require__(/*! ../common/PendingPanel */ 298);
-	var PendingAnimation_1 = __webpack_require__(/*! ../common/PendingAnimation */ 299);
+	var DialogBackground_1 = __webpack_require__(/*! ../common/DialogBackground */ 296);
+	var PendingPanel_1 = __webpack_require__(/*! ../common/PendingPanel */ 299);
+	var PendingAnimation_1 = __webpack_require__(/*! ../common/PendingAnimation */ 300);
 	function PartEditForm(props) {
 	    return (React.createElement("div", {style: { width: '100%' }}, React.createElement(DialogBackground_1.default, {isShow: props.isSaving}, React.createElement(PendingPanel_1.default, {title: "Сохранение инструмента"}, React.createElement(PendingAnimation_1.default, null, React.createElement("h4", null, "Пожалуйста, подождите."), React.createElement("h4", null, "Идет сохранение.")))), React.createElement("form", {role: "form", onSubmit: props.handleSubmit}, React.createElement("div", {className: "form-group"}, React.createElement("label", {className: "control-label"}, "Наименование: "), React.createElement("input", {className: 'form-control', onChange: props.onNameChange, value: props.values.name})), React.createElement("div", {className: "form-group"}, React.createElement("label", {className: "control-label"}, "Цена: "), React.createElement("input", {className: 'form-control', onChange: props.onPriceChange, value: props.values.price})), React.createElement("div", {className: "form-group"}, React.createElement("div", {className: "btn-toolbar"}, React.createElement("button", {className: "btn btn-primary", type: "submit", disabled: false}, "Сохранить"))))));
 	}
@@ -37026,7 +37057,7 @@
 	//# sourceMappingURL=PartEditForm.js.map
 
 /***/ },
-/* 311 */
+/* 312 */
 /*!*************************************************!*\
   !*** ./src/containers/techStep/TechStepList.js ***!
   \*************************************************/
@@ -37034,11 +37065,11 @@
 
 	"use strict";
 	var react_redux_1 = __webpack_require__(/*! react-redux */ 166);
-	var TechStepList_1 = __webpack_require__(/*! ../../components/techStep/TechStepList */ 312);
-	var TechStepActionCreator = __webpack_require__(/*! ../../actions/techStepActionCreator */ 315);
-	var PanelActionCreator = __webpack_require__(/*! ../../actions/panelActionCreator */ 195);
-	var PanelType = __webpack_require__(/*! ../../components/panelType */ 197);
-	var PagingParameter = __webpack_require__(/*! ../../constants/pagingParameter */ 293);
+	var TechStepList_1 = __webpack_require__(/*! ../../components/techStep/TechStepList */ 313);
+	var TechStepActionCreator = __webpack_require__(/*! ../../actions/techStepActionCreator */ 316);
+	var PanelActionCreator = __webpack_require__(/*! ../../actions/panelActionCreator */ 196);
+	var PanelType = __webpack_require__(/*! ../../components/panelType */ 198);
+	var PagingParameter = __webpack_require__(/*! ../../constants/pagingParameter */ 294);
 	var mapStateToTechStepListProps = function (state, ownProps) {
 	    var techStepListState = state.techStepLists.filter(function (techStepList) { return techStepList.id === ownProps.id; })[0];
 	    return {
@@ -37074,7 +37105,7 @@
 	//# sourceMappingURL=TechStepList.js.map
 
 /***/ },
-/* 312 */
+/* 313 */
 /*!*************************************************!*\
   !*** ./src/components/techStep/TechStepList.js ***!
   \*************************************************/
@@ -37087,14 +37118,14 @@
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var React = __webpack_require__(/*! react */ 1);
-	var TechStepTable_1 = __webpack_require__(/*! ../../containers/techStep/TechStepTable */ 313);
-	var ItemListControlPanel_1 = __webpack_require__(/*! ../common/ItemListControlPanel */ 290);
-	var ItemsPerPageSelector_1 = __webpack_require__(/*! ../common/ItemsPerPageSelector */ 292);
-	var Pagination_1 = __webpack_require__(/*! ../common/Pagination */ 294);
-	var DialogBackground_1 = __webpack_require__(/*! ../common/DialogBackground */ 295);
-	var ConfirmationDialogPanel_1 = __webpack_require__(/*! ../common/ConfirmationDialogPanel */ 296);
-	var PendingPanel_1 = __webpack_require__(/*! ../common/PendingPanel */ 298);
-	var PendingAnimation_1 = __webpack_require__(/*! ../common/PendingAnimation */ 299);
+	var TechStepTable_1 = __webpack_require__(/*! ../../containers/techStep/TechStepTable */ 314);
+	var ItemListControlPanel_1 = __webpack_require__(/*! ../common/ItemListControlPanel */ 291);
+	var ItemsPerPageSelector_1 = __webpack_require__(/*! ../common/ItemsPerPageSelector */ 293);
+	var Pagination_1 = __webpack_require__(/*! ../common/Pagination */ 295);
+	var DialogBackground_1 = __webpack_require__(/*! ../common/DialogBackground */ 296);
+	var ConfirmationDialogPanel_1 = __webpack_require__(/*! ../common/ConfirmationDialogPanel */ 297);
+	var PendingPanel_1 = __webpack_require__(/*! ../common/PendingPanel */ 299);
+	var PendingAnimation_1 = __webpack_require__(/*! ../common/PendingAnimation */ 300);
 	var TechStepList = (function (_super) {
 	    __extends(TechStepList, _super);
 	    function TechStepList(props) {
@@ -37137,7 +37168,7 @@
 	//# sourceMappingURL=TechStepList.js.map
 
 /***/ },
-/* 313 */
+/* 314 */
 /*!**************************************************!*\
   !*** ./src/containers/techStep/TechStepTable.js ***!
   \**************************************************/
@@ -37145,9 +37176,9 @@
 
 	"use strict";
 	var react_redux_1 = __webpack_require__(/*! react-redux */ 166);
-	var TechStepTable_1 = __webpack_require__(/*! ../../components/techStep/TechStepTable */ 314);
-	var PanelActionCreator = __webpack_require__(/*! ../../actions/panelActionCreator */ 195);
-	var TechStepActionCreator = __webpack_require__(/*! ../../actions/techStepActionCreator */ 315);
+	var TechStepTable_1 = __webpack_require__(/*! ../../components/techStep/TechStepTable */ 315);
+	var PanelActionCreator = __webpack_require__(/*! ../../actions/panelActionCreator */ 196);
+	var TechStepActionCreator = __webpack_require__(/*! ../../actions/techStepActionCreator */ 316);
 	var mapDispatchToTechStepTableProps = function (dispatch, ownProps) {
 	    return {
 	        onTableRowDoubleClick: function (techStep) {
@@ -37188,7 +37219,7 @@
 	//# sourceMappingURL=TechStepTable.js.map
 
 /***/ },
-/* 314 */
+/* 315 */
 /*!**************************************************!*\
   !*** ./src/components/techStep/TechStepTable.js ***!
   \**************************************************/
@@ -37196,7 +37227,7 @@
 
 	"use strict";
 	var React = __webpack_require__(/*! react */ 1);
-	var TableRow_1 = __webpack_require__(/*! ../common/TableRow */ 209);
+	var TableRow_1 = __webpack_require__(/*! ../common/TableRow */ 210);
 	function default_1(props) {
 	    var techStepRows = [];
 	    var techSteps = props.techSteps;
@@ -37219,20 +37250,20 @@
 	//# sourceMappingURL=TechStepTable.js.map
 
 /***/ },
-/* 315 */
+/* 316 */
 /*!**********************************************!*\
   !*** ./src/actions/techStepActionCreator.js ***!
   \**********************************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var $ = __webpack_require__(/*! jquery */ 211);
-	var TechStepActionType = __webpack_require__(/*! ./techStepActionType */ 316);
-	var normalizr_1 = __webpack_require__(/*! normalizr */ 213);
-	var serviceDomain_1 = __webpack_require__(/*! ../constants/serviceDomain */ 286);
-	var AntiForgeryToken = __webpack_require__(/*! ../utils/antiForgeryToken */ 287);
-	var techStepSchema_1 = __webpack_require__(/*! ../schemas/techStepSchema */ 317);
-	var IdGenerator = __webpack_require__(/*! ../utils/idGenerator */ 198);
+	var $ = __webpack_require__(/*! jquery */ 212);
+	var TechStepActionType = __webpack_require__(/*! ./techStepActionType */ 317);
+	var normalizr_1 = __webpack_require__(/*! normalizr */ 214);
+	var serviceDomain_1 = __webpack_require__(/*! ../constants/serviceDomain */ 287);
+	var AntiForgeryToken = __webpack_require__(/*! ../utils/antiForgeryToken */ 288);
+	var techStepSchema_1 = __webpack_require__(/*! ../schemas/techStepSchema */ 318);
+	var IdGenerator = __webpack_require__(/*! ../utils/idGenerator */ 199);
 	function load(techStepListId, page, techStepPerPage, searchText) {
 	    return function (dispatch) {
 	        $.ajax({
@@ -37538,7 +37569,7 @@
 	//# sourceMappingURL=techStepActionCreator.js.map
 
 /***/ },
-/* 316 */
+/* 317 */
 /*!*******************************************!*\
   !*** ./src/actions/techStepActionType.js ***!
   \*******************************************/
@@ -37581,16 +37612,16 @@
 	//# sourceMappingURL=techStepActionType.js.map
 
 /***/ },
-/* 317 */
+/* 318 */
 /*!***************************************!*\
   !*** ./src/schemas/techStepSchema.js ***!
   \***************************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var normalizr_1 = __webpack_require__(/*! normalizr */ 213);
-	var toolSchema_1 = __webpack_require__(/*! ./toolSchema */ 289);
-	var partSchema_1 = __webpack_require__(/*! ./partSchema */ 308);
+	var normalizr_1 = __webpack_require__(/*! normalizr */ 214);
+	var toolSchema_1 = __webpack_require__(/*! ./toolSchema */ 290);
+	var partSchema_1 = __webpack_require__(/*! ./partSchema */ 309);
 	var generateToolUsageId = function (toolUsage) { return toolUsage.toolId + "" + toolUsage.techStepId; };
 	var toolUsageSchema = new normalizr_1.Schema('toolUsages', { idAttribute: generateToolUsageId });
 	toolUsageSchema.define({
@@ -37611,7 +37642,7 @@
 	//# sourceMappingURL=techStepSchema.js.map
 
 /***/ },
-/* 318 */
+/* 319 */
 /*!*****************************************************!*\
   !*** ./src/containers/techStep/TechStepEditForm.js ***!
   \*****************************************************/
@@ -37619,8 +37650,8 @@
 
 	"use strict";
 	var react_redux_1 = __webpack_require__(/*! react-redux */ 166);
-	var TechStepEditForm_1 = __webpack_require__(/*! ../../components/techStep/TechStepEditForm */ 319);
-	var TechStepActionCreator = __webpack_require__(/*! ../../actions/techStepActionCreator */ 315);
+	var TechStepEditForm_1 = __webpack_require__(/*! ../../components/techStep/TechStepEditForm */ 320);
+	var TechStepActionCreator = __webpack_require__(/*! ../../actions/techStepActionCreator */ 316);
 	var mapStateToTechStepEditFormProps = function (state, ownProps) {
 	    var techStepEditFormState = state.techStepEditForms.filter(function (techStepEditForm) { return techStepEditForm.id == ownProps.id; })[0];
 	    return {
@@ -37689,7 +37720,7 @@
 	//# sourceMappingURL=TechStepEditForm.js.map
 
 /***/ },
-/* 319 */
+/* 320 */
 /*!*****************************************************!*\
   !*** ./src/components/techStep/TechStepEditForm.js ***!
   \*****************************************************/
@@ -37703,12 +37734,12 @@
 	};
 	var React = __webpack_require__(/*! react */ 1);
 	var ReactDOM = __webpack_require__(/*! react-dom */ 32);
-	var DialogBackground_1 = __webpack_require__(/*! ../common/DialogBackground */ 295);
-	var PendingPanel_1 = __webpack_require__(/*! ../common/PendingPanel */ 298);
-	var PendingAnimation_1 = __webpack_require__(/*! ../common/PendingAnimation */ 299);
-	var ToolList_1 = __webpack_require__(/*! ../../containers/ToolList */ 205);
-	var PartList_1 = __webpack_require__(/*! ../../containers/part/PartList */ 302);
-	var InnerPanel_1 = __webpack_require__(/*! ../common/InnerPanel */ 320);
+	var DialogBackground_1 = __webpack_require__(/*! ../common/DialogBackground */ 296);
+	var PendingPanel_1 = __webpack_require__(/*! ../common/PendingPanel */ 299);
+	var PendingAnimation_1 = __webpack_require__(/*! ../common/PendingAnimation */ 300);
+	var ToolList_1 = __webpack_require__(/*! ../../containers/ToolList */ 206);
+	var PartList_1 = __webpack_require__(/*! ../../containers/part/PartList */ 303);
+	var InnerPanel_1 = __webpack_require__(/*! ../common/InnerPanel */ 321);
 	var ContentEditable = (function (_super) {
 	    __extends(ContentEditable, _super);
 	    function ContentEditable() {
@@ -37820,7 +37851,7 @@
 	//# sourceMappingURL=TechStepEditForm.js.map
 
 /***/ },
-/* 320 */
+/* 321 */
 /*!*********************************************!*\
   !*** ./src/components/common/InnerPanel.js ***!
   \*********************************************/
@@ -37836,7 +37867,7 @@
 	//# sourceMappingURL=InnerPanel.js.map
 
 /***/ },
-/* 321 */
+/* 322 */
 /*!***********************************************************!*\
   !*** ./src/containers/techOperation/TechOperationList.js ***!
   \***********************************************************/
@@ -37844,11 +37875,11 @@
 
 	"use strict";
 	var react_redux_1 = __webpack_require__(/*! react-redux */ 166);
-	var TechOperationList_1 = __webpack_require__(/*! ../../components/techOperation/TechOperationList */ 322);
-	var TechOperationActionCreator = __webpack_require__(/*! ../../actions/techOperationActionCreator */ 325);
-	var PanelActionCreator = __webpack_require__(/*! ../../actions/panelActionCreator */ 195);
-	var PanelType = __webpack_require__(/*! ../../components/panelType */ 197);
-	var PagingParameter = __webpack_require__(/*! ../../constants/pagingParameter */ 293);
+	var TechOperationList_1 = __webpack_require__(/*! ../../components/techOperation/TechOperationList */ 323);
+	var TechOperationActionCreator = __webpack_require__(/*! ../../actions/techOperationActionCreator */ 326);
+	var PanelActionCreator = __webpack_require__(/*! ../../actions/panelActionCreator */ 196);
+	var PanelType = __webpack_require__(/*! ../../components/panelType */ 198);
+	var PagingParameter = __webpack_require__(/*! ../../constants/pagingParameter */ 294);
 	var mapStateToTechOperationListProps = function (state, ownProps) {
 	    var techOperationListState = state.techOperationLists.filter(function (techOperationList) { return techOperationList.id === ownProps.id; })[0];
 	    return {
@@ -37884,7 +37915,7 @@
 	//# sourceMappingURL=TechOperationList.js.map
 
 /***/ },
-/* 322 */
+/* 323 */
 /*!***********************************************************!*\
   !*** ./src/components/techOperation/TechOperationList.js ***!
   \***********************************************************/
@@ -37897,14 +37928,14 @@
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var React = __webpack_require__(/*! react */ 1);
-	var TechOperationTable_1 = __webpack_require__(/*! ../../containers/techOperation/TechOperationTable */ 323);
-	var ItemListControlPanel_1 = __webpack_require__(/*! ../common/ItemListControlPanel */ 290);
-	var ItemsPerPageSelector_1 = __webpack_require__(/*! ../common/ItemsPerPageSelector */ 292);
-	var Pagination_1 = __webpack_require__(/*! ../common/Pagination */ 294);
-	var DialogBackground_1 = __webpack_require__(/*! ../common/DialogBackground */ 295);
-	var ConfirmationDialogPanel_1 = __webpack_require__(/*! ../common/ConfirmationDialogPanel */ 296);
-	var PendingPanel_1 = __webpack_require__(/*! ../common/PendingPanel */ 298);
-	var PendingAnimation_1 = __webpack_require__(/*! ../common/PendingAnimation */ 299);
+	var TechOperationTable_1 = __webpack_require__(/*! ../../containers/techOperation/TechOperationTable */ 324);
+	var ItemListControlPanel_1 = __webpack_require__(/*! ../common/ItemListControlPanel */ 291);
+	var ItemsPerPageSelector_1 = __webpack_require__(/*! ../common/ItemsPerPageSelector */ 293);
+	var Pagination_1 = __webpack_require__(/*! ../common/Pagination */ 295);
+	var DialogBackground_1 = __webpack_require__(/*! ../common/DialogBackground */ 296);
+	var ConfirmationDialogPanel_1 = __webpack_require__(/*! ../common/ConfirmationDialogPanel */ 297);
+	var PendingPanel_1 = __webpack_require__(/*! ../common/PendingPanel */ 299);
+	var PendingAnimation_1 = __webpack_require__(/*! ../common/PendingAnimation */ 300);
 	var TechOperationList = (function (_super) {
 	    __extends(TechOperationList, _super);
 	    function TechOperationList(props) {
@@ -37947,7 +37978,7 @@
 	//# sourceMappingURL=TechOperationList.js.map
 
 /***/ },
-/* 323 */
+/* 324 */
 /*!************************************************************!*\
   !*** ./src/containers/techOperation/TechOperationTable.js ***!
   \************************************************************/
@@ -37955,9 +37986,9 @@
 
 	"use strict";
 	var react_redux_1 = __webpack_require__(/*! react-redux */ 166);
-	var TechOperationTable_1 = __webpack_require__(/*! ../../components/techOperation/TechOperationTable */ 324);
-	var PanelActionCreator = __webpack_require__(/*! ../../actions/panelActionCreator */ 195);
-	var TechOperationActionCreator = __webpack_require__(/*! ../../actions/techOperationActionCreator */ 325);
+	var TechOperationTable_1 = __webpack_require__(/*! ../../components/techOperation/TechOperationTable */ 325);
+	var PanelActionCreator = __webpack_require__(/*! ../../actions/panelActionCreator */ 196);
+	var TechOperationActionCreator = __webpack_require__(/*! ../../actions/techOperationActionCreator */ 326);
 	var mapDispatchToTechOperationTableProps = function (dispatch, ownProps) {
 	    return {
 	        onTableRowDoubleClick: function (techOperation) {
@@ -37998,7 +38029,7 @@
 	//# sourceMappingURL=TechOperationTable.js.map
 
 /***/ },
-/* 324 */
+/* 325 */
 /*!************************************************************!*\
   !*** ./src/components/techOperation/TechOperationTable.js ***!
   \************************************************************/
@@ -38006,7 +38037,7 @@
 
 	"use strict";
 	var React = __webpack_require__(/*! react */ 1);
-	var TableRow_1 = __webpack_require__(/*! ../common/TableRow */ 209);
+	var TableRow_1 = __webpack_require__(/*! ../common/TableRow */ 210);
 	function TableList(props) {
 	    var techOperationRows = [];
 	    var techOperations = props.techOperations;
@@ -38029,20 +38060,20 @@
 	//# sourceMappingURL=TechOperationTable.js.map
 
 /***/ },
-/* 325 */
+/* 326 */
 /*!***************************************************!*\
   !*** ./src/actions/techOperationActionCreator.js ***!
   \***************************************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var $ = __webpack_require__(/*! jquery */ 211);
-	var TechOperationActionType = __webpack_require__(/*! ./techOperationActionType */ 326);
-	var normalizr_1 = __webpack_require__(/*! normalizr */ 213);
-	var serviceDomain_1 = __webpack_require__(/*! ../constants/serviceDomain */ 286);
-	var AntiForgeryToken = __webpack_require__(/*! ../utils/antiForgeryToken */ 287);
-	var techOperationSchema_1 = __webpack_require__(/*! ../schemas/techOperationSchema */ 327);
-	var IdGenerator = __webpack_require__(/*! ../utils/idGenerator */ 198);
+	var $ = __webpack_require__(/*! jquery */ 212);
+	var TechOperationActionType = __webpack_require__(/*! ./techOperationActionType */ 327);
+	var normalizr_1 = __webpack_require__(/*! normalizr */ 214);
+	var serviceDomain_1 = __webpack_require__(/*! ../constants/serviceDomain */ 287);
+	var AntiForgeryToken = __webpack_require__(/*! ../utils/antiForgeryToken */ 288);
+	var techOperationSchema_1 = __webpack_require__(/*! ../schemas/techOperationSchema */ 328);
+	var IdGenerator = __webpack_require__(/*! ../utils/idGenerator */ 199);
 	function load(techOperationListId, page, techOperationPerPage, searchText) {
 	    return function (dispatch) {
 	        $.ajax({
@@ -38264,7 +38295,7 @@
 	//# sourceMappingURL=techOperationActionCreator.js.map
 
 /***/ },
-/* 326 */
+/* 327 */
 /*!************************************************!*\
   !*** ./src/actions/techOperationActionType.js ***!
   \************************************************/
@@ -38300,15 +38331,15 @@
 	//# sourceMappingURL=techOperationActionType.js.map
 
 /***/ },
-/* 327 */
+/* 328 */
 /*!********************************************!*\
   !*** ./src/schemas/techOperationSchema.js ***!
   \********************************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var normalizr_1 = __webpack_require__(/*! normalizr */ 213);
-	var techStepSchema_1 = __webpack_require__(/*! ./techStepSchema */ 317);
+	var normalizr_1 = __webpack_require__(/*! normalizr */ 214);
+	var techStepSchema_1 = __webpack_require__(/*! ./techStepSchema */ 318);
 	var techOperationSchema = new normalizr_1.Schema('techOperations', { idAttribute: 'id' });
 	techOperationSchema.define({
 	    techSteps: normalizr_1.arrayOf(techStepSchema_1.default)
@@ -38318,7 +38349,7 @@
 	//# sourceMappingURL=techOperationSchema.js.map
 
 /***/ },
-/* 328 */
+/* 329 */
 /*!***************************************************************!*\
   !*** ./src/containers/techOperation/TechOperationEditForm.js ***!
   \***************************************************************/
@@ -38326,9 +38357,9 @@
 
 	"use strict";
 	var react_redux_1 = __webpack_require__(/*! react-redux */ 166);
-	var TechOperationEditForm_1 = __webpack_require__(/*! ../../components/techOperation/TechOperationEditForm */ 329);
-	var TechOperationActionCreator = __webpack_require__(/*! ../../actions/techOperationActionCreator */ 325);
-	var PanelActionCreator = __webpack_require__(/*! ../../actions/panelActionCreator */ 195);
+	var TechOperationEditForm_1 = __webpack_require__(/*! ../../components/techOperation/TechOperationEditForm */ 330);
+	var TechOperationActionCreator = __webpack_require__(/*! ../../actions/techOperationActionCreator */ 326);
+	var PanelActionCreator = __webpack_require__(/*! ../../actions/panelActionCreator */ 196);
 	var mapStateToTechOperationEditFormProps = function (state, ownProps) {
 	    var techOperationEditFormState = state.techOperationEditForms.filter(function (techOperationEditForm) { return techOperationEditForm.id == ownProps.id; })[0];
 	    var values = techOperationEditFormState.values;
@@ -38373,7 +38404,7 @@
 	//# sourceMappingURL=TechOperationEditForm.js.map
 
 /***/ },
-/* 329 */
+/* 330 */
 /*!***************************************************************!*\
   !*** ./src/components/techOperation/TechOperationEditForm.js ***!
   \***************************************************************/
@@ -38381,10 +38412,10 @@
 
 	"use strict";
 	var React = __webpack_require__(/*! react */ 1);
-	var DialogBackground_1 = __webpack_require__(/*! ../common/DialogBackground */ 295);
-	var PendingPanel_1 = __webpack_require__(/*! ../common/PendingPanel */ 298);
-	var PendingAnimation_1 = __webpack_require__(/*! ../common/PendingAnimation */ 299);
-	var TechStepTable_1 = __webpack_require__(/*! ../techStep/TechStepTable */ 314);
+	var DialogBackground_1 = __webpack_require__(/*! ../common/DialogBackground */ 296);
+	var PendingPanel_1 = __webpack_require__(/*! ../common/PendingPanel */ 299);
+	var PendingAnimation_1 = __webpack_require__(/*! ../common/PendingAnimation */ 300);
+	var TechStepTable_1 = __webpack_require__(/*! ../techStep/TechStepTable */ 315);
 	function TechOperationEditForm(props) {
 	    var onTechStepSelect = function (event) {
 	        var selectedTechSteps = props.selectedTechSteps;
@@ -38424,7 +38455,7 @@
 	//# sourceMappingURL=TechOperationEditForm.js.map
 
 /***/ },
-/* 330 */
+/* 331 */
 /*!*******************************************************!*\
   !*** ./src/containers/techProcess/TechProcessList.js ***!
   \*******************************************************/
@@ -38432,11 +38463,11 @@
 
 	"use strict";
 	var react_redux_1 = __webpack_require__(/*! react-redux */ 166);
-	var TechProcessList_1 = __webpack_require__(/*! ../../components/techProcess/TechProcessList */ 331);
-	var TechProcessActionCreator = __webpack_require__(/*! ../../actions/techProcessActionCreator */ 334);
-	var PanelActionCreator = __webpack_require__(/*! ../../actions/panelActionCreator */ 195);
-	var PanelType = __webpack_require__(/*! ../../components/panelType */ 197);
-	var PagingParameter = __webpack_require__(/*! ../../constants/pagingParameter */ 293);
+	var TechProcessList_1 = __webpack_require__(/*! ../../components/techProcess/TechProcessList */ 332);
+	var TechProcessActionCreator = __webpack_require__(/*! ../../actions/techProcessActionCreator */ 335);
+	var PanelActionCreator = __webpack_require__(/*! ../../actions/panelActionCreator */ 196);
+	var PanelType = __webpack_require__(/*! ../../components/panelType */ 198);
+	var PagingParameter = __webpack_require__(/*! ../../constants/pagingParameter */ 294);
 	var mapStateToTechProcessListProps = function (state, ownProps) {
 	    var techProcessListState = state.techProcessLists.filter(function (techProcessList) { return techProcessList.id === ownProps.id; })[0];
 	    return {
@@ -38472,7 +38503,7 @@
 	//# sourceMappingURL=TechProcessList.js.map
 
 /***/ },
-/* 331 */
+/* 332 */
 /*!*******************************************************!*\
   !*** ./src/components/techProcess/TechProcessList.js ***!
   \*******************************************************/
@@ -38485,14 +38516,14 @@
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var React = __webpack_require__(/*! react */ 1);
-	var TechProcessTable_1 = __webpack_require__(/*! ../../containers/techProcess/TechProcessTable */ 332);
-	var ItemListControlPanel_1 = __webpack_require__(/*! ../common/ItemListControlPanel */ 290);
-	var ItemsPerPageSelector_1 = __webpack_require__(/*! ../common/ItemsPerPageSelector */ 292);
-	var Pagination_1 = __webpack_require__(/*! ../common/Pagination */ 294);
-	var DialogBackground_1 = __webpack_require__(/*! ../common/DialogBackground */ 295);
-	var ConfirmationDialogPanel_1 = __webpack_require__(/*! ../common/ConfirmationDialogPanel */ 296);
-	var PendingPanel_1 = __webpack_require__(/*! ../common/PendingPanel */ 298);
-	var PendingAnimation_1 = __webpack_require__(/*! ../common/PendingAnimation */ 299);
+	var TechProcessTable_1 = __webpack_require__(/*! ../../containers/techProcess/TechProcessTable */ 333);
+	var ItemListControlPanel_1 = __webpack_require__(/*! ../common/ItemListControlPanel */ 291);
+	var ItemsPerPageSelector_1 = __webpack_require__(/*! ../common/ItemsPerPageSelector */ 293);
+	var Pagination_1 = __webpack_require__(/*! ../common/Pagination */ 295);
+	var DialogBackground_1 = __webpack_require__(/*! ../common/DialogBackground */ 296);
+	var ConfirmationDialogPanel_1 = __webpack_require__(/*! ../common/ConfirmationDialogPanel */ 297);
+	var PendingPanel_1 = __webpack_require__(/*! ../common/PendingPanel */ 299);
+	var PendingAnimation_1 = __webpack_require__(/*! ../common/PendingAnimation */ 300);
 	var TechProcessList = (function (_super) {
 	    __extends(TechProcessList, _super);
 	    function TechProcessList(props) {
@@ -38535,7 +38566,7 @@
 	//# sourceMappingURL=TechProcessList.js.map
 
 /***/ },
-/* 332 */
+/* 333 */
 /*!********************************************************!*\
   !*** ./src/containers/techProcess/TechProcessTable.js ***!
   \********************************************************/
@@ -38543,9 +38574,9 @@
 
 	"use strict";
 	var react_redux_1 = __webpack_require__(/*! react-redux */ 166);
-	var TechProcessTable_1 = __webpack_require__(/*! ../../components/techProcess/TechProcessTable */ 333);
-	var PanelActionCreator = __webpack_require__(/*! ../../actions/panelActionCreator */ 195);
-	var TechProcessActionCreator = __webpack_require__(/*! ../../actions/techProcessActionCreator */ 334);
+	var TechProcessTable_1 = __webpack_require__(/*! ../../components/techProcess/TechProcessTable */ 334);
+	var PanelActionCreator = __webpack_require__(/*! ../../actions/panelActionCreator */ 196);
+	var TechProcessActionCreator = __webpack_require__(/*! ../../actions/techProcessActionCreator */ 335);
 	var mapDispatchToTechProcessTableProps = function (dispatch, ownProps) {
 	    return {
 	        onTableRowDoubleClick: function (techProcess) {
@@ -38586,7 +38617,7 @@
 	//# sourceMappingURL=TechProcessTable.js.map
 
 /***/ },
-/* 333 */
+/* 334 */
 /*!********************************************************!*\
   !*** ./src/components/techProcess/TechProcessTable.js ***!
   \********************************************************/
@@ -38594,7 +38625,7 @@
 
 	"use strict";
 	var React = __webpack_require__(/*! react */ 1);
-	var TableRow_1 = __webpack_require__(/*! ../common/TableRow */ 209);
+	var TableRow_1 = __webpack_require__(/*! ../common/TableRow */ 210);
 	function TableList(props) {
 	    var techProcessRows = [];
 	    var techProcesses = props.techProcesses;
@@ -38617,20 +38648,20 @@
 	//# sourceMappingURL=TechProcessTable.js.map
 
 /***/ },
-/* 334 */
+/* 335 */
 /*!*************************************************!*\
   !*** ./src/actions/techProcessActionCreator.js ***!
   \*************************************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var $ = __webpack_require__(/*! jquery */ 211);
-	var TechProcessActionType = __webpack_require__(/*! ./techProcessActionType */ 335);
-	var normalizr_1 = __webpack_require__(/*! normalizr */ 213);
-	var serviceDomain_1 = __webpack_require__(/*! ../constants/serviceDomain */ 286);
-	var AntiForgeryToken = __webpack_require__(/*! ../utils/antiForgeryToken */ 287);
-	var techProcessSchema_1 = __webpack_require__(/*! ../schemas/techProcessSchema */ 336);
-	var IdGenerator = __webpack_require__(/*! ../utils/idGenerator */ 198);
+	var $ = __webpack_require__(/*! jquery */ 212);
+	var TechProcessActionType = __webpack_require__(/*! ./techProcessActionType */ 336);
+	var normalizr_1 = __webpack_require__(/*! normalizr */ 214);
+	var serviceDomain_1 = __webpack_require__(/*! ../constants/serviceDomain */ 287);
+	var AntiForgeryToken = __webpack_require__(/*! ../utils/antiForgeryToken */ 288);
+	var techProcessSchema_1 = __webpack_require__(/*! ../schemas/techProcessSchema */ 337);
+	var IdGenerator = __webpack_require__(/*! ../utils/idGenerator */ 199);
 	function load(techProcessListId, page, techProcessPerPage, searchText) {
 	    return function (dispatch) {
 	        $.ajax({
@@ -38838,7 +38869,7 @@
 	//# sourceMappingURL=techProcessActionCreator.js.map
 
 /***/ },
-/* 335 */
+/* 336 */
 /*!**********************************************!*\
   !*** ./src/actions/techProcessActionType.js ***!
   \**********************************************/
@@ -38874,15 +38905,15 @@
 	//# sourceMappingURL=techProcessActionType.js.map
 
 /***/ },
-/* 336 */
+/* 337 */
 /*!******************************************!*\
   !*** ./src/schemas/techProcessSchema.js ***!
   \******************************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var normalizr_1 = __webpack_require__(/*! normalizr */ 213);
-	var techOperationSchema_1 = __webpack_require__(/*! ./techOperationSchema */ 327);
+	var normalizr_1 = __webpack_require__(/*! normalizr */ 214);
+	var techOperationSchema_1 = __webpack_require__(/*! ./techOperationSchema */ 328);
 	var techProcessSchema = new normalizr_1.Schema('techProcesses', { idAttribute: 'id' });
 	techProcessSchema.define({
 	    techOperations: normalizr_1.arrayOf(techOperationSchema_1.default)
@@ -38892,7 +38923,7 @@
 	//# sourceMappingURL=techProcessSchema.js.map
 
 /***/ },
-/* 337 */
+/* 338 */
 /*!***********************************************************!*\
   !*** ./src/containers/techProcess/TechProcessEditForm.js ***!
   \***********************************************************/
@@ -38900,9 +38931,9 @@
 
 	"use strict";
 	var react_redux_1 = __webpack_require__(/*! react-redux */ 166);
-	var TechProcessEditForm_1 = __webpack_require__(/*! ../../components/techProcess/TechProcessEditForm */ 338);
-	var TechProcessActionCreator = __webpack_require__(/*! ../../actions/techProcessActionCreator */ 334);
-	var PanelActionCreator = __webpack_require__(/*! ../../actions/panelActionCreator */ 195);
+	var TechProcessEditForm_1 = __webpack_require__(/*! ../../components/techProcess/TechProcessEditForm */ 339);
+	var TechProcessActionCreator = __webpack_require__(/*! ../../actions/techProcessActionCreator */ 335);
+	var PanelActionCreator = __webpack_require__(/*! ../../actions/panelActionCreator */ 196);
 	var mapStateToTechProcessEditFormProps = function (state, ownProps) {
 	    var techProcessEditFormState = state.techProcessEditForms.filter(function (techProcessEditForm) { return techProcessEditForm.id == ownProps.id; })[0];
 	    var values = techProcessEditFormState.values;
@@ -38947,7 +38978,7 @@
 	//# sourceMappingURL=TechProcessEditForm.js.map
 
 /***/ },
-/* 338 */
+/* 339 */
 /*!***********************************************************!*\
   !*** ./src/components/techProcess/TechProcessEditForm.js ***!
   \***********************************************************/
@@ -38955,10 +38986,10 @@
 
 	"use strict";
 	var React = __webpack_require__(/*! react */ 1);
-	var DialogBackground_1 = __webpack_require__(/*! ../common/DialogBackground */ 295);
-	var PendingPanel_1 = __webpack_require__(/*! ../common/PendingPanel */ 298);
-	var PendingAnimation_1 = __webpack_require__(/*! ../common/PendingAnimation */ 299);
-	var TechOperationTable_1 = __webpack_require__(/*! ../../components/techOperation/TechOperationTable */ 324);
+	var DialogBackground_1 = __webpack_require__(/*! ../common/DialogBackground */ 296);
+	var PendingPanel_1 = __webpack_require__(/*! ../common/PendingPanel */ 299);
+	var PendingAnimation_1 = __webpack_require__(/*! ../common/PendingAnimation */ 300);
+	var TechOperationTable_1 = __webpack_require__(/*! ../../components/techOperation/TechOperationTable */ 325);
 	function TechProcessEditForm(props) {
 	    var onTechOperationSelect = function (event) {
 	        var selectedTechOperations = props.selectedTechOperations;
@@ -38998,7 +39029,4822 @@
 	//# sourceMappingURL=TechProcessEditForm.js.map
 
 /***/ },
-/* 339 */
+/* 340 */
+/*!***************************************!*\
+  !*** ./src/containers/auth/Signin.js ***!
+  \***************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var redux_form_1 = __webpack_require__(/*! redux-form */ 341);
+	var Signin_1 = __webpack_require__(/*! ../../components/auth/Signin */ 389);
+	var AuthActionCreator = __webpack_require__(/*! ../../actions/authActionCreator */ 390);
+	var mapDispatchToProps = function (dispatch) {
+	    return {
+	        signinUser: function (email, password) {
+	            dispatch(AuthActionCreator.signinUser(email, password));
+	        }
+	    };
+	};
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = redux_form_1.reduxForm({
+	    form: 'signin',
+	    fields: ['email', 'password']
+	}, null, mapDispatchToProps)(Signin_1.default);
+	//# sourceMappingURL=Signin.js.map
+
+/***/ },
+/* 341 */
+/*!***********************************!*\
+  !*** ./~/redux-form/lib/index.js ***!
+  \***********************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	exports.__esModule = true;
+	exports.untouchWithKey = exports.untouch = exports.touchWithKey = exports.touch = exports.swapArrayValues = exports.stopSubmit = exports.stopAsyncValidation = exports.startSubmit = exports.startAsyncValidation = exports.reset = exports.propTypes = exports.initializeWithKey = exports.initialize = exports.getValues = exports.removeArrayValue = exports.reduxForm = exports.reducer = exports.focus = exports.destroy = exports.changeWithKey = exports.change = exports.blur = exports.autofillWithKey = exports.autofill = exports.addArrayValue = exports.actionTypes = undefined;
+	
+	var _react = __webpack_require__(/*! react */ 1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactRedux = __webpack_require__(/*! react-redux */ 166);
+	
+	var _createAll2 = __webpack_require__(/*! ./createAll */ 342);
+	
+	var _createAll3 = _interopRequireDefault(_createAll2);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var isNative = typeof window !== 'undefined' && window.navigator && window.navigator.product && window.navigator.product === 'ReactNative';
+	
+	var _createAll = (0, _createAll3.default)(isNative, _react2.default, _reactRedux.connect);
+	
+	var actionTypes = _createAll.actionTypes;
+	var addArrayValue = _createAll.addArrayValue;
+	var autofill = _createAll.autofill;
+	var autofillWithKey = _createAll.autofillWithKey;
+	var blur = _createAll.blur;
+	var change = _createAll.change;
+	var changeWithKey = _createAll.changeWithKey;
+	var destroy = _createAll.destroy;
+	var focus = _createAll.focus;
+	var reducer = _createAll.reducer;
+	var reduxForm = _createAll.reduxForm;
+	var removeArrayValue = _createAll.removeArrayValue;
+	var getValues = _createAll.getValues;
+	var initialize = _createAll.initialize;
+	var initializeWithKey = _createAll.initializeWithKey;
+	var propTypes = _createAll.propTypes;
+	var reset = _createAll.reset;
+	var startAsyncValidation = _createAll.startAsyncValidation;
+	var startSubmit = _createAll.startSubmit;
+	var stopAsyncValidation = _createAll.stopAsyncValidation;
+	var stopSubmit = _createAll.stopSubmit;
+	var swapArrayValues = _createAll.swapArrayValues;
+	var touch = _createAll.touch;
+	var touchWithKey = _createAll.touchWithKey;
+	var untouch = _createAll.untouch;
+	var untouchWithKey = _createAll.untouchWithKey;
+	exports.actionTypes = actionTypes;
+	exports.addArrayValue = addArrayValue;
+	exports.autofill = autofill;
+	exports.autofillWithKey = autofillWithKey;
+	exports.blur = blur;
+	exports.change = change;
+	exports.changeWithKey = changeWithKey;
+	exports.destroy = destroy;
+	exports.focus = focus;
+	exports.reducer = reducer;
+	exports.reduxForm = reduxForm;
+	exports.removeArrayValue = removeArrayValue;
+	exports.getValues = getValues;
+	exports.initialize = initialize;
+	exports.initializeWithKey = initializeWithKey;
+	exports.propTypes = propTypes;
+	exports.reset = reset;
+	exports.startAsyncValidation = startAsyncValidation;
+	exports.startSubmit = startSubmit;
+	exports.stopAsyncValidation = stopAsyncValidation;
+	exports.stopSubmit = stopSubmit;
+	exports.swapArrayValues = swapArrayValues;
+	exports.touch = touch;
+	exports.touchWithKey = touchWithKey;
+	exports.untouch = untouch;
+	exports.untouchWithKey = untouchWithKey;
+
+/***/ },
+/* 342 */
+/*!***************************************!*\
+  !*** ./~/redux-form/lib/createAll.js ***!
+  \***************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	exports.__esModule = true;
+	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
+	exports.default = createAll;
+	
+	var _reducer = __webpack_require__(/*! ./reducer */ 343);
+	
+	var _reducer2 = _interopRequireDefault(_reducer);
+	
+	var _createReduxForm = __webpack_require__(/*! ./createReduxForm */ 354);
+	
+	var _createReduxForm2 = _interopRequireDefault(_createReduxForm);
+	
+	var _mapValues = __webpack_require__(/*! ./mapValues */ 345);
+	
+	var _mapValues2 = _interopRequireDefault(_mapValues);
+	
+	var _bindActionData = __webpack_require__(/*! ./bindActionData */ 364);
+	
+	var _bindActionData2 = _interopRequireDefault(_bindActionData);
+	
+	var _actions = __webpack_require__(/*! ./actions */ 363);
+	
+	var actions = _interopRequireWildcard(_actions);
+	
+	var _actionTypes = __webpack_require__(/*! ./actionTypes */ 344);
+	
+	var actionTypes = _interopRequireWildcard(_actionTypes);
+	
+	var _createPropTypes = __webpack_require__(/*! ./createPropTypes */ 388);
+	
+	var _createPropTypes2 = _interopRequireDefault(_createPropTypes);
+	
+	var _getValuesFromState = __webpack_require__(/*! ./getValuesFromState */ 348);
+	
+	var _getValuesFromState2 = _interopRequireDefault(_getValuesFromState);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	// bind form as first parameter of action creators
+	var boundActions = _extends({}, (0, _mapValues2.default)(_extends({}, actions, {
+	  autofillWithKey: function autofillWithKey(key) {
+	    for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+	      args[_key - 1] = arguments[_key];
+	    }
+	
+	    return (0, _bindActionData2.default)(actions.autofill, { key: key }).apply(undefined, args);
+	  },
+	  changeWithKey: function changeWithKey(key) {
+	    for (var _len2 = arguments.length, args = Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
+	      args[_key2 - 1] = arguments[_key2];
+	    }
+	
+	    return (0, _bindActionData2.default)(actions.change, { key: key }).apply(undefined, args);
+	  },
+	  initializeWithKey: function initializeWithKey(key) {
+	    for (var _len3 = arguments.length, args = Array(_len3 > 1 ? _len3 - 1 : 0), _key3 = 1; _key3 < _len3; _key3++) {
+	      args[_key3 - 1] = arguments[_key3];
+	    }
+	
+	    return (0, _bindActionData2.default)(actions.initialize, { key: key }).apply(undefined, args);
+	  },
+	  reset: function reset(key) {
+	    return (0, _bindActionData2.default)(actions.reset, { key: key })();
+	  },
+	  touchWithKey: function touchWithKey(key) {
+	    for (var _len4 = arguments.length, args = Array(_len4 > 1 ? _len4 - 1 : 0), _key4 = 1; _key4 < _len4; _key4++) {
+	      args[_key4 - 1] = arguments[_key4];
+	    }
+	
+	    return (0, _bindActionData2.default)(actions.touch, { key: key }).apply(undefined, args);
+	  },
+	  untouchWithKey: function untouchWithKey(key) {
+	    for (var _len5 = arguments.length, args = Array(_len5 > 1 ? _len5 - 1 : 0), _key5 = 1; _key5 < _len5; _key5++) {
+	      args[_key5 - 1] = arguments[_key5];
+	    }
+	
+	    return (0, _bindActionData2.default)(actions.untouch, { key: key }).apply(undefined, args);
+	  },
+	  destroy: function destroy(key) {
+	    return (0, _bindActionData2.default)(actions.destroy, { key: key })();
+	  }
+	}), function (action) {
+	  return function (form) {
+	    for (var _len6 = arguments.length, args = Array(_len6 > 1 ? _len6 - 1 : 0), _key6 = 1; _key6 < _len6; _key6++) {
+	      args[_key6 - 1] = arguments[_key6];
+	    }
+	
+	    return (0, _bindActionData2.default)(action, { form: form }).apply(undefined, args);
+	  };
+	}));
+	
+	var addArrayValue = boundActions.addArrayValue;
+	var autofill = boundActions.autofill;
+	var autofillWithKey = boundActions.autofillWithKey;
+	var blur = boundActions.blur;
+	var change = boundActions.change;
+	var changeWithKey = boundActions.changeWithKey;
+	var destroy = boundActions.destroy;
+	var focus = boundActions.focus;
+	var initialize = boundActions.initialize;
+	var initializeWithKey = boundActions.initializeWithKey;
+	var removeArrayValue = boundActions.removeArrayValue;
+	var reset = boundActions.reset;
+	var startAsyncValidation = boundActions.startAsyncValidation;
+	var startSubmit = boundActions.startSubmit;
+	var stopAsyncValidation = boundActions.stopAsyncValidation;
+	var stopSubmit = boundActions.stopSubmit;
+	var submitFailed = boundActions.submitFailed;
+	var swapArrayValues = boundActions.swapArrayValues;
+	var touch = boundActions.touch;
+	var touchWithKey = boundActions.touchWithKey;
+	var untouch = boundActions.untouch;
+	var untouchWithKey = boundActions.untouchWithKey;
+	
+	function createAll(isReactNative, React, connect) {
+	  return {
+	    actionTypes: actionTypes,
+	    addArrayValue: addArrayValue,
+	    autofill: autofill,
+	    autofillWithKey: autofillWithKey,
+	    blur: blur,
+	    change: change,
+	    changeWithKey: changeWithKey,
+	    destroy: destroy,
+	    focus: focus,
+	    getValues: _getValuesFromState2.default,
+	    initialize: initialize,
+	    initializeWithKey: initializeWithKey,
+	    propTypes: (0, _createPropTypes2.default)(React),
+	    reduxForm: (0, _createReduxForm2.default)(isReactNative, React, connect),
+	    reducer: _reducer2.default,
+	    removeArrayValue: removeArrayValue,
+	    reset: reset,
+	    startAsyncValidation: startAsyncValidation,
+	    startSubmit: startSubmit,
+	    stopAsyncValidation: stopAsyncValidation,
+	    stopSubmit: stopSubmit,
+	    submitFailed: submitFailed,
+	    swapArrayValues: swapArrayValues,
+	    touch: touch,
+	    touchWithKey: touchWithKey,
+	    untouch: untouch,
+	    untouchWithKey: untouchWithKey
+	  };
+	}
+
+/***/ },
+/* 343 */
+/*!*************************************!*\
+  !*** ./~/redux-form/lib/reducer.js ***!
+  \*************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	exports.__esModule = true;
+	exports.initialState = exports.globalErrorKey = undefined;
+	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
+	var _initialState, _behaviors;
+	
+	var _actionTypes = __webpack_require__(/*! ./actionTypes */ 344);
+	
+	var _mapValues = __webpack_require__(/*! ./mapValues */ 345);
+	
+	var _mapValues2 = _interopRequireDefault(_mapValues);
+	
+	var _read = __webpack_require__(/*! ./read */ 346);
+	
+	var _read2 = _interopRequireDefault(_read);
+	
+	var _write = __webpack_require__(/*! ./write */ 347);
+	
+	var _write2 = _interopRequireDefault(_write);
+	
+	var _getValuesFromState = __webpack_require__(/*! ./getValuesFromState */ 348);
+	
+	var _getValuesFromState2 = _interopRequireDefault(_getValuesFromState);
+	
+	var _initializeState = __webpack_require__(/*! ./initializeState */ 350);
+	
+	var _initializeState2 = _interopRequireDefault(_initializeState);
+	
+	var _resetState = __webpack_require__(/*! ./resetState */ 351);
+	
+	var _resetState2 = _interopRequireDefault(_resetState);
+	
+	var _setErrors = __webpack_require__(/*! ./setErrors */ 352);
+	
+	var _setErrors2 = _interopRequireDefault(_setErrors);
+	
+	var _fieldValue = __webpack_require__(/*! ./fieldValue */ 349);
+	
+	var _normalizeFields = __webpack_require__(/*! ./normalizeFields */ 353);
+	
+	var _normalizeFields2 = _interopRequireDefault(_normalizeFields);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+	
+	var globalErrorKey = exports.globalErrorKey = '_error';
+	
+	var initialState = exports.initialState = (_initialState = {
+	  _active: undefined,
+	  _asyncValidating: false
+	}, _initialState[globalErrorKey] = undefined, _initialState._initialized = false, _initialState._submitting = false, _initialState._submitFailed = false, _initialState);
+	
+	var behaviors = (_behaviors = {}, _behaviors[_actionTypes.ADD_ARRAY_VALUE] = function (state, _ref) {
+	  var path = _ref.path;
+	  var index = _ref.index;
+	  var value = _ref.value;
+	  var fields = _ref.fields;
+	
+	  var array = (0, _read2.default)(path, state);
+	  var stateCopy = _extends({}, state);
+	  var arrayCopy = array ? [].concat(array) : [];
+	  var newValue = value !== null && typeof value === 'object' ? (0, _initializeState2.default)(value, fields || Object.keys(value)) : (0, _fieldValue.makeFieldValue)({ value: value });
+	  if (index === undefined) {
+	    arrayCopy.push(newValue);
+	  } else {
+	    arrayCopy.splice(index, 0, newValue);
+	  }
+	  return (0, _write2.default)(path, arrayCopy, stateCopy);
+	}, _behaviors[_actionTypes.AUTOFILL] = function (state, _ref2) {
+	  var field = _ref2.field;
+	  var value = _ref2.value;
+	
+	  return (0, _write2.default)(field, function (previous) {
+	    var _previous$value$autof = _extends({}, previous, { value: value, autofilled: true });
+	
+	    var asyncError = _previous$value$autof.asyncError;
+	    var submitError = _previous$value$autof.submitError;
+	
+	    var result = _objectWithoutProperties(_previous$value$autof, ['asyncError', 'submitError']);
+	
+	    return (0, _fieldValue.makeFieldValue)(result);
+	  }, state);
+	}, _behaviors[_actionTypes.BLUR] = function (state, _ref3) {
+	  var field = _ref3.field;
+	  var value = _ref3.value;
+	  var touch = _ref3.touch;
+	
+	  // remove _active from state
+	  var _active = state._active;
+	
+	  var stateCopy = _objectWithoutProperties(state, ['_active']); // eslint-disable-line prefer-const
+	
+	
+	  return (0, _write2.default)(field, function (previous) {
+	    var result = _extends({}, previous);
+	    if (value !== undefined) {
+	      result.value = value;
+	    }
+	    if (touch) {
+	      result.touched = true;
+	    }
+	    return (0, _fieldValue.makeFieldValue)(result);
+	  }, stateCopy);
+	}, _behaviors[_actionTypes.CHANGE] = function (state, _ref4) {
+	  var field = _ref4.field;
+	  var value = _ref4.value;
+	  var touch = _ref4.touch;
+	
+	  return (0, _write2.default)(field, function (previous) {
+	    var _previous$value = _extends({}, previous, { value: value });
+	
+	    var asyncError = _previous$value.asyncError;
+	    var submitError = _previous$value.submitError;
+	    var autofilled = _previous$value.autofilled;
+	
+	    var result = _objectWithoutProperties(_previous$value, ['asyncError', 'submitError', 'autofilled']);
+	
+	    if (touch) {
+	      result.touched = true;
+	    }
+	    return (0, _fieldValue.makeFieldValue)(result);
+	  }, state);
+	}, _behaviors[_actionTypes.DESTROY] = function () {
+	  return undefined;
+	}, _behaviors[_actionTypes.FOCUS] = function (state, _ref5) {
+	  var field = _ref5.field;
+	
+	  var stateCopy = (0, _write2.default)(field, function (previous) {
+	    return (0, _fieldValue.makeFieldValue)(_extends({}, previous, { visited: true }));
+	  }, state);
+	  stateCopy._active = field;
+	  return stateCopy;
+	}, _behaviors[_actionTypes.INITIALIZE] = function (state, _ref6) {
+	  var _extends2;
+	
+	  var data = _ref6.data;
+	  var fields = _ref6.fields;
+	  var overwriteValues = _ref6.overwriteValues;
+	
+	  return _extends({}, (0, _initializeState2.default)(data, fields, state, overwriteValues), (_extends2 = {
+	    _asyncValidating: false,
+	    _active: undefined
+	  }, _extends2[globalErrorKey] = undefined, _extends2._initialized = true, _extends2._submitting = false, _extends2._submitFailed = false, _extends2));
+	}, _behaviors[_actionTypes.REMOVE_ARRAY_VALUE] = function (state, _ref7) {
+	  var path = _ref7.path;
+	  var index = _ref7.index;
+	
+	  var array = (0, _read2.default)(path, state);
+	  var stateCopy = _extends({}, state);
+	  var arrayCopy = array ? [].concat(array) : [];
+	  if (index === undefined) {
+	    arrayCopy.pop();
+	  } else if (isNaN(index)) {
+	    delete arrayCopy[index];
+	  } else {
+	    arrayCopy.splice(index, 1);
+	  }
+	  return (0, _write2.default)(path, arrayCopy, stateCopy);
+	}, _behaviors[_actionTypes.RESET] = function (state) {
+	  var _extends3;
+	
+	  return _extends({}, (0, _resetState2.default)(state), (_extends3 = {
+	    _active: undefined,
+	    _asyncValidating: false
+	  }, _extends3[globalErrorKey] = undefined, _extends3._initialized = state._initialized, _extends3._submitting = false, _extends3._submitFailed = false, _extends3));
+	}, _behaviors[_actionTypes.START_ASYNC_VALIDATION] = function (state, _ref8) {
+	  var field = _ref8.field;
+	
+	  return _extends({}, state, {
+	    _asyncValidating: field || true
+	  });
+	}, _behaviors[_actionTypes.START_SUBMIT] = function (state) {
+	  return _extends({}, state, {
+	    _submitting: true
+	  });
+	}, _behaviors[_actionTypes.STOP_ASYNC_VALIDATION] = function (state, _ref9) {
+	  var _extends4;
+	
+	  var errors = _ref9.errors;
+	
+	  return _extends({}, (0, _setErrors2.default)(state, errors, 'asyncError'), (_extends4 = {
+	    _asyncValidating: false
+	  }, _extends4[globalErrorKey] = errors && errors[globalErrorKey], _extends4));
+	}, _behaviors[_actionTypes.STOP_SUBMIT] = function (state, _ref10) {
+	  var _extends5;
+	
+	  var errors = _ref10.errors;
+	
+	  return _extends({}, (0, _setErrors2.default)(state, errors, 'submitError'), (_extends5 = {}, _extends5[globalErrorKey] = errors && errors[globalErrorKey], _extends5._submitting = false, _extends5._submitFailed = !!(errors && Object.keys(errors).length), _extends5));
+	}, _behaviors[_actionTypes.SUBMIT_FAILED] = function (state) {
+	  return _extends({}, state, {
+	    _submitFailed: true
+	  });
+	}, _behaviors[_actionTypes.SWAP_ARRAY_VALUES] = function (state, _ref11) {
+	  var path = _ref11.path;
+	  var indexA = _ref11.indexA;
+	  var indexB = _ref11.indexB;
+	
+	  var array = (0, _read2.default)(path, state);
+	  var arrayLength = array.length;
+	  if (indexA === indexB || isNaN(indexA) || isNaN(indexB) || indexA >= arrayLength || indexB >= arrayLength) {
+	    return state; // do nothing
+	  }
+	  var stateCopy = _extends({}, state);
+	  var arrayCopy = [].concat(array);
+	  arrayCopy[indexA] = array[indexB];
+	  arrayCopy[indexB] = array[indexA];
+	  return (0, _write2.default)(path, arrayCopy, stateCopy);
+	}, _behaviors[_actionTypes.TOUCH] = function (state, _ref12) {
+	  var fields = _ref12.fields;
+	
+	  return _extends({}, state, fields.reduce(function (accumulator, field) {
+	    return (0, _write2.default)(field, function (value) {
+	      return (0, _fieldValue.makeFieldValue)(_extends({}, value, { touched: true }));
+	    }, accumulator);
+	  }, state));
+	}, _behaviors[_actionTypes.UNTOUCH] = function (state, _ref13) {
+	  var fields = _ref13.fields;
+	
+	  return _extends({}, state, fields.reduce(function (accumulator, field) {
+	    return (0, _write2.default)(field, function (value) {
+	      if (value) {
+	        var touched = value.touched;
+	
+	        var rest = _objectWithoutProperties(value, ['touched']);
+	
+	        return (0, _fieldValue.makeFieldValue)(rest);
+	      }
+	      return (0, _fieldValue.makeFieldValue)(value);
+	    }, accumulator);
+	  }, state));
+	}, _behaviors);
+	
+	var reducer = function reducer() {
+	  var state = arguments.length <= 0 || arguments[0] === undefined ? initialState : arguments[0];
+	  var action = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+	
+	  var behavior = behaviors[action.type];
+	  return behavior ? behavior(state, action) : state;
+	};
+	
+	function formReducer() {
+	  var _extends11;
+	
+	  var state = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	  var action = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+	  var form = action.form;
+	  var key = action.key;
+	
+	  var rest = _objectWithoutProperties(action, ['form', 'key']); // eslint-disable-line no-redeclare
+	
+	
+	  if (!form) {
+	    return state;
+	  }
+	  if (key) {
+	    var _extends8, _extends9;
+	
+	    if (action.type === _actionTypes.DESTROY) {
+	      var _extends7;
+	
+	      return _extends({}, state, (_extends7 = {}, _extends7[form] = state[form] && Object.keys(state[form]).reduce(function (accumulator, stateKey) {
+	        var _extends6;
+	
+	        return stateKey === key ? accumulator : _extends({}, accumulator, (_extends6 = {}, _extends6[stateKey] = state[form][stateKey], _extends6));
+	      }, {}), _extends7));
+	    }
+	    return _extends({}, state, (_extends9 = {}, _extends9[form] = _extends({}, state[form], (_extends8 = {}, _extends8[key] = reducer((state[form] || {})[key], rest), _extends8)), _extends9));
+	  }
+	  if (action.type === _actionTypes.DESTROY) {
+	    return Object.keys(state).reduce(function (accumulator, formName) {
+	      var _extends10;
+	
+	      return formName === form ? accumulator : _extends({}, accumulator, (_extends10 = {}, _extends10[formName] = state[formName], _extends10));
+	    }, {});
+	  }
+	  return _extends({}, state, (_extends11 = {}, _extends11[form] = reducer(state[form], rest), _extends11));
+	}
+	
+	/**
+	 * Adds additional functionality to the reducer
+	 */
+	function decorate(target) {
+	  target.plugin = function plugin(reducers) {
+	    var _this = this;
+	
+	    // use 'function' keyword to enable 'this'
+	    return decorate(function () {
+	      var state = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	      var action = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+	
+	      var result = _this(state, action);
+	      return _extends({}, result, (0, _mapValues2.default)(reducers, function (pluginReducer, key) {
+	        return pluginReducer(result[key] || initialState, action);
+	      }));
+	    });
+	  };
+	
+	  target.normalize = function normalize(normalizers) {
+	    var _this2 = this;
+	
+	    // use 'function' keyword to enable 'this'
+	    return decorate(function () {
+	      var state = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	      var action = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+	
+	      var result = _this2(state, action);
+	      return _extends({}, result, (0, _mapValues2.default)(normalizers, function (formNormalizers, form) {
+	        var runNormalize = function runNormalize(previous, currentResult) {
+	          var previousValues = (0, _getValuesFromState2.default)(_extends({}, initialState, previous));
+	          var formResult = _extends({}, initialState, currentResult);
+	          var values = (0, _getValuesFromState2.default)(formResult);
+	          return (0, _normalizeFields2.default)(formNormalizers, formResult, previous, values, previousValues);
+	        };
+	        if (action.key) {
+	          var _extends12;
+	
+	          return _extends({}, result[form], (_extends12 = {}, _extends12[action.key] = runNormalize(state[form][action.key], result[form][action.key]), _extends12));
+	        }
+	        return runNormalize(state[form], result[form]);
+	      }));
+	    });
+	  };
+	
+	  return target;
+	}
+	
+	exports.default = decorate(formReducer);
+
+/***/ },
+/* 344 */
+/*!*****************************************!*\
+  !*** ./~/redux-form/lib/actionTypes.js ***!
+  \*****************************************/
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	exports.__esModule = true;
+	var ADD_ARRAY_VALUE = exports.ADD_ARRAY_VALUE = 'redux-form/ADD_ARRAY_VALUE';
+	var AUTOFILL = exports.AUTOFILL = 'redux-form/AUTOFILL';
+	var BLUR = exports.BLUR = 'redux-form/BLUR';
+	var CHANGE = exports.CHANGE = 'redux-form/CHANGE';
+	var DESTROY = exports.DESTROY = 'redux-form/DESTROY';
+	var FOCUS = exports.FOCUS = 'redux-form/FOCUS';
+	var INITIALIZE = exports.INITIALIZE = 'redux-form/INITIALIZE';
+	var REMOVE_ARRAY_VALUE = exports.REMOVE_ARRAY_VALUE = 'redux-form/REMOVE_ARRAY_VALUE';
+	var RESET = exports.RESET = 'redux-form/RESET';
+	var START_ASYNC_VALIDATION = exports.START_ASYNC_VALIDATION = 'redux-form/START_ASYNC_VALIDATION';
+	var START_SUBMIT = exports.START_SUBMIT = 'redux-form/START_SUBMIT';
+	var STOP_ASYNC_VALIDATION = exports.STOP_ASYNC_VALIDATION = 'redux-form/STOP_ASYNC_VALIDATION';
+	var STOP_SUBMIT = exports.STOP_SUBMIT = 'redux-form/STOP_SUBMIT';
+	var SUBMIT_FAILED = exports.SUBMIT_FAILED = 'redux-form/SUBMIT_FAILED';
+	var SWAP_ARRAY_VALUES = exports.SWAP_ARRAY_VALUES = 'redux-form/SWAP_ARRAY_VALUES';
+	var TOUCH = exports.TOUCH = 'redux-form/TOUCH';
+	var UNTOUCH = exports.UNTOUCH = 'redux-form/UNTOUCH';
+
+/***/ },
+/* 345 */
+/*!***************************************!*\
+  !*** ./~/redux-form/lib/mapValues.js ***!
+  \***************************************/
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	exports.__esModule = true;
+	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
+	exports.default = mapValues;
+	/**
+	 * Maps all the values in the given object through the given function and saves them, by key, to a result object
+	 */
+	function mapValues(obj, fn) {
+	  return obj ? Object.keys(obj).reduce(function (accumulator, key) {
+	    var _extends2;
+	
+	    return _extends({}, accumulator, (_extends2 = {}, _extends2[key] = fn(obj[key], key), _extends2));
+	  }, {}) : obj;
+	}
+
+/***/ },
+/* 346 */
+/*!**********************************!*\
+  !*** ./~/redux-form/lib/read.js ***!
+  \**********************************/
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	exports.__esModule = true;
+	/**
+	 * Reads any potentially deep value from an object using dot and array syntax
+	 */
+	var read = function read(path, object) {
+	  if (!path || !object) {
+	    return object;
+	  }
+	  var dotIndex = path.indexOf('.');
+	  if (dotIndex === 0) {
+	    return read(path.substring(1), object);
+	  }
+	  var openIndex = path.indexOf('[');
+	  var closeIndex = path.indexOf(']');
+	  if (dotIndex >= 0 && (openIndex < 0 || dotIndex < openIndex)) {
+	    // iterate down object tree
+	    return read(path.substring(dotIndex + 1), object[path.substring(0, dotIndex)]);
+	  }
+	  if (openIndex >= 0 && (dotIndex < 0 || openIndex < dotIndex)) {
+	    if (closeIndex < 0) {
+	      throw new Error('found [ but no ]');
+	    }
+	    var key = path.substring(0, openIndex);
+	    var index = path.substring(openIndex + 1, closeIndex);
+	    if (!index.length) {
+	      return object[key];
+	    }
+	    if (openIndex === 0) {
+	      return read(path.substring(closeIndex + 1), object[index]);
+	    }
+	    if (!object[key]) {
+	      return undefined;
+	    }
+	    return read(path.substring(closeIndex + 1), object[key][index]);
+	  }
+	  return object[path];
+	};
+	
+	exports.default = read;
+
+/***/ },
+/* 347 */
+/*!***********************************!*\
+  !*** ./~/redux-form/lib/write.js ***!
+  \***********************************/
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	exports.__esModule = true;
+	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
+	/**
+	 * Writes any potentially deep value from an object using dot and array syntax,
+	 * and returns a new copy of the object.
+	 */
+	var write = function write(path, value, object) {
+	  var _extends7;
+	
+	  var dotIndex = path.indexOf('.');
+	  if (dotIndex === 0) {
+	    return write(path.substring(1), value, object);
+	  }
+	  var openIndex = path.indexOf('[');
+	  var closeIndex = path.indexOf(']');
+	  if (dotIndex >= 0 && (openIndex < 0 || dotIndex < openIndex)) {
+	    var _extends2;
+	
+	    // is dot notation
+	    var key = path.substring(0, dotIndex);
+	    return _extends({}, object, (_extends2 = {}, _extends2[key] = write(path.substring(dotIndex + 1), value, object[key] || {}), _extends2));
+	  }
+	  if (openIndex >= 0 && (dotIndex < 0 || openIndex < dotIndex)) {
+	    var _ret = function () {
+	      var _extends6;
+	
+	      // is array notation
+	      if (closeIndex < 0) {
+	        throw new Error('found [ but no ]');
+	      }
+	      var key = path.substring(0, openIndex);
+	      var index = path.substring(openIndex + 1, closeIndex);
+	      var array = object[key] || [];
+	      var rest = path.substring(closeIndex + 1);
+	      if (index) {
+	        var _extends4;
+	
+	        // indexed array
+	        if (rest.length) {
+	          var _extends3;
+	
+	          // need to keep recursing
+	          var dest = array[index] || {};
+	          var arrayCopy = [].concat(array);
+	          arrayCopy[index] = write(rest, value, dest);
+	          return {
+	            v: _extends({}, object || {}, (_extends3 = {}, _extends3[key] = arrayCopy, _extends3))
+	          };
+	        }
+	        var copy = [].concat(array);
+	        copy[index] = typeof value === 'function' ? value(copy[index]) : value;
+	        return {
+	          v: _extends({}, object || {}, (_extends4 = {}, _extends4[key] = copy, _extends4))
+	        };
+	      }
+	      // indexless array
+	      if (rest.length) {
+	        var _extends5;
+	
+	        // need to keep recursing
+	        if ((!array || !array.length) && typeof value === 'function') {
+	          return {
+	            v: object
+	          }; // don't even set a value under [key]
+	        }
+	        var _arrayCopy = array.map(function (dest) {
+	          return write(rest, value, dest);
+	        });
+	        return {
+	          v: _extends({}, object || {}, (_extends5 = {}, _extends5[key] = _arrayCopy, _extends5))
+	        };
+	      }
+	      var result = void 0;
+	      if (Array.isArray(value)) {
+	        result = value;
+	      } else if (object[key]) {
+	        result = array.map(function (dest) {
+	          return typeof value === 'function' ? value(dest) : value;
+	        });
+	      } else if (typeof value === 'function') {
+	        return {
+	          v: object
+	        }; // don't even set a value under [key]
+	      } else {
+	          result = value;
+	        }
+	      return {
+	        v: _extends({}, object || {}, (_extends6 = {}, _extends6[key] = result, _extends6))
+	      };
+	    }();
+	
+	    if (typeof _ret === "object") return _ret.v;
+	  }
+	  return _extends({}, object, (_extends7 = {}, _extends7[path] = typeof value === 'function' ? value(object[path]) : value, _extends7));
+	};
+	
+	exports.default = write;
+
+/***/ },
+/* 348 */
+/*!************************************************!*\
+  !*** ./~/redux-form/lib/getValuesFromState.js ***!
+  \************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	exports.__esModule = true;
+	
+	var _fieldValue = __webpack_require__(/*! ./fieldValue */ 349);
+	
+	/**
+	 * A different version of getValues() that does not need the fields array
+	 */
+	var getValuesFromState = function getValuesFromState(state) {
+	  if (!state) {
+	    return state;
+	  }
+	  var keys = Object.keys(state);
+	  if (!keys.length) {
+	    return undefined;
+	  }
+	  return keys.reduce(function (accumulator, key) {
+	    var field = state[key];
+	    if (field) {
+	      if ((0, _fieldValue.isFieldValue)(field)) {
+	        if (field.value !== undefined) {
+	          accumulator[key] = field.value;
+	        }
+	      } else if (Array.isArray(field)) {
+	        accumulator[key] = field.map(function (arrayField) {
+	          return (0, _fieldValue.isFieldValue)(arrayField) ? arrayField.value : getValuesFromState(arrayField);
+	        });
+	      } else if (typeof field === 'object') {
+	        var result = getValuesFromState(field);
+	
+	        if (result && Object.keys(result).length > 0) {
+	          accumulator[key] = result;
+	        }
+	      }
+	    }
+	    return accumulator;
+	  }, {});
+	};
+	
+	exports.default = getValuesFromState;
+
+/***/ },
+/* 349 */
+/*!****************************************!*\
+  !*** ./~/redux-form/lib/fieldValue.js ***!
+  \****************************************/
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	exports.__esModule = true;
+	exports.makeFieldValue = makeFieldValue;
+	exports.isFieldValue = isFieldValue;
+	var flag = '_isFieldValue';
+	var isObject = function isObject(object) {
+	  return typeof object === 'object';
+	};
+	
+	function makeFieldValue(object) {
+	  if (object && isObject(object)) {
+	    Object.defineProperty(object, flag, { value: true });
+	  }
+	  return object;
+	}
+	
+	function isFieldValue(object) {
+	  return !!(object && isObject(object) && object[flag]);
+	}
+
+/***/ },
+/* 350 */
+/*!*********************************************!*\
+  !*** ./~/redux-form/lib/initializeState.js ***!
+  \*********************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	exports.__esModule = true;
+	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
+	var _fieldValue = __webpack_require__(/*! ./fieldValue */ 349);
+	
+	var makeEntry = function makeEntry(value, previousValue, overwriteValues) {
+	  return (0, _fieldValue.makeFieldValue)(value === undefined ? {} : {
+	    initial: value,
+	    value: overwriteValues ? value : previousValue
+	  });
+	};
+	
+	/**
+	 * Sets the initial values into the state and returns a new copy of the state
+	 */
+	var initializeState = function initializeState(values, fields) {
+	  var state = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+	  var overwriteValues = arguments.length <= 3 || arguments[3] === undefined ? true : arguments[3];
+	
+	  if (!fields) {
+	    throw new Error('fields must be passed when initializing state');
+	  }
+	  if (!values || !fields.length) {
+	    return state;
+	  }
+	  var initializeField = function initializeField(path, src, dest) {
+	    var dotIndex = path.indexOf('.');
+	    if (dotIndex === 0) {
+	      return initializeField(path.substring(1), src, dest);
+	    }
+	    var openIndex = path.indexOf('[');
+	    var closeIndex = path.indexOf(']');
+	    var result = _extends({}, dest) || {};
+	    if (dotIndex >= 0 && (openIndex < 0 || dotIndex < openIndex)) {
+	      // is dot notation
+	      var key = path.substring(0, dotIndex);
+	      result[key] = src[key] && initializeField(path.substring(dotIndex + 1), src[key], result[key] || {});
+	    } else if (openIndex >= 0 && (dotIndex < 0 || openIndex < dotIndex)) {
+	      (function () {
+	        // is array notation
+	        if (closeIndex < 0) {
+	          throw new Error('found \'[\' but no \']\': \'' + path + '\'');
+	        }
+	        var key = path.substring(0, openIndex);
+	        var srcArray = src[key];
+	        var destArray = result[key];
+	        var rest = path.substring(closeIndex + 1);
+	        if (Array.isArray(srcArray)) {
+	          if (rest.length) {
+	            // need to keep recursing
+	            result[key] = srcArray.map(function (srcValue, srcIndex) {
+	              return initializeField(rest, srcValue, destArray && destArray[srcIndex]);
+	            });
+	          } else {
+	            result[key] = srcArray.map(function (srcValue, srcIndex) {
+	              return makeEntry(srcValue, destArray && destArray[srcIndex] && destArray[srcIndex].value, overwriteValues);
+	            });
+	          }
+	        } else {
+	          result[key] = [];
+	        }
+	      })();
+	    } else {
+	      result[path] = makeEntry(src && src[path], dest && dest[path] && dest[path].value, overwriteValues);
+	    }
+	    return result;
+	  };
+	  return fields.reduce(function (accumulator, field) {
+	    return initializeField(field, values, accumulator);
+	  }, _extends({}, state));
+	};
+	
+	exports.default = initializeState;
+
+/***/ },
+/* 351 */
+/*!****************************************!*\
+  !*** ./~/redux-form/lib/resetState.js ***!
+  \****************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	exports.__esModule = true;
+	
+	var _fieldValue = __webpack_require__(/*! ./fieldValue */ 349);
+	
+	var reset = function reset(value) {
+	  return (0, _fieldValue.makeFieldValue)(value === undefined || value && value.initial === undefined ? {} : { initial: value.initial, value: value.initial });
+	};
+	
+	/**
+	 * Sets the initial values into the state and returns a new copy of the state
+	 */
+	var resetState = function resetState(values) {
+	  return values ? Object.keys(values).reduce(function (accumulator, key) {
+	    var value = values[key];
+	    if (Array.isArray(value)) {
+	      accumulator[key] = value.map(function (item) {
+	        return (0, _fieldValue.isFieldValue)(item) ? reset(item) : resetState(item);
+	      });
+	    } else if (value) {
+	      if ((0, _fieldValue.isFieldValue)(value)) {
+	        accumulator[key] = reset(value);
+	      } else if (typeof value === 'object' && value !== null) {
+	        accumulator[key] = resetState(value);
+	      } else {
+	        accumulator[key] = value;
+	      }
+	    }
+	    return accumulator;
+	  }, {}) : values;
+	};
+	
+	exports.default = resetState;
+
+/***/ },
+/* 352 */
+/*!***************************************!*\
+  !*** ./~/redux-form/lib/setErrors.js ***!
+  \***************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	exports.__esModule = true;
+	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
+	var _fieldValue = __webpack_require__(/*! ./fieldValue */ 349);
+	
+	var isMetaKey = function isMetaKey(key) {
+	  return key[0] === '_';
+	};
+	
+	/**
+	 * Sets an error on a field deep in the tree, returning a new copy of the state
+	 */
+	var setErrors = function setErrors(state, errors, destKey) {
+	  var clear = function clear() {
+	    if (Array.isArray(state)) {
+	      return state.map(function (stateItem, index) {
+	        return setErrors(stateItem, errors && errors[index], destKey);
+	      });
+	    }
+	    if (state && typeof state === 'object') {
+	      var result = Object.keys(state).reduce(function (accumulator, key) {
+	        var _extends2;
+	
+	        return isMetaKey(key) ? accumulator : _extends({}, accumulator, (_extends2 = {}, _extends2[key] = setErrors(state[key], errors && errors[key], destKey), _extends2));
+	      }, state);
+	      if ((0, _fieldValue.isFieldValue)(state)) {
+	        (0, _fieldValue.makeFieldValue)(result);
+	      }
+	      return result;
+	    }
+	    return (0, _fieldValue.makeFieldValue)(state);
+	  };
+	  if (state instanceof File) {
+	    return state;
+	  }
+	  if (!errors) {
+	    if (!state) {
+	      return state;
+	    }
+	    if (state[destKey]) {
+	      var copy = _extends({}, state);
+	      delete copy[destKey];
+	      return (0, _fieldValue.makeFieldValue)(copy);
+	    }
+	    return clear();
+	  }
+	  if (typeof errors === 'string') {
+	    var _extends3;
+	
+	    return (0, _fieldValue.makeFieldValue)(_extends({}, state, (_extends3 = {}, _extends3[destKey] = errors, _extends3)));
+	  }
+	  if (Array.isArray(errors)) {
+	    if (!state || Array.isArray(state)) {
+	      var _ret = function () {
+	        var copy = (state || []).map(function (stateItem, index) {
+	          return setErrors(stateItem, errors[index], destKey);
+	        });
+	        errors.forEach(function (errorItem, index) {
+	          return copy[index] = setErrors(copy[index], errorItem, destKey);
+	        });
+	        return {
+	          v: copy
+	        };
+	      }();
+	
+	      if (typeof _ret === "object") return _ret.v;
+	    }
+	    return setErrors(state, errors[0], destKey); // use first error
+	  }
+	  if ((0, _fieldValue.isFieldValue)(state)) {
+	    var _extends4;
+	
+	    return (0, _fieldValue.makeFieldValue)(_extends({}, state, (_extends4 = {}, _extends4[destKey] = errors, _extends4)));
+	  }
+	  var errorKeys = Object.keys(errors);
+	  if (!errorKeys.length && !state) {
+	    return state;
+	  }
+	  return errorKeys.reduce(function (accumulator, key) {
+	    var _extends5;
+	
+	    return isMetaKey(key) ? accumulator : _extends({}, accumulator, (_extends5 = {}, _extends5[key] = setErrors(state && state[key], errors[key], destKey), _extends5));
+	  }, clear() || {});
+	};
+	
+	exports.default = setErrors;
+
+/***/ },
+/* 353 */
+/*!*********************************************!*\
+  !*** ./~/redux-form/lib/normalizeFields.js ***!
+  \*********************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	exports.__esModule = true;
+	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
+	exports.default = normalizeFields;
+	
+	var _fieldValue = __webpack_require__(/*! ./fieldValue */ 349);
+	
+	function extractKey(field) {
+	  var dotIndex = field.indexOf('.');
+	  var openIndex = field.indexOf('[');
+	  var closeIndex = field.indexOf(']');
+	
+	  if (openIndex > 0 && closeIndex !== openIndex + 1) {
+	    throw new Error('found [ not followed by ]');
+	  }
+	
+	  var isArray = openIndex > 0 && (dotIndex < 0 || openIndex < dotIndex);
+	  var key = void 0;
+	  var nestedPath = void 0;
+	
+	  if (isArray) {
+	    key = field.substring(0, openIndex);
+	    nestedPath = field.substring(closeIndex + 1);
+	
+	    if (nestedPath[0] === '.') {
+	      nestedPath = nestedPath.substring(1);
+	    }
+	  } else if (dotIndex > 0) {
+	    key = field.substring(0, dotIndex);
+	    nestedPath = field.substring(dotIndex + 1);
+	  } else {
+	    key = field;
+	  }
+	
+	  return { isArray: isArray, key: key, nestedPath: nestedPath };
+	}
+	
+	function normalizeField(field, fullFieldPath, state, previousState, values, previousValues, normalizers) {
+	  if (field.isArray) {
+	    if (field.nestedPath) {
+	      var _ret = function () {
+	        var array = state && state[field.key] || [];
+	        var previousArray = previousState && previousState[field.key] || [];
+	        var nestedField = extractKey(field.nestedPath);
+	
+	        return {
+	          v: array.map(function (nestedState, i) {
+	            nestedState[nestedField.key] = normalizeField(nestedField, fullFieldPath, nestedState, previousArray[i], values, previousValues, normalizers);
+	
+	            return nestedState;
+	          })
+	        };
+	      }();
+	
+	      if (typeof _ret === "object") return _ret.v;
+	    }
+	
+	    var _normalizer = normalizers[fullFieldPath];
+	
+	    var result = _normalizer(state && state[field.key], previousState && previousState[field.key], values, previousValues);
+	    return field.isArray ? result && result.map(_fieldValue.makeFieldValue) : result;
+	  } else if (field.nestedPath) {
+	    var nestedState = state && state[field.key] || {};
+	    var _nestedField = extractKey(field.nestedPath);
+	
+	    nestedState[_nestedField.key] = normalizeField(_nestedField, fullFieldPath, nestedState, previousState && previousState[field.key], values, previousValues, normalizers);
+	
+	    return nestedState;
+	  }
+	
+	  var finalField = state && state[field.key] || {};
+	  var normalizer = normalizers[fullFieldPath];
+	
+	  finalField.value = normalizer(finalField.value, previousState && previousState[field.key] && previousState[field.key].value, values, previousValues);
+	
+	  return (0, _fieldValue.makeFieldValue)(finalField);
+	}
+	
+	function normalizeFields(normalizers, state, previousState, values, previousValues) {
+	  var newState = Object.keys(normalizers).reduce(function (accumulator, field) {
+	    var extracted = extractKey(field);
+	
+	    accumulator[extracted.key] = normalizeField(extracted, field, state, previousState, values, previousValues, normalizers);
+	
+	    return accumulator;
+	  }, {});
+	
+	  return _extends({}, state, newState);
+	}
+
+/***/ },
+/* 354 */
+/*!*********************************************!*\
+  !*** ./~/redux-form/lib/createReduxForm.js ***!
+  \*********************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	exports.__esModule = true;
+	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
+	var _createReduxFormConnector = __webpack_require__(/*! ./createReduxFormConnector */ 355);
+	
+	var _createReduxFormConnector2 = _interopRequireDefault(_createReduxFormConnector);
+	
+	var _hoistNonReactStatics = __webpack_require__(/*! hoist-non-react-statics */ 387);
+	
+	var _hoistNonReactStatics2 = _interopRequireDefault(_hoistNonReactStatics);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	/**
+	 * The decorator that is the main API to redux-form
+	 */
+	var createReduxForm = function createReduxForm(isReactNative, React, connect) {
+	  var Component = React.Component;
+	
+	  var reduxFormConnector = (0, _createReduxFormConnector2.default)(isReactNative, React, connect);
+	  return function (config, mapStateToProps, mapDispatchToProps, mergeProps, options) {
+	    return function (WrappedComponent) {
+	      var ReduxFormConnector = reduxFormConnector(WrappedComponent, mapStateToProps, mapDispatchToProps, mergeProps, options);
+	      var configWithDefaults = _extends({
+	        overwriteOnInitialValuesChange: true,
+	        touchOnBlur: true,
+	        touchOnChange: false,
+	        destroyOnUnmount: true
+	      }, config);
+	
+	      var ConnectedForm = function (_Component) {
+	        _inherits(ConnectedForm, _Component);
+	
+	        function ConnectedForm(props) {
+	          _classCallCheck(this, ConnectedForm);
+	
+	          var _this = _possibleConstructorReturn(this, _Component.call(this, props));
+	
+	          _this.handleSubmitPassback = _this.handleSubmitPassback.bind(_this);
+	          return _this;
+	        }
+	
+	        ConnectedForm.prototype.handleSubmitPassback = function handleSubmitPassback(submit) {
+	          this.submit = submit;
+	        };
+	
+	        ConnectedForm.prototype.render = function render() {
+	          return React.createElement(ReduxFormConnector, _extends({}, configWithDefaults, this.props, {
+	            submitPassback: this.handleSubmitPassback }));
+	        };
+	
+	        return ConnectedForm;
+	      }(Component);
+	
+	      return (0, _hoistNonReactStatics2.default)(ConnectedForm, WrappedComponent);
+	    };
+	  };
+	};
+	
+	exports.default = createReduxForm;
+
+/***/ },
+/* 355 */
+/*!******************************************************!*\
+  !*** ./~/redux-form/lib/createReduxFormConnector.js ***!
+  \******************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	exports.__esModule = true;
+	
+	var _noGetters = __webpack_require__(/*! react-lazy-cache/noGetters */ 356);
+	
+	var _noGetters2 = _interopRequireDefault(_noGetters);
+	
+	var _getDisplayName = __webpack_require__(/*! ./getDisplayName */ 361);
+	
+	var _getDisplayName2 = _interopRequireDefault(_getDisplayName);
+	
+	var _createHigherOrderComponent = __webpack_require__(/*! ./createHigherOrderComponent */ 362);
+	
+	var _createHigherOrderComponent2 = _interopRequireDefault(_createHigherOrderComponent);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	/**
+	 * This component tracks props that affect how the form is mounted to the store. Normally these should not change,
+	 * but if they do, the connected components below it need to be redefined.
+	 */
+	var createReduxFormConnector = function createReduxFormConnector(isReactNative, React, connect) {
+	  return function (WrappedComponent, mapStateToProps, mapDispatchToProps, mergeProps, options) {
+	    var Component = React.Component;
+	    var PropTypes = React.PropTypes;
+	
+	    var ReduxFormConnector = function (_Component) {
+	      _inherits(ReduxFormConnector, _Component);
+	
+	      function ReduxFormConnector(props) {
+	        _classCallCheck(this, ReduxFormConnector);
+	
+	        var _this = _possibleConstructorReturn(this, _Component.call(this, props));
+	
+	        _this.cache = new _noGetters2.default(_this, {
+	          ReduxForm: {
+	            params: [
+	            // props that effect how redux-form connects to the redux store
+	            'reduxMountPoint', 'form', 'formKey', 'getFormState'],
+	            fn: (0, _createHigherOrderComponent2.default)(props, isReactNative, React, connect, WrappedComponent, mapStateToProps, mapDispatchToProps, mergeProps, options)
+	          }
+	        });
+	        return _this;
+	      }
+	
+	      ReduxFormConnector.prototype.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
+	        this.cache.componentWillReceiveProps(nextProps);
+	      };
+	
+	      ReduxFormConnector.prototype.render = function render() {
+	        var ReduxForm = this.cache.get('ReduxForm');
+	        // remove some redux-form config-only props
+	        var _props = this.props;
+	        var reduxMountPoint = _props.reduxMountPoint;
+	        var destroyOnUnmount = _props.destroyOnUnmount;
+	        var form = _props.form;
+	        var getFormState = _props.getFormState;
+	        var touchOnBlur = _props.touchOnBlur;
+	        var touchOnChange = _props.touchOnChange;
+	
+	        var passableProps = _objectWithoutProperties(_props, ['reduxMountPoint', 'destroyOnUnmount', 'form', 'getFormState', 'touchOnBlur', 'touchOnChange']); // eslint-disable-line no-redeclare
+	
+	
+	        return React.createElement(ReduxForm, passableProps);
+	      };
+	
+	      return ReduxFormConnector;
+	    }(Component);
+	
+	    ReduxFormConnector.displayName = 'ReduxFormConnector(' + (0, _getDisplayName2.default)(WrappedComponent) + ')';
+	    ReduxFormConnector.WrappedComponent = WrappedComponent;
+	    ReduxFormConnector.propTypes = {
+	      destroyOnUnmount: PropTypes.bool,
+	      reduxMountPoint: PropTypes.string,
+	      form: PropTypes.string.isRequired,
+	      formKey: PropTypes.string,
+	      getFormState: PropTypes.func,
+	      touchOnBlur: PropTypes.bool,
+	      touchOnChange: PropTypes.bool
+	    };
+	    ReduxFormConnector.defaultProps = {
+	      reduxMountPoint: 'form',
+	      getFormState: function getFormState(state, reduxMountPoint) {
+	        return state[reduxMountPoint];
+	      }
+	    };
+	    return ReduxFormConnector;
+	  };
+	};
+	
+	exports.default = createReduxFormConnector;
+
+/***/ },
+/* 356 */
+/*!******************************************************!*\
+  !*** ./~/redux-form/~/react-lazy-cache/noGetters.js ***!
+  \******************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__(/*! ./lib/noGetters */ 357);
+
+
+/***/ },
+/* 357 */
+/*!**********************************************************!*\
+  !*** ./~/redux-form/~/react-lazy-cache/lib/noGetters.js ***!
+  \**********************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	exports.__esModule = true;
+	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+	
+	var _deepEqual = __webpack_require__(/*! deep-equal */ 358);
+	
+	var _deepEqual2 = _interopRequireDefault(_deepEqual);
+	
+	function intersects(array1, array2) {
+	  return !!(array1 && array2 && array1.some(function (item) {
+	    return ~array2.indexOf(item);
+	  }));
+	}
+	
+	var LazyCache = (function () {
+	  function LazyCache(component, calculators) {
+	    var _this = this;
+	
+	    _classCallCheck(this, LazyCache);
+	
+	    this.component = component;
+	    this.allProps = [];
+	    this.cache = Object.keys(calculators).reduce(function (accumulator, key) {
+	      var _extends2;
+	
+	      var calculator = calculators[key];
+	      var fn = calculator.fn;
+	      var paramNames = calculator.params;
+	      paramNames.forEach(function (param) {
+	        if (! ~_this.allProps.indexOf(param)) {
+	          _this.allProps.push(param);
+	        }
+	      });
+	      return _extends({}, accumulator, (_extends2 = {}, _extends2[key] = {
+	        value: undefined,
+	        props: paramNames,
+	        fn: fn
+	      }, _extends2));
+	    }, {});
+	  }
+	
+	  LazyCache.prototype.get = function get(key) {
+	    var component = this.component;
+	    var _cache$key = this.cache[key];
+	    var value = _cache$key.value;
+	    var fn = _cache$key.fn;
+	    var props = _cache$key.props;
+	
+	    if (value !== undefined) {
+	      return value;
+	    }
+	    var params = props.map(function (prop) {
+	      return component.props[prop];
+	    });
+	    var result = fn.apply(undefined, params);
+	    this.cache[key].value = result;
+	    return result;
+	  };
+	
+	  LazyCache.prototype.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
+	    var _this2 = this;
+	
+	    var component = this.component;
+	
+	    var diffProps = [];
+	    this.allProps.forEach(function (prop) {
+	      if (!_deepEqual2['default'](component.props[prop], nextProps[prop])) {
+	        diffProps.push(prop);
+	      }
+	    });
+	    if (diffProps.length) {
+	      Object.keys(this.cache).forEach(function (key) {
+	        if (intersects(diffProps, _this2.cache[key].props)) {
+	          delete _this2.cache[key].value; // uncache value
+	        }
+	      });
+	    }
+	  };
+	
+	  return LazyCache;
+	})();
+	
+	exports['default'] = LazyCache;
+	module.exports = exports['default'];
+
+/***/ },
+/* 358 */
+/*!********************************************!*\
+  !*** ./~/redux-form/~/deep-equal/index.js ***!
+  \********************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	var pSlice = Array.prototype.slice;
+	var objectKeys = __webpack_require__(/*! ./lib/keys.js */ 359);
+	var isArguments = __webpack_require__(/*! ./lib/is_arguments.js */ 360);
+	
+	var deepEqual = module.exports = function (actual, expected, opts) {
+	  if (!opts) opts = {};
+	  // 7.1. All identical values are equivalent, as determined by ===.
+	  if (actual === expected) {
+	    return true;
+	
+	  } else if (actual instanceof Date && expected instanceof Date) {
+	    return actual.getTime() === expected.getTime();
+	
+	  // 7.3. Other pairs that do not both pass typeof value == 'object',
+	  // equivalence is determined by ==.
+	  } else if (!actual || !expected || typeof actual != 'object' && typeof expected != 'object') {
+	    return opts.strict ? actual === expected : actual == expected;
+	
+	  // 7.4. For all other Object pairs, including Array objects, equivalence is
+	  // determined by having the same number of owned properties (as verified
+	  // with Object.prototype.hasOwnProperty.call), the same set of keys
+	  // (although not necessarily the same order), equivalent values for every
+	  // corresponding key, and an identical 'prototype' property. Note: this
+	  // accounts for both named and indexed properties on Arrays.
+	  } else {
+	    return objEquiv(actual, expected, opts);
+	  }
+	}
+	
+	function isUndefinedOrNull(value) {
+	  return value === null || value === undefined;
+	}
+	
+	function isBuffer (x) {
+	  if (!x || typeof x !== 'object' || typeof x.length !== 'number') return false;
+	  if (typeof x.copy !== 'function' || typeof x.slice !== 'function') {
+	    return false;
+	  }
+	  if (x.length > 0 && typeof x[0] !== 'number') return false;
+	  return true;
+	}
+	
+	function objEquiv(a, b, opts) {
+	  var i, key;
+	  if (isUndefinedOrNull(a) || isUndefinedOrNull(b))
+	    return false;
+	  // an identical 'prototype' property.
+	  if (a.prototype !== b.prototype) return false;
+	  //~~~I've managed to break Object.keys through screwy arguments passing.
+	  //   Converting to array solves the problem.
+	  if (isArguments(a)) {
+	    if (!isArguments(b)) {
+	      return false;
+	    }
+	    a = pSlice.call(a);
+	    b = pSlice.call(b);
+	    return deepEqual(a, b, opts);
+	  }
+	  if (isBuffer(a)) {
+	    if (!isBuffer(b)) {
+	      return false;
+	    }
+	    if (a.length !== b.length) return false;
+	    for (i = 0; i < a.length; i++) {
+	      if (a[i] !== b[i]) return false;
+	    }
+	    return true;
+	  }
+	  try {
+	    var ka = objectKeys(a),
+	        kb = objectKeys(b);
+	  } catch (e) {//happens when one is a string literal and the other isn't
+	    return false;
+	  }
+	  // having the same number of owned properties (keys incorporates
+	  // hasOwnProperty)
+	  if (ka.length != kb.length)
+	    return false;
+	  //the same set of keys (although not necessarily the same order),
+	  ka.sort();
+	  kb.sort();
+	  //~~~cheap key test
+	  for (i = ka.length - 1; i >= 0; i--) {
+	    if (ka[i] != kb[i])
+	      return false;
+	  }
+	  //equivalent values for every corresponding key, and
+	  //~~~possibly expensive deep test
+	  for (i = ka.length - 1; i >= 0; i--) {
+	    key = ka[i];
+	    if (!deepEqual(a[key], b[key], opts)) return false;
+	  }
+	  return typeof a === typeof b;
+	}
+
+
+/***/ },
+/* 359 */
+/*!***********************************************!*\
+  !*** ./~/redux-form/~/deep-equal/lib/keys.js ***!
+  \***********************************************/
+/***/ function(module, exports) {
+
+	exports = module.exports = typeof Object.keys === 'function'
+	  ? Object.keys : shim;
+	
+	exports.shim = shim;
+	function shim (obj) {
+	  var keys = [];
+	  for (var key in obj) keys.push(key);
+	  return keys;
+	}
+
+
+/***/ },
+/* 360 */
+/*!*******************************************************!*\
+  !*** ./~/redux-form/~/deep-equal/lib/is_arguments.js ***!
+  \*******************************************************/
+/***/ function(module, exports) {
+
+	var supportsArgumentsClass = (function(){
+	  return Object.prototype.toString.call(arguments)
+	})() == '[object Arguments]';
+	
+	exports = module.exports = supportsArgumentsClass ? supported : unsupported;
+	
+	exports.supported = supported;
+	function supported(object) {
+	  return Object.prototype.toString.call(object) == '[object Arguments]';
+	};
+	
+	exports.unsupported = unsupported;
+	function unsupported(object){
+	  return object &&
+	    typeof object == 'object' &&
+	    typeof object.length == 'number' &&
+	    Object.prototype.hasOwnProperty.call(object, 'callee') &&
+	    !Object.prototype.propertyIsEnumerable.call(object, 'callee') ||
+	    false;
+	};
+
+
+/***/ },
+/* 361 */
+/*!********************************************!*\
+  !*** ./~/redux-form/lib/getDisplayName.js ***!
+  \********************************************/
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	exports.__esModule = true;
+	exports.default = getDisplayName;
+	function getDisplayName(Comp) {
+	  return Comp.displayName || Comp.name || 'Component';
+	}
+
+/***/ },
+/* 362 */
+/*!********************************************************!*\
+  !*** ./~/redux-form/lib/createHigherOrderComponent.js ***!
+  \********************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	exports.__esModule = true;
+	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
+	var _actions = __webpack_require__(/*! ./actions */ 363);
+	
+	var importedActions = _interopRequireWildcard(_actions);
+	
+	var _getDisplayName = __webpack_require__(/*! ./getDisplayName */ 361);
+	
+	var _getDisplayName2 = _interopRequireDefault(_getDisplayName);
+	
+	var _reducer = __webpack_require__(/*! ./reducer */ 343);
+	
+	var _deepEqual = __webpack_require__(/*! deep-equal */ 358);
+	
+	var _deepEqual2 = _interopRequireDefault(_deepEqual);
+	
+	var _bindActionData = __webpack_require__(/*! ./bindActionData */ 364);
+	
+	var _bindActionData2 = _interopRequireDefault(_bindActionData);
+	
+	var _getValues = __webpack_require__(/*! ./getValues */ 365);
+	
+	var _getValues2 = _interopRequireDefault(_getValues);
+	
+	var _isValid = __webpack_require__(/*! ./isValid */ 366);
+	
+	var _isValid2 = _interopRequireDefault(_isValid);
+	
+	var _readFields = __webpack_require__(/*! ./readFields */ 367);
+	
+	var _readFields2 = _interopRequireDefault(_readFields);
+	
+	var _handleSubmit2 = __webpack_require__(/*! ./handleSubmit */ 381);
+	
+	var _handleSubmit3 = _interopRequireDefault(_handleSubmit2);
+	
+	var _asyncValidation = __webpack_require__(/*! ./asyncValidation */ 382);
+	
+	var _asyncValidation2 = _interopRequireDefault(_asyncValidation);
+	
+	var _silenceEvents = __webpack_require__(/*! ./events/silenceEvents */ 383);
+	
+	var _silenceEvents2 = _interopRequireDefault(_silenceEvents);
+	
+	var _silenceEvent = __webpack_require__(/*! ./events/silenceEvent */ 384);
+	
+	var _silenceEvent2 = _interopRequireDefault(_silenceEvent);
+	
+	var _wrapMapDispatchToProps = __webpack_require__(/*! ./wrapMapDispatchToProps */ 385);
+	
+	var _wrapMapDispatchToProps2 = _interopRequireDefault(_wrapMapDispatchToProps);
+	
+	var _wrapMapStateToProps = __webpack_require__(/*! ./wrapMapStateToProps */ 386);
+	
+	var _wrapMapStateToProps2 = _interopRequireDefault(_wrapMapStateToProps);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	/**
+	 * Creates a HOC that knows how to create redux-connected sub-components.
+	 */
+	var createHigherOrderComponent = function createHigherOrderComponent(config, isReactNative, React, connect, WrappedComponent, mapStateToProps, mapDispatchToProps, mergeProps, options) {
+	  var Component = React.Component;
+	  var PropTypes = React.PropTypes;
+	
+	  return function (reduxMountPoint, formName, formKey, getFormState) {
+	    var ReduxForm = function (_Component) {
+	      _inherits(ReduxForm, _Component);
+	
+	      function ReduxForm(props) {
+	        _classCallCheck(this, ReduxForm);
+	
+	        // bind functions
+	
+	        var _this = _possibleConstructorReturn(this, _Component.call(this, props));
+	
+	        _this.asyncValidate = _this.asyncValidate.bind(_this);
+	        _this.handleSubmit = _this.handleSubmit.bind(_this);
+	        _this.fields = (0, _readFields2.default)(props, {}, {}, _this.asyncValidate, isReactNative);
+	        var submitPassback = _this.props.submitPassback;
+	
+	        submitPassback(function () {
+	          return _this.handleSubmit();
+	        }); // wrapped in function to disallow params
+	        return _this;
+	      }
+	
+	      ReduxForm.prototype.componentWillMount = function componentWillMount() {
+	        var _props = this.props;
+	        var fields = _props.fields;
+	        var form = _props.form;
+	        var initialize = _props.initialize;
+	        var initialValues = _props.initialValues;
+	
+	        if (initialValues && !form._initialized) {
+	          initialize(initialValues, fields);
+	        }
+	      };
+	
+	      ReduxForm.prototype.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
+	        if (!(0, _deepEqual2.default)(this.props.fields, nextProps.fields) || !(0, _deepEqual2.default)(this.props.form, nextProps.form, { strict: true })) {
+	          this.fields = (0, _readFields2.default)(nextProps, this.props, this.fields, this.asyncValidate, isReactNative);
+	        }
+	        if (!(0, _deepEqual2.default)(this.props.initialValues, nextProps.initialValues)) {
+	          this.props.initialize(nextProps.initialValues, nextProps.fields, this.props.overwriteOnInitialValuesChange || !this.props.form._initialized);
+	        }
+	      };
+	
+	      ReduxForm.prototype.componentWillUnmount = function componentWillUnmount() {
+	        if (config.destroyOnUnmount) {
+	          this.props.destroy();
+	        }
+	      };
+	
+	      ReduxForm.prototype.asyncValidate = function asyncValidate(name, value) {
+	        var _this2 = this;
+	
+	        var _props2 = this.props;
+	        var alwaysAsyncValidate = _props2.alwaysAsyncValidate;
+	        var asyncValidate = _props2.asyncValidate;
+	        var dispatch = _props2.dispatch;
+	        var fields = _props2.fields;
+	        var form = _props2.form;
+	        var startAsyncValidation = _props2.startAsyncValidation;
+	        var stopAsyncValidation = _props2.stopAsyncValidation;
+	        var validate = _props2.validate;
+	
+	        var isSubmitting = !name;
+	        if (asyncValidate) {
+	          var _ret = function () {
+	            var values = (0, _getValues2.default)(fields, form);
+	            if (name) {
+	              values[name] = value;
+	            }
+	            var syncErrors = validate(values, _this2.props);
+	            var allPristine = _this2.fields._meta.allPristine;
+	
+	            var initialized = form._initialized;
+	
+	            // if blur validating, only run async validate if sync validation passes
+	            // and submitting (not blur validation) or form is dirty or form was never initialized
+	            // unless alwaysAsyncValidate is true
+	            var syncValidationPasses = isSubmitting || (0, _isValid2.default)(syncErrors[name]);
+	            if (alwaysAsyncValidate || syncValidationPasses && (isSubmitting || !allPristine || !initialized)) {
+	              return {
+	                v: (0, _asyncValidation2.default)(function () {
+	                  return asyncValidate(values, dispatch, _this2.props);
+	                }, startAsyncValidation, stopAsyncValidation, name)
+	              };
+	            }
+	          }();
+	
+	          if (typeof _ret === "object") return _ret.v;
+	        }
+	      };
+	
+	      ReduxForm.prototype.handleSubmit = function handleSubmit(submitOrEvent) {
+	        var _this3 = this;
+	
+	        var _props3 = this.props;
+	        var onSubmit = _props3.onSubmit;
+	        var fields = _props3.fields;
+	        var form = _props3.form;
+	
+	        var check = function check(submit) {
+	          if (!submit || typeof submit !== 'function') {
+	            throw new Error('You must either pass handleSubmit() an onSubmit function or pass onSubmit as a prop');
+	          }
+	          return submit;
+	        };
+	        return !submitOrEvent || (0, _silenceEvent2.default)(submitOrEvent) ?
+	        // submitOrEvent is an event: fire submit
+	        (0, _handleSubmit3.default)(check(onSubmit), (0, _getValues2.default)(fields, form), this.props, this.asyncValidate) :
+	        // submitOrEvent is the submit function: return deferred submit thunk
+	        (0, _silenceEvents2.default)(function () {
+	          return (0, _handleSubmit3.default)(check(submitOrEvent), (0, _getValues2.default)(fields, form), _this3.props, _this3.asyncValidate);
+	        });
+	      };
+	
+	      ReduxForm.prototype.render = function render() {
+	        var _this4 = this,
+	            _ref;
+	
+	        var allFields = this.fields;
+	        var _props4 = this.props;
+	        var addArrayValue = _props4.addArrayValue;
+	        var asyncBlurFields = _props4.asyncBlurFields;
+	        var autofill = _props4.autofill;
+	        var blur = _props4.blur;
+	        var change = _props4.change;
+	        var destroy = _props4.destroy;
+	        var focus = _props4.focus;
+	        var fields = _props4.fields;
+	        var form = _props4.form;
+	        var initialValues = _props4.initialValues;
+	        var initialize = _props4.initialize;
+	        var onSubmit = _props4.onSubmit;
+	        var propNamespace = _props4.propNamespace;
+	        var reset = _props4.reset;
+	        var removeArrayValue = _props4.removeArrayValue;
+	        var returnRejectedSubmitPromise = _props4.returnRejectedSubmitPromise;
+	        var startAsyncValidation = _props4.startAsyncValidation;
+	        var startSubmit = _props4.startSubmit;
+	        var stopAsyncValidation = _props4.stopAsyncValidation;
+	        var stopSubmit = _props4.stopSubmit;
+	        var submitFailed = _props4.submitFailed;
+	        var swapArrayValues = _props4.swapArrayValues;
+	        var touch = _props4.touch;
+	        var untouch = _props4.untouch;
+	        var validate = _props4.validate;
+	
+	        var passableProps = _objectWithoutProperties(_props4, ['addArrayValue', 'asyncBlurFields', 'autofill', 'blur', 'change', 'destroy', 'focus', 'fields', 'form', 'initialValues', 'initialize', 'onSubmit', 'propNamespace', 'reset', 'removeArrayValue', 'returnRejectedSubmitPromise', 'startAsyncValidation', 'startSubmit', 'stopAsyncValidation', 'stopSubmit', 'submitFailed', 'swapArrayValues', 'touch', 'untouch', 'validate']); // eslint-disable-line no-redeclare
+	
+	
+	        var _allFields$_meta = allFields._meta;
+	        var allPristine = _allFields$_meta.allPristine;
+	        var allValid = _allFields$_meta.allValid;
+	        var errors = _allFields$_meta.errors;
+	        var formError = _allFields$_meta.formError;
+	        var values = _allFields$_meta.values;
+	
+	
+	        var props = {
+	          // State:
+	          active: form._active,
+	          asyncValidating: form._asyncValidating,
+	          dirty: !allPristine,
+	          error: formError,
+	          errors: errors,
+	          fields: allFields,
+	          formKey: formKey,
+	          invalid: !allValid,
+	          pristine: allPristine,
+	          submitting: form._submitting,
+	          submitFailed: form._submitFailed,
+	          valid: allValid,
+	          values: values,
+	
+	          // Actions:
+	          asyncValidate: (0, _silenceEvents2.default)(function () {
+	            return _this4.asyncValidate();
+	          }),
+	          // ^ doesn't just pass this.asyncValidate to disallow values passing
+	          destroyForm: (0, _silenceEvents2.default)(destroy),
+	          handleSubmit: this.handleSubmit,
+	          initializeForm: (0, _silenceEvents2.default)(function (initValues) {
+	            return initialize(initValues, fields);
+	          }),
+	          resetForm: (0, _silenceEvents2.default)(reset),
+	          touch: (0, _silenceEvents2.default)(function () {
+	            return touch.apply(undefined, arguments);
+	          }),
+	          touchAll: (0, _silenceEvents2.default)(function () {
+	            return touch.apply(undefined, fields);
+	          }),
+	          untouch: (0, _silenceEvents2.default)(function () {
+	            return untouch.apply(undefined, arguments);
+	          }),
+	          untouchAll: (0, _silenceEvents2.default)(function () {
+	            return untouch.apply(undefined, fields);
+	          })
+	        };
+	        var passedProps = propNamespace ? (_ref = {}, _ref[propNamespace] = props, _ref) : props;
+	        return React.createElement(WrappedComponent, _extends({}, passableProps, passedProps));
+	      };
+	
+	      return ReduxForm;
+	    }(Component);
+	
+	    ReduxForm.displayName = 'ReduxForm(' + (0, _getDisplayName2.default)(WrappedComponent) + ')';
+	    ReduxForm.WrappedComponent = WrappedComponent;
+	    ReduxForm.propTypes = {
+	      // props:
+	      alwaysAsyncValidate: PropTypes.bool,
+	      asyncBlurFields: PropTypes.arrayOf(PropTypes.string),
+	      asyncValidate: PropTypes.func,
+	      dispatch: PropTypes.func.isRequired,
+	      fields: PropTypes.arrayOf(PropTypes.string).isRequired,
+	      form: PropTypes.object,
+	      initialValues: PropTypes.any,
+	      onSubmit: PropTypes.func,
+	      onSubmitSuccess: PropTypes.func,
+	      onSubmitFail: PropTypes.func,
+	      overwriteOnInitialValuesChange: PropTypes.bool.isRequired,
+	      propNamespace: PropTypes.string,
+	      readonly: PropTypes.bool,
+	      returnRejectedSubmitPromise: PropTypes.bool,
+	      submitPassback: PropTypes.func.isRequired,
+	      validate: PropTypes.func,
+	
+	      // actions:
+	      addArrayValue: PropTypes.func.isRequired,
+	      autofill: PropTypes.func.isRequired,
+	      blur: PropTypes.func.isRequired,
+	      change: PropTypes.func.isRequired,
+	      destroy: PropTypes.func.isRequired,
+	      focus: PropTypes.func.isRequired,
+	      initialize: PropTypes.func.isRequired,
+	      removeArrayValue: PropTypes.func.isRequired,
+	      reset: PropTypes.func.isRequired,
+	      startAsyncValidation: PropTypes.func.isRequired,
+	      startSubmit: PropTypes.func.isRequired,
+	      stopAsyncValidation: PropTypes.func.isRequired,
+	      stopSubmit: PropTypes.func.isRequired,
+	      submitFailed: PropTypes.func.isRequired,
+	      swapArrayValues: PropTypes.func.isRequired,
+	      touch: PropTypes.func.isRequired,
+	      untouch: PropTypes.func.isRequired
+	    };
+	    ReduxForm.defaultProps = {
+	      asyncBlurFields: [],
+	      form: _reducer.initialState,
+	      readonly: false,
+	      returnRejectedSubmitPromise: false,
+	      validate: function validate() {
+	        return {};
+	      }
+	    };
+	
+	    // bind touch flags to blur and change
+	    var unboundActions = _extends({}, importedActions, {
+	      blur: (0, _bindActionData2.default)(importedActions.blur, {
+	        touch: !!config.touchOnBlur
+	      }),
+	      change: (0, _bindActionData2.default)(importedActions.change, {
+	        touch: !!config.touchOnChange
+	      })
+	    });
+	
+	    // make redux connector with or without form key
+	    var decorate = formKey !== undefined && formKey !== null ? connect((0, _wrapMapStateToProps2.default)(mapStateToProps, function (state) {
+	      var formState = getFormState(state, reduxMountPoint);
+	      if (!formState) {
+	        throw new Error('You need to mount the redux-form reducer at "' + reduxMountPoint + '"');
+	      }
+	      return formState && formState[formName] && formState[formName][formKey];
+	    }), (0, _wrapMapDispatchToProps2.default)(mapDispatchToProps, (0, _bindActionData2.default)(unboundActions, {
+	      form: formName,
+	      key: formKey
+	    })), mergeProps, options) : connect((0, _wrapMapStateToProps2.default)(mapStateToProps, function (state) {
+	      var formState = getFormState(state, reduxMountPoint);
+	      if (!formState) {
+	        throw new Error('You need to mount the redux-form reducer at "' + reduxMountPoint + '"');
+	      }
+	      return formState && formState[formName];
+	    }), (0, _wrapMapDispatchToProps2.default)(mapDispatchToProps, (0, _bindActionData2.default)(unboundActions, { form: formName })), mergeProps, options);
+	
+	    return decorate(ReduxForm);
+	  };
+	};
+	
+	exports.default = createHigherOrderComponent;
+
+/***/ },
+/* 363 */
+/*!*************************************!*\
+  !*** ./~/redux-form/lib/actions.js ***!
+  \*************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	exports.__esModule = true;
+	exports.untouch = exports.touch = exports.swapArrayValues = exports.submitFailed = exports.stopSubmit = exports.stopAsyncValidation = exports.startSubmit = exports.startAsyncValidation = exports.reset = exports.removeArrayValue = exports.initialize = exports.focus = exports.destroy = exports.change = exports.blur = exports.autofill = exports.addArrayValue = undefined;
+	
+	var _actionTypes = __webpack_require__(/*! ./actionTypes */ 344);
+	
+	var addArrayValue = exports.addArrayValue = function addArrayValue(path, value, index, fields) {
+	  return { type: _actionTypes.ADD_ARRAY_VALUE, path: path, value: value, index: index, fields: fields };
+	};
+	
+	var autofill = exports.autofill = function autofill(field, value) {
+	  return { type: _actionTypes.AUTOFILL, field: field, value: value };
+	};
+	
+	var blur = exports.blur = function blur(field, value) {
+	  return { type: _actionTypes.BLUR, field: field, value: value };
+	};
+	
+	var change = exports.change = function change(field, value) {
+	  return { type: _actionTypes.CHANGE, field: field, value: value };
+	};
+	
+	var destroy = exports.destroy = function destroy() {
+	  return { type: _actionTypes.DESTROY };
+	};
+	
+	var focus = exports.focus = function focus(field) {
+	  return { type: _actionTypes.FOCUS, field: field };
+	};
+	
+	var initialize = exports.initialize = function initialize(data, fields) {
+	  var overwriteValues = arguments.length <= 2 || arguments[2] === undefined ? true : arguments[2];
+	
+	  if (!Array.isArray(fields)) {
+	    throw new Error('must provide fields array to initialize() action creator');
+	  }
+	  return { type: _actionTypes.INITIALIZE, data: data, fields: fields, overwriteValues: overwriteValues };
+	};
+	
+	var removeArrayValue = exports.removeArrayValue = function removeArrayValue(path, index) {
+	  return { type: _actionTypes.REMOVE_ARRAY_VALUE, path: path, index: index };
+	};
+	
+	var reset = exports.reset = function reset() {
+	  return { type: _actionTypes.RESET };
+	};
+	
+	var startAsyncValidation = exports.startAsyncValidation = function startAsyncValidation(field) {
+	  return { type: _actionTypes.START_ASYNC_VALIDATION, field: field };
+	};
+	
+	var startSubmit = exports.startSubmit = function startSubmit() {
+	  return { type: _actionTypes.START_SUBMIT };
+	};
+	
+	var stopAsyncValidation = exports.stopAsyncValidation = function stopAsyncValidation(errors) {
+	  return { type: _actionTypes.STOP_ASYNC_VALIDATION, errors: errors };
+	};
+	
+	var stopSubmit = exports.stopSubmit = function stopSubmit(errors) {
+	  return { type: _actionTypes.STOP_SUBMIT, errors: errors };
+	};
+	
+	var submitFailed = exports.submitFailed = function submitFailed() {
+	  return { type: _actionTypes.SUBMIT_FAILED };
+	};
+	
+	var swapArrayValues = exports.swapArrayValues = function swapArrayValues(path, indexA, indexB) {
+	  return { type: _actionTypes.SWAP_ARRAY_VALUES, path: path, indexA: indexA, indexB: indexB };
+	};
+	
+	var touch = exports.touch = function touch() {
+	  for (var _len = arguments.length, fields = Array(_len), _key = 0; _key < _len; _key++) {
+	    fields[_key] = arguments[_key];
+	  }
+	
+	  return { type: _actionTypes.TOUCH, fields: fields };
+	};
+	
+	var untouch = exports.untouch = function untouch() {
+	  for (var _len2 = arguments.length, fields = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+	    fields[_key2] = arguments[_key2];
+	  }
+	
+	  return { type: _actionTypes.UNTOUCH, fields: fields };
+	};
+
+/***/ },
+/* 364 */
+/*!********************************************!*\
+  !*** ./~/redux-form/lib/bindActionData.js ***!
+  \********************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	exports.__esModule = true;
+	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
+	exports.default = bindActionData;
+	
+	var _mapValues = __webpack_require__(/*! ./mapValues */ 345);
+	
+	var _mapValues2 = _interopRequireDefault(_mapValues);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	/**
+	 * Adds additional properties to the results of the function or map of functions passed
+	 */
+	function bindActionData(action, data) {
+	  if (typeof action === 'function') {
+	    return function () {
+	      return _extends({}, action.apply(undefined, arguments), data);
+	    };
+	  }
+	  if (typeof action === 'object') {
+	    return (0, _mapValues2.default)(action, function (value) {
+	      return bindActionData(value, data);
+	    });
+	  }
+	  return action;
+	}
+
+/***/ },
+/* 365 */
+/*!***************************************!*\
+  !*** ./~/redux-form/lib/getValues.js ***!
+  \***************************************/
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	exports.__esModule = true;
+	/**
+	 * Given a state[field], get the value.
+	 *  Fallback to .initialValue when .value is undefined to prevent double render/initialize cycle.
+	 *  See {@link https://github.com/erikras/redux-form/issues/621}.
+	 */
+	var itemToValue = function itemToValue(_ref) {
+	  var value = _ref.value;
+	  var initialValue = _ref.initialValue;
+	  return typeof value !== 'undefined' ? value : initialValue;
+	};
+	
+	var getValue = function getValue(field, state, dest) {
+	  var dotIndex = field.indexOf('.');
+	  var openIndex = field.indexOf('[');
+	  var closeIndex = field.indexOf(']');
+	  if (openIndex > 0 && closeIndex !== openIndex + 1) {
+	    throw new Error('found [ not followed by ]');
+	  }
+	  if (openIndex > 0 && (dotIndex < 0 || openIndex < dotIndex)) {
+	    (function () {
+	      // array field
+	      var key = field.substring(0, openIndex);
+	      var rest = field.substring(closeIndex + 1);
+	      if (rest[0] === '.') {
+	        rest = rest.substring(1);
+	      }
+	      var array = state && state[key] || [];
+	      if (rest) {
+	        if (!dest[key]) {
+	          dest[key] = [];
+	        }
+	        array.forEach(function (item, index) {
+	          if (!dest[key][index]) {
+	            dest[key][index] = {};
+	          }
+	          getValue(rest, item, dest[key][index]);
+	        });
+	      } else {
+	        dest[key] = array.map(itemToValue);
+	      }
+	    })();
+	  } else if (dotIndex > 0) {
+	    // subobject field
+	    var _key = field.substring(0, dotIndex);
+	    var _rest = field.substring(dotIndex + 1);
+	    if (!dest[_key]) {
+	      dest[_key] = {};
+	    }
+	    getValue(_rest, state && state[_key] || {}, dest[_key]);
+	  } else {
+	    dest[field] = state[field] && itemToValue(state[field]);
+	  }
+	};
+	
+	var getValues = function getValues(fields, state) {
+	  return fields.reduce(function (accumulator, field) {
+	    getValue(field, state, accumulator);
+	    return accumulator;
+	  }, {});
+	};
+	
+	exports.default = getValues;
+
+/***/ },
+/* 366 */
+/*!*************************************!*\
+  !*** ./~/redux-form/lib/isValid.js ***!
+  \*************************************/
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	exports.__esModule = true;
+	exports.default = isValid;
+	function isValid(error) {
+	  if (Array.isArray(error)) {
+	    return error.reduce(function (valid, errorValue) {
+	      return valid && isValid(errorValue);
+	    }, true);
+	  }
+	  if (error && typeof error === 'object') {
+	    return Object.keys(error).reduce(function (valid, key) {
+	      return valid && isValid(error[key]);
+	    }, true);
+	  }
+	  return !error;
+	}
+
+/***/ },
+/* 367 */
+/*!****************************************!*\
+  !*** ./~/redux-form/lib/readFields.js ***!
+  \****************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	exports.__esModule = true;
+	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
+	var _readField = __webpack_require__(/*! ./readField */ 368);
+	
+	var _readField2 = _interopRequireDefault(_readField);
+	
+	var _write = __webpack_require__(/*! ./write */ 347);
+	
+	var _write2 = _interopRequireDefault(_write);
+	
+	var _getValues = __webpack_require__(/*! ./getValues */ 365);
+	
+	var _getValues2 = _interopRequireDefault(_getValues);
+	
+	var _removeField = __webpack_require__(/*! ./removeField */ 380);
+	
+	var _removeField2 = _interopRequireDefault(_removeField);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	/**
+	 * Reads props and generates (or updates) field structure
+	 */
+	var readFields = function readFields(props, previousProps, myFields, asyncValidate, isReactNative) {
+	  var fields = props.fields;
+	  var form = props.form;
+	  var validate = props.validate;
+	
+	  var previousFields = previousProps.fields;
+	  var values = (0, _getValues2.default)(fields, form);
+	  var syncErrors = validate(values, props) || {};
+	  var errors = {};
+	  var formError = syncErrors._error || form._error;
+	  var allValid = !formError;
+	  var allPristine = true;
+	  var tally = function tally(field) {
+	    if (field.error) {
+	      errors = (0, _write2.default)(field.name, field.error, errors);
+	      allValid = false;
+	    }
+	    if (field.dirty) {
+	      allPristine = false;
+	    }
+	  };
+	  var fieldObjects = previousFields ? previousFields.reduce(function (accumulator, previousField) {
+	    return ~fields.indexOf(previousField) ? accumulator : (0, _removeField2.default)(accumulator, previousField);
+	  }, _extends({}, myFields)) : _extends({}, myFields);
+	  fields.forEach(function (name) {
+	    (0, _readField2.default)(form, name, undefined, fieldObjects, syncErrors, asyncValidate, isReactNative, props, tally);
+	  });
+	  Object.defineProperty(fieldObjects, '_meta', {
+	    value: {
+	      allPristine: allPristine,
+	      allValid: allValid,
+	      values: values,
+	      errors: errors,
+	      formError: formError
+	    }
+	  });
+	  return fieldObjects;
+	};
+	exports.default = readFields;
+
+/***/ },
+/* 368 */
+/*!***************************************!*\
+  !*** ./~/redux-form/lib/readField.js ***!
+  \***************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	exports.__esModule = true;
+	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
+	var _createOnBlur = __webpack_require__(/*! ./events/createOnBlur */ 369);
+	
+	var _createOnBlur2 = _interopRequireDefault(_createOnBlur);
+	
+	var _createOnChange = __webpack_require__(/*! ./events/createOnChange */ 372);
+	
+	var _createOnChange2 = _interopRequireDefault(_createOnChange);
+	
+	var _createOnDragStart = __webpack_require__(/*! ./events/createOnDragStart */ 373);
+	
+	var _createOnDragStart2 = _interopRequireDefault(_createOnDragStart);
+	
+	var _createOnDrop = __webpack_require__(/*! ./events/createOnDrop */ 374);
+	
+	var _createOnDrop2 = _interopRequireDefault(_createOnDrop);
+	
+	var _createOnFocus = __webpack_require__(/*! ./events/createOnFocus */ 375);
+	
+	var _createOnFocus2 = _interopRequireDefault(_createOnFocus);
+	
+	var _silencePromise = __webpack_require__(/*! ./silencePromise */ 376);
+	
+	var _silencePromise2 = _interopRequireDefault(_silencePromise);
+	
+	var _read = __webpack_require__(/*! ./read */ 346);
+	
+	var _read2 = _interopRequireDefault(_read);
+	
+	var _updateField = __webpack_require__(/*! ./updateField */ 378);
+	
+	var _updateField2 = _interopRequireDefault(_updateField);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function getSuffix(input, closeIndex) {
+	  var suffix = input.substring(closeIndex + 1);
+	  if (suffix[0] === '.') {
+	    suffix = suffix.substring(1);
+	  }
+	  return suffix;
+	}
+	
+	var getNextKey = function getNextKey(path) {
+	  var dotIndex = path.indexOf('.');
+	  var openIndex = path.indexOf('[');
+	  if (openIndex > 0 && (dotIndex < 0 || openIndex < dotIndex)) {
+	    return path.substring(0, openIndex);
+	  }
+	  return dotIndex > 0 ? path.substring(0, dotIndex) : path;
+	};
+	
+	var shouldAsyncValidate = function shouldAsyncValidate(name, asyncBlurFields) {
+	  return(
+	    // remove array indices
+	    ~asyncBlurFields.indexOf(name.replace(/\[[0-9]+\]/g, '[]'))
+	  );
+	};
+	
+	var readField = function readField(state, fieldName) {
+	  var pathToHere = arguments.length <= 2 || arguments[2] === undefined ? '' : arguments[2];
+	  var fields = arguments[3];
+	  var syncErrors = arguments[4];
+	  var asyncValidate = arguments[5];
+	  var isReactNative = arguments[6];
+	  var props = arguments[7];
+	  var callback = arguments.length <= 8 || arguments[8] === undefined ? function () {
+	    return null;
+	  } : arguments[8];
+	  var prefix = arguments.length <= 9 || arguments[9] === undefined ? '' : arguments[9];
+	  var asyncBlurFields = props.asyncBlurFields;
+	  var autofill = props.autofill;
+	  var blur = props.blur;
+	  var change = props.change;
+	  var focus = props.focus;
+	  var form = props.form;
+	  var initialValues = props.initialValues;
+	  var readonly = props.readonly;
+	  var addArrayValue = props.addArrayValue;
+	  var removeArrayValue = props.removeArrayValue;
+	  var swapArrayValues = props.swapArrayValues;
+	
+	  var dotIndex = fieldName.indexOf('.');
+	  var openIndex = fieldName.indexOf('[');
+	  var closeIndex = fieldName.indexOf(']');
+	  if (openIndex > 0 && closeIndex !== openIndex + 1) {
+	    throw new Error('found [ not followed by ]');
+	  }
+	
+	  if (openIndex > 0 && (dotIndex < 0 || openIndex < dotIndex)) {
+	    var _ret = function () {
+	      // array field
+	      var key = fieldName.substring(0, openIndex);
+	      var rest = getSuffix(fieldName, closeIndex);
+	      var stateArray = state && state[key] || [];
+	      var fullPrefix = prefix + fieldName.substring(0, closeIndex + 1);
+	      var subfields = props.fields.reduce(function (accumulator, field) {
+	        if (field.indexOf(fullPrefix) === 0) {
+	          accumulator.push(field);
+	        }
+	        return accumulator;
+	      }, []).map(function (field) {
+	        return getSuffix(field, prefix.length + closeIndex);
+	      });
+	      var addMethods = function addMethods(dest) {
+	        Object.defineProperty(dest, 'addField', {
+	          value: function value(_value, index) {
+	            return addArrayValue(pathToHere + key, _value, index, subfields);
+	          }
+	        });
+	        Object.defineProperty(dest, 'removeField', {
+	          value: function value(index) {
+	            return removeArrayValue(pathToHere + key, index);
+	          }
+	        });
+	        Object.defineProperty(dest, 'swapFields', {
+	          value: function value(indexA, indexB) {
+	            return swapArrayValues(pathToHere + key, indexA, indexB);
+	          }
+	        });
+	        return dest;
+	      };
+	      if (!fields[key] || fields[key].length !== stateArray.length) {
+	        fields[key] = fields[key] ? [].concat(fields[key]) : [];
+	        addMethods(fields[key]);
+	      }
+	      var fieldArray = fields[key];
+	      var changed = false;
+	      stateArray.forEach(function (fieldState, index) {
+	        if (rest && !fieldArray[index]) {
+	          fieldArray[index] = {};
+	          changed = true;
+	        }
+	        var dest = rest ? fieldArray[index] : {};
+	        var nextPath = '' + pathToHere + key + '[' + index + ']' + (rest ? '.' : '');
+	        var nextPrefix = '' + prefix + key + '[]' + (rest ? '.' : '');
+	
+	        var result = readField(fieldState, rest, nextPath, dest, syncErrors, asyncValidate, isReactNative, props, callback, nextPrefix);
+	        if (!rest && fieldArray[index] !== result) {
+	          // if nothing after [] in field name, assign directly to array
+	          fieldArray[index] = result;
+	          changed = true;
+	        }
+	      });
+	      if (fieldArray.length > stateArray.length) {
+	        // remove extra items that aren't in state array
+	        fieldArray.splice(stateArray.length, fieldArray.length - stateArray.length);
+	      }
+	      return {
+	        v: changed ? addMethods([].concat(fieldArray)) : fieldArray
+	      };
+	    }();
+	
+	    if (typeof _ret === "object") return _ret.v;
+	  }
+	  if (dotIndex > 0) {
+	    // subobject field
+	    var _key = fieldName.substring(0, dotIndex);
+	    var _rest = fieldName.substring(dotIndex + 1);
+	    var subobject = fields[_key] || {};
+	    var nextPath = pathToHere + _key + '.';
+	    var nextKey = getNextKey(_rest);
+	    var previous = subobject[nextKey];
+	    var result = readField(state[_key] || {}, _rest, nextPath, subobject, syncErrors, asyncValidate, isReactNative, props, callback, nextPath);
+	    if (result !== previous) {
+	      var _extends2;
+	
+	      subobject = _extends({}, subobject, (_extends2 = {}, _extends2[nextKey] = result, _extends2));
+	    }
+	    fields[_key] = subobject;
+	    return subobject;
+	  }
+	  var name = pathToHere + fieldName;
+	  var field = fields[fieldName] || {};
+	  if (field.name !== name) {
+	    var onChange = (0, _createOnChange2.default)(name, change, isReactNative);
+	    var initialFormValue = (0, _read2.default)(name + '.initial', form);
+	    var initialValue = initialFormValue || (0, _read2.default)(name, initialValues);
+	    field.name = name;
+	    field.checked = initialValue === true || undefined;
+	    field.value = initialValue;
+	    field.initialValue = initialValue;
+	    if (!readonly) {
+	      field.autofill = function (value) {
+	        return autofill(name, value);
+	      };
+	      field.onBlur = (0, _createOnBlur2.default)(name, blur, isReactNative, shouldAsyncValidate(name, asyncBlurFields) && function (blurName, blurValue) {
+	        return (0, _silencePromise2.default)(asyncValidate(blurName, blurValue));
+	      });
+	      field.onChange = onChange;
+	      field.onDragStart = (0, _createOnDragStart2.default)(name, function () {
+	        return field.value;
+	      });
+	      field.onDrop = (0, _createOnDrop2.default)(name, change);
+	      field.onFocus = (0, _createOnFocus2.default)(name, focus);
+	      field.onUpdate = onChange; // alias to support belle. https://github.com/nikgraf/belle/issues/58
+	    }
+	    field.valid = true;
+	    field.invalid = false;
+	    Object.defineProperty(field, '_isField', { value: true });
+	  }
+	
+	  var fieldState = (fieldName ? state[fieldName] : state) || {};
+	  var syncError = (0, _read2.default)(name, syncErrors);
+	  var updated = (0, _updateField2.default)(field, fieldState, name === form._active, syncError);
+	  if (fieldName || fields[fieldName] !== updated) {
+	    fields[fieldName] = updated;
+	  }
+	  callback(updated);
+	  return updated;
+	};
+	
+	exports.default = readField;
+
+/***/ },
+/* 369 */
+/*!*************************************************!*\
+  !*** ./~/redux-form/lib/events/createOnBlur.js ***!
+  \*************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	exports.__esModule = true;
+	
+	var _getValue = __webpack_require__(/*! ./getValue */ 370);
+	
+	var _getValue2 = _interopRequireDefault(_getValue);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var createOnBlur = function createOnBlur(name, blur, isReactNative, afterBlur) {
+	  return function (event) {
+	    var value = (0, _getValue2.default)(event, isReactNative);
+	    blur(name, value);
+	    if (afterBlur) {
+	      afterBlur(name, value);
+	    }
+	  };
+	};
+	exports.default = createOnBlur;
+
+/***/ },
+/* 370 */
+/*!*********************************************!*\
+  !*** ./~/redux-form/lib/events/getValue.js ***!
+  \*********************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	exports.__esModule = true;
+	
+	var _isEvent = __webpack_require__(/*! ./isEvent */ 371);
+	
+	var _isEvent2 = _interopRequireDefault(_isEvent);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var getSelectedValues = function getSelectedValues(options) {
+	  var result = [];
+	  if (options) {
+	    for (var index = 0; index < options.length; index++) {
+	      var option = options[index];
+	      if (option.selected) {
+	        result.push(option.value);
+	      }
+	    }
+	  }
+	  return result;
+	};
+	
+	var getValue = function getValue(event, isReactNative) {
+	  if ((0, _isEvent2.default)(event)) {
+	    if (!isReactNative && event.nativeEvent && event.nativeEvent.text !== undefined) {
+	      return event.nativeEvent.text;
+	    }
+	    if (isReactNative && event.nativeEvent !== undefined) {
+	      return event.nativeEvent.text;
+	    }
+	    var _event$target = event.target;
+	    var type = _event$target.type;
+	    var value = _event$target.value;
+	    var checked = _event$target.checked;
+	    var files = _event$target.files;
+	    var dataTransfer = event.dataTransfer;
+	
+	    if (type === 'checkbox') {
+	      return checked;
+	    }
+	    if (type === 'file') {
+	      return files || dataTransfer && dataTransfer.files;
+	    }
+	    if (type === 'select-multiple') {
+	      return getSelectedValues(event.target.options);
+	    }
+	    return value;
+	  }
+	  // not an event, so must be either our value or an object containing our value in the 'value' key
+	  return event && typeof event === 'object' && event.value !== undefined ? event.value : // extract value from { value: value } structure. https://github.com/nikgraf/belle/issues/58
+	  event;
+	};
+	
+	exports.default = getValue;
+
+/***/ },
+/* 371 */
+/*!********************************************!*\
+  !*** ./~/redux-form/lib/events/isEvent.js ***!
+  \********************************************/
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	exports.__esModule = true;
+	var isEvent = function isEvent(candidate) {
+	  return !!(candidate && candidate.stopPropagation && candidate.preventDefault);
+	};
+	
+	exports.default = isEvent;
+
+/***/ },
+/* 372 */
+/*!***************************************************!*\
+  !*** ./~/redux-form/lib/events/createOnChange.js ***!
+  \***************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	exports.__esModule = true;
+	
+	var _getValue = __webpack_require__(/*! ./getValue */ 370);
+	
+	var _getValue2 = _interopRequireDefault(_getValue);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var createOnChange = function createOnChange(name, change, isReactNative) {
+	  return function (event) {
+	    return change(name, (0, _getValue2.default)(event, isReactNative));
+	  };
+	};
+	exports.default = createOnChange;
+
+/***/ },
+/* 373 */
+/*!******************************************************!*\
+  !*** ./~/redux-form/lib/events/createOnDragStart.js ***!
+  \******************************************************/
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	exports.__esModule = true;
+	var dataKey = exports.dataKey = 'value';
+	var createOnDragStart = function createOnDragStart(name, getValue) {
+	  return function (event) {
+	    event.dataTransfer.setData(dataKey, getValue());
+	  };
+	};
+	
+	exports.default = createOnDragStart;
+
+/***/ },
+/* 374 */
+/*!*************************************************!*\
+  !*** ./~/redux-form/lib/events/createOnDrop.js ***!
+  \*************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	exports.__esModule = true;
+	
+	var _createOnDragStart = __webpack_require__(/*! ./createOnDragStart */ 373);
+	
+	var createOnDrop = function createOnDrop(name, change) {
+	  return function (event) {
+	    change(name, event.dataTransfer.getData(_createOnDragStart.dataKey));
+	  };
+	};
+	exports.default = createOnDrop;
+
+/***/ },
+/* 375 */
+/*!**************************************************!*\
+  !*** ./~/redux-form/lib/events/createOnFocus.js ***!
+  \**************************************************/
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	exports.__esModule = true;
+	var createOnFocus = function createOnFocus(name, focus) {
+	  return function () {
+	    return focus(name);
+	  };
+	};
+	exports.default = createOnFocus;
+
+/***/ },
+/* 376 */
+/*!********************************************!*\
+  !*** ./~/redux-form/lib/silencePromise.js ***!
+  \********************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	exports.__esModule = true;
+	
+	var _isPromise = __webpack_require__(/*! is-promise */ 377);
+	
+	var _isPromise2 = _interopRequireDefault(_isPromise);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var noop = function noop() {
+	  return undefined;
+	};
+	
+	var silencePromise = function silencePromise(promise) {
+	  return (0, _isPromise2.default)(promise) ? promise.then(noop, noop) : promise;
+	};
+	
+	exports.default = silencePromise;
+
+/***/ },
+/* 377 */
+/*!********************************************!*\
+  !*** ./~/redux-form/~/is-promise/index.js ***!
+  \********************************************/
+/***/ function(module, exports) {
+
+	module.exports = isPromise;
+	
+	function isPromise(obj) {
+	  return !!obj && (typeof obj === 'object' || typeof obj === 'function') && typeof obj.then === 'function';
+	}
+
+
+/***/ },
+/* 378 */
+/*!*****************************************!*\
+  !*** ./~/redux-form/lib/updateField.js ***!
+  \*****************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	exports.__esModule = true;
+	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
+	var _isPristine = __webpack_require__(/*! ./isPristine */ 379);
+	
+	var _isPristine2 = _interopRequireDefault(_isPristine);
+	
+	var _isValid = __webpack_require__(/*! ./isValid */ 366);
+	
+	var _isValid2 = _interopRequireDefault(_isValid);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	/**
+	 * Updates a field object from the store values
+	 */
+	var updateField = function updateField(field, formField, active, syncError) {
+	  var diff = {};
+	  var formFieldValue = formField.value === undefined ? '' : formField.value;
+	
+	  // update field value
+	  if (field.value !== formFieldValue) {
+	    diff.value = formFieldValue;
+	    diff.checked = typeof formFieldValue === 'boolean' ? formFieldValue : undefined;
+	  }
+	
+	  // update dirty/pristine
+	  var pristine = (0, _isPristine2.default)(formFieldValue, formField.initial);
+	  if (field.pristine !== pristine) {
+	    diff.dirty = !pristine;
+	    diff.pristine = pristine;
+	  }
+	
+	  // update field error
+	  var error = syncError || formField.submitError || formField.asyncError;
+	  if (error !== field.error) {
+	    diff.error = error;
+	  }
+	  var valid = (0, _isValid2.default)(error);
+	  if (field.valid !== valid) {
+	    diff.invalid = !valid;
+	    diff.valid = valid;
+	  }
+	
+	  if (active !== field.active) {
+	    diff.active = active;
+	  }
+	  var touched = !!formField.touched;
+	  if (touched !== field.touched) {
+	    diff.touched = touched;
+	  }
+	  var visited = !!formField.visited;
+	  if (visited !== field.visited) {
+	    diff.visited = visited;
+	  }
+	  var autofilled = !!formField.autofilled;
+	  if (autofilled !== field.autofilled) {
+	    diff.autofilled = autofilled;
+	  }
+	
+	  if ('initial' in formField && formField.initial !== field.initialValue) {
+	    field.initialValue = formField.initial;
+	  }
+	
+	  return Object.keys(diff).length ? _extends({}, field, diff) : field;
+	};
+	exports.default = updateField;
+
+/***/ },
+/* 379 */
+/*!****************************************!*\
+  !*** ./~/redux-form/lib/isPristine.js ***!
+  \****************************************/
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	exports.__esModule = true;
+	exports.default = isPristine;
+	function isPristine(initial, data) {
+	  if (initial === data) {
+	    return true;
+	  }
+	  if (typeof initial === 'boolean' || typeof data === 'boolean') {
+	    return initial === data;
+	  } else if (initial instanceof Date && data instanceof Date) {
+	    return initial.getTime() === data.getTime();
+	  } else if (initial && typeof initial === 'object') {
+	    if (!data || typeof data !== 'object') {
+	      return false;
+	    }
+	    var initialKeys = Object.keys(initial);
+	    var dataKeys = Object.keys(data);
+	    if (initialKeys.length !== dataKeys.length) {
+	      return false;
+	    }
+	    for (var index = 0; index < dataKeys.length; index++) {
+	      var key = dataKeys[index];
+	      if (!isPristine(initial[key], data[key])) {
+	        return false;
+	      }
+	    }
+	  } else if (initial || data) {
+	    // allow '' to equate to undefined or null
+	    return initial === data;
+	  }
+	  return true;
+	}
+
+/***/ },
+/* 380 */
+/*!*****************************************!*\
+  !*** ./~/redux-form/lib/removeField.js ***!
+  \*****************************************/
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	exports.__esModule = true;
+	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
+	var without = function without(object, key) {
+	  var copy = _extends({}, object);
+	  delete copy[key];
+	  return copy;
+	};
+	
+	var removeField = function removeField(fields, path) {
+	  var dotIndex = path.indexOf('.');
+	  var openIndex = path.indexOf('[');
+	  var closeIndex = path.indexOf(']');
+	  if (openIndex > 0 && closeIndex !== openIndex + 1) {
+	    throw new Error('found [ not followed by ]');
+	  }
+	  if (openIndex > 0 && (dotIndex < 0 || openIndex < dotIndex)) {
+	    var _ret = function () {
+	      // array field
+	      var key = path.substring(0, openIndex);
+	      if (!Array.isArray(fields[key])) {
+	        return {
+	          v: without(fields, key)
+	        };
+	      }
+	      var rest = path.substring(closeIndex + 1);
+	      if (rest[0] === '.') {
+	        rest = rest.substring(1);
+	      }
+	      if (rest) {
+	        var _ret2 = function () {
+	          var _extends2;
+	
+	          var copy = [];
+	          fields[key].forEach(function (item, index) {
+	            var result = removeField(item, rest);
+	            if (Object.keys(result).length) {
+	              copy[index] = result;
+	            }
+	          });
+	          return {
+	            v: {
+	              v: copy.length ? _extends({}, fields, (_extends2 = {}, _extends2[key] = copy, _extends2)) : without(fields, key)
+	            }
+	          };
+	        }();
+	
+	        if (typeof _ret2 === "object") return _ret2.v;
+	      }
+	      return {
+	        v: without(fields, key)
+	      };
+	    }();
+	
+	    if (typeof _ret === "object") return _ret.v;
+	  }
+	  if (dotIndex > 0) {
+	    var _extends3;
+	
+	    // subobject field
+	    var _key = path.substring(0, dotIndex);
+	    var _rest = path.substring(dotIndex + 1);
+	    if (!fields[_key]) {
+	      return fields;
+	    }
+	    var result = removeField(fields[_key], _rest);
+	    return Object.keys(result).length ? _extends({}, fields, (_extends3 = {}, _extends3[_key] = removeField(fields[_key], _rest), _extends3)) : without(fields, _key);
+	  }
+	  return without(fields, path);
+	};
+	
+	exports.default = removeField;
+
+/***/ },
+/* 381 */
+/*!******************************************!*\
+  !*** ./~/redux-form/lib/handleSubmit.js ***!
+  \******************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	exports.__esModule = true;
+	
+	var _isPromise = __webpack_require__(/*! is-promise */ 377);
+	
+	var _isPromise2 = _interopRequireDefault(_isPromise);
+	
+	var _isValid = __webpack_require__(/*! ./isValid */ 366);
+	
+	var _isValid2 = _interopRequireDefault(_isValid);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var handleSubmit = function handleSubmit(submit, values, props, asyncValidate) {
+	  var dispatch = props.dispatch;
+	  var fields = props.fields;
+	  var onSubmitSuccess = props.onSubmitSuccess;
+	  var onSubmitFail = props.onSubmitFail;
+	  var startSubmit = props.startSubmit;
+	  var stopSubmit = props.stopSubmit;
+	  var submitFailed = props.submitFailed;
+	  var returnRejectedSubmitPromise = props.returnRejectedSubmitPromise;
+	  var touch = props.touch;
+	  var validate = props.validate;
+	
+	  var syncErrors = validate(values, props);
+	  touch.apply(undefined, fields); // touch all fields
+	  if ((0, _isValid2.default)(syncErrors)) {
+	    var doSubmit = function doSubmit() {
+	      var result = submit(values, dispatch);
+	      if ((0, _isPromise2.default)(result)) {
+	        startSubmit();
+	        return result.then(function (submitResult) {
+	          stopSubmit();
+	          if (onSubmitSuccess) {
+	            onSubmitSuccess(submitResult);
+	          }
+	          return submitResult;
+	        }, function (submitError) {
+	          stopSubmit(submitError);
+	          if (onSubmitFail) {
+	            onSubmitFail(submitError);
+	          }
+	          if (returnRejectedSubmitPromise) {
+	            return Promise.reject(submitError);
+	          }
+	        });
+	      }
+	      if (onSubmitSuccess) {
+	        onSubmitSuccess(result);
+	      }
+	      return result;
+	    };
+	    var asyncValidateResult = asyncValidate();
+	    return (0, _isPromise2.default)(asyncValidateResult) ?
+	    // asyncValidateResult will be rejected if async validation failed
+	    asyncValidateResult.then(doSubmit, function () {
+	      submitFailed();
+	      if (onSubmitFail) {
+	        onSubmitFail();
+	      }
+	      return returnRejectedSubmitPromise ? Promise.reject() : Promise.resolve();
+	    }) : doSubmit(); // no async validation, so submit
+	  }
+	  submitFailed();
+	
+	  if (onSubmitFail) {
+	    onSubmitFail(syncErrors);
+	  }
+	
+	  if (returnRejectedSubmitPromise) {
+	    return Promise.reject(syncErrors);
+	  }
+	};
+	
+	exports.default = handleSubmit;
+
+/***/ },
+/* 382 */
+/*!*********************************************!*\
+  !*** ./~/redux-form/lib/asyncValidation.js ***!
+  \*********************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	exports.__esModule = true;
+	
+	var _isPromise = __webpack_require__(/*! is-promise */ 377);
+	
+	var _isPromise2 = _interopRequireDefault(_isPromise);
+	
+	var _isValid = __webpack_require__(/*! ./isValid */ 366);
+	
+	var _isValid2 = _interopRequireDefault(_isValid);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var asyncValidation = function asyncValidation(fn, start, stop, field) {
+	  start(field);
+	  var promise = fn();
+	  if (!(0, _isPromise2.default)(promise)) {
+	    throw new Error('asyncValidate function passed to reduxForm must return a promise');
+	  }
+	  var handleErrors = function handleErrors(rejected) {
+	    return function (errors) {
+	      if (!(0, _isValid2.default)(errors)) {
+	        stop(errors);
+	        return Promise.reject();
+	      } else if (rejected) {
+	        stop();
+	        throw new Error('Asynchronous validation promise was rejected without errors.');
+	      }
+	      stop();
+	      return Promise.resolve();
+	    };
+	  };
+	  return promise.then(handleErrors(false), handleErrors(true));
+	};
+	
+	exports.default = asyncValidation;
+
+/***/ },
+/* 383 */
+/*!**************************************************!*\
+  !*** ./~/redux-form/lib/events/silenceEvents.js ***!
+  \**************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	exports.__esModule = true;
+	
+	var _silenceEvent = __webpack_require__(/*! ./silenceEvent */ 384);
+	
+	var _silenceEvent2 = _interopRequireDefault(_silenceEvent);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var silenceEvents = function silenceEvents(fn) {
+	  return function (event) {
+	    for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+	      args[_key - 1] = arguments[_key];
+	    }
+	
+	    return (0, _silenceEvent2.default)(event) ? fn.apply(undefined, args) : fn.apply(undefined, [event].concat(args));
+	  };
+	};
+	
+	exports.default = silenceEvents;
+
+/***/ },
+/* 384 */
+/*!*************************************************!*\
+  !*** ./~/redux-form/lib/events/silenceEvent.js ***!
+  \*************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	exports.__esModule = true;
+	
+	var _isEvent = __webpack_require__(/*! ./isEvent */ 371);
+	
+	var _isEvent2 = _interopRequireDefault(_isEvent);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var silenceEvent = function silenceEvent(event) {
+	  var is = (0, _isEvent2.default)(event);
+	  if (is) {
+	    event.preventDefault();
+	  }
+	  return is;
+	};
+	
+	exports.default = silenceEvent;
+
+/***/ },
+/* 385 */
+/*!****************************************************!*\
+  !*** ./~/redux-form/lib/wrapMapDispatchToProps.js ***!
+  \****************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	exports.__esModule = true;
+	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
+	var _redux = __webpack_require__(/*! redux */ 173);
+	
+	var wrapMapDispatchToProps = function wrapMapDispatchToProps(mapDispatchToProps, actionCreators) {
+	  if (mapDispatchToProps) {
+	    if (typeof mapDispatchToProps === 'function') {
+	      if (mapDispatchToProps.length > 1) {
+	        return function (dispatch, ownProps) {
+	          return _extends({
+	            dispatch: dispatch
+	          }, mapDispatchToProps(dispatch, ownProps), (0, _redux.bindActionCreators)(actionCreators, dispatch));
+	        };
+	      }
+	      return function (dispatch) {
+	        return _extends({
+	          dispatch: dispatch
+	        }, mapDispatchToProps(dispatch), (0, _redux.bindActionCreators)(actionCreators, dispatch));
+	      };
+	    }
+	    return function (dispatch) {
+	      return _extends({
+	        dispatch: dispatch
+	      }, (0, _redux.bindActionCreators)(mapDispatchToProps, dispatch), (0, _redux.bindActionCreators)(actionCreators, dispatch));
+	    };
+	  }
+	  return function (dispatch) {
+	    return _extends({
+	      dispatch: dispatch
+	    }, (0, _redux.bindActionCreators)(actionCreators, dispatch));
+	  };
+	};
+	
+	exports.default = wrapMapDispatchToProps;
+
+/***/ },
+/* 386 */
+/*!*************************************************!*\
+  !*** ./~/redux-form/lib/wrapMapStateToProps.js ***!
+  \*************************************************/
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	exports.__esModule = true;
+	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
+	var wrapMapStateToProps = function wrapMapStateToProps(mapStateToProps, getForm) {
+	  if (mapStateToProps) {
+	    if (typeof mapStateToProps !== 'function') {
+	      throw new Error('mapStateToProps must be a function');
+	    }
+	    if (mapStateToProps.length > 1) {
+	      return function (state, ownProps) {
+	        return _extends({}, mapStateToProps(state, ownProps), {
+	          form: getForm(state)
+	        });
+	      };
+	    }
+	    return function (state) {
+	      return _extends({}, mapStateToProps(state), {
+	        form: getForm(state)
+	      });
+	    };
+	  }
+	  return function (state) {
+	    return {
+	      form: getForm(state)
+	    };
+	  };
+	};
+	
+	exports.default = wrapMapStateToProps;
+
+/***/ },
+/* 387 */
+/*!*********************************************************!*\
+  !*** ./~/redux-form/~/hoist-non-react-statics/index.js ***!
+  \*********************************************************/
+/***/ function(module, exports) {
+
+	/**
+	 * Copyright 2015, Yahoo! Inc.
+	 * Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
+	 */
+	'use strict';
+	
+	var REACT_STATICS = {
+	    childContextTypes: true,
+	    contextTypes: true,
+	    defaultProps: true,
+	    displayName: true,
+	    getDefaultProps: true,
+	    mixins: true,
+	    propTypes: true,
+	    type: true
+	};
+	
+	var KNOWN_STATICS = {
+	    name: true,
+	    length: true,
+	    prototype: true,
+	    caller: true,
+	    arguments: true,
+	    arity: true
+	};
+	
+	module.exports = function hoistNonReactStatics(targetComponent, sourceComponent) {
+	    if (typeof sourceComponent !== 'string') { // don't hoist over string (html) components
+	        var keys = Object.getOwnPropertyNames(sourceComponent);
+	        for (var i=0; i<keys.length; ++i) {
+	            if (!REACT_STATICS[keys[i]] && !KNOWN_STATICS[keys[i]]) {
+	                try {
+	                    targetComponent[keys[i]] = sourceComponent[keys[i]];
+	                } catch (error) {
+	
+	                }
+	            }
+	        }
+	    }
+	
+	    return targetComponent;
+	};
+
+
+/***/ },
+/* 388 */
+/*!*********************************************!*\
+  !*** ./~/redux-form/lib/createPropTypes.js ***!
+  \*********************************************/
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	exports.__esModule = true;
+	var createPropTypes = function createPropTypes(_ref) {
+	  var _ref$PropTypes = _ref.PropTypes;
+	  var any = _ref$PropTypes.any;
+	  var bool = _ref$PropTypes.bool;
+	  var string = _ref$PropTypes.string;
+	  var func = _ref$PropTypes.func;
+	  var object = _ref$PropTypes.object;
+	  return {
+	    // State:
+	    active: string, // currently active field
+	    asyncValidating: bool.isRequired, // true if async validation is running
+	    autofilled: bool, // true if set programmatically by autofill
+	    dirty: bool.isRequired, // true if any values are different from initialValues
+	    error: any, // form-wide error from '_error' key in validation result
+	    errors: object, // a map of errors corresponding to structure of form data (result of validation)
+	    fields: object.isRequired, // the map of fields
+	    formKey: any, // the form key if one was provided (used when doing multirecord forms)
+	    invalid: bool.isRequired, // true if there are any validation errors
+	    pristine: bool.isRequired, // true if the values are the same as initialValues
+	    submitting: bool.isRequired, // true if the form is in the process of being submitted
+	    submitFailed: bool.isRequired, // true if the form was submitted and failed for any reason
+	    valid: bool.isRequired, // true if there are no validation errors
+	    values: object.isRequired, // the values of the form as they will be submitted
+	
+	    // Actions:
+	    asyncValidate: func.isRequired, // function to trigger async validation
+	    destroyForm: func.isRequired, // action to destroy the form's data in Redux
+	    handleSubmit: func.isRequired, // function to submit the form
+	    initializeForm: func.isRequired, // action to initialize form data
+	    resetForm: func.isRequired, // action to reset the form data to previously initialized values
+	    touch: func.isRequired, // action to mark fields as touched
+	    touchAll: func.isRequired, // action to mark ALL fields as touched
+	    untouch: func.isRequired, // action to mark fields as untouched
+	    untouchAll: func.isRequired // action to mark ALL fields as untouched
+	  };
+	};
+	
+	exports.default = createPropTypes;
+
+/***/ },
+/* 389 */
+/*!***************************************!*\
+  !*** ./src/components/auth/Signin.js ***!
+  \***************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var React = __webpack_require__(/*! react */ 1);
+	var Sigin = (function (_super) {
+	    __extends(Sigin, _super);
+	    function Sigin() {
+	        var _this = this;
+	        _super.apply(this, arguments);
+	        this.handleSiginFormSubmit = function (_a) {
+	            var email = _a.email, password = _a.password;
+	            _this.props.signinUser(email, password);
+	        };
+	    }
+	    Sigin.prototype.render = function () {
+	        var _a = this.props, handleSubmit = _a.handleSubmit, _b = _a.fields, email = _b.email, password = _b.password;
+	        return (React.createElement("div", {style: {
+	            position: 'relative',
+	            top: 200 + 'px',
+	            margin: 0 + ' auto',
+	            width: 400 + 'px',
+	            zIndex: 1050
+	        }}, React.createElement("form", {onSubmit: handleSubmit(this.handleSiginFormSubmit)}, React.createElement("fieldset", {className: "form-group"}, React.createElement("label", null, "Email: "), React.createElement("input", React.__spread({className: "form-control"}, email))), React.createElement("fieldset", {className: "form-group"}, React.createElement("label", null, "Password: "), React.createElement("input", React.__spread({className: "form-control", type: "password"}, password))), React.createElement("button", {action: "submit", className: "btn btn-primary"}, "Sign in"))));
+	    };
+	    return Sigin;
+	}(React.Component));
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = Sigin;
+	//# sourceMappingURL=Signin.js.map
+
+/***/ },
+/* 390 */
+/*!******************************************!*\
+  !*** ./src/actions/authActionCreator.js ***!
+  \******************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var AuthActionType = __webpack_require__(/*! ./authActionType */ 391);
+	var axios = __webpack_require__(/*! axios */ 392);
+	var query_string_1 = __webpack_require__(/*! query-string */ 410);
+	var ROOT_URL = 'http://localhost:63808';
+	function signinUser(email, password) {
+	    return function (dispatch) {
+	        axios.post(ROOT_URL + "/connect/token", query_string_1.stringify({
+	            client_id: 'socialnetwork',
+	            client_secret: 'secret',
+	            grant_type: 'password',
+	            scope: 'openid',
+	            username: email,
+	            password: password
+	        }), { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }).then(function (response) {
+	            dispatch({ type: AuthActionType.AUTH_USER });
+	            localStorage.setItem('token', response.data.access_token);
+	        }).catch(function () {
+	            dispatch(authError("Bad login info"));
+	        });
+	    };
+	}
+	exports.signinUser = signinUser;
+	function authError(error) {
+	    return {
+	        type: AuthActionType.AUTH_ERROR,
+	        payload: error
+	    };
+	}
+	exports.authError = authError;
+	//# sourceMappingURL=authActionCreator.js.map
+
+/***/ },
+/* 391 */
+/*!***************************************!*\
+  !*** ./src/actions/authActionType.js ***!
+  \***************************************/
+/***/ function(module, exports) {
+
+	"use strict";
+	exports.AUTH_USER = 'AUTH_USER';
+	exports.UNAUTH_USER = 'UNAUTH_USER';
+	exports.AUTH_ERROR = 'AUTH_ERROR';
+	//# sourceMappingURL=authActionType.js.map
+
+/***/ },
+/* 392 */
+/*!**************************!*\
+  !*** ./~/axios/index.js ***!
+  \**************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__(/*! ./lib/axios */ 393);
+
+/***/ },
+/* 393 */
+/*!******************************!*\
+  !*** ./~/axios/lib/axios.js ***!
+  \******************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var defaults = __webpack_require__(/*! ./defaults */ 394);
+	var utils = __webpack_require__(/*! ./utils */ 395);
+	var dispatchRequest = __webpack_require__(/*! ./core/dispatchRequest */ 396);
+	var InterceptorManager = __webpack_require__(/*! ./core/InterceptorManager */ 405);
+	var isAbsoluteURL = __webpack_require__(/*! ./helpers/isAbsoluteURL */ 406);
+	var combineURLs = __webpack_require__(/*! ./helpers/combineURLs */ 407);
+	var bind = __webpack_require__(/*! ./helpers/bind */ 408);
+	var transformData = __webpack_require__(/*! ./helpers/transformData */ 400);
+	
+	function Axios(defaultConfig) {
+	  this.defaults = utils.merge({}, defaultConfig);
+	  this.interceptors = {
+	    request: new InterceptorManager(),
+	    response: new InterceptorManager()
+	  };
+	}
+	
+	Axios.prototype.request = function request(config) {
+	  /*eslint no-param-reassign:0*/
+	  // Allow for axios('example/url'[, config]) a la fetch API
+	  if (typeof config === 'string') {
+	    config = utils.merge({
+	      url: arguments[0]
+	    }, arguments[1]);
+	  }
+	
+	  config = utils.merge(defaults, this.defaults, { method: 'get' }, config);
+	
+	  // Support baseURL config
+	  if (config.baseURL && !isAbsoluteURL(config.url)) {
+	    config.url = combineURLs(config.baseURL, config.url);
+	  }
+	
+	  // Don't allow overriding defaults.withCredentials
+	  config.withCredentials = config.withCredentials || this.defaults.withCredentials;
+	
+	  // Transform request data
+	  config.data = transformData(
+	    config.data,
+	    config.headers,
+	    config.transformRequest
+	  );
+	
+	  // Flatten headers
+	  config.headers = utils.merge(
+	    config.headers.common || {},
+	    config.headers[config.method] || {},
+	    config.headers || {}
+	  );
+	
+	  utils.forEach(
+	    ['delete', 'get', 'head', 'post', 'put', 'patch', 'common'],
+	    function cleanHeaderConfig(method) {
+	      delete config.headers[method];
+	    }
+	  );
+	
+	  // Hook up interceptors middleware
+	  var chain = [dispatchRequest, undefined];
+	  var promise = Promise.resolve(config);
+	
+	  this.interceptors.request.forEach(function unshiftRequestInterceptors(interceptor) {
+	    chain.unshift(interceptor.fulfilled, interceptor.rejected);
+	  });
+	
+	  this.interceptors.response.forEach(function pushResponseInterceptors(interceptor) {
+	    chain.push(interceptor.fulfilled, interceptor.rejected);
+	  });
+	
+	  while (chain.length) {
+	    promise = promise.then(chain.shift(), chain.shift());
+	  }
+	
+	  return promise;
+	};
+	
+	var defaultInstance = new Axios(defaults);
+	var axios = module.exports = bind(Axios.prototype.request, defaultInstance);
+	
+	// Expose properties from defaultInstance
+	axios.defaults = defaultInstance.defaults;
+	axios.interceptors = defaultInstance.interceptors;
+	
+	// Factory for creating new instances
+	axios.create = function create(defaultConfig) {
+	  return new Axios(defaultConfig);
+	};
+	
+	// Expose all/spread
+	axios.all = function all(promises) {
+	  return Promise.all(promises);
+	};
+	axios.spread = __webpack_require__(/*! ./helpers/spread */ 409);
+	
+	// Provide aliases for supported request methods
+	utils.forEach(['delete', 'get', 'head'], function forEachMethodNoData(method) {
+	  /*eslint func-names:0*/
+	  Axios.prototype[method] = function(url, config) {
+	    return this.request(utils.merge(config || {}, {
+	      method: method,
+	      url: url
+	    }));
+	  };
+	  axios[method] = bind(Axios.prototype[method], defaultInstance);
+	});
+	
+	utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
+	  /*eslint func-names:0*/
+	  Axios.prototype[method] = function(url, data, config) {
+	    return this.request(utils.merge(config || {}, {
+	      method: method,
+	      url: url,
+	      data: data
+	    }));
+	  };
+	  axios[method] = bind(Axios.prototype[method], defaultInstance);
+	});
+
+
+/***/ },
+/* 394 */
+/*!*********************************!*\
+  !*** ./~/axios/lib/defaults.js ***!
+  \*********************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var utils = __webpack_require__(/*! ./utils */ 395);
+	
+	var PROTECTION_PREFIX = /^\)\]\}',?\n/;
+	var DEFAULT_CONTENT_TYPE = {
+	  'Content-Type': 'application/x-www-form-urlencoded'
+	};
+	
+	module.exports = {
+	  transformRequest: [function transformRequest(data, headers) {
+	    if (utils.isFormData(data) || utils.isArrayBuffer(data) || utils.isStream(data)) {
+	      return data;
+	    }
+	    if (utils.isArrayBufferView(data)) {
+	      return data.buffer;
+	    }
+	    if (utils.isObject(data) && !utils.isFile(data) && !utils.isBlob(data)) {
+	      // Set application/json if no Content-Type has been specified
+	      if (!utils.isUndefined(headers)) {
+	        utils.forEach(headers, function processContentTypeHeader(val, key) {
+	          if (key.toLowerCase() === 'content-type') {
+	            headers['Content-Type'] = val;
+	          }
+	        });
+	
+	        if (utils.isUndefined(headers['Content-Type'])) {
+	          headers['Content-Type'] = 'application/json;charset=utf-8';
+	        }
+	      }
+	      return JSON.stringify(data);
+	    }
+	    return data;
+	  }],
+	
+	  transformResponse: [function transformResponse(data) {
+	    /*eslint no-param-reassign:0*/
+	    if (typeof data === 'string') {
+	      data = data.replace(PROTECTION_PREFIX, '');
+	      try {
+	        data = JSON.parse(data);
+	      } catch (e) { /* Ignore */ }
+	    }
+	    return data;
+	  }],
+	
+	  headers: {
+	    common: {
+	      'Accept': 'application/json, text/plain, */*'
+	    },
+	    patch: utils.merge(DEFAULT_CONTENT_TYPE),
+	    post: utils.merge(DEFAULT_CONTENT_TYPE),
+	    put: utils.merge(DEFAULT_CONTENT_TYPE)
+	  },
+	
+	  timeout: 0,
+	
+	  xsrfCookieName: 'XSRF-TOKEN',
+	  xsrfHeaderName: 'X-XSRF-TOKEN',
+	
+	  maxContentLength: -1,
+	
+	  validateStatus: function validateStatus(status) {
+	    return status >= 200 && status < 300;
+	  }
+	};
+
+
+/***/ },
+/* 395 */
+/*!******************************!*\
+  !*** ./~/axios/lib/utils.js ***!
+  \******************************/
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	/*global toString:true*/
+	
+	// utils is a library of generic helper functions non-specific to axios
+	
+	var toString = Object.prototype.toString;
+	
+	/**
+	 * Determine if a value is an Array
+	 *
+	 * @param {Object} val The value to test
+	 * @returns {boolean} True if value is an Array, otherwise false
+	 */
+	function isArray(val) {
+	  return toString.call(val) === '[object Array]';
+	}
+	
+	/**
+	 * Determine if a value is an ArrayBuffer
+	 *
+	 * @param {Object} val The value to test
+	 * @returns {boolean} True if value is an ArrayBuffer, otherwise false
+	 */
+	function isArrayBuffer(val) {
+	  return toString.call(val) === '[object ArrayBuffer]';
+	}
+	
+	/**
+	 * Determine if a value is a FormData
+	 *
+	 * @param {Object} val The value to test
+	 * @returns {boolean} True if value is an FormData, otherwise false
+	 */
+	function isFormData(val) {
+	  return toString.call(val) === '[object FormData]';
+	}
+	
+	/**
+	 * Determine if a value is a view on an ArrayBuffer
+	 *
+	 * @param {Object} val The value to test
+	 * @returns {boolean} True if value is a view on an ArrayBuffer, otherwise false
+	 */
+	function isArrayBufferView(val) {
+	  var result;
+	  if ((typeof ArrayBuffer !== 'undefined') && (ArrayBuffer.isView)) {
+	    result = ArrayBuffer.isView(val);
+	  } else {
+	    result = (val) && (val.buffer) && (val.buffer instanceof ArrayBuffer);
+	  }
+	  return result;
+	}
+	
+	/**
+	 * Determine if a value is a String
+	 *
+	 * @param {Object} val The value to test
+	 * @returns {boolean} True if value is a String, otherwise false
+	 */
+	function isString(val) {
+	  return typeof val === 'string';
+	}
+	
+	/**
+	 * Determine if a value is a Number
+	 *
+	 * @param {Object} val The value to test
+	 * @returns {boolean} True if value is a Number, otherwise false
+	 */
+	function isNumber(val) {
+	  return typeof val === 'number';
+	}
+	
+	/**
+	 * Determine if a value is undefined
+	 *
+	 * @param {Object} val The value to test
+	 * @returns {boolean} True if the value is undefined, otherwise false
+	 */
+	function isUndefined(val) {
+	  return typeof val === 'undefined';
+	}
+	
+	/**
+	 * Determine if a value is an Object
+	 *
+	 * @param {Object} val The value to test
+	 * @returns {boolean} True if value is an Object, otherwise false
+	 */
+	function isObject(val) {
+	  return val !== null && typeof val === 'object';
+	}
+	
+	/**
+	 * Determine if a value is a Date
+	 *
+	 * @param {Object} val The value to test
+	 * @returns {boolean} True if value is a Date, otherwise false
+	 */
+	function isDate(val) {
+	  return toString.call(val) === '[object Date]';
+	}
+	
+	/**
+	 * Determine if a value is a File
+	 *
+	 * @param {Object} val The value to test
+	 * @returns {boolean} True if value is a File, otherwise false
+	 */
+	function isFile(val) {
+	  return toString.call(val) === '[object File]';
+	}
+	
+	/**
+	 * Determine if a value is a Blob
+	 *
+	 * @param {Object} val The value to test
+	 * @returns {boolean} True if value is a Blob, otherwise false
+	 */
+	function isBlob(val) {
+	  return toString.call(val) === '[object Blob]';
+	}
+	
+	/**
+	 * Determine if a value is a Function
+	 *
+	 * @param {Object} val The value to test
+	 * @returns {boolean} True if value is a Function, otherwise false
+	 */
+	function isFunction(val) {
+	  return toString.call(val) === '[object Function]';
+	}
+	
+	/**
+	 * Determine if a value is a Stream
+	 *
+	 * @param {Object} val The value to test
+	 * @returns {boolean} True if value is a Stream, otherwise false
+	 */
+	function isStream(val) {
+	  return isObject(val) && isFunction(val.pipe);
+	}
+	
+	/**
+	 * Trim excess whitespace off the beginning and end of a string
+	 *
+	 * @param {String} str The String to trim
+	 * @returns {String} The String freed of excess whitespace
+	 */
+	function trim(str) {
+	  return str.replace(/^\s*/, '').replace(/\s*$/, '');
+	}
+	
+	/**
+	 * Determine if we're running in a standard browser environment
+	 *
+	 * This allows axios to run in a web worker, and react-native.
+	 * Both environments support XMLHttpRequest, but not fully standard globals.
+	 *
+	 * web workers:
+	 *  typeof window -> undefined
+	 *  typeof document -> undefined
+	 *
+	 * react-native:
+	 *  typeof document.createElement -> undefined
+	 */
+	function isStandardBrowserEnv() {
+	  return (
+	    typeof window !== 'undefined' &&
+	    typeof document !== 'undefined' &&
+	    typeof document.createElement === 'function'
+	  );
+	}
+	
+	/**
+	 * Iterate over an Array or an Object invoking a function for each item.
+	 *
+	 * If `obj` is an Array callback will be called passing
+	 * the value, index, and complete array for each item.
+	 *
+	 * If 'obj' is an Object callback will be called passing
+	 * the value, key, and complete object for each property.
+	 *
+	 * @param {Object|Array} obj The object to iterate
+	 * @param {Function} fn The callback to invoke for each item
+	 */
+	function forEach(obj, fn) {
+	  // Don't bother if no value provided
+	  if (obj === null || typeof obj === 'undefined') {
+	    return;
+	  }
+	
+	  // Force an array if not already something iterable
+	  if (typeof obj !== 'object' && !isArray(obj)) {
+	    /*eslint no-param-reassign:0*/
+	    obj = [obj];
+	  }
+	
+	  if (isArray(obj)) {
+	    // Iterate over array values
+	    for (var i = 0, l = obj.length; i < l; i++) {
+	      fn.call(null, obj[i], i, obj);
+	    }
+	  } else {
+	    // Iterate over object keys
+	    for (var key in obj) {
+	      if (obj.hasOwnProperty(key)) {
+	        fn.call(null, obj[key], key, obj);
+	      }
+	    }
+	  }
+	}
+	
+	/**
+	 * Accepts varargs expecting each argument to be an object, then
+	 * immutably merges the properties of each object and returns result.
+	 *
+	 * When multiple objects contain the same key the later object in
+	 * the arguments list will take precedence.
+	 *
+	 * Example:
+	 *
+	 * ```js
+	 * var result = merge({foo: 123}, {foo: 456});
+	 * console.log(result.foo); // outputs 456
+	 * ```
+	 *
+	 * @param {Object} obj1 Object to merge
+	 * @returns {Object} Result of all merge properties
+	 */
+	function merge(/* obj1, obj2, obj3, ... */) {
+	  var result = {};
+	  function assignValue(val, key) {
+	    if (typeof result[key] === 'object' && typeof val === 'object') {
+	      result[key] = merge(result[key], val);
+	    } else {
+	      result[key] = val;
+	    }
+	  }
+	
+	  for (var i = 0, l = arguments.length; i < l; i++) {
+	    forEach(arguments[i], assignValue);
+	  }
+	  return result;
+	}
+	
+	module.exports = {
+	  isArray: isArray,
+	  isArrayBuffer: isArrayBuffer,
+	  isFormData: isFormData,
+	  isArrayBufferView: isArrayBufferView,
+	  isString: isString,
+	  isNumber: isNumber,
+	  isObject: isObject,
+	  isUndefined: isUndefined,
+	  isDate: isDate,
+	  isFile: isFile,
+	  isBlob: isBlob,
+	  isFunction: isFunction,
+	  isStream: isStream,
+	  isStandardBrowserEnv: isStandardBrowserEnv,
+	  forEach: forEach,
+	  merge: merge,
+	  trim: trim
+	};
+
+
+/***/ },
+/* 396 */
+/*!*********************************************!*\
+  !*** ./~/axios/lib/core/dispatchRequest.js ***!
+  \*********************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
+	
+	/**
+	 * Dispatch a request to the server using whichever adapter
+	 * is supported by the current environment.
+	 *
+	 * @param {object} config The config that is to be used for the request
+	 * @returns {Promise} The Promise to be fulfilled
+	 */
+	module.exports = function dispatchRequest(config) {
+	  return new Promise(function executor(resolve, reject) {
+	    try {
+	      var adapter;
+	
+	      if (typeof config.adapter === 'function') {
+	        // For custom adapter support
+	        adapter = config.adapter;
+	      } else if (typeof XMLHttpRequest !== 'undefined') {
+	        // For browsers use XHR adapter
+	        adapter = __webpack_require__(/*! ../adapters/xhr */ 397);
+	      } else if (typeof process !== 'undefined') {
+	        // For node use HTTP adapter
+	        adapter = __webpack_require__(/*! ../adapters/http */ 397);
+	      }
+	
+	      if (typeof adapter === 'function') {
+	        adapter(resolve, reject, config);
+	      }
+	    } catch (e) {
+	      reject(e);
+	    }
+	  });
+	};
+	
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! (webpack)/~/node-libs-browser/~/process/browser.js */ 3)))
+
+/***/ },
+/* 397 */
+/*!*************************************!*\
+  !*** ./~/axios/lib/adapters/xhr.js ***!
+  \*************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
+	
+	var utils = __webpack_require__(/*! ./../utils */ 395);
+	var buildURL = __webpack_require__(/*! ./../helpers/buildURL */ 398);
+	var parseHeaders = __webpack_require__(/*! ./../helpers/parseHeaders */ 399);
+	var transformData = __webpack_require__(/*! ./../helpers/transformData */ 400);
+	var isURLSameOrigin = __webpack_require__(/*! ./../helpers/isURLSameOrigin */ 401);
+	var btoa = (typeof window !== 'undefined' && window.btoa) || __webpack_require__(/*! ./../helpers/btoa */ 402);
+	var settle = __webpack_require__(/*! ../helpers/settle */ 403);
+	
+	module.exports = function xhrAdapter(resolve, reject, config) {
+	  var requestData = config.data;
+	  var requestHeaders = config.headers;
+	
+	  if (utils.isFormData(requestData)) {
+	    delete requestHeaders['Content-Type']; // Let the browser set it
+	  }
+	
+	  var request = new XMLHttpRequest();
+	  var loadEvent = 'onreadystatechange';
+	  var xDomain = false;
+	
+	  // For IE 8/9 CORS support
+	  // Only supports POST and GET calls and doesn't returns the response headers.
+	  // DON'T do this for testing b/c XMLHttpRequest is mocked, not XDomainRequest.
+	  if (process.env.NODE_ENV !== 'test' && typeof window !== 'undefined' && window.XDomainRequest && !('withCredentials' in request) && !isURLSameOrigin(config.url)) {
+	    request = new window.XDomainRequest();
+	    loadEvent = 'onload';
+	    xDomain = true;
+	  }
+	
+	  // HTTP basic authentication
+	  if (config.auth) {
+	    var username = config.auth.username || '';
+	    var password = config.auth.password || '';
+	    requestHeaders.Authorization = 'Basic ' + btoa(username + ':' + password);
+	  }
+	
+	  request.open(config.method.toUpperCase(), buildURL(config.url, config.params, config.paramsSerializer), true);
+	
+	  // Set the request timeout in MS
+	  request.timeout = config.timeout;
+	
+	  // For IE 9 CORS support.
+	  request.onprogress = function handleProgress() {};
+	  request.ontimeout = function handleTimeout() {};
+	
+	  // Listen for ready state
+	  request[loadEvent] = function handleLoad() {
+	    if (!request || (request.readyState !== 4 && !xDomain)) {
+	      return;
+	    }
+	
+	    // The request errored out and we didn't get a response, this will be
+	    // handled by onerror instead
+	    if (request.status === 0) {
+	      return;
+	    }
+	
+	    // Prepare the response
+	    var responseHeaders = 'getAllResponseHeaders' in request ? parseHeaders(request.getAllResponseHeaders()) : null;
+	    var responseData = !config.responseType || config.responseType === 'text' ? request.responseText : request.response;
+	    var response = {
+	      data: transformData(
+	        responseData,
+	        responseHeaders,
+	        config.transformResponse
+	      ),
+	      // IE sends 1223 instead of 204 (https://github.com/mzabriskie/axios/issues/201)
+	      status: request.status === 1223 ? 204 : request.status,
+	      statusText: request.status === 1223 ? 'No Content' : request.statusText,
+	      headers: responseHeaders,
+	      config: config,
+	      request: request
+	    };
+	
+	    settle(resolve, reject, response);
+	
+	    // Clean up request
+	    request = null;
+	  };
+	
+	  // Handle low level network errors
+	  request.onerror = function handleError() {
+	    // Real errors are hidden from us by the browser
+	    // onerror should only fire if it's a network error
+	    reject(new Error('Network Error'));
+	
+	    // Clean up request
+	    request = null;
+	  };
+	
+	  // Handle timeout
+	  request.ontimeout = function handleTimeout() {
+	    var err = new Error('timeout of ' + config.timeout + 'ms exceeded');
+	    err.timeout = config.timeout;
+	    err.code = 'ECONNABORTED';
+	    reject(err);
+	
+	    // Clean up request
+	    request = null;
+	  };
+	
+	  // Add xsrf header
+	  // This is only done if running in a standard browser environment.
+	  // Specifically not if we're in a web worker, or react-native.
+	  if (utils.isStandardBrowserEnv()) {
+	    var cookies = __webpack_require__(/*! ./../helpers/cookies */ 404);
+	
+	    // Add xsrf header
+	    var xsrfValue = config.withCredentials || isURLSameOrigin(config.url) ?
+	        cookies.read(config.xsrfCookieName) :
+	        undefined;
+	
+	    if (xsrfValue) {
+	      requestHeaders[config.xsrfHeaderName] = xsrfValue;
+	    }
+	  }
+	
+	  // Add headers to the request
+	  if ('setRequestHeader' in request) {
+	    utils.forEach(requestHeaders, function setRequestHeader(val, key) {
+	      if (typeof requestData === 'undefined' && key.toLowerCase() === 'content-type') {
+	        // Remove Content-Type if data is undefined
+	        delete requestHeaders[key];
+	      } else {
+	        // Otherwise add header to the request
+	        request.setRequestHeader(key, val);
+	      }
+	    });
+	  }
+	
+	  // Add withCredentials to request if needed
+	  if (config.withCredentials) {
+	    request.withCredentials = true;
+	  }
+	
+	  // Add responseType to request if needed
+	  if (config.responseType) {
+	    try {
+	      request.responseType = config.responseType;
+	    } catch (e) {
+	      if (request.responseType !== 'json') {
+	        throw e;
+	      }
+	    }
+	  }
+	
+	  // Handle progress if needed
+	  if (config.progress) {
+	    if (config.method === 'post' || config.method === 'put') {
+	      request.upload.addEventListener('progress', config.progress);
+	    } else if (config.method === 'get') {
+	      request.addEventListener('progress', config.progress);
+	    }
+	  }
+	
+	  if (requestData === undefined) {
+	    requestData = null;
+	  }
+	
+	  // Send the request
+	  request.send(requestData);
+	};
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! (webpack)/~/node-libs-browser/~/process/browser.js */ 3)))
+
+/***/ },
+/* 398 */
+/*!*****************************************!*\
+  !*** ./~/axios/lib/helpers/buildURL.js ***!
+  \*****************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var utils = __webpack_require__(/*! ./../utils */ 395);
+	
+	function encode(val) {
+	  return encodeURIComponent(val).
+	    replace(/%40/gi, '@').
+	    replace(/%3A/gi, ':').
+	    replace(/%24/g, '$').
+	    replace(/%2C/gi, ',').
+	    replace(/%20/g, '+').
+	    replace(/%5B/gi, '[').
+	    replace(/%5D/gi, ']');
+	}
+	
+	/**
+	 * Build a URL by appending params to the end
+	 *
+	 * @param {string} url The base of the url (e.g., http://www.google.com)
+	 * @param {object} [params] The params to be appended
+	 * @returns {string} The formatted url
+	 */
+	module.exports = function buildURL(url, params, paramsSerializer) {
+	  /*eslint no-param-reassign:0*/
+	  if (!params) {
+	    return url;
+	  }
+	
+	  var serializedParams;
+	  if (paramsSerializer) {
+	    serializedParams = paramsSerializer(params);
+	  } else {
+	    var parts = [];
+	
+	    utils.forEach(params, function serialize(val, key) {
+	      if (val === null || typeof val === 'undefined') {
+	        return;
+	      }
+	
+	      if (utils.isArray(val)) {
+	        key = key + '[]';
+	      }
+	
+	      if (!utils.isArray(val)) {
+	        val = [val];
+	      }
+	
+	      utils.forEach(val, function parseValue(v) {
+	        if (utils.isDate(v)) {
+	          v = v.toISOString();
+	        } else if (utils.isObject(v)) {
+	          v = JSON.stringify(v);
+	        }
+	        parts.push(encode(key) + '=' + encode(v));
+	      });
+	    });
+	
+	    serializedParams = parts.join('&');
+	  }
+	
+	  if (serializedParams) {
+	    url += (url.indexOf('?') === -1 ? '?' : '&') + serializedParams;
+	  }
+	
+	  return url;
+	};
+	
+
+
+/***/ },
+/* 399 */
+/*!*********************************************!*\
+  !*** ./~/axios/lib/helpers/parseHeaders.js ***!
+  \*********************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var utils = __webpack_require__(/*! ./../utils */ 395);
+	
+	/**
+	 * Parse headers into an object
+	 *
+	 * ```
+	 * Date: Wed, 27 Aug 2014 08:58:49 GMT
+	 * Content-Type: application/json
+	 * Connection: keep-alive
+	 * Transfer-Encoding: chunked
+	 * ```
+	 *
+	 * @param {String} headers Headers needing to be parsed
+	 * @returns {Object} Headers parsed into an object
+	 */
+	module.exports = function parseHeaders(headers) {
+	  var parsed = {};
+	  var key;
+	  var val;
+	  var i;
+	
+	  if (!headers) { return parsed; }
+	
+	  utils.forEach(headers.split('\n'), function parser(line) {
+	    i = line.indexOf(':');
+	    key = utils.trim(line.substr(0, i)).toLowerCase();
+	    val = utils.trim(line.substr(i + 1));
+	
+	    if (key) {
+	      parsed[key] = parsed[key] ? parsed[key] + ', ' + val : val;
+	    }
+	  });
+	
+	  return parsed;
+	};
+
+
+/***/ },
+/* 400 */
+/*!**********************************************!*\
+  !*** ./~/axios/lib/helpers/transformData.js ***!
+  \**********************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var utils = __webpack_require__(/*! ./../utils */ 395);
+	
+	/**
+	 * Transform the data for a request or a response
+	 *
+	 * @param {Object|String} data The data to be transformed
+	 * @param {Array} headers The headers for the request or response
+	 * @param {Array|Function} fns A single function or Array of functions
+	 * @returns {*} The resulting transformed data
+	 */
+	module.exports = function transformData(data, headers, fns) {
+	  /*eslint no-param-reassign:0*/
+	  utils.forEach(fns, function transform(fn) {
+	    data = fn(data, headers);
+	  });
+	
+	  return data;
+	};
+
+
+/***/ },
+/* 401 */
+/*!************************************************!*\
+  !*** ./~/axios/lib/helpers/isURLSameOrigin.js ***!
+  \************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var utils = __webpack_require__(/*! ./../utils */ 395);
+	
+	module.exports = (
+	  utils.isStandardBrowserEnv() ?
+	
+	  // Standard browser envs have full support of the APIs needed to test
+	  // whether the request URL is of the same origin as current location.
+	  (function standardBrowserEnv() {
+	    var msie = /(msie|trident)/i.test(navigator.userAgent);
+	    var urlParsingNode = document.createElement('a');
+	    var originURL;
+	
+	    /**
+	    * Parse a URL to discover it's components
+	    *
+	    * @param {String} url The URL to be parsed
+	    * @returns {Object}
+	    */
+	    function resolveURL(url) {
+	      var href = url;
+	
+	      if (msie) {
+	        // IE needs attribute set twice to normalize properties
+	        urlParsingNode.setAttribute('href', href);
+	        href = urlParsingNode.href;
+	      }
+	
+	      urlParsingNode.setAttribute('href', href);
+	
+	      // urlParsingNode provides the UrlUtils interface - http://url.spec.whatwg.org/#urlutils
+	      return {
+	        href: urlParsingNode.href,
+	        protocol: urlParsingNode.protocol ? urlParsingNode.protocol.replace(/:$/, '') : '',
+	        host: urlParsingNode.host,
+	        search: urlParsingNode.search ? urlParsingNode.search.replace(/^\?/, '') : '',
+	        hash: urlParsingNode.hash ? urlParsingNode.hash.replace(/^#/, '') : '',
+	        hostname: urlParsingNode.hostname,
+	        port: urlParsingNode.port,
+	        pathname: (urlParsingNode.pathname.charAt(0) === '/') ?
+	                  urlParsingNode.pathname :
+	                  '/' + urlParsingNode.pathname
+	      };
+	    }
+	
+	    originURL = resolveURL(window.location.href);
+	
+	    /**
+	    * Determine if a URL shares the same origin as the current location
+	    *
+	    * @param {String} requestURL The URL to test
+	    * @returns {boolean} True if URL shares the same origin, otherwise false
+	    */
+	    return function isURLSameOrigin(requestURL) {
+	      var parsed = (utils.isString(requestURL)) ? resolveURL(requestURL) : requestURL;
+	      return (parsed.protocol === originURL.protocol &&
+	            parsed.host === originURL.host);
+	    };
+	  })() :
+	
+	  // Non standard browser envs (web workers, react-native) lack needed support.
+	  (function nonStandardBrowserEnv() {
+	    return function isURLSameOrigin() {
+	      return true;
+	    };
+	  })()
+	);
+
+
+/***/ },
+/* 402 */
+/*!*************************************!*\
+  !*** ./~/axios/lib/helpers/btoa.js ***!
+  \*************************************/
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	// btoa polyfill for IE<10 courtesy https://github.com/davidchambers/Base64.js
+	
+	var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
+	
+	function E() {
+	  this.message = 'String contains an invalid character';
+	}
+	E.prototype = new Error;
+	E.prototype.code = 5;
+	E.prototype.name = 'InvalidCharacterError';
+	
+	function btoa(input) {
+	  var str = String(input);
+	  var output = '';
+	  for (
+	    // initialize result and counter
+	    var block, charCode, idx = 0, map = chars;
+	    // if the next str index does not exist:
+	    //   change the mapping table to "="
+	    //   check if d has no fractional digits
+	    str.charAt(idx | 0) || (map = '=', idx % 1);
+	    // "8 - idx % 1 * 8" generates the sequence 2, 4, 6, 8
+	    output += map.charAt(63 & block >> 8 - idx % 1 * 8)
+	  ) {
+	    charCode = str.charCodeAt(idx += 3 / 4);
+	    if (charCode > 0xFF) {
+	      throw new E();
+	    }
+	    block = block << 8 | charCode;
+	  }
+	  return output;
+	}
+	
+	module.exports = btoa;
+
+
+/***/ },
+/* 403 */
+/*!***************************************!*\
+  !*** ./~/axios/lib/helpers/settle.js ***!
+  \***************************************/
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	/**
+	 * Resolve or reject a Promise based on response status.
+	 *
+	 * @param {Function} resolve A function that resolves the promise.
+	 * @param {Function} reject A function that rejects the promise.
+	 * @param {object} response The response.
+	 */
+	module.exports = function settle(resolve, reject, response) {
+	  var validateStatus = response.config.validateStatus;
+	  // Note: status is not exposed by XDomainRequest
+	  if (!response.status || !validateStatus || validateStatus(response.status)) {
+	    resolve(response);
+	  } else {
+	    reject(response);
+	  }
+	};
+
+
+/***/ },
+/* 404 */
+/*!****************************************!*\
+  !*** ./~/axios/lib/helpers/cookies.js ***!
+  \****************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var utils = __webpack_require__(/*! ./../utils */ 395);
+	
+	module.exports = (
+	  utils.isStandardBrowserEnv() ?
+	
+	  // Standard browser envs support document.cookie
+	  (function standardBrowserEnv() {
+	    return {
+	      write: function write(name, value, expires, path, domain, secure) {
+	        var cookie = [];
+	        cookie.push(name + '=' + encodeURIComponent(value));
+	
+	        if (utils.isNumber(expires)) {
+	          cookie.push('expires=' + new Date(expires).toGMTString());
+	        }
+	
+	        if (utils.isString(path)) {
+	          cookie.push('path=' + path);
+	        }
+	
+	        if (utils.isString(domain)) {
+	          cookie.push('domain=' + domain);
+	        }
+	
+	        if (secure === true) {
+	          cookie.push('secure');
+	        }
+	
+	        document.cookie = cookie.join('; ');
+	      },
+	
+	      read: function read(name) {
+	        var match = document.cookie.match(new RegExp('(^|;\\s*)(' + name + ')=([^;]*)'));
+	        return (match ? decodeURIComponent(match[3]) : null);
+	      },
+	
+	      remove: function remove(name) {
+	        this.write(name, '', Date.now() - 86400000);
+	      }
+	    };
+	  })() :
+	
+	  // Non standard browser env (web workers, react-native) lack needed support.
+	  (function nonStandardBrowserEnv() {
+	    return {
+	      write: function write() {},
+	      read: function read() { return null; },
+	      remove: function remove() {}
+	    };
+	  })()
+	);
+
+
+/***/ },
+/* 405 */
+/*!************************************************!*\
+  !*** ./~/axios/lib/core/InterceptorManager.js ***!
+  \************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var utils = __webpack_require__(/*! ./../utils */ 395);
+	
+	function InterceptorManager() {
+	  this.handlers = [];
+	}
+	
+	/**
+	 * Add a new interceptor to the stack
+	 *
+	 * @param {Function} fulfilled The function to handle `then` for a `Promise`
+	 * @param {Function} rejected The function to handle `reject` for a `Promise`
+	 *
+	 * @return {Number} An ID used to remove interceptor later
+	 */
+	InterceptorManager.prototype.use = function use(fulfilled, rejected) {
+	  this.handlers.push({
+	    fulfilled: fulfilled,
+	    rejected: rejected
+	  });
+	  return this.handlers.length - 1;
+	};
+	
+	/**
+	 * Remove an interceptor from the stack
+	 *
+	 * @param {Number} id The ID that was returned by `use`
+	 */
+	InterceptorManager.prototype.eject = function eject(id) {
+	  if (this.handlers[id]) {
+	    this.handlers[id] = null;
+	  }
+	};
+	
+	/**
+	 * Iterate over all the registered interceptors
+	 *
+	 * This method is particularly useful for skipping over any
+	 * interceptors that may have become `null` calling `eject`.
+	 *
+	 * @param {Function} fn The function to call for each interceptor
+	 */
+	InterceptorManager.prototype.forEach = function forEach(fn) {
+	  utils.forEach(this.handlers, function forEachHandler(h) {
+	    if (h !== null) {
+	      fn(h);
+	    }
+	  });
+	};
+	
+	module.exports = InterceptorManager;
+
+
+/***/ },
+/* 406 */
+/*!**********************************************!*\
+  !*** ./~/axios/lib/helpers/isAbsoluteURL.js ***!
+  \**********************************************/
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	/**
+	 * Determines whether the specified URL is absolute
+	 *
+	 * @param {string} url The URL to test
+	 * @returns {boolean} True if the specified URL is absolute, otherwise false
+	 */
+	module.exports = function isAbsoluteURL(url) {
+	  // A URL is considered absolute if it begins with "<scheme>://" or "//" (protocol-relative URL).
+	  // RFC 3986 defines scheme name as a sequence of characters beginning with a letter and followed
+	  // by any combination of letters, digits, plus, period, or hyphen.
+	  return /^([a-z][a-z\d\+\-\.]*:)?\/\//i.test(url);
+	};
+
+
+/***/ },
+/* 407 */
+/*!********************************************!*\
+  !*** ./~/axios/lib/helpers/combineURLs.js ***!
+  \********************************************/
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	/**
+	 * Creates a new URL by combining the specified URLs
+	 *
+	 * @param {string} baseURL The base URL
+	 * @param {string} relativeURL The relative URL
+	 * @returns {string} The combined URL
+	 */
+	module.exports = function combineURLs(baseURL, relativeURL) {
+	  return baseURL.replace(/\/+$/, '') + '/' + relativeURL.replace(/^\/+/, '');
+	};
+
+
+/***/ },
+/* 408 */
+/*!*************************************!*\
+  !*** ./~/axios/lib/helpers/bind.js ***!
+  \*************************************/
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	module.exports = function bind(fn, thisArg) {
+	  return function wrap() {
+	    var args = new Array(arguments.length);
+	    for (var i = 0; i < args.length; i++) {
+	      args[i] = arguments[i];
+	    }
+	    return fn.apply(thisArg, args);
+	  };
+	};
+
+
+/***/ },
+/* 409 */
+/*!***************************************!*\
+  !*** ./~/axios/lib/helpers/spread.js ***!
+  \***************************************/
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	/**
+	 * Syntactic sugar for invoking a function and expanding an array for arguments.
+	 *
+	 * Common use case would be to use `Function.prototype.apply`.
+	 *
+	 *  ```js
+	 *  function f(x, y, z) {}
+	 *  var args = [1, 2, 3];
+	 *  f.apply(null, args);
+	 *  ```
+	 *
+	 * With `spread` this example can be re-written.
+	 *
+	 *  ```js
+	 *  spread(function(x, y, z) {})([1, 2, 3]);
+	 *  ```
+	 *
+	 * @param {Function} callback
+	 * @returns {Function}
+	 */
+	module.exports = function spread(callback) {
+	  return function wrap(arr) {
+	    return callback.apply(null, arr);
+	  };
+	};
+
+
+/***/ },
+/* 410 */
+/*!*********************************!*\
+  !*** ./~/query-string/index.js ***!
+  \*********************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var strictUriEncode = __webpack_require__(/*! strict-uri-encode */ 411);
+	
+	function encode(value, strict) {
+		return strict ? strictUriEncode(value) : encodeURIComponent(value);
+	}
+	
+	exports.extract = function (str) {
+		return str.split('?')[1] || '';
+	};
+	
+	exports.parse = function (str) {
+		// Create an object with no prototype
+		// https://github.com/sindresorhus/query-string/issues/47
+		var ret = Object.create(null);
+	
+		if (typeof str !== 'string') {
+			return ret;
+		}
+	
+		str = str.trim().replace(/^(\?|#|&)/, '');
+	
+		if (!str) {
+			return ret;
+		}
+	
+		str.split('&').forEach(function (param) {
+			var parts = param.replace(/\+/g, ' ').split('=');
+			// Firefox (pre 40) decodes `%3D` to `=`
+			// https://github.com/sindresorhus/query-string/pull/37
+			var key = parts.shift();
+			var val = parts.length > 0 ? parts.join('=') : undefined;
+	
+			key = decodeURIComponent(key);
+	
+			// missing `=` should be `null`:
+			// http://w3.org/TR/2012/WD-url-20120524/#collect-url-parameters
+			val = val === undefined ? null : decodeURIComponent(val);
+	
+			if (ret[key] === undefined) {
+				ret[key] = val;
+			} else if (Array.isArray(ret[key])) {
+				ret[key].push(val);
+			} else {
+				ret[key] = [ret[key], val];
+			}
+		});
+	
+		return ret;
+	};
+	
+	exports.stringify = function (obj, opts) {
+		opts = opts || {};
+	
+		var strict = opts.strict !== false;
+	
+		return obj ? Object.keys(obj).sort().map(function (key) {
+			var val = obj[key];
+	
+			if (val === undefined) {
+				return '';
+			}
+	
+			if (val === null) {
+				return key;
+			}
+	
+			if (Array.isArray(val)) {
+				var result = [];
+	
+				val.slice().sort().forEach(function (val2) {
+					if (val2 === undefined) {
+						return;
+					}
+	
+					if (val2 === null) {
+						result.push(encode(key, strict));
+					} else {
+						result.push(encode(key, strict) + '=' + encode(val2, strict));
+					}
+				});
+	
+				return result.join('&');
+			}
+	
+			return encode(key, strict) + '=' + encode(val, strict);
+		}).filter(function (x) {
+			return x.length > 0;
+		}).join('&') : '';
+	};
+
+
+/***/ },
+/* 411 */
+/*!*****************************************************!*\
+  !*** ./~/query-string/~/strict-uri-encode/index.js ***!
+  \*****************************************************/
+/***/ function(module, exports) {
+
+	'use strict';
+	module.exports = function (str) {
+		return encodeURIComponent(str).replace(/[!'()*]/g, function (c) {
+			return '%' + c.charCodeAt(0).toString(16).toUpperCase();
+		});
+	};
+
+
+/***/ },
+/* 412 */
 /*!*************************************!*\
   !*** ./src/store/configureStore.js ***!
   \*************************************/
@@ -39006,8 +43852,8 @@
 
 	"use strict";
 	var redux_1 = __webpack_require__(/*! redux */ 173);
-	var main_1 = __webpack_require__(/*! ../reducers/main */ 340);
-	var redux_thunk_1 = __webpack_require__(/*! redux-thunk */ 354);
+	var main_1 = __webpack_require__(/*! ../reducers/main */ 413);
+	var redux_thunk_1 = __webpack_require__(/*! redux-thunk */ 428);
 	var logger = function (store) { return function (next) { return function (action) {
 	    console.group(action.type);
 	    console.info('dispatching', action);
@@ -39025,7 +43871,7 @@
 	//# sourceMappingURL=configureStore.js.map
 
 /***/ },
-/* 340 */
+/* 413 */
 /*!******************************!*\
   !*** ./src/reducers/main.js ***!
   \******************************/
@@ -39033,21 +43879,25 @@
 
 	"use strict";
 	var redux_1 = __webpack_require__(/*! redux */ 173);
-	var panels_1 = __webpack_require__(/*! ./panels */ 341);
-	var entities_1 = __webpack_require__(/*! ./entities */ 342);
-	var toolLists_1 = __webpack_require__(/*! ./toolLists */ 344);
-	var toolEditForms_1 = __webpack_require__(/*! ./toolEditForms */ 345);
-	var partLists_1 = __webpack_require__(/*! ./partLists */ 346);
-	var partEditForms_1 = __webpack_require__(/*! ./partEditForms */ 347);
-	var techStepLists_1 = __webpack_require__(/*! ./techStepLists */ 348);
-	var techStepEditForms_1 = __webpack_require__(/*! ./techStepEditForms */ 349);
-	var techOperationLists_1 = __webpack_require__(/*! ./techOperationLists */ 350);
-	var techOperationEditForms_1 = __webpack_require__(/*! ./techOperationEditForms */ 351);
-	var techProcessLists_1 = __webpack_require__(/*! ./techProcessLists */ 352);
-	var techProcessEditForms_1 = __webpack_require__(/*! ./techProcessEditForms */ 353);
+	var redux_form_1 = __webpack_require__(/*! redux-form */ 341);
+	var panels_1 = __webpack_require__(/*! ./panels */ 414);
+	var entities_1 = __webpack_require__(/*! ./entities */ 415);
+	var auth_1 = __webpack_require__(/*! ./auth */ 417);
+	var toolLists_1 = __webpack_require__(/*! ./toolLists */ 418);
+	var toolEditForms_1 = __webpack_require__(/*! ./toolEditForms */ 419);
+	var partLists_1 = __webpack_require__(/*! ./partLists */ 420);
+	var partEditForms_1 = __webpack_require__(/*! ./partEditForms */ 421);
+	var techStepLists_1 = __webpack_require__(/*! ./techStepLists */ 422);
+	var techStepEditForms_1 = __webpack_require__(/*! ./techStepEditForms */ 423);
+	var techOperationLists_1 = __webpack_require__(/*! ./techOperationLists */ 424);
+	var techOperationEditForms_1 = __webpack_require__(/*! ./techOperationEditForms */ 425);
+	var techProcessLists_1 = __webpack_require__(/*! ./techProcessLists */ 426);
+	var techProcessEditForms_1 = __webpack_require__(/*! ./techProcessEditForms */ 427);
 	var main = redux_1.combineReducers({
 	    panels: panels_1.default,
 	    entities: entities_1.default,
+	    auth: auth_1.default,
+	    form: redux_form_1.reducer,
 	    toolLists: toolLists_1.default,
 	    toolEditForms: toolEditForms_1.default,
 	    partLists: partLists_1.default,
@@ -39064,14 +43914,14 @@
 	//# sourceMappingURL=main.js.map
 
 /***/ },
-/* 341 */
+/* 414 */
 /*!********************************!*\
   !*** ./src/reducers/panels.js ***!
   \********************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var PanelActionType = __webpack_require__(/*! ../actions/panelActionType */ 196);
+	var PanelActionType = __webpack_require__(/*! ../actions/panelActionType */ 197);
 	var initialState = [];
 	var nextPanelId = 0;
 	function panels(state, action) {
@@ -39100,19 +43950,19 @@
 	//# sourceMappingURL=panels.js.map
 
 /***/ },
-/* 342 */
+/* 415 */
 /*!**********************************!*\
   !*** ./src/reducers/entities.js ***!
   \**********************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var ToolActionType = __webpack_require__(/*! ../actions/toolActionType */ 212);
-	var PartActionType = __webpack_require__(/*! ../actions/partActionType */ 307);
-	var TechStepActionType = __webpack_require__(/*! ../actions/techStepActionType */ 316);
-	var TechOperationActionType = __webpack_require__(/*! ../actions/techOperationActionType */ 326);
-	var TechProcessActionType = __webpack_require__(/*! ../actions/techProcessActionType */ 335);
-	var _ = __webpack_require__(/*! lodash */ 343);
+	var ToolActionType = __webpack_require__(/*! ../actions/toolActionType */ 213);
+	var PartActionType = __webpack_require__(/*! ../actions/partActionType */ 308);
+	var TechStepActionType = __webpack_require__(/*! ../actions/techStepActionType */ 317);
+	var TechOperationActionType = __webpack_require__(/*! ../actions/techOperationActionType */ 327);
+	var TechProcessActionType = __webpack_require__(/*! ../actions/techProcessActionType */ 336);
+	var _ = __webpack_require__(/*! lodash */ 416);
 	var initialState = {
 	    tools: {},
 	    parts: {},
@@ -39174,7 +44024,7 @@
 	//# sourceMappingURL=entities.js.map
 
 /***/ },
-/* 343 */
+/* 416 */
 /*!****************************!*\
   !*** ./~/lodash/lodash.js ***!
   \****************************/
@@ -55208,21 +60058,48 @@
 	  }
 	}.call(this));
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./../webpack/buildin/module.js */ 243)(module), (function() { return this; }())))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./../webpack/buildin/module.js */ 244)(module), (function() { return this; }())))
 
 /***/ },
-/* 344 */
+/* 417 */
+/*!******************************!*\
+  !*** ./src/reducers/auth.js ***!
+  \******************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var AuthActionType = __webpack_require__(/*! ../actions/authActionType */ 391);
+	var _ = __webpack_require__(/*! lodash */ 416);
+	function default_1(state, action) {
+	    if (state === void 0) { state = {}; }
+	    switch (action.type) {
+	        case AuthActionType.AUTH_USER:
+	            return _.assign({}, state, { isAuthenticated: true, errorMessage: null });
+	        case AuthActionType.UNAUTH_USER:
+	            return _.assign({}, state, { isAuthenticated: false, errorMessage: null });
+	        case AuthActionType.AUTH_ERROR:
+	            return _.assign({}, state, { errorMessage: action.payload });
+	        default:
+	            return state;
+	    }
+	}
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = default_1;
+	//# sourceMappingURL=auth.js.map
+
+/***/ },
+/* 418 */
 /*!***********************************!*\
   !*** ./src/reducers/toolLists.js ***!
   \***********************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var ToolActionType = __webpack_require__(/*! ../actions/toolActionType */ 212);
-	var PanelActionType = __webpack_require__(/*! ../actions/panelActionType */ 196);
-	var TechStepActionType = __webpack_require__(/*! ../actions/techStepActionType */ 316);
-	var PanelType = __webpack_require__(/*! ../components/panelType */ 197);
-	var _ = __webpack_require__(/*! lodash */ 343);
+	var ToolActionType = __webpack_require__(/*! ../actions/toolActionType */ 213);
+	var PanelActionType = __webpack_require__(/*! ../actions/panelActionType */ 197);
+	var TechStepActionType = __webpack_require__(/*! ../actions/techStepActionType */ 317);
+	var PanelType = __webpack_require__(/*! ../components/panelType */ 198);
+	var _ = __webpack_require__(/*! lodash */ 416);
 	var initialState = [];
 	function toolLists(state, action) {
 	    if (state === void 0) { state = initialState; }
@@ -55390,16 +60267,16 @@
 	//# sourceMappingURL=toolLists.js.map
 
 /***/ },
-/* 345 */
+/* 419 */
 /*!***************************************!*\
   !*** ./src/reducers/toolEditForms.js ***!
   \***************************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var ToolActionType = __webpack_require__(/*! ../actions/toolActionType */ 212);
-	var PanelActionType = __webpack_require__(/*! ../actions/panelActionType */ 196);
-	var PanelType = __webpack_require__(/*! ../components/panelType */ 197);
+	var ToolActionType = __webpack_require__(/*! ../actions/toolActionType */ 213);
+	var PanelActionType = __webpack_require__(/*! ../actions/panelActionType */ 197);
+	var PanelType = __webpack_require__(/*! ../components/panelType */ 198);
 	var initialState = [];
 	function toolEditForms(state, action) {
 	    if (state === void 0) { state = initialState; }
@@ -55483,18 +60360,18 @@
 	//# sourceMappingURL=toolEditForms.js.map
 
 /***/ },
-/* 346 */
+/* 420 */
 /*!***********************************!*\
   !*** ./src/reducers/partLists.js ***!
   \***********************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var PartActionType = __webpack_require__(/*! ../actions/partActionType */ 307);
-	var PanelActionType = __webpack_require__(/*! ../actions/panelActionType */ 196);
-	var TechStepActionType = __webpack_require__(/*! ../actions/techStepActionType */ 316);
-	var PanelType = __webpack_require__(/*! ../components/panelType */ 197);
-	var _ = __webpack_require__(/*! lodash */ 343);
+	var PartActionType = __webpack_require__(/*! ../actions/partActionType */ 308);
+	var PanelActionType = __webpack_require__(/*! ../actions/panelActionType */ 197);
+	var TechStepActionType = __webpack_require__(/*! ../actions/techStepActionType */ 317);
+	var PanelType = __webpack_require__(/*! ../components/panelType */ 198);
+	var _ = __webpack_require__(/*! lodash */ 416);
 	var initialState = [];
 	function partLists(state, action) {
 	    if (state === void 0) { state = initialState; }
@@ -55662,16 +60539,16 @@
 	//# sourceMappingURL=partLists.js.map
 
 /***/ },
-/* 347 */
+/* 421 */
 /*!***************************************!*\
   !*** ./src/reducers/partEditForms.js ***!
   \***************************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var PartActionType = __webpack_require__(/*! ../actions/partActionType */ 307);
-	var PanelActionType = __webpack_require__(/*! ../actions/panelActionType */ 196);
-	var PanelType = __webpack_require__(/*! ../components/panelType */ 197);
+	var PartActionType = __webpack_require__(/*! ../actions/partActionType */ 308);
+	var PanelActionType = __webpack_require__(/*! ../actions/panelActionType */ 197);
+	var PanelType = __webpack_require__(/*! ../components/panelType */ 198);
 	var initialState = [];
 	function partEditForms(state, action) {
 	    if (state === void 0) { state = initialState; }
@@ -55755,18 +60632,18 @@
 	//# sourceMappingURL=partEditForms.js.map
 
 /***/ },
-/* 348 */
+/* 422 */
 /*!***************************************!*\
   !*** ./src/reducers/techStepLists.js ***!
   \***************************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var TechStepActionType = __webpack_require__(/*! ../actions/techStepActionType */ 316);
-	var TechOperationActionType = __webpack_require__(/*! ../actions/techOperationActionType */ 326);
-	var PanelActionType = __webpack_require__(/*! ../actions/panelActionType */ 196);
-	var PanelType = __webpack_require__(/*! ../components/panelType */ 197);
-	var _ = __webpack_require__(/*! lodash */ 343);
+	var TechStepActionType = __webpack_require__(/*! ../actions/techStepActionType */ 317);
+	var TechOperationActionType = __webpack_require__(/*! ../actions/techOperationActionType */ 327);
+	var PanelActionType = __webpack_require__(/*! ../actions/panelActionType */ 197);
+	var PanelType = __webpack_require__(/*! ../components/panelType */ 198);
+	var _ = __webpack_require__(/*! lodash */ 416);
 	var initialState = [];
 	function techStepLists(state, action) {
 	    if (state === void 0) { state = initialState; }
@@ -55920,16 +60797,16 @@
 	//# sourceMappingURL=techStepLists.js.map
 
 /***/ },
-/* 349 */
+/* 423 */
 /*!*******************************************!*\
   !*** ./src/reducers/techStepEditForms.js ***!
   \*******************************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var TechStepActionType = __webpack_require__(/*! ../actions/techStepActionType */ 316);
-	var PanelActionType = __webpack_require__(/*! ../actions/panelActionType */ 196);
-	var PanelType = __webpack_require__(/*! ../components/panelType */ 197);
+	var TechStepActionType = __webpack_require__(/*! ../actions/techStepActionType */ 317);
+	var PanelActionType = __webpack_require__(/*! ../actions/panelActionType */ 197);
+	var PanelType = __webpack_require__(/*! ../components/panelType */ 198);
 	var initialState = [];
 	function techStepEditForms(state, action) {
 	    if (state === void 0) { state = initialState; }
@@ -56170,18 +61047,18 @@
 	//# sourceMappingURL=techStepEditForms.js.map
 
 /***/ },
-/* 350 */
+/* 424 */
 /*!********************************************!*\
   !*** ./src/reducers/techOperationLists.js ***!
   \********************************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var TechOperationActionType = __webpack_require__(/*! ../actions/techOperationActionType */ 326);
-	var TechProcessActionType = __webpack_require__(/*! ../actions/techProcessActionType */ 335);
-	var PanelActionType = __webpack_require__(/*! ../actions/panelActionType */ 196);
-	var PanelType = __webpack_require__(/*! ../components/panelType */ 197);
-	var _ = __webpack_require__(/*! lodash */ 343);
+	var TechOperationActionType = __webpack_require__(/*! ../actions/techOperationActionType */ 327);
+	var TechProcessActionType = __webpack_require__(/*! ../actions/techProcessActionType */ 336);
+	var PanelActionType = __webpack_require__(/*! ../actions/panelActionType */ 197);
+	var PanelType = __webpack_require__(/*! ../components/panelType */ 198);
+	var _ = __webpack_require__(/*! lodash */ 416);
 	var initialState = [];
 	function techOperationLists(state, action) {
 	    if (state === void 0) { state = initialState; }
@@ -56335,17 +61212,17 @@
 	//# sourceMappingURL=techOperationLists.js.map
 
 /***/ },
-/* 351 */
+/* 425 */
 /*!************************************************!*\
   !*** ./src/reducers/techOperationEditForms.js ***!
   \************************************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var TechOperationActionType = __webpack_require__(/*! ../actions/techOperationActionType */ 326);
-	var TechStepActionType = __webpack_require__(/*! ../actions/techStepActionType */ 316);
-	var PanelActionType = __webpack_require__(/*! ../actions/panelActionType */ 196);
-	var PanelType = __webpack_require__(/*! ../components/panelType */ 197);
+	var TechOperationActionType = __webpack_require__(/*! ../actions/techOperationActionType */ 327);
+	var TechStepActionType = __webpack_require__(/*! ../actions/techStepActionType */ 317);
+	var PanelActionType = __webpack_require__(/*! ../actions/panelActionType */ 197);
+	var PanelType = __webpack_require__(/*! ../components/panelType */ 198);
 	var initialState = [];
 	function techOperationEditForms(state, action) {
 	    if (state === void 0) { state = initialState; }
@@ -56496,17 +61373,17 @@
 	//# sourceMappingURL=techOperationEditForms.js.map
 
 /***/ },
-/* 352 */
+/* 426 */
 /*!******************************************!*\
   !*** ./src/reducers/techProcessLists.js ***!
   \******************************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var TechProcessActionType = __webpack_require__(/*! ../actions/techProcessActionType */ 335);
-	var PanelActionType = __webpack_require__(/*! ../actions/panelActionType */ 196);
-	var PanelType = __webpack_require__(/*! ../components/panelType */ 197);
-	var _ = __webpack_require__(/*! lodash */ 343);
+	var TechProcessActionType = __webpack_require__(/*! ../actions/techProcessActionType */ 336);
+	var PanelActionType = __webpack_require__(/*! ../actions/panelActionType */ 197);
+	var PanelType = __webpack_require__(/*! ../components/panelType */ 198);
+	var _ = __webpack_require__(/*! lodash */ 416);
 	var initialState = [];
 	function techProcessLists(state, action) {
 	    if (state === void 0) { state = initialState; }
@@ -56647,17 +61524,17 @@
 	//# sourceMappingURL=techProcessLists.js.map
 
 /***/ },
-/* 353 */
+/* 427 */
 /*!**********************************************!*\
   !*** ./src/reducers/techProcessEditForms.js ***!
   \**********************************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var TechProcessActionType = __webpack_require__(/*! ../actions/techProcessActionType */ 335);
-	var TechOperationActionType = __webpack_require__(/*! ../actions/techOperationActionType */ 326);
-	var PanelActionType = __webpack_require__(/*! ../actions/panelActionType */ 196);
-	var PanelType = __webpack_require__(/*! ../components/panelType */ 197);
+	var TechProcessActionType = __webpack_require__(/*! ../actions/techProcessActionType */ 336);
+	var TechOperationActionType = __webpack_require__(/*! ../actions/techOperationActionType */ 327);
+	var PanelActionType = __webpack_require__(/*! ../actions/panelActionType */ 197);
+	var PanelType = __webpack_require__(/*! ../components/panelType */ 198);
 	var initialState = [];
 	function techProcessEditForms(state, action) {
 	    if (state === void 0) { state = initialState; }
@@ -56784,7 +61661,7 @@
 	//# sourceMappingURL=techProcessEditForms.js.map
 
 /***/ },
-/* 354 */
+/* 428 */
 /*!************************************!*\
   !*** ./~/redux-thunk/lib/index.js ***!
   \************************************/
