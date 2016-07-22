@@ -25,6 +25,14 @@ export function signinUser(email, password) {
     }
 }
 
+export function signoutUser() {
+    localStorage.removeItem('token');
+
+    return {
+        type: AuthActionType.UNAUTH_USER
+    };
+}
+
 export function authError(error) {
     return {
         type: AuthActionType.AUTH_ERROR,

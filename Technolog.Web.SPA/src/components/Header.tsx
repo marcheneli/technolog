@@ -12,8 +12,16 @@ export default function (props: any) {
                     </button>
                     <span className="navbar-brand">Технолог</span>
                 </div>
-                <div className="navbar-collapse collapse">
-                    <ul className="nav navbar-nav"></ul>
+                <div className="navbar-collapse collapse navbar-right">
+                    <ul className="nav navbar-nav">
+                        <li>
+                            <a title="Выход" style={{ cursor: "pointer" }}
+                                onClick={props.signoutUser}>
+                                <span className="glyphicon glyphicon-log-out">
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>

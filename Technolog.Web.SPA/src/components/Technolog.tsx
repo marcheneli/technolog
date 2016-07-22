@@ -1,7 +1,7 @@
 ﻿import * as React from "react";
 import Sidebar from './Sidebar';
 import PanelStack from '../containers/PanelStack';
-import Header from '../components/Header';
+import Header from '../containers/Header';
 import Signin from '../containers/auth/Signin';
 import * as PanelType from './panelType';
 

@@ -98,6 +98,7 @@
     <TypeScriptCompile Include="src\constants\pagingParameter.ts" />
     <TypeScriptCompile Include="src\constants\serviceDomain.ts" />
     <TypeScriptCompile Include="src\containers\auth\Signin.ts" />
+    <TypeScriptCompile Include="src\containers\Header.ts" />
     <TypeScriptCompile Include="src\containers\Panel.ts" />
     <TypeScriptCompile Include="src\containers\PanelStack.ts" />
     <TypeScriptCompile Include="src\containers\part\PartEditForm.ts" />
